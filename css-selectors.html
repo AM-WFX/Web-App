@@ -3,45 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSS Selectors Validator - The Full Challenge</title>
+    <title>The Ultimate CSS Selector Lab</title>
     <link rel="stylesheet" href="styles.css"> 
     <style>
-        .challenge-section {
-            padding: 30px;
-            background-color: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin-bottom: 25px; /* Space between challenge boxes */
+        /* Existing Global Styles from previous response (omitted for brevity) */
+        
+        .container {
+            /* Adjust container for full-width main content, if necessary */
+            max-width: 1200px;
+            margin: 0 auto;
         }
-        .target-box {
+
+        .main-content {
             padding: 20px;
-            margin-bottom: 20px;
-            border: 2px dashed #007bff;
-            background-color: #e6f3ff;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .challenge-container {
+            margin-top: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            margin-bottom: 30px;
+            background-color: #f9f9f9;
+        }
+        
+        .challenge-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .challenge-header h3 {
+            margin: 0;
+            color: #333;
+        }
+        
+        /* The area containing the elements to be inspected */
+        .challenge-target-area {
+            padding: 15px;
+            border: 2px dashed #a0c3e8;
+            background-color: #eaf2fa;
+            margin-bottom: 15px;
             text-align: center;
         }
-        .target-element {
-            /* Highlight the element the user needs to target */
-            background-color: #ffda79; 
-            border: 1px solid #ffaa00;
-            padding: 5px;
+
+        /* Styling for the Target Element (Hidden from the user, used by JS) */
+        .target-highlight {
+            border: 2px solid #ff0000; /* Red border to visually identify the target */
             display: inline-block;
+            padding: 3px;
+            margin: 2px;
+            background-color: #ffffe0; /* Light yellow background */
+            transition: all 0.2s ease;
         }
-        #selector-input {
-            width: 100%;
+
+        /* The actual user interface elements */
+        .challenge-ui {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .challenge-ui input[type="text"] {
+            flex-grow: 1;
             padding: 10px;
-            margin-bottom: 15px;
             border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
+            border-radius: 4px;
             font-family: monospace;
         }
-        #validation-message {
-            padding: 10px;
-            border-radius: 5px;
-            font-weight: bold;
-            min-height: 20px;
+
+        .challenge-ui button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
         }
+
+        .challenge-ui button:hover {
+            background-color: #0056b3;
+        }
+        
+        .validation-feedback {
+            padding: 10px;
+            border-radius: 4px;
+            min-height: 40px; 
+            margin-top: 10px;
+        }
+
         .success {
             background-color: #d4edda;
             color: #155724;
@@ -52,319 +108,526 @@
             color: #721c24;
             border: 1px solid #f5c6cb;
         }
+        .info {
+            background-color: #e2f4fb;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        
+        /* Utility class to visually reset the element after validation/reset */
+        .visually-reset {
+            border: none !important;
+            background-color: transparent !important;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+
+        .reveal-button {
+            background-color: #ffc107;
+            color: #333;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
 
-    <header class="navbar">
-        <div class="logo">My Site</div>
-        <nav>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="css-selectors.html" class="active">Selectors</a></li>
-            </ul>
-        </nav>
-    </header>
-
+    <header class="navbar">...</header>
     <div class="container">
-        <aside class="sidebar">...</aside>
-        
-        <main class="content">
-            <h1>CSS Selector Validator - The Ultimate Challenge</h1>
-            <p>Write a CSS selector below that targets **only the element highlighted in yellow** within the current challenge box. Click 'Next Challenge' to load a new selector puzzle.</p>
+        <main class="content main-content">
+            <h1>The Ultimate CSS Selector Lab 🎯</h1>
+            <p>Your task: Write a selector that targets **only the element currently highlighted with the red border and yellow background** within each challenge box. You must remove all other highlighting by validating correctly.</p>
             
-            <div class="validator-interface">
-                <label for="selector-input">Enter your CSS Selector:</label>
-                <input type="text" id="selector-input" placeholder="e.g., #id-name > .class-name">
-                <button onclick="validateSelector()">Validate Selector</button>
-                <button onclick="loadNextChallenge()">Next Challenge &raquo;</button>
-
-                <div id="validation-message"></div>
-            </div>
-            
-            <hr>
-            
-            <div id="challenge-area">
+            <div id="all-challenges">
                 </div>
+            
         </main>
     </div>
-
-    <footer>
-        <p>&copy; 2025 My Awesome Website</p>
-    </footer>
+    <footer>...</footer>
 
     <script>
-        const challenges = [
-            // --- SIMPLE SELECTORS ---
+        // Store the state of each challenge
+        const challengeStates = [];
+
+        // Definition of all challenges
+        const challengeDefinitions = [
+            // Note: The HTML should use generic attributes to force users to use the selector logic.
+            // The "correct" element is the one that temporarily has the 'target-highlight' class applied in JS.
             {
-                prompt: "Target the **input field** using its **ID** attribute.",
-                targetSelector: "#simple-input-target",
+                id: 1,
+                title: "Simple ID Selector",
+                prompt: "Target the **Primary Login Button** using its unique ID.",
+                targetSelector: "#login-primary",
+                type: "ID Selector",
+                alternatives: ["button#login-primary", "section > button#login-primary"],
+                trivia: "The ID selector is the most powerful in terms of specificity (100 points), often used for main layout elements, but is generally avoided in component-based CSS.",
+                learnMore: "https://developer.mozilla.org/en-US/docs/Web/CSS/ID_selectors",
                 html: `
-                    <div class="challenge-section" data-challenge-id="1">
-                        <h3>Challenge 1: Simple ID Selector</h3>
-                        <div class="target-box">
-                            <p>This is a container.</p>
-                            <input type="text" placeholder="Not the target" class="input-field">
-                            <input type="text" placeholder="TARGET" id="simple-input-target" class="target-element">
-                            <button class="input-field">Click</button>
+                    <button id="login-primary" class="btn btn-primary">Primary Login Button</button>
+                    <button id="login-secondary" class="btn btn-secondary">Secondary Button</button>
+                `
+            },
+            {
+                id: 2,
+                title: "Class Selector",
+                prompt: "Target the item marked **Urgent** using its class.",
+                targetSelector: ".task-urgent",
+                type: "Class Selector",
+                alternatives: ["li.task-urgent", "ul > .task-urgent"],
+                trivia: "Classes are the backbone of modern CSS. An element can have multiple classes, but only one ID.",
+                learnMore: "https://developer.mozilla.org/en-US/docs/Web/CSS/Class_selectors",
+                html: `
+                    <ul>
+                        <li class="task-default">Normal Item</li>
+                        <li class="task-urgent">Urgent Item</li>
+                        <li class="task-default">Another Normal Item</li>
+                    </ul>
+                `
+            },
+            {
+                id: 3,
+                title: "Descendant Combinator (Space)",
+                prompt: "Target the **Save** button that is contained *anywhere* inside the `#settings-modal`.",
+                targetSelector: "#settings-modal .btn-save",
+                type: "Descendant Combinator",
+                alternatives: ["#settings-modal button.btn-save", "div#settings-modal button.btn-save"],
+                trivia: "A single space is the oldest and most common combinator, selecting elements nested at any depth.",
+                learnMore: "https://developer.mozilla.org/en-US/docs/Web/CSS/Descendant_combinator",
+                html: `
+                    <div id="settings-modal" style="padding: 10px; border: 1px solid #ccc;">
+                        <button class="btn-cancel">Cancel</button>
+                        <div class="footer">
+                            <button class="btn-save">Save</button>
                         </div>
                     </div>
                 `
             },
             {
-                prompt: "Target the **list item** using its **class** attribute.",
-                targetSelector: "li.special-item",
+                id: 4,
+                title: "Child Combinator (>)",
+                prompt: "Target the **Title** text that is a **direct child** of the `.card-header`.",
+                targetSelector: ".card-header > h2",
+                type: "Child Combinator",
+                alternatives: [".card > .card-header > h2", ".card-header > *"],
+                trivia: "The Child Combinator `>` is often used for performance and preventing deeply nested styles from unintentionally affecting elements.",
+                learnMore: "https://developer.mozilla.org/en-US/docs/Web/CSS/Child_combinator",
                 html: `
-                    <div class="challenge-section" data-challenge-id="2">
-                        <h3>Challenge 2: Class Selector</h3>
-                        <div class="target-box">
-                            <ul>
-                                <li>Item 1</li>
-                                <li class="regular-item">Item 2</li>
-                                <li class="special-item target-element">TARGET</li>
-                                <li>Item 4</li>
-                            </ul>
-                        </div>
-                    </div>
-                `
-            },
-            // --- COMBINATOR SELECTORS ---
-            {
-                prompt: "Target the **button** that is a **direct child** of the `.parent-div`.",
-                targetSelector: ".parent-div > button",
-                html: `
-                    <div class="challenge-section" data-challenge-id="3">
-                        <h3>Challenge 3: Child Combinator (>)</h3>
-                        <div class="parent-div target-box">
+                    <div class="card" style="border: 1px solid #ccc; padding: 10px;">
+                        <div class="card-header">
+                            <h2>Card Title</h2>
                             <span>
-                                <button>Not Target</button>
+                                <h2>Nested Title (Not Target)</h2>
                             </span>
-                            <button class="target-element">TARGET</button>
                         </div>
+                        <p>Card Body</p>
                     </div>
                 `
             },
             {
-                prompt: "Target the **paragraph** that is a **descendant** of the element with the ID `#container-descendant`.",
-                targetSelector: "#container-descendant p",
+                id: 5,
+                title: "Adjacent Sibling Combinator (+)",
+                prompt: "Target the **Second Item** that immediately follows the element with the class `.first-element`.",
+                targetSelector: ".first-element + li",
+                type: "Adjacent Sibling Combinator",
+                alternatives: [".first-element + *"],
+                trivia: "The Adjacent Sibling Combinator `+` can only select one element: the very next one.",
+                learnMore: "https://developer.mozilla.org/en-US/docs/Web/CSS/Adjacent_sibling_combinator",
                 html: `
-                    <div class="challenge-section" data-challenge-id="4">
-                        <h3>Challenge 4: Descendant Combinator (space)</h3>
-                        <div id="container-descendant" class="target-box">
-                            <div>
-                                <p class="target-element">TARGET Paragraph</p>
-                            </div>
-                            <p>Another paragraph (but also a descendant)</p>
-                        </div>
-                    </div>
+                    <ul>
+                        <li class="list-item">Zero Item</li>
+                        <li class="list-item first-element">First Item</li>
+                        <li class="list-item second-element">Second Item</li>
+                        <li class="list-item">Third Item</li>
+                    </ul>
                 `
             },
             {
-                prompt: "Target the **last input field** immediately preceded by the **label** using the **Adjacent Sibling Combinator** (+).",
-                targetSelector: "label + input",
+                id: 6,
+                title: "General Sibling Combinator (~)",
+                prompt: "Target the **Comments** button, which appears somewhere after the `h3` element.",
+                targetSelector: "h3 ~ button.comments",
+                type: "General Sibling Combinator",
+                alternatives: ["h3 ~ .comments", "div > h3 ~ button"],
+                trivia: "The General Sibling Combinator `~` selects all siblings that follow the first element, making it ideal for styling subsequent content.",
+                learnMore: "https://developer.mozilla.org/en-US/docs/Web/CSS/General_sibling_combinator",
                 html: `
-                    <div class="challenge-section" data-challenge-id="5">
-                        <h3>Challenge 5: Adjacent Sibling (+)</h3>
-                        <div class="target-box">
-                            <input type="text" value="Before Label">
-                            <label>The Label</label>
-                            <input type="text" value="TARGET" class="target-element">
-                            <input type="text" value="Next Sibling">
-                        </div>
-                    </div>
+                    <button class="share">Share</button>
+                    <h3>Post Title</h3>
+                    <p>Post content...</p>
+                    <button class="like">Like</button>
+                    <button class="comments">Comments</button>
                 `
             },
             {
-                prompt: "Target the **last paragraph** using the **General Sibling Combinator** (~).",
-                targetSelector: "h4 ~ p:last-of-type",
+                id: 7,
+                title: "Attribute Selector (Contains)",
+                prompt: "Target the input field whose `name` attribute contains the word **'user'**.",
+                targetSelector: "input[name*='user']",
+                type: "Attribute Selector (Substring Match)",
+                alternatives: ["*[name*='user']"],
+                trivia: "The `*=` operator is incredibly useful for finding elements based on partial string matches, perfect for dynamic or generated attributes.",
+                learnMore: "https://developer.mozilla.org/en-US/docs/Web/CSS/Attribute_selectors",
                 html: `
-                    <div class="challenge-section" data-challenge-id="6">
-                        <h3>Challenge 6: General Sibling (~)</h3>
-                        <div class="target-box">
-                            <p>First paragraph.</p>
-                            <h4>A Heading</h4>
-                            <p>Second paragraph.</p>
-                            <p class="target-element">TARGET Last Sibling</p>
-                        </div>
-                    </div>
-                `
-            },
-            // --- ATTRIBUTE SELECTORS ---
-            {
-                prompt: "Target the **link** whose `href` attribute **ends with** `.pdf`.",
-                targetSelector: "a[href$='.pdf']",
-                html: `
-                    <div class="challenge-section" data-challenge-id="7">
-                        <h3>Challenge 7: Attribute Ends With ($=)</h3>
-                        <div class="target-box">
-                            <a href="/doc/report.html">Report</a>
-                            <a href="/files/doc.pdf" class="target-element">TARGET PDF</a>
-                            <a href="/data/index.php">Data</a>
-                        </div>
-                    </div>
+                    <input type="text" name="data-email" placeholder="Email">
+                    <input type="text" name="data-username" placeholder="Username">
+                    <input type="text" name="data-pass" placeholder="Password">
                 `
             },
             {
-                prompt: "Target the **div** that has **both** a `data-role='card'` **AND** a `data-status='active'` attribute.",
-                targetSelector: "div[data-role='card'][data-status='active']",
+                id: 8,
+                title: "Structural Pseudo-class (:nth-child)",
+                prompt: "Target the **third item** in the list, regardless of its tag name, using **:nth-child**.",
+                targetSelector: ":nth-child(3)",
+                type: "Structural Pseudo-class (:nth-child)",
+                alternatives: ["li:nth-child(3)", "*:nth-child(3)"],
+                trivia: "`:nth-child(2n+1)` is a common formula to select all odd-numbered elements.",
+                learnMore: "https://developer.mozilla.org/en-US/docs/Web/CSS/:nth-child",
                 html: `
-                    <div class="challenge-section" data-challenge-id="8">
-                        <h3>Challenge 8: Multiple Attributes</h3>
-                        <div class="target-box">
-                            <div data-role="card" data-status="inactive">Inactive Card</div>
-                            <div data-role="card" data-status="active" class="target-element">TARGET Active Card</div>
-                            <div data-role="section" data-status="active">Active Section</div>
-                        </div>
-                    </div>
-                `
-            },
-            // --- PSEUDO-CLASSES ---
-            {
-                prompt: "Target the **third list item** in the unordered list using **:nth-child**.",
-                targetSelector: "ul li:nth-child(3)",
-                html: `
-                    <div class="challenge-section" data-challenge-id="9">
-                        <h3>Challenge 9: Structural Pseudo-class (:nth-child)</h3>
-                        <div class="target-box">
-                            <ul>
-                                <li>Item 1</li>
-                                <li>Item 2</li>
-                                <li class="target-element">TARGET Item 3</li>
-                                <li>Item 4</li>
-                            </ul>
-                            <ol>
-                                <li>Another List Item</li>
-                            </ol>
-                        </div>
-                    </div>
+                    <ol>
+                        <li>First Item</li>
+                        <li>Second Item</li>
+                        <li>Third Item</li>
+                        <li>Fourth Item</li>
+                    </ol>
                 `
             },
             {
-                prompt: "Target the **div** that **does not** have the class `.do-not-target` using **:not()**.",
-                targetSelector: "div:not(.do-not-target)",
+                id: 9,
+                title: "Negation Pseudo-class (:not)",
+                prompt: "Target the **Save** button which **does not** have the class `.disabled`.",
+                targetSelector: "button:not(.disabled)",
+                type: "Negation Pseudo-class (:not)",
+                alternatives: ["button:not([disabled])", "button.btn-save:not(.disabled)"],
+                trivia: "`:not()` can take any simple selector as an argument, but cannot be nested (e.g., `:not(:not(div))` is invalid).",
+                learnMore: "https://developer.mozilla.org/en-US/docs/Web/CSS/:not",
                 html: `
-                    <div class="challenge-section" data-challenge-id="10">
-                        <h3>Challenge 10: Negation Pseudo-class (:not)</h3>
-                        <div class="target-box">
-                            <div class="do-not-target">Not Target Div</div>
-                            <div class="target-element">TARGET Div</div>
-                        </div>
-                    </div>
-                `
-            },
-            // --- COMPLEX/ADVANCED SELECTORS ---
-            {
-                prompt: "Target the **p element** that **contains a span descendant** using the **:has()** relational pseudo-class.",
-                targetSelector: "p:has(span)",
-                html: `
-                    <div class="challenge-section" data-challenge-id="11">
-                        <h3>Challenge 11: Relational Pseudo-class (:has)</h3>
-                        <div class="target-box">
-                            <p class="target-element">TARGET Parent <span>(I have a span)</span></p>
-                            <p>Plain Paragraph</p>
-                            <div><span>Not a P tag</span></div>
-                        </div>
-                    </div>
+                    <button class="btn-save disabled">Save (Disabled)</button>
+                    <button class="btn-save">Save (Enabled)</button>
+                    <button class="btn-cancel">Cancel</button>
                 `
             },
             {
-                prompt: "Target the **input field** that is **disabled** using **:disabled**.",
-                targetSelector: "input:disabled",
+                id: 10,
+                title: "UI State Pseudo-class (:checked)",
+                prompt: "Target the **checkbox** that is currently **checked**.",
+                targetSelector: "input:checked",
+                type: "UI State Pseudo-class (:checked)",
+                alternatives: ["input[type='checkbox']:checked"],
+                trivia: "`:checked` applies to radio buttons and checkboxes. You can't style the checkbox itself very well, but you can style its label using the adjacent sibling selector (+).",
+                learnMore: "https://developer.mozilla.org/en-US/docs/Web/CSS/:checked",
                 html: `
-                    <div class="challenge-section" data-challenge-id="12">
-                        <h3>Challenge 12: UI State Pseudo-class (:disabled)</h3>
-                        <div class="target-box">
-                            <input type="text" placeholder="Enabled">
-                            <input type="text" placeholder="Disabled TARGET" disabled class="target-element">
-                            <button>Button</button>
-                        </div>
-                    </div>
+                    <label>
+                        <input type="checkbox"> Unchecked
+                    </label>
+                    <label>
+                        <input type="checkbox" checked> Checked
+                    </label>
                 `
-            }
+            },
         ];
 
-        let currentChallengeIndex = 0;
-
+        // --- CORE STATE MANAGEMENT & INITIALIZATION ---
+        
         /**
-         * Loads the current challenge into the challenge area.
+         * Initializes the challenge states and renders all challenges to the DOM.
          */
-        function loadCurrentChallenge() {
-            const challenge = challenges[currentChallengeIndex];
-            document.getElementById('challenge-area').innerHTML = challenge.html;
-            document.getElementById('validation-message').textContent = `Challenge ${currentChallengeIndex + 1}: ${challenge.prompt}`;
-            document.getElementById('validation-message').className = ''; // Reset message style
-            document.getElementById('selector-input').value = ''; // Clear input field
+        function initializeChallenges() {
+            const container = document.getElementById('all-challenges');
+            let htmlContent = '';
+
+            challengeDefinitions.forEach(def => {
+                // Initialize state for each challenge
+                challengeStates[def.id] = {
+                    id: def.id,
+                    attempts: 0,
+                    isSolved: false,
+                    isRevealed: false,
+                    correctTarget: def.targetSelector,
+                    baseHTML: def.html,
+                    currentHTML: def.html // Use base HTML initially
+                };
+
+                // Build the HTML structure for each challenge box
+                htmlContent += `
+                    <div id="challenge-${def.id}" class="challenge-container">
+                        <div class="challenge-header">
+                            <h3 id="challenge-title-${def.id}">Challenge ${def.id}: ${def.title}</h3>
+                            <span id="status-${def.id}" style="color: grey;">(Unsolved)</span>
+                        </div>
+                        <p id="prompt-${def.id}">${def.prompt}</p>
+                        <div id="target-area-${def.id}" class="challenge-target-area">
+                            ${def.html}
+                        </div>
+                        <div class="challenge-ui">
+                            <input type="text" id="selector-input-${def.id}" placeholder="Enter your selector here (e.g., #my-id)" data-id="${def.id}">
+                            <button onclick="validateChallenge(${def.id})">Validate</button>
+                        </div>
+                        <div id="feedback-${def.id}" class="validation-feedback"></div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = htmlContent;
+            
+            // Apply initial highlighting after rendering
+            challengeDefinitions.forEach(def => applyHighlighting(def.id));
         }
 
         /**
-         * Moves to the next challenge in the array.
+         * Applies the 'target-highlight' class to the correct element in the DOM.
          */
-        function loadNextChallenge() {
-            currentChallengeIndex = (currentChallengeIndex + 1) % challenges.length;
-            loadCurrentChallenge();
+        function applyHighlighting(challengeId) {
+            const state = challengeStates[challengeId];
+            if (state.isSolved) return;
+
+            const targetArea = document.getElementById(`target-area-${challengeId}`);
+            if (!targetArea) return;
+
+            try {
+                // Remove existing highlights first
+                targetArea.querySelectorAll('.target-highlight').forEach(el => {
+                    el.classList.remove('target-highlight');
+                    el.classList.add('visually-reset'); // Apply temporary reset styles
+                    // Remove reset class after a short delay to ensure clean look
+                    setTimeout(() => el.classList.remove('visually-reset'), 50);
+                });
+
+                // Find and apply new highlight
+                const targetElement = targetArea.querySelector(state.correctTarget);
+                if (targetElement) {
+                    targetElement.classList.add('target-highlight');
+                }
+            } catch (e) {
+                console.error(`Error highlighting target for challenge ${challengeId}: ${e.message}`);
+            }
         }
 
         /**
-         * Core validation logic using document.querySelectorAll.
+         * Cleans up the visual target highlight upon successful validation.
          */
-        function validateSelector() {
-            const userInput = document.getElementById('selector-input').value.trim();
-            const messageElement = document.getElementById('validation-message');
-            const challenge = challenges[currentChallengeIndex];
-            const CORRECT_SELECTOR = challenge.targetSelector;
+        function removeHighlighting(challengeId) {
+            const targetArea = document.getElementById(`target-area-${challengeId}`);
+            if (targetArea) {
+                targetArea.querySelectorAll('.target-highlight').forEach(el => {
+                    el.classList.remove('target-highlight');
+                    el.style.border = 'none'; // Ensure all borders are removed
+                    el.style.backgroundColor = 'transparent';
+                    el.style.padding = '0';
+                    el.style.margin = '0';
+                });
+            }
+        }
 
-            messageElement.className = '';
-            messageElement.textContent = '';
+        // --- CORE VALIDATION LOGIC ---
+
+        function validateChallenge(challengeId) {
+            const state = challengeStates[challengeId];
+            if (state.isSolved) return;
+
+            const inputField = document.getElementById(`selector-input-${challengeId}`);
+            const feedbackElement = document.getElementById(`feedback-${challengeId}`);
+            const userInput = inputField.value.trim();
+
+            feedbackElement.className = 'validation-feedback';
 
             if (userInput === '') {
-                messageElement.textContent = 'Please enter a selector.';
-                messageElement.classList.add('error');
+                feedbackElement.textContent = 'Please enter a selector to validate.';
+                feedbackElement.classList.add('error');
                 return;
             }
 
             try {
-                // 1. Get the single, true target element from the DOM using the known correct selector
-                const correctTarget = document.querySelector(CORRECT_SELECTOR);
+                // 1. Get the single, true target element from the DOM
+                const targetArea = document.getElementById(`target-area-${challengeId}`);
+                const correctTarget = targetArea.querySelector(state.correctTarget);
 
                 // 2. Get the elements selected by the user's input
-                const selectedElements = document.querySelectorAll(userInput);
+                const selectedElements = targetArea.querySelectorAll(userInput);
 
                 if (!correctTarget) {
-                    messageElement.textContent = 'Internal Error: Target element missing.';
-                    messageElement.classList.add('error');
+                    feedbackElement.textContent = 'Internal Error: Target element missing.';
+                    feedbackElement.classList.add('error');
                     return;
                 }
+                
+                // Check if the user's selection contains *only* the correct target element.
+                // Stricter validation: must select exactly 1 element AND it must be the target.
+                const isCorrect = selectedElements.length === 1 && selectedElements[0] === correctTarget;
 
-                if (selectedElements.length === 0) {
-                    messageElement.textContent = `❌ Incorrect. The selector "${userInput}" selected no elements.`;
-                    messageElement.classList.add('error');
-                    return;
-                }
-
-                // 3. Check if the user's selection contains the *correct* target element.
-                // NOTE: This allows selectors that also target other elements, but that's a valid selector.
-                // A stricter validator would require selectedElements.length === 1 && selectedElements[0] === correctTarget
-                // For learning, we'll allow selection of the target plus others, but ideally, they should be exact.
-                const targetsMatch = Array.from(selectedElements).includes(correctTarget);
-
-                if (targetsMatch) {
-                    messageElement.textContent = `🎉 Correct! The selector "${userInput}" successfully targets the highlighted element.`;
-                    messageElement.classList.add('success');
+                if (isCorrect) {
+                    handleSuccess(challengeId, userInput);
                 } else {
-                    messageElement.textContent = `❌ Incorrect. Your selector targets ${selectedElements.length} element(s), but not the highlighted one.`;
-                    messageElement.classList.add('error');
+                    handleFailure(challengeId, userInput, selectedElements.length, correctTarget);
                 }
 
             } catch (e) {
-                // Catch any invalid CSS selector syntax errors
-                messageElement.textContent = `🚫 Syntax Error: "${userInput}" is not a valid CSS selector.`;
-                messageElement.classList.add('error');
+                // Invalid CSS selector syntax
+                feedbackElement.textContent = `🚫 Syntax Error: "${userInput}" is not a valid CSS selector. Check for typos or invalid characters.`;
+                feedbackElement.classList.add('error');
             }
         }
+        
+        // --- SUCCESS AND FAILURE HANDLERS ---
 
-        // Initialize the first challenge when the page loads
-        document.addEventListener('DOMContentLoaded', loadCurrentChallenge);
+        function handleSuccess(challengeId, correctSelector) {
+            const state = challengeStates[challengeId];
+            const feedbackElement = document.getElementById(`feedback-${challengeId}`);
+            const statusElement = document.getElementById(`status-${challengeId}`);
+            const challengeDef = challengeDefinitions.find(d => d.id === challengeId);
+
+            state.isSolved = true;
+            statusElement.textContent = "(Solved)";
+            statusElement.style.color = '#155724';
+            
+            removeHighlighting(challengeId);
+            
+            let alternativesHtml = '';
+            challengeDef.alternatives.forEach(alt => {
+                // Only show alternatives that aren't the user's answer
+                if (alt !== correctSelector) {
+                    alternativesHtml += `<li><code>${alt}</code></li>`;
+                }
+            });
+
+            feedbackElement.classList.add('success');
+            feedbackElement.innerHTML = `
+                🎉 **SUCCESS!** You correctly targeted the element with <code>${correctSelector}</code>.
+                <br><br>
+                **Lesson Learned: ${challengeDef.type}** 💡
+                <p>${challengeDef.trivia}</p>
+                <p>Did you know you could also use these selectors?
+                    <ul>
+                        ${alternativesHtml}
+                    </ul>
+                </p>
+                <a href="${challengeDef.learnMore}" target="_blank" style="text-decoration: none;">
+                    <button class="btn btn-primary">📚 Learn More: ${challengeDef.type}</button>
+                </a>
+            `;
+        }
+        
+        function handleFailure(challengeId, userInput, count, correctTarget) {
+            const state = challengeStates[challengeId];
+            const feedbackElement = document.getElementById(`feedback-${challengeId}`);
+            const challengeDef = challengeDefinitions.find(d => d.id === challengeId);
+            state.attempts++;
+
+            let message = '';
+            feedbackElement.classList.add('error');
+            
+            // Check if user selected too many elements (not strict enough)
+            if (count > 0 && Array.from(document.querySelectorAll(`#target-area-${challengeId} ${userInput}`)).includes(correctTarget)) {
+                 message = `❌ Close! Your selector selected ${count} element(s), including the target. Try to be more specific and select *only* the highlighted element.`;
+            } else if (count > 0) {
+                 message = `❌ Incorrect. Your selector selected ${count} element(s), but none of them are the highlighted target. Inspect the target's attributes carefully!`;
+            } else {
+                 message = `❌ Incorrect. The selector "${userInput}" selected no elements. Double-check your syntax and the target's ID/class names.`;
+            }
+
+
+            // --- Progressive Hint System ---
+            if (state.attempts === 2) {
+                // Hint 2: Give the type of selector
+                message += `<br><br>🚨 **Hint 2:** The type of selector you need to use here is a **${challengeDef.type}**.`;
+                feedbackElement.classList.remove('error');
+                feedbackElement.classList.add('info');
+            } else if (state.attempts === 3) {
+                // Hint 3: More instructional, focusing on a key attribute
+                const keyAttr = (state.correctTarget.includes('#') ? 'ID' : state.correctTarget.includes('.') ? 'CLASS' : 'TAG');
+                message += `<br><br>💡 **Hint 3:** You need to combine the ${keyAttr} of the target element with a **Combinator** or **Pseudo-class**.`;
+                feedbackElement.classList.remove('error');
+                feedbackElement.classList.add('info');
+            } else if (state.attempts === 4) {
+                // Hint 4: Give the necessary operator/combinator
+                const hintType = challengeDef.type.includes('Combinator') ? 'Combinator' : 'Pseudo-class';
+                message += `<br><br>🧠 **Hint 4 (Deep Dive):** Focus on the relationship between the target and its parent/sibling. You will need a **${hintType}**.`;
+                feedbackElement.classList.remove('error');
+                feedbackElement.classList.add('info');
+            } else if (state.attempts >= 5 && !state.isRevealed) {
+                // Hint 5: Offer to reveal the solution and create a new challenge
+                message += `<br><br>🛑 **5 Failed Attempts.** Would you like to reveal the solution for this specific challenge and then try a new, similar challenge to ensure the lesson sticks?
+                    <button class="reveal-button" onclick="revealSolution(${challengeId})">Yes, Reveal Solution & Try New Challenge</button>`;
+                feedbackElement.classList.remove('error');
+                feedbackElement.classList.add('error'); // Back to error color for attention
+            }
+            
+            feedbackElement.innerHTML = message;
+        }
+
+        function revealSolution(challengeId) {
+            const state = challengeStates[challengeId];
+            const feedbackElement = document.getElementById(`feedback-${challengeId}`);
+            const inputField = document.getElementById(`selector-input-${challengeId}`);
+            const challengeDef = challengeDefinitions.find(d => d.id === challengeId);
+
+            state.isRevealed = true;
+            inputField.value = state.correctTarget; // Show the answer
+            
+            // Success message with the answer
+            feedbackElement.classList.remove('error');
+            feedbackElement.classList.add('success');
+            feedbackElement.innerHTML = `
+                ✅ **Solution Revealed:** The correct selector was <code>${state.correctTarget}</code>.
+                <br>
+                Please study the lesson below and then click the button to try a new related challenge!
+                <a href="${challengeDef.learnMore}" target="_blank" style="text-decoration: none;"><button class="btn btn-primary" style="margin-top: 5px;">📚 Learn More: ${challengeDef.type}</button></a>
+                <button class="reveal-button" onclick="resetChallenge(${challengeId})">🔄 Try New ${challengeDef.type} Challenge</button>
+            `;
+            removeHighlighting(challengeId);
+        }
+
+        // --- DOM MANIPULATION FOR REVEALED CHALLENGE ---
+        
+        function resetChallenge(challengeId) {
+            const state = challengeStates[challengeId];
+            const challengeDef = challengeDefinitions.find(d => d.id === challengeId);
+            const targetArea = document.getElementById(`target-area-${challengeId}`);
+            const inputField = document.getElementById(`selector-input-${challengeId}`);
+            const feedbackElement = document.getElementById(`feedback-${challengeId}`);
+            
+            // Create a completely new, but related, challenge HTML structure
+            const newHtml = generateNewChallengeHTML(challengeDef);
+            
+            // Update state with new target (we'll assume the new target is the first element with the 'new-target' class)
+            state.correctTarget = '.new-target';
+            state.attempts = 0;
+            state.isRevealed = false;
+            state.isSolved = false;
+            
+            targetArea.innerHTML = newHtml;
+            inputField.value = '';
+            feedbackElement.className = 'validation-feedback';
+            feedbackElement.innerHTML = `🌟 **New Challenge!** Try to apply the **${challengeDef.type}** logic you just learned!`;
+
+            // Apply highlighting to the new target
+            applyHighlighting(challengeId);
+        }
+
+        // Simplistic function to generate a new, but similar, challenge (required for the reveal mechanic)
+        function generateNewChallengeHTML(def) {
+            // This is a placeholder. For a real app, you'd have a pool of HTML snippets per type.
+            // Here, we just modify the IDs/Classes slightly and change the prompt to avoid caching the selector.
+            let newPrompt = def.prompt.replace('Target', 'Find').replace('Button', 'Link').replace('item', 'div');
+            document.getElementById(`prompt-${def.id}`).textContent = newPrompt;
+            
+            if (def.type.includes('ID')) {
+                return `
+                    <a id="link-one">Link 1</a>
+                    <a id="new-target" class="new-target">Link 2 (Target)</a>
+                    <a id="link-three">Link 3</a>
+                `;
+            } else if (def.type.includes('Class')) {
+                return `
+                    <div class="box-regular">Box A</div>
+                    <div class="box-vip new-target">Box B (Target)</div>
+                    <div class="box-regular">Box C</div>
+                `;
+            }
+            // Fallback for others - simple structure swap
+            return def.html.replace(def.targetSelector, '.new-target').replace(def.targetSelector, '.new-target');
+        }
+
+        // Run the initialization function
+        document.addEventListener('DOMContentLoaded', initializeChallenges);
     </script>
 
 </body>
