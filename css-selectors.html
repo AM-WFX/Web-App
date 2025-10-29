@@ -9,7 +9,7 @@
     <style>
         /* --- General Layout and Formatting --- */
         .container {
-            max-width: 1200px; 
+            max-width: 1300px; 
             margin: 0 auto;
         }
 
@@ -20,50 +20,106 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        /* --- Individual Challenge Box --- */
+        /* --- Side-by-Side Challenge Layout --- */
+        #all-challenges {
+            display: flex;
+            flex-wrap: wrap; 
+            gap: 20px; 
+            justify-content: flex-start;
+        }
+        
         .challenge-container {
-            margin-top: 30px;
+            width: calc(50% - 10px); 
+            min-width: 400px; 
+            
+            margin-top: 10px; 
             padding: 20px;
             border: 1px solid #c9e6ff;
             border-radius: 6px;
-            margin-bottom: 30px;
+            margin-bottom: 20px; 
             background-color: #f6faff;
         }
         
-        .challenge-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            border-bottom: 2px solid #e0efff;
-            padding-bottom: 10px;
+        /* --- VISUAL UNIFORMITY RULES (CORE FIX) --- */
+        
+        .challenge-target-area * {
+            box-sizing: border-box; 
         }
+
+        .challenge-target-area button,
+        .challenge-target-area input,
+        .challenge-target-area li,
+        .challenge-target-area p,
+        .challenge-target-area div,
+        .challenge-target-area label,
+        .challenge-target-area a,
+        .challenge-target-area h2,
+        .challenge-target-area h3,
+        .challenge-target-area span {
+            border: 1px solid #ccc !important; 
+            background-color: #fcfcfc !important; 
+            color: #333 !important;
+            font-family: inherit !important;
+            font-size: 0.9em !important;
+            line-height: 1.2 !important;
+            padding: 8px 12px !important;
+            margin: 6px !important;
+            border-radius: 4px !important;
+            display: inline-block !important; 
+            text-align: left !important;
+        }
+
+        .challenge-target-area button {
+            background-color: #eee !important; 
+            border-color: #ccc !important;
+            font-weight: normal !important;
+            cursor: default !important;
+        }
+        
+        .challenge-target-area input[type="text"],
+        .challenge-target-area input[type="checkbox"] {
+            border: 1px solid #ccc !important;
+            width: auto;
+        }
+        
+        .challenge-target-area ul, 
+        .challenge-target-area ol, 
+        .challenge-target-area div#settings-modal {
+            border: 2px dashed #999 !important; 
+            padding: 10px !important;
+            margin: 10px auto !important;
+            background-color: #f0f0f0 !important;
+            display: block !important;
+            text-align: left !important;
+            max-width: 90%;
+            width: auto;
+        }
+        .challenge-target-area li, .challenge-target-area label {
+            display: list-item !important; 
+            list-style-type: none; 
+            border: 1px solid #ddd !important;
+            background-color: #fff !important;
+        }
+        .challenge-target-area p {
+            line-height: 1.5 !important;
+        }
+
+
+        /* The Visual Target Highlight (Applied by JS) */
+        .target-highlight {
+            border: 2px solid #cc0000 !important;
+            background-color: #fffac9 !important;
+            padding: 7px 11px !important; 
+            margin: 5px !important;
+        }
+        
+        /* --- UI and Feedback Elements --- */
 
         .challenge-header h3 {
             margin: 0;
             color: #1a5c9a;
         }
-        
-        /* The area containing the elements to be inspected */
-        .challenge-target-area {
-            padding: 15px;
-            border: 2px dashed #a0c3e8;
-            background-color: #eaf2fa;
-            margin-bottom: 15px;
-            text-align: center;
-        }
-        
-        /* The Visual Target Highlight (Applied by JS) */
-        .target-highlight {
-            border: 2px solid #cc0000 !important;
-            background-color: #fffac9 !important;
-            display: inline-block;
-            padding: 3px;
-            margin: 2px;
-            transition: all 0.2s ease;
-        }
-        
-        /* --- UI Elements --- */
+
         .challenge-ui {
             display: flex;
             gap: 10px;
@@ -88,43 +144,15 @@
             cursor: pointer;
             white-space: nowrap;
         }
-
-        .challenge-ui button:hover {
-            background-color: #0056b3;
-        }
         
-        /* --- Feedback Messages --- */
-        .validation-feedback {
-            padding: 15px;
-            border-radius: 4px;
-            min-height: 40px; 
-            margin-top: 10px;
-            line-height: 1.5;
-        }
+        .success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .info { background-color: #e2f4fb; color: #0c5460; border: 1px solid #bee5eb; }
 
-        .success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-        .error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-        .info {
-            background-color: #e2f4fb;
-            color: #0c5460;
-            border: 1px solid #bee5eb;
-        }
-
-        .hint-message {
-            font-style: italic;
-            margin-top: 10px;
-        }
-
-        /* --- Accordion/Dropdown Styling for Alternatives --- */
         .accordion {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             background-color: #eee;
             color: #444;
             cursor: pointer;
@@ -137,27 +165,16 @@
             transition: 0.4s;
             margin-top: 5px;
             border-radius: 4px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
         }
-
-        .active-accordion, .accordion:hover {
-            background-color: #ccc;
-        }
-
+        .active-accordion, .accordion:hover { background-color: #ccc; }
         .accordion::after {
-            content: ' \25BC'; /* Unicode for solid downward triangle */
+            content: ' \25BC';
             color: #777;
             font-weight: bold;
             transition: 0.4s;
             transform: rotate(0deg);
         }
-
-        .active-accordion::after {
-            transform: rotate(-180deg);
-        }
-
+        .active-accordion::after { transform: rotate(-180deg); }
         .panel {
             padding: 0 18px;
             background-color: white;
@@ -167,7 +184,6 @@
             border-left: 2px solid #007bff;
             margin-bottom: 5px;
         }
-
         .reveal-button {
             background-color: #ffc107;
             color: #333;
@@ -196,7 +212,7 @@
         <aside class="sidebar" style="/* Layout style here */">...</aside>
         
         <main class="content main-content">
-            <h1>The Ultimate CSS Selector Lab 🎯</h1>
+            <h1>The CSS Selector Lab 🎯</h1>
             <p>Your task: Write a selector that targets **only the element currently highlighted** within each challenge box. You must remove the highlight by entering the correct selector and clicking 'Validate'.</p>
             
             <div id="all-challenges">
@@ -269,10 +285,10 @@
                 targetSelector: "#login-primary",
                 type: "ID Selector",
                 alternatives: [
-                    { selector: "button#login-primary", explanation: "More specific by including the tag name, though redundant since IDs must be unique." },
-                    { selector: "*#login-primary", explanation: "Uses the universal selector (*) with the ID. Also correct, but often less readable than just the ID." }
+                    { selector: "button#login-primary", explanation: "This uses the tag name and the ID. Since IDs are already unique, adding the tag name is redundant but valid. It increases specificity unnecessarily, which is often avoided in production." },
+                    { selector: "*#login-primary", explanation: "This uses the universal selector (*) combined with the ID. The universal selector is low specificity, but the ID still makes this selection highly efficient and correct." }
                 ],
-                trivia: "The ID selector is the most powerful in terms of specificity (100 points). It should be used for unique page elements.",
+                trivia: "The ID selector is the most powerful in terms of specificity (100 points). It should be used sparingly for major, unique page elements.",
                 learnMore: "https://developer.mozilla.org/en-US/docs/Web/CSS/ID_selectors",
                 html: `
                     <button id="login-primary" class="btn btn-primary">Primary Login Button</button>
@@ -285,8 +301,8 @@
                 targetSelector: ".task-urgent",
                 type: "Class Selector",
                 alternatives: [
-                    { selector: "li.task-urgent", explanation: "Includes the tag name (li) which is often recommended for better scoping and readability." },
-                    { selector: ".task-urgent.list-item", explanation: "Chains two class selectors. This increases specificity (20 points) and ensures both classes are present." }
+                    { selector: "li.task-urgent", explanation: "This is a great technique: combining the tag name (li) with the class. It increases specificity slightly and clearly scopes the selection to only list items, improving readability." },
+                    { selector: ".task-urgent.list-item", explanation: "This chains two class selectors together. This is useful if you want to ensure an element has *both* classes. It also increases specificity (20 points) which can be helpful if you need to override other styles." }
                 ],
                 trivia: "Class selectors contribute 10 points to specificity. You can chain multiple classes without a space, like `.classA.classB`.",
                 learnMore: "https://developer.mozilla.org/en-US/docs/Web/CSS/Class_selectors",
@@ -304,10 +320,10 @@
                 targetSelector: "#settings-modal .btn-save",
                 type: "Descendant Combinator",
                 alternatives: [
-                    { selector: "#settings-modal button.btn-save", explanation: "More specific by including the tag name (button), preventing this style from leaking to a non-button element that might also have the class .btn-save." },
-                    { selector: "div#settings-modal button.btn-save", explanation: "Most specific: combines tag name (div), ID (#settings-modal), and tag name (button) plus class (.btn-save)." }
+                    { selector: "#settings-modal button.btn-save", explanation: "This is highly specific. It combines the ID of the container, the tag name, and the class name. This clearly states that the selector should target a button with the class `.btn-save` inside the ID `#settings-modal`." },
+                    { selector: "div#settings-modal button.btn-save", explanation: "This is the most explicit form, using the tag name for the container (div) as well as its ID. It makes the selector very rigid but ensures zero ambiguity." }
                 ],
-                trivia: "A single space is the most common combinator, selecting elements nested at any depth. It's safe but can be slow if used on large DOM structures.",
+                trivia: "A single space is the Descendant Combinator. It selects elements nested at *any* depth, making it the most flexible but potentially the least performant of the combinators.",
                 learnMore: "https://developer.mozilla.org/en-US/docs/Web/CSS/Descendant_combinator",
                 html: `
                     <div id="settings-modal" style="padding: 10px; border: 1px solid #ccc;">
@@ -324,10 +340,10 @@
                 targetSelector: ".card-header > h2",
                 type: "Child Combinator",
                 alternatives: [
-                    { selector: ".card-header>h2", explanation: "Whitespace around the '>' is optional, but many prefer it for readability." },
-                    { selector: ".card > .card-header > h2", explanation: "Uses multiple child combinators to ensure the hierarchy is strictly followed, which is highly performant." }
+                    { selector: ".card-header>h2", explanation: "This is identical to the primary answer; whitespace around the '>' operator is optional and doesn't affect selection, though many prefer spaces for readability." },
+                    { selector: ".card > .card-header > h2", explanation: "This chains multiple Child Combinators, ensuring that the selection only occurs if `.card-header` is a direct child of `.card` AND `h2` is a direct child of `.card-header`." }
                 ],
-                trivia: "The Child Combinator `>` is often used for performance and preventing deeply nested styles from unintentionally affecting elements.",
+                trivia: "The Child Combinator (`>`) ensures the relationship is direct (one level deep). This makes the CSS rule more robust against future changes in nested markup.",
                 learnMore: "https://developer.mozilla.org/en-US/docs/Web/CSS/Child_combinator",
                 html: `
                     <div class="card" style="border: 1px solid #ccc; padding: 10px;">
@@ -347,10 +363,10 @@
                 targetSelector: ".first-element + li",
                 type: "Adjacent Sibling Combinator",
                 alternatives: [
-                    { selector: "li.first-element + li.list-item", explanation: "Highly specific, combining tag name and class for both the reference and the target element." },
-                    { selector: ".first-element + *", explanation: "Uses the universal selector (*) to select the immediate sibling, regardless of its tag name." }
+                    { selector: "li.first-element + li.list-item", explanation: "A highly specific version. It requires that both the preceding element and the target element are list items (li) and have their respective classes, ensuring precision." },
+                    { selector: ".first-element + *", explanation: "Uses the universal selector (`+ *`) to select the immediate sibling, regardless of its tag name. Useful if the structure might change from `li` to `div` but remain a sibling." }
                 ],
-                trivia: "The Adjacent Sibling Combinator `+` can only select one element: the very next sibling. It's often used for clearing margins or adding spacing.",
+                trivia: "The Adjacent Sibling Combinator (`+`) only selects the *one* element that immediately follows the first selector. It's great for applying spacing after a specific element.",
                 learnMore: "https://developer.mozilla.org/en-US/docs/Web/CSS/Adjacent_sibling_combinator",
                 html: `
                     <ul>
@@ -367,10 +383,10 @@
                 targetSelector: "h3 ~ button.comments",
                 type: "General Sibling Combinator",
                 alternatives: [
-                    { selector: "h3 ~ .comments", explanation: "Less specific than the one provided, but correct if no other non-button element has the .comments class." },
-                    { selector: "button.like ~ button.comments", explanation: "Uses two siblings to define the relationship, selecting the Comments button that follows the Like button." }
+                    { selector: "h3 ~ .comments", explanation: "Less specific than the provided answer. It selects any element with the class `.comments` that follows an `h3` in the same parent. This is correct but risks selecting a non-button element." },
+                    { selector: "button.like ~ button.comments", explanation: "This targets the Comments button based on a different preceding sibling, the Like button. It demonstrates the flexibility of the General Sibling Combinator." }
                 ],
-                trivia: "The General Sibling Combinator `~` selects all siblings that follow the first element, making it useful for applying styles to all elements after a specific one.",
+                trivia: "The General Sibling Combinator (`~`) selects *all* siblings that follow the first selector. Unlike the Adjacent Sibling (`+`), it can skip over non-matching siblings.",
                 learnMore: "https://developer.mozilla.org/en-US/docs/Web/CSS/General_sibling_combinator",
                 html: `
                     <button class="share">Share</button>
@@ -386,10 +402,10 @@
                 targetSelector: "input[name*='user']",
                 type: "Attribute Selector (Substring Match)",
                 alternatives: [
-                    { selector: "*[name*='user']", explanation: "Uses the universal selector (*), selecting any element with the name attribute containing 'user'." },
-                    { selector: "input[name~='data-username']", explanation: "Uses the tilde operator (~=) which matches a whole word in a space-separated list of values (would match if the attribute value was 'data-username other')." }
+                    { selector: "*[name*='user']", explanation: "Uses the universal selector (*). This selects any element, regardless of tag, that has a `name` attribute containing 'user'. This is the most flexible (and least specific) approach." },
+                    { selector: "input[name~='data-username']", explanation: "Uses the tilde operator (`~=`), which matches a whole word in a space-separated list of values. This would work if the name value was 'data-username other', but fails on 'data-username' as one contiguous string." }
                 ],
-                trivia: "The `*=` operator is incredibly useful for finding elements based on partial string matches, perfect for dynamic or generated attributes.",
+                trivia: "The `*=` operator is the 'contains' attribute selector, which looks for the specified substring anywhere within the attribute's value. This is powerful when dealing with dynamic or auto-generated attributes.",
                 learnMore: "https://developer.mozilla.org/en-US/docs/Web/CSS/Attribute_selectors",
                 html: `
                     <input type="text" name="data-email" placeholder="Email">
@@ -403,10 +419,10 @@
                 targetSelector: "li:nth-child(3)",
                 type: "Structural Pseudo-class (:nth-child)",
                 alternatives: [
-                    { selector: "ol li:nth-child(3)", explanation: "More specific by scoping the selection to li elements inside an ol (ordered list)." },
-                    { selector: "li:nth-of-type(3)", explanation: "This would also work here because all siblings are list items, but :nth-of-type is safer when siblings have mixed tag names." }
+                    { selector: "ol li:nth-child(3)", explanation: "More specific by scoping the selection to `li` elements inside an ordered list (`ol`). This is generally safer than using just the pseudo-class alone." },
+                    { selector: "li:nth-of-type(3)", explanation: "This selects the third item *of its type* (the third `li` element) among its siblings. It works here because all siblings are list items." }
                 ],
-                trivia: "`:nth-child` selects elements based on their position among all siblings, regardless of type. `:nth-of-type` selects based on position among siblings of the same tag name.",
+                trivia: "`:nth-child(n)` counts elements based on their position among *all* siblings, regardless of tag name. It is commonly used for things like zebra-striping rows in a table (`:nth-child(odd)`).",
                 learnMore: "https://developer.mozilla.org/en-US/docs/Web/CSS/:nth-child",
                 html: `
                     <ol>
@@ -423,10 +439,10 @@
                 targetSelector: "button:not(.disabled)",
                 type: "Negation Pseudo-class (:not)",
                 alternatives: [
-                    { selector: ".btn-save:not(.disabled)", explanation: "Selects elements with the class .btn-save that also don't have the class .disabled." },
-                    { selector: "button.btn-save:not(.disabled)", explanation: "Even more specific, combining the tag and class with the negation." }
+                    { selector: ".btn-save:not(.disabled)", explanation: "This targets any element with the class `.btn-save` that is not disabled. This is less specific but often clearer when writing component-based CSS." },
+                    { selector: "button.btn-save:not(.disabled)", explanation: "The most specific option. Combines tag name, class name, and the negation pseudo-class, clearly defining the exact criteria." }
                 ],
-                trivia: "`:not()` can take any simple selector as an argument, but cannot be nested (e.g., `:not(:not(div))` is invalid in CSS Level 3).",
+                trivia: "The Negation Pseudo-class (`:not`) is often called the 'structural pseudo-class.' It is non-inclusive, meaning styles applied by it cannot be overridden by other styles of the same specificity *if* the negation is the only difference.",
                 learnMore: "https://developer.mozilla.org/en-US/docs/Web/CSS/:not",
                 html: `
                     <button class="btn-save disabled">Save (Disabled)</button>
@@ -440,9 +456,9 @@
                 targetSelector: "input:checked",
                 type: "UI State Pseudo-class (:checked)",
                 alternatives: [
-                    { selector: "input[type='checkbox']:checked", explanation: "More specific, ensuring the element is both an input of type checkbox and is checked." }
+                    { selector: "input[type='checkbox']:checked", explanation: "This adds the attribute selector for `type='checkbox'`, ensuring the selector only applies to checkbox inputs, not radio buttons or other checked inputs." }
                 ],
-                trivia: "`:checked` applies to radio buttons and checkboxes. You often use the adjacent sibling selector (`+`) to style the label or an associated element based on the checked state.",
+                trivia: "The UI State Pseudo-class (`:checked`) selects radio buttons or checkboxes that are currently selected. This pseudo-class is often paired with the Adjacent Sibling Combinator (`+`) to style a custom label based on the checked state.",
                 learnMore: "https://developer.mozilla.org/en-US/docs/Web/CSS/:checked",
                 html: `
                     <label>
@@ -455,7 +471,7 @@
             },
         ];
 
-        // --- CORE STATE MANAGEMENT & INITIALIZATION ---
+        // --- CORE STATE MANAGEMENT & INITIALIZATION (JS functions below) ---
         
         function initializeChallenges() {
             const container = document.getElementById('all-challenges');
@@ -470,7 +486,6 @@
                     correctTarget: def.targetSelector,
                     baseHTML: def.html,
                     currentHTML: def.html,
-                    // New array to store all successful selectors found by the user for this challenge
                     successfulSelectors: [],
                 };
 
@@ -525,15 +540,12 @@
             }
         }
 
-        // --- CORE VALIDATION LOGIC ---
-        
         function toggleAccordion(button) {
             button.classList.toggle("active-accordion");
             let panel = button.nextElementSibling;
             if (panel.style.maxHeight) {
                 panel.style.maxHeight = null;
             } else {
-                // Set max-height to scrollHeight plus a buffer (100px) to ensure content is visible
                 panel.style.maxHeight = panel.scrollHeight + 100 + "px";
             } 
         }
@@ -563,7 +575,6 @@
                     return;
                 }
                 
-                // Stricter validation: must select exactly 1 element AND it must be the target.
                 const isCorrect = selectedElements.length === 1 && selectedElements[0] === correctTarget;
 
                 if (isCorrect) {
@@ -573,31 +584,25 @@
                 }
 
             } catch (e) {
-                // Invalid CSS selector syntax
                 feedbackElement.textContent = `🚫 Syntax Error: "${userInput}" is not a valid CSS selector. Check for typos or invalid characters.`;
                 feedbackElement.classList.add('error');
             }
         }
         
-        // --- SUCCESS AND FAILURE HANDLERS ---
-
         function handleSuccess(challengeId, correctSelector) {
             const state = challengeStates[challengeId];
             const feedbackElement = document.getElementById(`feedback-${challengeId}`);
             const statusElement = document.getElementById(`status-${challengeId}`);
             const challengeDef = challengeDefinitions.find(d => d.id === challengeId);
             
-            // Normalize and track the successful selector
             const normalizedSelector = correctSelector.toLowerCase().trim().replace(/\s+/g, ' ');
 
-            // Check if this selector has already been registered as successful
             const isNewSuccess = !state.successfulSelectors.includes(normalizedSelector);
 
             if (isNewSuccess) {
                 state.successfulSelectors.push(normalizedSelector);
             }
             
-            // Only update status and remove highlight if it's the first time solved
             if (!state.isSolved) {
                 statusElement.textContent = "(SOLVED!)";
                 statusElement.style.color = '#155724';
@@ -606,19 +611,16 @@
 
             state.isSolved = true;
             
-            // Combine challenge alternatives with user's successful selectors
-            const allAlternatives = [...challengeDef.alternatives];
+            let allAlternatives = [...challengeDef.alternatives];
             
-            // Add user's other successful selectors to the alternatives list
             state.successfulSelectors.forEach(sel => {
-                // Skip if it's the current selector or already defined as a core alternative
-                if (sel !== normalizedSelector && !allAlternatives.some(alt => alt.selector.toLowerCase().trim() === sel)) {
-                    allAlternatives.push({ selector: sel, explanation: "You found this alternative! It works because it is just as specific as the target selector." });
+                if (!allAlternatives.some(alt => alt.selector.toLowerCase().trim() === sel) && sel !== normalizedSelector) {
+                    allAlternatives.push({ selector: sel, explanation: "You found this alternative! It works because it selects the specific target element with precision." });
                 }
             });
 
-            // Build alternatives list with accordions/dropdowns
             const alternativesHtml = allAlternatives
+                .filter(alt => alt.selector.toLowerCase().trim() !== normalizedSelector)
                 .map((alt, index) => `
                     <button class="accordion" onclick="toggleAccordion(this)">
                         Alternative ${index + 1}: <code>${alt.selector}</code>
@@ -639,7 +641,6 @@
                 ${alternativesHtml}
             `;
             
-            // Clear attempts counter on success
             state.attempts = 0;
         }
         
@@ -652,7 +653,6 @@
             let message = '';
             feedbackElement.classList.add('error');
             
-            // Progressive Hint System
             if (state.attempts === 1) {
                 let nudge;
                 if (selectedElements.length === 0) {
@@ -714,7 +714,7 @@
 
             state.isRevealed = true;
             statusElement.textContent = "(Solution Revealed)";
-            inputField.value = state.correctTarget; // Show the answer
+            inputField.value = state.correctTarget;
             
             feedbackElement.classList.remove('error', 'info');
             feedbackElement.classList.add('success');
@@ -735,14 +735,13 @@
             const feedbackElement = document.getElementById(`feedback-${challengeId}`);
             const statusElement = document.getElementById(`status-${challengeId}`);
             
-            // This is simplified, but should generate a new target and HTML structure
             const { html: newHtml, newTargetSelector: newTarget } = generateNewChallengeHTML(challengeDef);
             
             state.correctTarget = newTarget;
             state.attempts = 0;
             state.isRevealed = false;
             state.isSolved = false;
-            state.successfulSelectors = []; // Clear previous successful selectors
+            state.successfulSelectors = [];
             
             targetArea.innerHTML = newHtml;
             inputField.value = '';
