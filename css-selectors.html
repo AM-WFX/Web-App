@@ -233,6 +233,7 @@
         function generateNewChallengeHTML(def) {
             let html;
             let newTargetSelector;
+            let newPrompt; // New variable for the updated prompt
             
             // Simple structure changes for different types
             if (def.type.includes('ID Selector')) {
@@ -242,6 +243,7 @@
                     <button id="try-three" class="btn-group">Button Three</button>
                 `;
                 newTargetSelector = "#try-two";
+                newPrompt = "Target the 'Target Again' button using its unique ID (`#try-two`).";
             } else if (def.type.includes('Class Selector')) {
                 html = `
                     <div class="data-item">Item A</div>
@@ -249,6 +251,7 @@
                     <div class="data-item">Item C</div>
                 `;
                 newTargetSelector = ".new-target";
+                newPrompt = "Target the element labeled 'Item B (Target)' using its class selector.";
             } else if (def.type.includes('Descendant Combinator')) {
                 html = `
                     <div id="project-list">
@@ -259,6 +262,7 @@
                     </div>
                 `;
                 newTargetSelector = "#project-list p.new-target";
+                newPrompt = "Target the element with the class `.new-target` that is a descendant of the `#project-list` div.";
             } else if (def.type.includes('Child Combinator')) {
                 html = `
                     <ul class="nav-menu">
@@ -268,13 +272,24 @@
                     </ul>
                 `;
                 newTargetSelector = "ul.nav-menu > li.new-target";
-            } else {
+                newPrompt = "Target the list item with the class `.new-target` that is a direct child of the unordered list (`ul.nav-menu`).";
+            } else if (def.type.includes('Adjacent Sibling Combinator')) {
+                 html = `
+                    <button id="prev-sibling">Previous</button>
+                    <p class="new-target">Target Paragraph</p>
+                    <p>Next Paragraph</p>
+                `;
+                newTargetSelector = "#prev-sibling + p";
+                newPrompt = "Target the paragraph that immediately follows the `#prev-sibling` button.";
+            }
+             else {
                  // Fallback for others - simple structure swap
                 html = def.baseHTML.replace(def.targetSelector.replace(/[#\.\s>+~:]/g, ''), 'new-target');
                 newTargetSelector = def.correctTarget.replace(def.correctTarget.replace(/[#\.\s>+~:]/g, ''), 'new-target');
+                newPrompt = `Apply the ${def.type} logic to this new structure. The target element now has the class .new-target.`;
             }
             
-            return { html: html, newTargetSelector: newTargetSelector };
+            return { html: html, newTargetSelector: newTargetSelector, newPrompt: newPrompt };
         }
 
         // Definition of all challenges
@@ -487,6 +502,7 @@
                     baseHTML: def.html,
                     currentHTML: def.html,
                     successfulSelectors: [],
+                    originalPrompt: def.prompt // Store the original prompt
                 };
 
                 htmlContent += `
@@ -744,8 +760,9 @@
             const inputField = document.getElementById(`selector-input-${challengeId}`);
             const feedbackElement = document.getElementById(`feedback-${challengeId}`);
             const statusElement = document.getElementById(`status-${challengeId}`);
+            const promptElement = document.getElementById(`prompt-${challengeId}`); // Get the prompt element
             
-            const { html: newHtml, newTargetSelector: newTarget } = generateNewChallengeHTML(challengeDef);
+            const { html: newHtml, newTargetSelector: newTarget, newPrompt: updatedPrompt } = generateNewChallengeHTML(challengeDef);
             
             state.correctTarget = newTarget;
             state.attempts = 0;
@@ -758,6 +775,10 @@
             inputField.disabled = false;
             inputField.nextElementSibling.disabled = false;
             feedbackElement.className = 'validation-feedback';
+            
+            // --- FIX: Update the prompt text ---
+            promptElement.textContent = updatedPrompt; 
+            
             feedbackElement.innerHTML = `🌟 **New Challenge!** Apply the **${challengeDef.type}** logic to this new structure.`;
             statusElement.textContent = "(Unsolved)";
             statusElement.style.color = 'grey';
