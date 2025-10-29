@@ -148,9 +148,19 @@
             background-color: white;
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.2s ease-out;
+            transition: max-height 0.3s ease-in-out;
             border-left: 2px solid #007bff;
             margin-bottom: 5px;
+        }
+
+        .reveal-button {
+            background-color: #ffc107;
+            color: #333;
+            margin-top: 10px;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -229,8 +239,9 @@
                 newTargetSelector = "ul.nav-menu > li.new-target";
             } else {
                  // Fallback for others - simple structure swap
+                // This is a rough way to generate a new target, but works for the demo's needs
                 html = def.baseHTML.replace(def.targetSelector.replace(/[#\.\s>+~:]/g, ''), 'new-target');
-                newTargetSelector = def.targetSelector.replace(def.targetSelector.replace(/[#\.\s>+~:]/g, ''), 'new-target');
+                newTargetSelector = def.correctTarget.replace(def.correctTarget.replace(/[#\.\s>+~:]/g, ''), 'new-target');
             }
             
             return { html: html, newTargetSelector: newTargetSelector };
@@ -343,7 +354,7 @@
                 type: "General Sibling Combinator",
                 alternatives: [
                     { selector: "h3 ~ .comments", explanation: "Less specific than the one provided, but correct if no other non-button element has the .comments class." },
-                    { selector: "h3 ~ button", explanation: "Selects ALL buttons that follow the h3. Since only the Comments button is the target, this is too broad and would fail the validation." }
+                    { selector: "button.like ~ button.comments", explanation: "Uses two siblings to define the relationship, selecting the Comments button that follows the Like button." }
                 ],
                 trivia: "The General Sibling Combinator `~` selects all siblings that follow the first element, making it useful for applying styles to all elements after a specific one.",
                 learnMore: "https://developer.mozilla.org/en-US/docs/Web/CSS/General_sibling_combinator",
@@ -362,7 +373,7 @@
                 type: "Attribute Selector (Substring Match)",
                 alternatives: [
                     { selector: "*[name*='user']", explanation: "Uses the universal selector (*), selecting any element with the name attribute containing 'user'." },
-                    { selector: "input[name~='user']", explanation: "Uses the tilde operator (~=) which matches a whole word in a space-separated list of values (would fail if the attribute value was 'data-username')." }
+                    { selector: "input[name~='data-username']", explanation: "Uses the tilde operator (~=) which matches a whole word in a space-separated list of values (would match if the attribute value was 'data-username other')." }
                 ],
                 trivia: "The `*=` operator is incredibly useful for finding elements based on partial string matches, perfect for dynamic or generated attributes.",
                 learnMore: "https://developer.mozilla.org/en-US/docs/Web/CSS/Attribute_selectors",
@@ -399,7 +410,7 @@
                 type: "Negation Pseudo-class (:not)",
                 alternatives: [
                     { selector: ".btn-save:not(.disabled)", explanation: "Selects elements with the class .btn-save that also don't have the class .disabled." },
-                    { selector: "button:not([disabled])", explanation: "Selects buttons that do not have the boolean `disabled` attribute (assuming the button is enabled by default)." }
+                    { selector: "button.btn-save:not(.disabled)", explanation: "Even more specific, combining the tag and class with the negation." }
                 ],
                 trivia: "`:not()` can take any simple selector as an argument, but cannot be nested (e.g., `:not(:not(div))` is invalid in CSS Level 3).",
                 learnMore: "https://developer.mozilla.org/en-US/docs/Web/CSS/:not",
@@ -499,6 +510,17 @@
         }
 
         // --- CORE VALIDATION LOGIC ---
+        
+        function toggleAccordion(button) {
+            button.classList.toggle("active-accordion");
+            let panel = button.nextElementSibling;
+            if (panel.style.maxHeight) {
+                panel.style.maxHeight = null;
+            } else {
+                // Set max-height to scrollHeight plus a buffer (100px) to ensure content is visible
+                panel.style.maxHeight = panel.scrollHeight + 100 + "px";
+            } 
+        }
 
         function validateChallenge(challengeId) {
             const state = challengeStates[challengeId];
@@ -543,25 +565,13 @@
         
         // --- SUCCESS AND FAILURE HANDLERS ---
 
-        function toggleAccordion(button) {
-            button.classList.toggle("active-accordion");
-            let panel = button.nextElementSibling;
-            if (panel.style.maxHeight) {
-                panel.style.maxHeight = null;
-            } else {
-                panel.style.maxHeight = panel.scrollHeight + "px";
-            } 
-        }
-
         function handleSuccess(challengeId, correctSelector) {
             const state = challengeStates[challengeId];
             const feedbackElement = document.getElementById(`feedback-${challengeId}`);
             const statusElement = document.getElementById(`status-${challengeId}`);
             const challengeDef = challengeDefinitions.find(d => d.id === challengeId);
-            const inputField = document.getElementById(`selector-input-${challengeId}`);
-            const validateButton = inputField.nextElementSibling;
             
-            // Only update status and disable elements if it's the first time solved
+            // Only update status and remove highlight if it's the first time solved
             if (!state.isSolved) {
                 statusElement.textContent = "(SOLVED!)";
                 statusElement.style.color = '#155724';
@@ -591,15 +601,10 @@
                 
                 <p>Explore other ways to solve this challenge:</p>
                 ${alternativesHtml}
-                
-                <a href="${challengeDef.learnMore}" target="_blank" style="text-decoration: none;">
-                    <button class="accordion" style="background-color: #28a745; color: white;">📚 Learn More: ${challengeDef.type}</button>
-                </a>
             `;
             
-            // Re-enable validation button and input field
-            inputField.disabled = false;
-            validateButton.disabled = false;
+            // Clear attempts counter on success
+            state.attempts = 0;
         }
         
         function handleFailure(challengeId, userInput, selectedElements, correctTarget) {
@@ -617,11 +622,11 @@
                 if (selectedElements.length === 0) {
                     nudge = `Incorrect. Your selector selected **no elements**. Check your basic syntax (e.g., did you miss a '.' or '#')?`;
                 } else if (Array.from(selectedElements).includes(correctTarget)) {
-                    nudge = `Close! Your selector selected **${selectedElements.length} elements**, including the target. Try to be more specific (e.g., add an element tag or class) to select *only* the target.`;
+                    nudge = `Close! Your selector selected **${selectedElements.length} elements**, including the target. Try to be more specific to select *only* the target.`;
                 } else {
                     nudge = `Incorrect. Your selector selected **${selectedElements.length} element(s)**, but the target was not among them. Check the attributes of the highlighted element!`;
                 }
-                message = `<span class="error">${nudge}</span>`;
+                message = `${nudge}`;
             } 
             
             else if (state.attempts === 2) {
@@ -656,7 +661,7 @@
             
             else if (state.attempts >= 5 && !state.isRevealed) {
                 message = `🛑 **5 Failed Attempts.** It's time to learn! Would you like to reveal the solution for this specific challenge and then immediately try a new, related challenge to ensure the lesson sticks?
-                    <br><button class="accordion" style="background-color: #ffc107;" onclick="revealSolution(${challengeId})">Yes, Reveal Solution & Try New Challenge</button>`;
+                    <br><button class="reveal-button" onclick="revealSolution(${challengeId})">Yes, Reveal Solution & Try New Challenge</button>`;
                 feedbackElement.classList.remove('info');
                 feedbackElement.classList.add('error');
             }
@@ -680,7 +685,7 @@
             feedbackElement.innerHTML = `
                 ✅ **Solution Revealed:** The correct selector was <code>${state.correctTarget}</code>.
                 <br>
-                <p style="margin-top: 10px;">Please study the lesson, then click the button below to solidify your understanding with a **fresh challenge** of the same selector type.</p>
+                <p style="margin-top: 10px;">Please study the solution, then click the button below to solidify your understanding with a **fresh challenge** of the same selector type.</p>
                 <button class="accordion" style="background-color: #007bff; color: white; margin-right: 5px;" onclick="resetChallenge(${challengeId})">🔄 Try New ${challengeDef.type} Challenge</button>
             `;
             removeHighlighting(challengeId);
