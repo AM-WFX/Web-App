@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Ultimate CSS Selector Lab</title>
+    <title>The CSS Selector Lab</title>
     <link rel="stylesheet" href="styles.css"> 
     
     <style>
@@ -137,10 +137,25 @@
             transition: 0.4s;
             margin-top: 5px;
             border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .active-accordion, .accordion:hover {
             background-color: #ccc;
+        }
+
+        .accordion::after {
+            content: ' \25BC'; /* Unicode for solid downward triangle */
+            color: #777;
+            font-weight: bold;
+            transition: 0.4s;
+            transform: rotate(0deg);
+        }
+
+        .active-accordion::after {
+            transform: rotate(-180deg);
         }
 
         .panel {
@@ -239,7 +254,6 @@
                 newTargetSelector = "ul.nav-menu > li.new-target";
             } else {
                  // Fallback for others - simple structure swap
-                // This is a rough way to generate a new target, but works for the demo's needs
                 html = def.baseHTML.replace(def.targetSelector.replace(/[#\.\s>+~:]/g, ''), 'new-target');
                 newTargetSelector = def.correctTarget.replace(def.correctTarget.replace(/[#\.\s>+~:]/g, ''), 'new-target');
             }
@@ -455,7 +469,9 @@
                     isRevealed: false,
                     correctTarget: def.targetSelector,
                     baseHTML: def.html,
-                    currentHTML: def.html 
+                    currentHTML: def.html,
+                    // New array to store all successful selectors found by the user for this challenge
+                    successfulSelectors: [],
                 };
 
                 htmlContent += `
@@ -571,6 +587,16 @@
             const statusElement = document.getElementById(`status-${challengeId}`);
             const challengeDef = challengeDefinitions.find(d => d.id === challengeId);
             
+            // Normalize and track the successful selector
+            const normalizedSelector = correctSelector.toLowerCase().trim().replace(/\s+/g, ' ');
+
+            // Check if this selector has already been registered as successful
+            const isNewSuccess = !state.successfulSelectors.includes(normalizedSelector);
+
+            if (isNewSuccess) {
+                state.successfulSelectors.push(normalizedSelector);
+            }
+            
             // Only update status and remove highlight if it's the first time solved
             if (!state.isSolved) {
                 statusElement.textContent = "(SOLVED!)";
@@ -580,15 +606,25 @@
 
             state.isSolved = true;
             
+            // Combine challenge alternatives with user's successful selectors
+            const allAlternatives = [...challengeDef.alternatives];
+            
+            // Add user's other successful selectors to the alternatives list
+            state.successfulSelectors.forEach(sel => {
+                // Skip if it's the current selector or already defined as a core alternative
+                if (sel !== normalizedSelector && !allAlternatives.some(alt => alt.selector.toLowerCase().trim() === sel)) {
+                    allAlternatives.push({ selector: sel, explanation: "You found this alternative! It works because it is just as specific as the target selector." });
+                }
+            });
+
             // Build alternatives list with accordions/dropdowns
-            const alternativesHtml = challengeDef.alternatives
-                .filter(alt => alt.selector.toLowerCase().trim() !== correctSelector.toLowerCase().trim())
+            const alternativesHtml = allAlternatives
                 .map((alt, index) => `
                     <button class="accordion" onclick="toggleAccordion(this)">
                         Alternative ${index + 1}: <code>${alt.selector}</code>
                     </button>
                     <div class="panel">
-                        <p><strong>Why it works:</strong> ${alt.explanation}</p>
+                        <p><strong>How it works:</strong> ${alt.explanation}</p>
                     </div>
                 `).join('');
 
@@ -699,12 +735,14 @@
             const feedbackElement = document.getElementById(`feedback-${challengeId}`);
             const statusElement = document.getElementById(`status-${challengeId}`);
             
+            // This is simplified, but should generate a new target and HTML structure
             const { html: newHtml, newTargetSelector: newTarget } = generateNewChallengeHTML(challengeDef);
             
             state.correctTarget = newTarget;
             state.attempts = 0;
             state.isRevealed = false;
             state.isSolved = false;
+            state.successfulSelectors = []; // Clear previous successful selectors
             
             targetArea.innerHTML = newHtml;
             inputField.value = '';
