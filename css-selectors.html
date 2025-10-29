@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The CSS Selector Lab</title>
+    <title>The Ultimate CSS Selector Lab</title>
     <link rel="stylesheet" href="styles.css"> 
     
     <style>
@@ -212,7 +212,7 @@
         <aside class="sidebar" style="/* Layout style here */">...</aside>
         
         <main class="content main-content">
-            <h1>The CSS Selector Lab 🎯</h1>
+            <h1>The Ultimate CSS Selector Lab 🎯</h1>
             <p>Your task: Write a selector that targets **only the element currently highlighted** within each challenge box. You must remove the highlight by entering the correct selector and clicking 'Validate'.</p>
             
             <div id="all-challenges">
@@ -222,7 +222,7 @@
     </div>
 
     <footer>
-        <p>&copy; Selector Training Resources</p>
+        <p>&copy; 2025 My Awesome Website</p>
     </footer>
 
     <script>
@@ -383,10 +383,10 @@
                 targetSelector: "h3 ~ button.comments",
                 type: "General Sibling Combinator",
                 alternatives: [
-                    { selector: "h3 ~ .comments", explanation: "Less specific than the provided answer. It selects any element with the class `.comments` that follows an `h3` in the same parent. This is correct but risks selecting a non-button element." },
+                    { selector: "h3 ~ .comments", explanation: "Less specific than the one provided. It selects any element with the class `.comments` that follows an `h3` in the same parent. This is correct but risks selecting a non-button element." },
                     { selector: "button.like ~ button.comments", explanation: "This targets the Comments button based on a different preceding sibling, the Like button. It demonstrates the flexibility of the General Sibling Combinator." }
                 ],
-                trivia: "The General Sibling Combinator (`~`) selects *all* siblings that follow the first selector. Unlike the Adjacent Sibling (`+`), it can skip over non-matching siblings.",
+                trivia: "The General Sibling Combinator (`~`) selects all siblings that follow the first selector. Unlike the Adjacent Sibling (`+`), it can skip over non-matching siblings.",
                 learnMore: "https://developer.mozilla.org/en-US/docs/Web/CSS/General_sibling_combinator",
                 html: `
                     <button class="share">Share</button>
@@ -458,7 +458,7 @@
                 alternatives: [
                     { selector: "input[type='checkbox']:checked", explanation: "This adds the attribute selector for `type='checkbox'`, ensuring the selector only applies to checkbox inputs, not radio buttons or other checked inputs." }
                 ],
-                trivia: "The UI State Pseudo-class (`:checked`) selects radio buttons or checkboxes that are currently selected. This pseudo-class is often paired with the Adjacent Sibling Combinator (`+`) to style a custom label based on the checked state.",
+                trivia: "The UI State Pseudo-class (`:checked`) selects radio buttons or checkboxes that are currently selected. You often use the Adjacent Sibling Combinator (`+`) to style a custom label based on the checked state.",
                 learnMore: "https://developer.mozilla.org/en-US/docs/Web/CSS/:checked",
                 html: `
                     <label>
@@ -502,262 +502,4 @@
                         </div>
                         
                         <div class="challenge-ui">
-                            <input type="text" id="selector-input-${def.id}" placeholder="Enter your selector here (e.g., .class-name)" data-id="${def.id}">
-                            <button onclick="validateChallenge(${def.id})">Validate</button>
-                        </div>
-                        <div id="feedback-${def.id}" class="validation-feedback"></div>
-                    </div>
-                `;
-            });
-
-            container.innerHTML = htmlContent;
-            challengeDefinitions.forEach(def => applyHighlighting(def.id));
-        }
-
-        function applyHighlighting(challengeId) {
-            const state = challengeStates[challengeId];
-            if (state.isSolved) return;
-
-            const targetArea = document.getElementById(`target-area-${challengeId}`);
-            if (!targetArea) return;
-
-            try {
-                targetArea.querySelectorAll('.target-highlight').forEach(el => el.classList.remove('target-highlight'));
-                
-                const targetElement = targetArea.querySelector(state.correctTarget);
-                if (targetElement) {
-                    targetElement.classList.add('target-highlight');
-                }
-            } catch (e) {
-                console.error(`Error highlighting target for challenge ${challengeId}: ${e.message}`);
-            }
-        }
-
-        function removeHighlighting(challengeId) {
-            const targetArea = document.getElementById(`target-area-${challengeId}`);
-            if (targetArea) {
-                targetArea.querySelectorAll('.target-highlight').forEach(el => el.classList.remove('target-highlight'));
-            }
-        }
-
-        function toggleAccordion(button) {
-            button.classList.toggle("active-accordion");
-            let panel = button.nextElementSibling;
-            if (panel.style.maxHeight) {
-                panel.style.maxHeight = null;
-            } else {
-                panel.style.maxHeight = panel.scrollHeight + 100 + "px";
-            } 
-        }
-
-        function validateChallenge(challengeId) {
-            const state = challengeStates[challengeId];
-            const inputField = document.getElementById(`selector-input-${challengeId}`);
-            const feedbackElement = document.getElementById(`feedback-${challengeId}`);
-            const userInput = inputField.value.trim();
-
-            feedbackElement.className = 'validation-feedback';
-
-            if (userInput === '') {
-                feedbackElement.textContent = 'Please enter a selector to validate.';
-                feedbackElement.classList.add('error');
-                return;
-            }
-
-            try {
-                const targetArea = document.getElementById(`target-area-${challengeId}`);
-                const correctTarget = targetArea.querySelector(state.correctTarget);
-                const selectedElements = targetArea.querySelectorAll(userInput);
-
-                if (!correctTarget) {
-                    feedbackElement.textContent = 'Internal Error: Target element missing.';
-                    feedbackElement.classList.add('error');
-                    return;
-                }
-                
-                const isCorrect = selectedElements.length === 1 && selectedElements[0] === correctTarget;
-
-                if (isCorrect) {
-                    handleSuccess(challengeId, userInput);
-                } else {
-                    handleFailure(challengeId, userInput, selectedElements, correctTarget);
-                }
-
-            } catch (e) {
-                feedbackElement.textContent = `🚫 Syntax Error: "${userInput}" is not a valid CSS selector. Check for typos or invalid characters.`;
-                feedbackElement.classList.add('error');
-            }
-        }
-        
-        function handleSuccess(challengeId, correctSelector) {
-            const state = challengeStates[challengeId];
-            const feedbackElement = document.getElementById(`feedback-${challengeId}`);
-            const statusElement = document.getElementById(`status-${challengeId}`);
-            const challengeDef = challengeDefinitions.find(d => d.id === challengeId);
-            
-            const normalizedSelector = correctSelector.toLowerCase().trim().replace(/\s+/g, ' ');
-
-            const isNewSuccess = !state.successfulSelectors.includes(normalizedSelector);
-
-            if (isNewSuccess) {
-                state.successfulSelectors.push(normalizedSelector);
-            }
-            
-            if (!state.isSolved) {
-                statusElement.textContent = "(SOLVED!)";
-                statusElement.style.color = '#155724';
-                removeHighlighting(challengeId);
-            }
-
-            state.isSolved = true;
-            
-            let allAlternatives = [...challengeDef.alternatives];
-            
-            state.successfulSelectors.forEach(sel => {
-                if (!allAlternatives.some(alt => alt.selector.toLowerCase().trim() === sel) && sel !== normalizedSelector) {
-                    allAlternatives.push({ selector: sel, explanation: "You found this alternative! It works because it selects the specific target element with precision." });
-                }
-            });
-
-            const alternativesHtml = allAlternatives
-                .filter(alt => alt.selector.toLowerCase().trim() !== normalizedSelector)
-                .map((alt, index) => `
-                    <button class="accordion" onclick="toggleAccordion(this)">
-                        Alternative ${index + 1}: <code>${alt.selector}</code>
-                    </button>
-                    <div class="panel">
-                        <p><strong>How it works:</strong> ${alt.explanation}</p>
-                    </div>
-                `).join('');
-
-            feedbackElement.classList.add('success');
-            feedbackElement.innerHTML = `
-                🎉 **PERFECT!** You successfully targeted the element with <code>${correctSelector}</code>.
-                <br><br>
-                <strong>Lesson Learned: ${challengeDef.type}</strong> 💡
-                <div class="hint-message">${challengeDef.trivia}</div>
-                
-                <p>Explore other ways to solve this challenge:</p>
-                ${alternativesHtml}
-            `;
-            
-            state.attempts = 0;
-        }
-        
-        function handleFailure(challengeId, userInput, selectedElements, correctTarget) {
-            const state = challengeStates[challengeId];
-            const feedbackElement = document.getElementById(`feedback-${challengeId}`);
-            const challengeDef = challengeDefinitions.find(d => d.id === challengeId);
-            state.attempts++;
-
-            let message = '';
-            feedbackElement.classList.add('error');
-            
-            if (state.attempts === 1) {
-                let nudge;
-                if (selectedElements.length === 0) {
-                    nudge = `Incorrect. Your selector selected **no elements**. Check your basic syntax (e.g., did you miss a '.' or '#')?`;
-                } else if (Array.from(selectedElements).includes(correctTarget)) {
-                    nudge = `Close! Your selector selected **${selectedElements.length} elements**, including the target. Try to be more specific to select *only* the target.`;
-                } else {
-                    nudge = `Incorrect. Your selector selected **${selectedElements.length} element(s)**, but the target was not among them. Check the attributes of the highlighted element!`;
-                }
-                message = `${nudge}`;
-            } 
-            
-            else if (state.attempts === 2) {
-                message = `Still incorrect. 
-                    <br><div class="hint-message info">🚨 **Hint 2:** The type of selector you need to master here is a **${challengeDef.type}**. Focus your learning on that concept!</div>`;
-                feedbackElement.classList.remove('error');
-                feedbackElement.classList.add('info');
-            } 
-            
-            else if (state.attempts === 3) {
-                const hintType = challengeDef.type.includes('Combinator') ? 'Combinator' : challengeDef.type.includes('Pseudo') ? 'Pseudo-class' : 'Attribute Selector';
-                message = `Three strikes. 
-                    <br><div class="hint-message info">💡 **Hint 3:** This challenge requires a **${hintType}**. Look for relationships (parent/sibling) or a specific state (checked/disabled) in the HTML structure.</div>`;
-                feedbackElement.classList.remove('error');
-                feedbackElement.classList.add('info');
-            } 
-            
-            else if (state.attempts === 4) {
-                let operatorHint = '';
-                if (challengeDef.type.includes('Descendant')) operatorHint = 'Use a **space** between selectors.';
-                else if (challengeDef.type.includes('Child')) operatorHint = 'Use the **>** operator.';
-                else if (challengeDef.type.includes('Adjacent')) operatorHint = 'Use the **+** operator.';
-                else if (challengeDef.type.includes('General')) operatorHint = 'Use the **~** operator.';
-                else if (challengeDef.type.includes('Attribute')) operatorHint = 'Use brackets **[ ]** and an operator like **[*=]**.';
-                else if (challengeDef.type.includes('Pseudo')) operatorHint = 'Use the colon **:** followed by the selector name.';
-                
-                message = `Final attempt nudge. 
-                    <br><div class="hint-message info">🧠 **Hint 4 (Deep Dive):** ${operatorHint}</div>`;
-                feedbackElement.classList.remove('error');
-                feedbackElement.classList.add('info');
-            } 
-            
-            else if (state.attempts >= 5 && !state.isRevealed) {
-                message = `🛑 **5 Failed Attempts.** It's time to learn! Would you like to reveal the solution for this specific challenge and then immediately try a new, related challenge to ensure the lesson sticks?
-                    <br><button class="reveal-button" onclick="revealSolution(${challengeId})">Yes, Reveal Solution & Try New Challenge</button>`;
-                feedbackElement.classList.remove('info');
-                feedbackElement.classList.add('error');
-            }
-            
-            feedbackElement.innerHTML = message;
-        }
-
-        function revealSolution(challengeId) {
-            const state = challengeStates[challengeId];
-            const feedbackElement = document.getElementById(`feedback-${challengeId}`);
-            const inputField = document.getElementById(`selector-input-${challengeId}`);
-            const challengeDef = challengeDefinitions.find(d => d.id === challengeId);
-            const statusElement = document.getElementById(`status-${challengeId}`);
-
-            state.isRevealed = true;
-            statusElement.textContent = "(Solution Revealed)";
-            inputField.value = state.correctTarget;
-            
-            feedbackElement.classList.remove('error', 'info');
-            feedbackElement.classList.add('success');
-            feedbackElement.innerHTML = `
-                ✅ **Solution Revealed:** The correct selector was <code>${state.correctTarget}</code>.
-                <br>
-                <p style="margin-top: 10px;">Please study the solution, then click the button below to solidify your understanding with a **fresh challenge** of the same selector type.</p>
-                <button class="accordion" style="background-color: #007bff; color: white; margin-right: 5px;" onclick="resetChallenge(${challengeId})">🔄 Try New ${challengeDef.type} Challenge</button>
-            `;
-            removeHighlighting(challengeId);
-        }
-
-        function resetChallenge(challengeId) {
-            const state = challengeStates[challengeId];
-            const challengeDef = challengeDefinitions.find(d => d.id === challengeId);
-            const targetArea = document.getElementById(`target-area-${challengeId}`);
-            const inputField = document.getElementById(`selector-input-${challengeId}`);
-            const feedbackElement = document.getElementById(`feedback-${challengeId}`);
-            const statusElement = document.getElementById(`status-${challengeId}`);
-            
-            const { html: newHtml, newTargetSelector: newTarget } = generateNewChallengeHTML(challengeDef);
-            
-            state.correctTarget = newTarget;
-            state.attempts = 0;
-            state.isRevealed = false;
-            state.isSolved = false;
-            state.successfulSelectors = [];
-            
-            targetArea.innerHTML = newHtml;
-            inputField.value = '';
-            inputField.disabled = false;
-            inputField.nextElementSibling.disabled = false;
-            feedbackElement.className = 'validation-feedback';
-            feedbackElement.innerHTML = `🌟 **New Challenge!** Apply the **${challengeDef.type}** logic to this new structure.`;
-            statusElement.textContent = "(Unsolved)";
-            statusElement.style.color = 'grey';
-
-            applyHighlighting(challengeId);
-        }
-
-        // Run the initialization function when the page loads
-        document.addEventListener('DOMContentLoaded', initializeChallenges);
-    </script>
-
-</body>
-</html>
+                            <input type="text" id="selector-input-${def.id}" placeholder="Enter your selector
