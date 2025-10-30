@@ -1,37 +1,34 @@
 // =========================================================================
 // === JAVASCRIPT MASTER LOADER ===
-// This function ensures ALL code runs AFTER the HTML structure is loaded.
+// This function ensures ALL code runs after the HTML structure is loaded.
 // =========================================================================
 
 document.addEventListener('DOMContentLoaded', function() {
     
     // --- Existing JQUERY Code (Wrapped in a safety check) ---
+    // This runs on every page, but only affects elements on index.html and about.html
     if (typeof jQuery !== 'undefined') {
         $(document).ready(function() {
-            // ----------------------------------------------------
-            // --- SELECTORS FOR home.html (Home Page) ---
-            // ----------------------------------------------------
-            $('#target-p').text('--- SUCCESSFULLY CHANGED BY ID SELECTOR (#target-p) ---');
+            // --- SELECTORS FOR index.html (Home Page) ---
+            $('#target-p').text('--- SUCCESSFULLY CHANGED BY ID SELECTOR ---');
             $('p').addClass('highlight'); 
 
-            // ----------------------------------------------------
             // --- SELECTORS FOR about.html (About Page) ---
-            // ----------------------------------------------------
-            $('.highlight-me').css('background-color', 'lightgreen');
-            $('p[data-status="pending"]').text('STATUS UPDATED: Review is IN PROGRESS (Targeted by Attribute)');
-            $('p[data-status="complete"]').hide();
+            $('.highlight-me').css('background-color', 'var(--wf-support-karry)');
+            $('p[data-status="pending"]').text('STATUS: Review In Progress (Targeted by Attribute)').css('border', '1px dashed var(--wf-accent-orange)');
+            $('p[data-status="complete"]').text('STATUS: Complete (Targeted by Attribute)').css('border', '1px dashed green');
 
-            // ----------------------------------------------------
             // --- TRAVERSING / COMBINATION SELECTOR ---
-            // ----------------------------------------------------
-            $('header a').css('font-size', '18px');
+            $('header a').css('font-size', '16px');
         });
     }
 
     // --- VANILLA JAVASCRIPT CODE (CSS Selector Lab) ---
-    // This is the primary function for the current page (css-selectors.html)
-    initializeChallenges();
-
+    // This checks if the #all-challenges div exists on the current page.
+    // It will only run on css-selectors.html.
+    if (document.getElementById('all-challenges')) {
+        initializeChallenges();
+    }
 });
 
 
@@ -117,7 +114,6 @@ const challengeDefinitions = [
             { selector: "*#login-primary", explanation: "This uses the universal selector (*) combined with the ID. The universal selector is low specificity, but the ID still makes this selection highly efficient and correct." }
         ],
         trivia: "The ID selector is the most powerful in terms of specificity (100 points). It should be used sparingly for major, unique page elements.",
-        learnMore: "https://developer.mozilla.org/en-US/docs/Web/CSS/ID_selectors",
         html: `
             <button id="login-primary" class="btn btn-primary">Primary Login Button</button>
             <button id="login-secondary" class="btn btn-secondary">Secondary Button</button>
@@ -133,7 +129,6 @@ const challengeDefinitions = [
             { selector: ".task-urgent.list-item", explanation: "This chains two class selectors together. This is useful if you want to ensure an element has *both* classes. It also increases specificity (20 points) which can be helpful if you need to override other styles." }
         ],
         trivia: "Class selectors contribute 10 points to specificity. You can chain multiple classes without a space, like `.classA.classB`.",
-        learnMore: "https://developer.mozilla.org/en-US/docs/Web/CSS/Class_selectors",
         html: `
             <ul>
                 <li class="list-item task-default">Normal Item</li>
@@ -152,7 +147,6 @@ const challengeDefinitions = [
             { selector: "div#settings-modal button.btn-save", explanation: "This is the most explicit form, using the tag name for the container (div) as well as its ID. It makes the selector very rigid but ensures zero ambiguity." }
         ],
         trivia: "A single space is the Descendant Combinator. It selects elements nested at *any* depth, making it the most flexible but potentially the least performant of the combinators.",
-        learnMore: "https://developer.mozilla.org/en-US/docs/Web/CSS/Descendant_combinator",
         html: `
             <div id="settings-modal" style="padding: 10px; border: 1px solid #ccc;">
                 <button class="btn-cancel">Cancel</button>
@@ -172,7 +166,6 @@ const challengeDefinitions = [
             { selector: ".card > .card-header > h2", explanation: "This chains multiple Child Combinators, ensuring that the selection only occurs if `.card-header` is a direct child of `.card` AND `h2` is a direct child of `.card-header`." }
         ],
         trivia: "The Child Combinator (`>`) ensures the relationship is direct (one level deep). This makes the CSS rule more robust against future changes in nested markup.",
-        learnMore: "https://developer.mozilla.org/en-US/docs/Web/CSS/Child_combinator",
         html: `
             <div class="card" style="border: 1px solid #ccc; padding: 10px;">
                 <div class="card-header">
@@ -195,7 +188,6 @@ const challengeDefinitions = [
             { selector: ".first-element + *", explanation: "Uses the universal selector (`+ *`) to select the immediate sibling, regardless of its tag name. Useful if the structure might change from `li` to `div` but remain a sibling." }
         ],
         trivia: "The Adjacent Sibling Combinator (`+`) only selects the *one* element that immediately follows the first selector. It's great for applying spacing after a specific element.",
-        learnMore: "https://developer.mozilla.org/en-US/docs/Web/CSS/Adjacent_sibling_combinator",
         html: `
             <ul>
                 <li class="list-item">Zero Item</li>
@@ -215,7 +207,6 @@ const challengeDefinitions = [
             { selector: "button.like ~ button.comments", explanation: "This targets the Comments button based on a different preceding sibling, the Like button. It demonstrates the flexibility of the General Sibling Combinator." }
         ],
         trivia: "The General Sibling Combinator (`~`) selects all siblings that follow the first selector. Unlike the Adjacent Sibling (`+`), it can skip over non-matching siblings.",
-        learnMore: "https://developer.mozilla.org/en-US/docs/Web/CSS/General_sibling_combinator",
         html: `
             <button class="share">Share</button>
             <h3>Post Title</h3>
@@ -234,7 +225,6 @@ const challengeDefinitions = [
             { selector: "input[name~='data-username']", explanation: "Uses the tilde operator (`~=`), which matches a whole word in a space-separated list of values. This would work if the name value was 'data-username other', but fails on 'data-username' as one contiguous string." }
         ],
         trivia: "The `*=` operator is the 'contains' attribute selector, which looks for the specified substring anywhere within the attribute's value. This is powerful when dealing with dynamic or auto-generated attributes.",
-        learnMore: "https://developer.mozilla.org/en-US/docs/Web/CSS/Attribute_selectors",
         html: `
             <input type="text" name="data-email" placeholder="Email">
             <input type="text" name="data-username" placeholder="Username">
@@ -251,7 +241,6 @@ const challengeDefinitions = [
             { selector: "li:nth-of-type(3)", explanation: "This selects the third item *of its type* (the third `li` element) among its siblings. It works here because all siblings are list items." }
         ],
         trivia: "`:nth-child(n)` counts elements based on their position among *all* siblings, regardless of tag name. It is commonly used for things like zebra-striping rows in a table (`:nth-child(odd)`).",
-        learnMore: "https://developer.mozilla.org/en-US/docs/Web/CSS/:nth-child",
         html: `
             <ol>
                 <li>First Item</li>
@@ -271,7 +260,6 @@ const challengeDefinitions = [
             { selector: "button.btn-save:not(.disabled)", explanation: "The most specific option. Combines tag name, class name, and the negation pseudo-class, clearly defining the exact criteria." }
         ],
         trivia: "The Negation Pseudo-class (`:not`) is often called the 'structural pseudo-class.' It is non-inclusive, meaning styles applied by it cannot be overridden by other styles of the same specificity *if* the negation is the only difference.",
-        learnMore: "https://developer.mozilla.org/en-US/docs/Web/CSS/:not",
         html: `
             <button class="btn-save disabled">Save (Disabled)</button>
             <button class="btn-save">Save (Enabled)</button>
@@ -287,7 +275,6 @@ const challengeDefinitions = [
             { selector: "input[type='checkbox']:checked", explanation: "This adds the attribute selector for `type='checkbox'`, ensuring the selector only applies to checkbox inputs, not radio buttons or other checked inputs." }
         ],
         trivia: "The UI State Pseudo-class (`:checked`) selects radio buttons or checkboxes that are currently selected. You often use the Adjacent Sibling Combinator (`+`) to style a custom label based on the checked state.",
-        learnMore: "https://developer.mozilla.org/en-US/docs/Web/CSS/:checked",
         html: `
             <label>
                 <input type="checkbox"> Unchecked
@@ -300,10 +287,16 @@ const challengeDefinitions = [
 ];
 
 // --- CORE STATE MANAGEMENT & INITIALIZATION (All functions follow) ---
-// (All functions from initializeChallenges down to resetChallenge are needed here)
 
 function initializeChallenges() {
+    // Check if the container element exists on this page
     const container = document.getElementById('all-challenges');
+    if (!container) {
+        // If #all-challenges doesn't exist, we are not on the css-selectors.html page.
+        // Silently exit to avoid errors on index.html or about.html
+        return;
+    }
+
     let htmlContent = '';
 
     challengeDefinitions.forEach(def => {
@@ -333,13 +326,16 @@ function initializeChallenges() {
                 
                 <div class="challenge-ui">
                     <input type="text" id="selector-input-${def.id}" placeholder="Enter your selector here (e.g., .class-name)" data-id="${def.id}">
-                    <button onclick="validateChallenge(${def.id})">Validate</button>
+                    
+                    <!-- ❗❗ BUG FIX: Added class="cta-button" to the generated button ❗❗ -->
+                    <button class="cta-button" onclick="validateChallenge(${def.id})">Validate</button>
                 </div>
                 <div id="feedback-${def.id}" class="validation-feedback"></div>
             </div>
         `;
     });
 
+    // Replace the container's content with the dynamically generated challenges
     container.innerHTML = htmlContent;
     challengeDefinitions.forEach(def => applyHighlighting(def.id));
 }
@@ -475,12 +471,14 @@ function handleSuccess(challengeId, correctSelector) {
 
     const alternativesHtml = allAlternatives
         .filter(alt => alt.selector.toLowerCase().trim() !== normalizedSelector)
-        .map((alt, home) => `
+        .map((alt, index) => `
             <button class="accordion" onclick="toggleAccordion(this)">
-                Alternative ${home + 1}: <code>${alt.selector}</code>
+                Alternative ${index + 1}: <code>${alt.selector}</code>
             </button>
             <div class="panel">
-                <p><strong>How it works:</strong> ${alt.explanation}</p>
+                <div class="panel-content">
+                    <p><strong>How it works:</strong> ${alt.explanation}</p>
+                </div>
             </div>
         `).join('');
 
