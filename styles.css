@@ -42,18 +42,17 @@ body {
     background-color: #555;
 }
 
-/* --- Overall Container and Grid Layout --- */
+/* --- Core Container Structure --- */
 .container {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 0 20px; /* Horizontal padding for spacing */
+    padding: 0 20px;
 }
 
-/* 🧱 CRITICAL LAYOUT: Enforces Sidebar and Main Content side-by-side using Grid */
+/* 🧱 CRITICAL LAYOUT: Defines the Grid for Sidebar and Main Content */
 #content-wrapper {
     display: grid;
-    /* Sidebar fixed width (200px), main content fills the rest (1fr) */
-    grid-template-columns: 200px 1fr; 
+    grid-template-columns: 200px 1fr; /* Sidebar fixed width, main content fills the rest */
     gap: 20px; 
     padding: 20px 0;
 }
@@ -85,7 +84,7 @@ body {
 
 /* --- Main Content Area --- */
 .main-content {
-    /* Main styling is mostly in the inline block for specificity, but keep basics here */
+    /* Basic styling - challenge-specific rules are in the HTML <style> block */
     padding: 20px; 
     background-color: #fff;
     border-radius: 8px;
