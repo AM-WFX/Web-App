@@ -7,11 +7,12 @@
     <link rel="stylesheet" href="styles.css"> 
     
     <style>
-        /* --- General Layout and Formatting --- */
+        /* --- General Layout and Formatting (Re-verified) --- */
         .container {
-            /* 1. WIDER CONTAINER: Increased max-width for more horizontal space */
+            /* Max width for the entire page content */
             max-width: 1400px; 
             margin: 0 auto;
+            /* Assume the sidebar and main content layout is handled by external styles.css */
         }
 
         .main-content {
@@ -25,15 +26,15 @@
         #all-challenges {
             /* This property is essential for side-by-side layout */
             display: flex;
-            flex-wrap: wrap; 
-            gap: 20px; 
+            flex-wrap: wrap; /* Allows challenges to wrap onto the next line */
+            gap: 20px; /* Space between challenges */
             justify-content: flex-start;
         }
         
         .challenge-container {
-            /* Ensures two challenges fit in a row within the main-content area */
+            /* Guarantees two challenges fit cleanly, even with a 20px gap */
             width: calc(50% - 10px); 
-            min-width: 400px; 
+            min-width: 400px; /* Ensures challenges are readable */
             
             margin-top: 10px; 
             padding: 20px;
@@ -116,37 +117,12 @@
             margin: 5px !important;
         }
         
-        /* --- UI and Feedback Elements --- */
+        /* --- UI and Feedback Elements (Retained) --- */
 
-        .challenge-header h3 {
-            margin: 0;
-            color: #1a5c9a;
-        }
-
-        .challenge-ui {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
-        .challenge-ui input[type="text"] {
-            flex-grow: 1;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-family: monospace;
-            font-size: 1em;
-        }
-
-        .challenge-ui button {
-            padding: 10px 15px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            white-space: nowrap;
-        }
+        .challenge-header h3 { margin: 0; color: #1a5c9a; }
+        .challenge-ui { display: flex; gap: 10px; margin-bottom: 10px; }
+        .challenge-ui input[type="text"] { flex-grow: 1; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-family: monospace; font-size: 1em; }
+        .challenge-ui button { padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; white-space: nowrap; }
         
         .success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
         .error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
