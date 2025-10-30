@@ -117,10 +117,10 @@ footer {
 
 /* --- CTA & BUTTON STYLING (10% Accent Rule) --- */
 
-/* ❗ FIX: Increased Specificity for the CTA button ❗ */
+/* ❗ VALIDATE BUTTON FIX: Ensure Orange Color Wins ❗ */
 .challenge-ui .cta-button, 
 .cta-button {
-    background-color: var(--wf-accent-orange); /* Orange accent */
+    background-color: var(--wf-accent-orange) !important; /* Use !important temporarily to force color */
     color: white;
     font-weight: 600;
     padding: 12px 25px;
@@ -130,7 +130,6 @@ footer {
     transition: background-color 0.2s, box-shadow 0.2s;
     text-decoration: none;
     display: inline-block;
-    /* Ensure the Validate button overrides generic button styles */
 }
 
 .cta-button:hover {
@@ -230,27 +229,28 @@ footer {
 
 /* --- ACCORDION STYLES (Fixing appearance/padding) --- */
 .accordion {
-    /* Base styles retained */
     padding: 12px 15px; 
     margin-top: 5px;
     margin-bottom: 5px; 
     border-radius: var(--wf-border-radius);
+    /* Ensure the accordion button background is lighter than the CTA button */
+    background-color: #F0F0F0;
 }
 
 .accordion::after {
     margin-left: 10px; 
 }
 
+/* ❗ ACCORDION INTERACTIVITY FIX ❗ */
 .panel {
-    /* Ensure the panel is fully hidden when not active */
+    /* CRITICAL: This line controls the hidden/shown state. */
     max-height: 0; 
     overflow: hidden; 
     transition: max-height 0.3s ease-in-out;
-    /* Added content padding */
     padding: 15px 18px; 
 }
+
 .panel p {
-    /* Reset margin on paragraph inside panel for clean padding */
     margin: 0 !important; 
     border: none !important;
     background-color: transparent !important;
