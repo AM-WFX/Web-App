@@ -27,9 +27,10 @@
             
             margin-top: 10px; 
             padding: 20px;
-            /* Using soft background and shadow, no hard external border */
+            /* Applying Karry background and soft corners/shadows */
             background-color: var(--wf-support-karry); 
             border-radius: 10px;
+            box-shadow: 0 4px 6px -1px rgba(37, 34, 59, 0.05); /* Soft Shadow lift */
         }
         
         /* --- VISUAL UNIFORMITY RULES (Ensures elements look the same) --- */
@@ -46,7 +47,7 @@
         .challenge-target-area h2,
         .challenge-target-area h3,
         .challenge-target-area span {
-            /* Removing all borders */
+            /* Removing all hard borders */
             border: none; 
             background-color: white; 
             color: var(--wf-text-dark);
@@ -72,7 +73,7 @@
         }
 
         .challenge-target-area ul, .challenge-target-area ol, .challenge-target-area div#settings-modal {
-            border: 2px dashed var(--wf-primary-teal); /* Use accent color for structural borders */
+            border: 2px dashed var(--wf-secondary-coral); /* Using Coral for structural borders */
             padding: 10px; 
             margin: 10px auto;
             background-color: var(--wf-bg-light);
@@ -139,7 +140,7 @@
         <div class="logo">WFX-Schools</div>
         <nav>
             <ul>
-                <li><a href="home.html">Home</a></li>
+                <li><a href="index.html">Home</a></li>
                 <li><a href="about.html">About Us</a></li>
                 <li><a href="css-selectors.html" class="active">CSS Selectors</a></li>
             </ul>
