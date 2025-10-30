@@ -17,7 +17,9 @@
     
     /* Aesthetics */
     --wf-border-radius: 10px;
-    --wf-shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.05);
+    --wf-shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.05);
+    --wf-shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    --wf-input-height: 44px; /* Defined for vertical centering */
 }
 
 /* --- GLOBAL RESET & FONT --- */
@@ -35,7 +37,7 @@ body {
 /* --- NAVBAR STYLING --- */
 
 .navbar {
-    background-color: white; 
+    background-color: var(--wf-dominant-spring-wood);
     color: var(--wf-secondary-steel-gray);
     padding: 15px 30px;
     border-bottom: 1px solid #E2E8F0;
@@ -78,225 +80,13 @@ body {
     border-bottom: 2px solid var(--wf-accent-orange);
 }
 
-/* --- CORE LAYOUT & CARDS --- */
 
-h1, h2 {
-    color: var(--wf-secondary-steel-gray);
-    font-weight: 700;
-}
-
-.container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-#content-wrapper {
-    /* Simple block display after sidebar removal */
-    display: block; 
-    padding: 20px 0;
-}
-
-.main-content {
-    /* Base for the main content card aesthetic */
-    padding: 30px;
-    background-color: white;
-    border-radius: var(--wf-border-radius);
-    box-shadow: var(--wf-shadow-subtle); 
-}
-
-/* --- FOOTER STYLING --- */
-
-footer {
-    text-align: center;
-    padding: 15px;
-    background-color: var(--wf-secondary-steel-gray); /* Dark ground */
-    color: white;
-    margin-top: 40px;
-}
-
-/* --- CTA & BUTTON STYLING (10% Accent Rule) --- */
-
-/* ❗ FIX 1: Aggressively reset appearance and enforce styles for ALL CTA buttons ❗ */
-.cta-button {
-    /* Critical Resets to override browser defaults */
-    appearance: none !important;
-    -webkit-appearance: none !important;
-    border: none !important;
-    border-style: none !important; 
-    margin: 0 !important; /* Reset default button margin */
-    
-    /* Enforced Brand Styling */
-    background-color: var(--wf-accent-orange) !important; /* Force Orange color */
-    color: white;
-    font-weight: 600;
-    padding: 12px 25px;
-    border-radius: var(--wf-border-radius);
-    cursor: pointer;
-    transition: background-color 0.2s, box-shadow 0.2s;
-    text-decoration: none;
-    display: inline-block;
-    font-family: 'Inter', sans-serif;
-    font-size: 1em;
-}
-
-.cta-button:hover {
-    background-color: #E55C00; /* Slightly darker orange */
-    box-shadow: 0 4px 6px -1px rgba(255, 107, 24, 0.3);
-}
-
-/* --- INDEX PAGE PROMOTIONAL BOX --- */
-
-.promo-box {
-    background-color: var(--wf-support-karry); /* Karry support color */
-    border-radius: var(--wf-border-radius);
-    padding: 30px;
-    text-align: center;
-    border: none; /* Borderless design */
-}
-
-/* --- ABOUT US PAGE ACCENT --- */
-
-.mission-statement {
-    /* Specific accent border only on the left */
-    border-left: 5px solid var(--wf-accent-orange); 
-    padding: 20px; 
-    background-color: var(--wf-dominant-spring-wood);
-    border-radius: var(--wf-border-radius);
-}
-
-/* --- CSS SELECTORS LAB STYLES --- */
-
-#all-challenges {
-    display: flex;
-    flex-wrap: wrap; 
-    gap: 20px; 
-    justify-content: space-between;
-}
-
-.challenge-container {
-    /* Karry background for visual distinction */
-    background-color: var(--wf-support-karry); 
-    border-radius: var(--wf-border-radius);
-    padding: 20px;
-    flex: 1 1 45%; 
-    max-width: calc(50% - 10px); 
-    min-width: 380px; 
-    margin-top: 10px; 
-    box-shadow: none; /* No shadow here, relies on main-content shadow */
-}
-
-/* ❗ FIX 2: UI Layout and Input Sizing (Centering) ❗ */
-.challenge-ui {
-    display: flex;
-    align-items: center; /* Vertically center items */
-    justify-content: flex-start; /* Ensure items start from the left */
-    gap: 10px;
-}
-
-.challenge-ui input[type="text"] {
-    flex-grow: 1; /* Allow input to fill available space */
-    height: 48px; /* Increase height for better usability */
-    padding: 0 15px; /* Adjust padding */
-    border: 1px solid #ccc;
-    border-radius: var(--wf-border-radius);
-    font-size: 1em;
-}
-
-/* Spacing Fix */
-.challenge-target-area {
-    border: 1px solid #E2E8F0; 
-    background-color: white; 
-    border-radius: var(--wf-border-radius);
-    padding: 15px;
-    margin-top: 10px;
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-/* Visual Uniformity Rules (No hard external borders) */
-.challenge-target-area * { box-sizing: border-box; font-family: 'Inter', sans-serif; }
-
-.challenge-target-area button,
-.challenge-target-area input,
-.challenge-target-area li,
-.challenge-target-area p,
-.challenge-target-area div,
-.challenge-target-area label,
-.challenge-target-area a,
-.challenge-target-area h2,
-.challenge-target-area h3,
-.challenge-target-area span {
-    border: 1px solid #E2E8F0 !important; 
-    background-color: white !important; 
-    color: var(--wf-secondary-steel-gray) !important;
-    padding: 8px 12px !important;
-    margin: 6px !important;
-    border-radius: 6px !important; 
-    display: inline-block !important; 
-}
-
-.target-highlight {
-    /* Highlight remains strong red for instructional clarity */
-    border: 2px solid #cc0000 !important; 
-    background-color: #fffac9 !important;
-    padding: 7px 11px !important; 
-    margin: 5px !important;
-}
-
-.validation-feedback { 
-    padding: 20px !important;
-    margin-top: 15px !important;
-    border-radius: var(--wf-border-radius);
-    font-weight: 600;
-}
-
-/* --- ACCORDION STYLES (Fixing appearance/padding) --- */
-.accordion {
-    /* FIX 3: Reset appearance for accordion headers and remove default button look */
-    appearance: none !important;
-    -webkit-appearance: none !important;
-    border: none !important;
-    text-align: left; /* Ensure text starts left */
-    
-    padding: 12px 15px; 
-    margin-top: 5px;
-    margin-bottom: 5px; 
-    border-radius: var(--wf-border-radius);
-    background-color: #F0F0F0;
-}
-
-.accordion::after {
-    margin-left: 10px; 
-}
-
-/* ❗ FIX 4: Ensure Panel Content fully collapses ❗ */
-.panel {
-    max-height: 0; 
-    overflow: hidden; 
-    transition: max-height 0.3s ease-in-out;
-}
-
-/* Add a new element to hold the visible content and padding */
-.panel-content {
-    padding: 15px 18px; /* Apply padding here */
-    border-left: 5px solid #ccc;
-    background-color: #f7f7f7;
-    margin-bottom: 10px; /* Add margin below the content */
-}
-
-.panel-content p {
-    margin: 0 !important; 
-    border: none !important;
-    background-color: transparent !important;
-}
+### 2. General Layout and Card Styling
 
 
-.success { 
-    background-color: var(--wf-success); 
-    color: var(--wf-text-success); 
-}
-.error { 
-    background-color: var(--wf-error); 
-    color: var(--wf-text-error); 
-}
+http://googleusercontent.com/immersive_entry_chip/0
+
+### 3. CSS Selectors Lab Styling (Fixing Buttons and Layout)
+
+
+http://googleusercontent.com/immersive_entry_chip/1
