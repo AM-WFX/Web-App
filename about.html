@@ -3,27 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us | Project App</title>
-    <link rel="stylesheet" href="styles.css"> 
+    <title>WFX-Schools - About Us</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
+
+    <!-- Top Navbar: Updated title and links adjusted for the "CSS Selectors" page -->
+    <header class="navbar">
+        <div class="logo">WFX-Schools</div>
         <nav>
-            <a href="index.html">Home</a> | 
-            <a href="about.html" class="active-nav">About Us</a>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html" class="active">About Us</a></li>
+                <li><a href="css-selectors.html">CSS Selectors</a></li>
+            </ul>
         </nav>
-        <h1>About Our Company</h1>
     </header>
 
-    <div class="data-box">
-        <p class="item-text highlight-me">This is a primary feature description.</p>
-        
-        <p class="item-text" data-status="pending">This item is still pending review.</p>
-        
-        <p class="item-text" data-status="complete">This item is finished and ready.</p>
+    <div class="container">
+        <div id="content-wrapper">
+            <aside class="sidebar">
+                <h3>Navigation</h3>
+                <ul>
+                    <li><a href="index.html">Homepage</a></li>
+                    <li><a href="about.html" class="active">About Us</a></li>
+                    <li><a href="css-selectors.html">CSS Selectors</a></li>
+                </ul>
+            </aside>
+            
+            <main class="content main-content">
+                <h1>Our Mission: Mastering Selectors</h1>
+                
+                <p class="highlight-me">This text's background color will be changed by a jQuery Class Selector.</p>
+                
+                <hr style="margin: 30px 0;">
+
+                <!-- Goal and Mission Statement -->
+                <div style="padding: 20px; border-left: 5px solid #007bff; background-color: #e9f0f9;">
+                    <h2>Our Goal & Mission</h2>
+                    
+                    <h3>Goal</h3>
+                    <p>To demystify **CSS Selectors** and eliminate the frustration often associated with web styling. We aim to convert complex CSS concepts into clear, actionable, and repeatable knowledge for every user, regardless of their starting skill level.</p>
+                    
+                    <h3>Mission Statement</h3>
+                    <p>WFX-Schools is dedicated to providing **free, interactive, and high-quality educational tools** that ensure everyone can learn CSS selectors easily and effectively. By focusing on practical application, immediate feedback, and clear explanations, we empower learners to write efficient, robust, and maintainable CSS for modern web development.</p>
+                </div>
+                
+                <hr style="margin: 30px 0;">
+                
+                <!-- Placeholder content for jQuery Attribute Selector demonstration -->
+                <p data-status="pending" style="border: 1px dashed orange; padding: 10px;">Review status: Pending update.</p>
+                <p data-status="complete" style="border: 1px dashed green; padding: 10px;">Review status: Complete (This should be hidden by jQuery).</p>
+
+            </main>
+        </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script> 
+    <footer>
+        <p>&copy; 2025 WFX-Schools</p>
+    </footer>
     <script src="script.js"></script>
 </body>
 </html>
