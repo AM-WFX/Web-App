@@ -117,18 +117,15 @@ footer {
 
 /* --- CTA & BUTTON STYLING (10% Accent Rule) --- */
 
-/* ❗ FIX 1: Aggressively target native button tag and reset appearance ❗ */
-button.cta-button {
-    /* Critical Resets for native browser styling */
+/* ❗ FIX 1: Aggressively reset appearance and enforce styles for ALL CTA buttons ❗ */
+.cta-button {
+    /* Critical Resets to override browser defaults */
     appearance: none !important;
     -webkit-appearance: none !important;
     border: none !important;
     border-style: none !important; 
     margin: 0 !important; /* Reset default button margin */
-}
-
-.challenge-ui .cta-button, 
-.cta-button {
+    
     /* Enforced Brand Styling */
     background-color: var(--wf-accent-orange) !important; /* Force Orange color */
     color: white;
@@ -189,10 +186,11 @@ button.cta-button {
     box-shadow: none; /* No shadow here, relies on main-content shadow */
 }
 
-/* ❗ FIX 2: UI Layout and Input Sizing ❗ */
+/* ❗ FIX 2: UI Layout and Input Sizing (Centering) ❗ */
 .challenge-ui {
     display: flex;
     align-items: center; /* Vertically center items */
+    justify-content: flex-start; /* Ensure items start from the left */
     gap: 10px;
 }
 
@@ -255,10 +253,11 @@ button.cta-button {
 
 /* --- ACCORDION STYLES (Fixing appearance/padding) --- */
 .accordion {
-    /* FIX 3: Reset appearance for accordion headers */
+    /* FIX 3: Reset appearance for accordion headers and remove default button look */
     appearance: none !important;
     -webkit-appearance: none !important;
     border: none !important;
+    text-align: left; /* Ensure text starts left */
     
     padding: 12px 15px; 
     margin-top: 5px;
@@ -271,13 +270,11 @@ button.cta-button {
     margin-left: 10px; 
 }
 
-/* ❗ FIX 4: Ensure Padding is inside the collapsing element (.panel-content) ❗ */
-/* Apply max-height: 0 to the panel wrapper */
+/* ❗ FIX 4: Ensure Panel Content fully collapses ❗ */
 .panel {
     max-height: 0; 
     overflow: hidden; 
     transition: max-height 0.3s ease-in-out;
-    /* Remove padding from here */
 }
 
 /* Add a new element to hold the visible content and padding */
@@ -285,6 +282,7 @@ button.cta-button {
     padding: 15px 18px; /* Apply padding here */
     border-left: 5px solid #ccc;
     background-color: #f7f7f7;
+    margin-bottom: 10px; /* Add margin below the content */
 }
 
 .panel-content p {
