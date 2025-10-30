@@ -15,11 +15,11 @@
             padding: 20px 0;
         }
 
-        /* ❗ FINAL FIX: Enforce Sidebar/Main Content Layout using CSS Grid on a dedicated wrapper ❗ */
+        /* ❗ ADJUSTED FIX: More flexible grid for sidebar and main content ❗ */
         #content-wrapper {
             display: grid;
-            /* Define 2 columns: 1 for sidebar (200px), 1 for main content (rest of space) */
-            grid-template-columns: 200px 1fr; 
+            /* Allow sidebar to take its content width, main content takes the rest */
+            grid-template-columns: minmax(150px, 250px) 1fr; 
             gap: 20px;
         }
         
@@ -44,12 +44,15 @@
             display: flex;
             flex-wrap: wrap; 
             gap: 20px; 
-            justify-content: flex-start;
+            justify-content: space-between; /* ❗ NEW: Distributes space evenly between challenges ❗ */
         }
         
         .challenge-container {
-            width: calc(50% - 10px); 
-            min-width: 400px; 
+            /* ❗ ADJUSTED WIDTH: Ensures challenges take up roughly half the space minus the gap ❗ */
+            /* This makes them grow and shrink a bit more fluidly */
+            flex: 1 1 calc(50% - 10px); 
+            min-width: 380px; /* Adjusted slightly to give more room for flexing */
+            max-width: calc(50% - 10px); /* Ensures it doesn't grow past 50% */
             
             margin-top: 10px; 
             padding: 20px;
@@ -58,7 +61,7 @@
             margin-bottom: 20px; 
             background-color: #f6faff;
         }
-        
+
         /* --- VISUAL UNIFORMITY RULES (Elements look the same) --- */
         
         .challenge-target-area * { box-sizing: border-box; }
@@ -105,7 +108,7 @@
         .challenge-header h3 { margin: 0; color: #1a5c9a; }
         .challenge-ui { display: flex; gap: 10px; margin-bottom: 10px; }
         .challenge-ui input[type="text"] { flex-grow: 1; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-family: monospace; font-size: 1em; }
-        .challenge-ui button { padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; white-space: nowrap; }
+        .challenge-ui button { padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 44px; cursor: pointer; white-space: nowrap; }
         
         .success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
         .error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
