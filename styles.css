@@ -24,23 +24,28 @@
 
 /* --- GLOBAL RESET & FONT --- */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+/* ❗ FONT: Importing Manrope (replaces Inter) */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&display=swap');
 
 body {
-    font-family: 'Inter', sans-serif;
+    /* ❗ FONT: Applying Manrope globally */
+    font-family: 'Manrope', sans-serif;
     margin: 0;
     padding: 0;
     background-color: var(--wf-dominant-spring-wood); /* 60% Dominant Background */
     color: var(--wf-secondary-steel-gray); /* 30% Secondary Text */
 }
 
-/* --- NAVBAR STYLING --- */
+/* --- ❗ NAVBAR STYLING (WHATFIX REPLICATION) ❗ --- */
 
 .navbar {
     background-color: white; 
     color: var(--wf-secondary-steel-gray);
-    padding: 15px 30px;
-    border-bottom: 1px solid #E2E8F0;
+    /* Increased padding for a more modern, spacious header */
+    padding: 20px 30px; 
+    /* Replaced border with subtle shadow */
+    border-bottom: none;
+    box-shadow: var(--wf-shadow-subtle);
     display: flex; 
     justify-content: flex-start;
     align-items: center;
@@ -70,7 +75,8 @@ body {
 .navbar a { 
     color: var(--wf-secondary-steel-gray); 
     text-decoration: none; 
-    font-size: 0.95em; 
+    font-size: 1em; /* Standardized font size */
+    font-weight: 600; /* Bolder font for header links */
     padding: 5px 0;
     transition: color 0.3s, border-bottom 0.3s;
 }
@@ -82,7 +88,7 @@ body {
 
 /* --- CORE LAYOUT & CARDS --- */
 
-h1, h2 {
+h1, h2, h3 {
     color: var(--wf-secondary-steel-gray);
     font-weight: 700;
 }
@@ -94,13 +100,11 @@ h1, h2 {
 }
 
 #content-wrapper {
-    /* Simple block display after sidebar removal */
     display: block; 
     padding: 20px 0;
 }
 
 .main-content {
-    /* Base for the main content card aesthetic */
     padding: 30px;
     background-color: white;
     border-radius: var(--wf-border-radius);
@@ -119,16 +123,15 @@ footer {
 
 /* --- CTA & BUTTON STYLING (10% Accent Rule) --- */
 
-/* ❗ FINAL FIX: Target the validate button by its unique onclick attribute ❗ */
+/* This styles the Orange "Validate" and "Promo" buttons */
 button[onclick*="validateChallenge"], 
 .cta-button {
-    /* Critical Reset for native browser styling */
     appearance: none !important;
-    -webkit-appearance: none !important; /* For older WebKit browsers */
+    -webkit-appearance: none !important;
     border: none !important;
-    border-style: none !important; /* Remove outlook/inlay border */
+    border-style: none !important; 
     
-    background-color: var(--wf-accent-orange) !important; /* Force Orange color */
+    background-color: var(--wf-accent-orange) !important; 
     color: white !important;
     font-weight: 600 !important;
     padding: 12px 25px !important;
@@ -137,32 +140,31 @@ button[onclick*="validateChallenge"],
     transition: background-color 0.2s, box-shadow 0.2s;
     text-decoration: none !important;
     display: inline-block !important;
-    /* Ensure font is also inherited/set correctly */
-    font-family: 'Inter', sans-serif !important;
+    /* ❗ FONT: Applying Manrope */
+    font-family: 'Manrope', sans-serif !important;
     font-size: 1em !important;
-    line-height: 1; /* Ensures proper vertical centering */
+    line-height: 1; 
     height: var(--wf-input-height);
 }
 
 .cta-button:hover,
 button[onclick*="validateChallenge"]:hover {
-    background-color: #E55C00 !important; /* Slightly darker orange */
-    box-shadow: 0 4px 8px -2px rgba(255, 107, 24, 0.5); /* Stronger shadow on hover */
+    background-color: #E55C00 !important; 
+    box-shadow: 0 4px 8px -2px rgba(255, 107, 24, 0.5);
 }
 
 /* --- HOME & ABOUT PAGE SPECIFICS --- */
 
 .promo-box {
-    background-color: var(--wf-support-karry); /* Karry support color */
+    background-color: var(--wf-support-karry); 
     border-radius: var(--wf-border-radius);
     padding: 30px;
     text-align: center;
-    border: none; /* Borderless design */
+    border: none; 
     box-shadow: none;
 }
 
 .mission-statement {
-    /* Specific accent border only on the left */
     border-left: 5px solid var(--wf-accent-orange); 
     padding: 20px; 
     background-color: var(--wf-dominant-spring-wood);
@@ -180,7 +182,6 @@ button[onclick*="validateChallenge"]:hover {
 }
 
 .challenge-container {
-    /* Karry background for visual distinction */
     background-color: var(--wf-support-karry); 
     border-radius: var(--wf-border-radius);
     padding: 20px;
@@ -188,22 +189,21 @@ button[onclick*="validateChallenge"]:hover {
     max-width: calc(50% - 10px); 
     min-width: 380px; 
     margin-top: 10px; 
-    box-shadow: none; /* No shadow here, relies on main-content shadow */
+    box-shadow: none;
 }
 
-/* ❗ FIX: Add uniform height and centering ❗ */
+/* ❗ FIX: Uniform Height, Centering, and Contrast ❗ */
 .challenge-target-area {
-    /* Using light neutral colors for uniformity within the challenge */
+    /* ❗ CONTRAST: Use Spring Wood to contrast with white elements inside */
+    background-color: var(--wf-dominant-spring-wood); 
     border: 1px solid #E2E8F0; 
-    background-color: white; 
     border-radius: var(--wf-border-radius);
     padding: 15px;
     margin-top: 10px;
     margin-bottom: 20px; 
-    text-align: center;
     
-    /* New styles for uniform height and centering */
-    min-height: 150px; 
+    /* ❗ UNIFORM HEIGHT: Set fixed height and center content */
+    height: 200px; 
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -214,8 +214,8 @@ button[onclick*="validateChallenge"]:hover {
     display: flex;
     gap: 10px;
     margin-top: 10px;
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
+    justify-content: center; 
+    align-items: center; 
 }
 
 .challenge-ui input[type="text"] {
@@ -226,11 +226,15 @@ button[onclick*="validateChallenge"]:hover {
     font-family: monospace;
     font-size: 1em;
     height: var(--wf-input-height);
-    box-sizing: border-box; /* Include padding/border in height */
+    box-sizing: border-box; 
 }
 
 /* Visual Uniformity Rules (No hard external borders) */
-.challenge-target-area * { box-sizing: border-box; font-family: 'Inter', sans-serif; }
+.challenge-target-area * { 
+    box-sizing: border-box; 
+    /* ❗ FONT: Applying Manrope */
+    font-family: 'Manrope', sans-serif;
+}
 
 .challenge-target-area button,
 .challenge-target-area input,
@@ -242,25 +246,17 @@ button[onclick*="validateChallenge"]:hover {
 .challenge-target-area h2,
 .challenge-target-area h3,
 .challenge-target-area span {
-    border: none; /* Removed all internal borders */
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05); /* Soft inner shadow */
+    border: none; 
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05); 
     background-color: white !important; 
     color: var(--wf-secondary-steel-gray) !important;
     padding: 8px 12px !important;
     margin: 6px !important;
-    border-radius: 6px !important; /* Slightly smaller radius for small elements */
+    border-radius: 6px !important; 
     display: inline-block !important; 
 }
 
-/* ❗ REMOVED: The .target-highlight rule is no longer needed ❗ */
-/*
-.target-highlight {
-    border: 2px solid #cc0000 !important; 
-    background-color: #fffac9 !important;
-}
-*/
-
-/* --- ACCORDION STYLES (Fixing visibility/collapse) --- */
+/* --- ❗ ACCORDION STYLING (WHATFIX REPLICATION) ❗ --- */
 
 .validation-feedback { 
     padding: 20px !important;
@@ -269,51 +265,79 @@ button[onclick*="validateChallenge"]:hover {
     font-weight: 600;
 }
 
+/* This is the accordion 'button' */
 .accordion {
+    /* Reset all button appearance */
     appearance: none !important;
     -webkit-appearance: none !important;
     border: none !important;
-    padding: 12px 15px !important; 
-    margin-top: 5px;
-    margin-bottom: 5px; 
-    border-radius: var(--wf-border-radius) !important;
-    background-color: #F0F0F0 !important;
+    background-color: transparent !important; /* No background */
     box-shadow: none !important;
     
-    /* Copied from .challenge-ui to ensure consistency */
+    /* Style as a text header */
+    padding: 12px 0; /* Padding only top/bottom */
+    margin-top: 5px;
+    margin-bottom: 5px; 
+    border-bottom: 1px solid #E2E8F0; /* Subtle line separator */
+    border-radius: 0; /* No radius */
+    
+    /* Flexbox to separate text from icon */
     display: flex !important;
     justify-content: space-between !important;
     align-items: center !important;
     width: 100%;
     text-align: left;
-    font-family: 'Inter', sans-serif !important;
+    
+    /* ❗ FONT: Applying Manrope */
+    font-family: 'Manrope', sans-serif !important;
     font-size: 0.9em !important;
     font-weight: 600 !important;
     color: var(--wf-secondary-steel-gray) !important;
     cursor: pointer !important;
+    transition: color 0.3s;
 }
 
+.accordion:hover {
+    color: var(--wf-accent-orange) !important;
+}
+
+/* The new +/- icon */
+.accordion::after {
+    content: '\002B'; /* Plus Sign (+) */
+    font-size: 1.5em;
+    font-weight: 400;
+    color: var(--wf-accent-orange);
+    transition: transform 0.3s ease-in-out;
+    transform: rotate(0deg);
+}
+
+.active-accordion::after {
+    content: '\2212'; /* Minus Sign (−) */
+    transform: rotate(180deg);
+}
+
+
+/* Panel (the collapsible area) */
 .panel {
-    /* CRITICAL: This line controls the hidden/shown state. */
     max-height: 0; 
     overflow: hidden; 
     transition: max-height 0.3s ease-in-out;
-    padding: 0; /* REMOVE PADDING FROM THE HIDING ELEMENT */
+    padding: 0; 
 }
 
 .panel-content {
-    /* Apply padding to the inner wrapper */
     padding: 15px 18px; 
-    border-left: 2px solid var(--wf-accent-orange);
-    background-color: #fff;
+    border-left: 3px solid var(--wf-accent-orange);
+    background-color: var(--wf-dominant-spring-wood); /* Spring Wood background */
     margin-bottom: 5px;
+    margin-top: 5px;
 }
 
 .panel-content p {
-    /* ❗ FIX: Force margin to 0 to prevent leaking outside collapsed panel ❗ */
     margin: 0 !important; 
     border: none !important;
     background-color: transparent !important;
+    box-shadow: none !important;
 }
 
 .success { 
