@@ -1,5 +1,5 @@
 /* --------------------------------------------------------- */
-/* --- WFX-SCHOOLS BRAND STYLES (60-30-10 Rule Applied) --- */
+/* --- WFX-SCHOOLS BRAND STYLES (Final 60-30-10 Aesthetic) --- */
 /* --------------------------------------------------------- */
 
 /* Import Google Font: Inter */
@@ -8,11 +8,13 @@
 /* Brand Colors (60-30-10 Palette) */
 :root {
     --wf-bg-dominant: #F9F9F2;      /* 60% - Spring Wood (Main Background) */
-    --wf-text-secondary: #25223B;   /* 30% - Steel Gray (Primary Text/Headings) */
+    --wf-text-secondary: #25223B;   /* 30% - Steel Gray (Primary Text/Headings/Footer BG) */
     --wf-accent-primary: #FF6B18;   /* 10% - Orange (CTA/Accent) */
     --wf-support-neutral: #FFE9DC;  /* Karry (Subtle Support Backgrounds) */
     
-    --wf-shadow-md: rgba(0, 0, 0, 0.1); /* Slightly more prominent shadow */
+    /* Box Shadows for Elevation (Content Cards/Blocks) */
+    --wf-shadow-card: 0 2px 8px -1px rgba(37, 34, 59, 0.05), 0 1px 4px -2px rgba(37, 34, 59, 0.05); 
+    --wf-shadow-input-focus: 0 0 0 1px var(--wf-accent-primary); /* For focus ring */
 }
 
 /* Core Reset and Typography */
@@ -29,7 +31,8 @@ body {
     background-color: white; 
     color: var(--wf-text-secondary);
     padding: 15px 30px;
-    border-bottom: 1px solid #E2E8F0;
+    /* Use a very light divider line */
+    border-bottom: 1px solid #E2E8F0; 
     display: flex; 
     justify-content: flex-start; 
     align-items: center;
@@ -41,7 +44,7 @@ body {
 .navbar .logo { 
     font-size: 1.5em; 
     font-weight: 700; 
-    color: var(--wf-accent-primary); /* Use Primary Accent for Logo */
+    color: var(--wf-text-secondary); /* Logo in Steel Gray or sometimes Primary Accent */
     margin-right: 40px; 
 }
 
@@ -69,28 +72,42 @@ body {
     padding: 0 20px;
 }
 
-/* Base Layout for Home/About Pages (Assuming no sidebar structure is needed) */
 #content-wrapper {
     display: block; 
     padding: 20px 0;
 }
 
-/* --- Main Content Area (Card Aesthetic - Softened) --- */
+/* --- Main Content Area (Card Aesthetic) --- */
 .main-content {
     padding: 30px;
     background-color: white;
-    /* Increased corner radius (10px) */
     border-radius: 10px; 
-    /* Subtle lifted shadow effect, NO HARD BORDERS */
-    box-shadow: 0 4px 10px -2px var(--wf-shadow-md), 0 2px 4px -4px var(--wf-shadow-md); 
+    /* Defined by soft shadow elevation */
+    box-shadow: var(--wf-shadow-card); 
 }
 
 /* --- Utility/Reused Elements --- */
-.main-content h1 {
+.main-content h1, .main-content h2, .main-content h3 {
     color: var(--wf-text-secondary);
     font-weight: 700;
-    font-size: 2em;
     margin-top: 0;
+}
+
+/* Primary CTA Button Style (Solid Orange) */
+.cta-button {
+    padding: 12px 30px; 
+    background-color: var(--wf-accent-primary); /* Orange 10% Accent */
+    color: white; 
+    border: none; 
+    border-radius: 10px; /* Increased Radius */
+    cursor: pointer; 
+    font-weight: 600;
+    transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+.cta-button:hover {
+    background-color: #E55F15; /* Slightly darker orange on hover */
+    box-shadow: 0 4px 10px rgba(255, 107, 24, 0.3);
 }
 
 /* --- Footer --- */
