@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (typeof jQuery !== 'undefined') {
         $(document).ready(function() {
             // ----------------------------------------------------
-            // --- SELECTORS FOR index.html (Home Page) ---
+            // --- SELECTORS FOR home.html (Home Page) ---
             // ----------------------------------------------------
             $('#target-p').text('--- SUCCESSFULLY CHANGED BY ID SELECTOR (#target-p) ---');
             $('p').addClass('highlight'); 
@@ -475,9 +475,9 @@ function handleSuccess(challengeId, correctSelector) {
 
     const alternativesHtml = allAlternatives
         .filter(alt => alt.selector.toLowerCase().trim() !== normalizedSelector)
-        .map((alt, index) => `
+        .map((alt, home) => `
             <button class="accordion" onclick="toggleAccordion(this)">
-                Alternative ${index + 1}: <code>${alt.selector}</code>
+                Alternative ${home + 1}: <code>${alt.selector}</code>
             </button>
             <div class="panel">
                 <p><strong>How it works:</strong> ${alt.explanation}</p>
