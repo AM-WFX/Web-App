@@ -117,19 +117,27 @@ footer {
 
 /* --- CTA & BUTTON STYLING (10% Accent Rule) --- */
 
-/* ❗ VALIDATE BUTTON FIX: Ensure Orange Color Wins ❗ */
+/* ❗ FINAL BUTTON FIX: Aggressively reset appearance and enforce styles ❗ */
 .challenge-ui .cta-button, 
 .cta-button {
-    background-color: var(--wf-accent-orange) !important; /* Use !important temporarily to force color */
+    /* Critical Reset for native browser styling */
+    appearance: none;
+    -webkit-appearance: none; /* For older WebKit browsers */
+    border: none;
+    border-style: none; /* Remove outlook/inlay border */
+    
+    background-color: var(--wf-accent-orange) !important; /* Force Orange color */
     color: white;
     font-weight: 600;
     padding: 12px 25px;
-    border: none;
     border-radius: var(--wf-border-radius);
     cursor: pointer;
     transition: background-color 0.2s, box-shadow 0.2s;
     text-decoration: none;
     display: inline-block;
+    /* Ensure font is also inherited/set correctly */
+    font-family: 'Inter', sans-serif;
+    font-size: 1em;
 }
 
 .cta-button:hover {
