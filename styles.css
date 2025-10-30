@@ -2,7 +2,7 @@
 /* --- 🧱 WHATFIX BRANDING & CORE LAYOUT STYLES --- */
 /* ---------------------------------------------------- */
 
-/* ❗ FIX: Added CSS Variables for Brand Colors ❗ */
+/* CSS Variables for Brand Colors */
 :root {
     --wf-dominant-spring-wood: #F9F9F2;
     --wf-secondary-steel-gray: #25223B;
@@ -119,8 +119,8 @@ footer {
 
 /* --- CTA & BUTTON STYLING (10% Accent Rule) --- */
 
-/* ❗ FINAL BUTTON FIX: Aggressively reset appearance and enforce styles ❗ */
-.challenge-ui .cta-button, 
+/* ❗ FIX 1: Target the button inside .challenge-ui directly ❗ */
+.challenge-ui button, 
 .cta-button {
     /* Critical Reset for native browser styling */
     appearance: none !important;
@@ -144,7 +144,8 @@ footer {
     height: var(--wf-input-height);
 }
 
-.cta-button:hover {
+.cta-button:hover,
+.challenge-ui button:hover {
     background-color: #E55C00 !important; /* Slightly darker orange */
     box-shadow: 0 4px 8px -2px rgba(255, 107, 24, 0.5); /* Stronger shadow on hover */
 }
@@ -190,7 +191,6 @@ footer {
     box-shadow: none; /* No shadow here, relies on main-content shadow */
 }
 
-/* ❗ FIX: Add spacing between target area and UI ❗ */
 .challenge-target-area {
     /* Using light neutral colors for uniformity within the challenge */
     border: 1px solid #E2E8F0; 
@@ -202,13 +202,12 @@ footer {
     text-align: center;
 }
 
-/* ❗ FIX: Center content and size input/button ❗ */
 .challenge-ui {
     display: flex;
     gap: 10px;
     margin-top: 10px;
     justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically (Fixes previous bug) */
+    align-items: center; /* Center vertically */
 }
 
 .challenge-ui input[type="text"] {
@@ -271,7 +270,6 @@ footer {
     box-shadow: none; /* Ensure no button shadow */
 }
 
-/* ❗ ACCORDION INTERACTIVITY FIX ❗ */
 .panel {
     /* CRITICAL: This line controls the hidden/shown state. */
     max-height: 0; 
@@ -289,6 +287,7 @@ footer {
 }
 
 .panel-content p {
+    /* ❗ FIX 2: Force margin to 0 to prevent leaking outside collapsed panel ❗ */
     margin: 0 !important; 
     border: none !important;
     background-color: transparent !important;
