@@ -2,7 +2,7 @@
 /* --- 🧱 WHATFIX BRANDING & CORE LAYOUT STYLES --- */
 /* ---------------------------------------------------- */
 
-/* CSS Variables for Brand Colors */
+/* ❗ FIX: Added CSS Variables for Brand Colors ❗ */
 :root {
     --wf-dominant-spring-wood: #F9F9F2;
     --wf-secondary-steel-gray: #25223B;
@@ -17,7 +17,7 @@
     
     /* Aesthetics */
     --wf-border-radius: 10px;
-    --wf-shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.05);
+    --wf-shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.05);
     --wf-shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
     --wf-input-height: 44px; /* Defined for vertical centering */
 }
@@ -37,7 +37,7 @@ body {
 /* --- NAVBAR STYLING --- */
 
 .navbar {
-    background-color: var(--wf-dominant-spring-wood);
+    background-color: white; 
     color: var(--wf-secondary-steel-gray);
     padding: 15px 30px;
     border-bottom: 1px solid #E2E8F0;
@@ -80,13 +80,226 @@ body {
     border-bottom: 2px solid var(--wf-accent-orange);
 }
 
+/* --- CORE LAYOUT & CARDS --- */
 
-### 2. General Layout and Card Styling
+h1, h2 {
+    color: var(--wf-secondary-steel-gray);
+    font-weight: 700;
+}
 
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
 
-http://googleusercontent.com/immersive_entry_chip/0
+#content-wrapper {
+    /* Simple block display after sidebar removal */
+    display: block; 
+    padding: 20px 0;
+}
 
-### 3. CSS Selectors Lab Styling (Fixing Buttons and Layout)
+.main-content {
+    /* Base for the main content card aesthetic */
+    padding: 30px;
+    background-color: white;
+    border-radius: var(--wf-border-radius);
+    box-shadow: var(--wf-shadow-card); 
+}
 
+/* --- FOOTER STYLING --- */
 
-http://googleusercontent.com/immersive_entry_chip/1
+footer {
+    text-align: center;
+    padding: 15px;
+    background-color: var(--wf-secondary-steel-gray); /* Dark ground */
+    color: white;
+    margin-top: 40px;
+}
+
+/* --- CTA & BUTTON STYLING (10% Accent Rule) --- */
+
+/* ❗ FINAL BUTTON FIX: Aggressively reset appearance and enforce styles ❗ */
+.challenge-ui .cta-button, 
+.cta-button {
+    /* Critical Reset for native browser styling */
+    appearance: none !important;
+    -webkit-appearance: none !important; /* For older WebKit browsers */
+    border: none !important;
+    border-style: none !important; /* Remove outlook/inlay border */
+    
+    background-color: var(--wf-accent-orange) !important; /* Force Orange color */
+    color: white !important;
+    font-weight: 600 !important;
+    padding: 12px 25px !important;
+    border-radius: var(--wf-border-radius) !important;
+    cursor: pointer !important;
+    transition: background-color 0.2s, box-shadow 0.2s;
+    text-decoration: none !important;
+    display: inline-block !important;
+    /* Ensure font is also inherited/set correctly */
+    font-family: 'Inter', sans-serif !important;
+    font-size: 1em !important;
+    line-height: 1; /* Ensures proper vertical centering */
+    height: var(--wf-input-height);
+}
+
+.cta-button:hover {
+    background-color: #E55C00 !important; /* Slightly darker orange */
+    box-shadow: 0 4px 8px -2px rgba(255, 107, 24, 0.5); /* Stronger shadow on hover */
+}
+
+/* --- HOME & ABOUT PAGE SPECIFICS --- */
+
+.promo-box {
+    background-color: var(--wf-support-karry); /* Karry support color */
+    border-radius: var(--wf-border-radius);
+    padding: 30px;
+    text-align: center;
+    border: none; /* Borderless design */
+    box-shadow: none;
+}
+
+.mission-statement {
+    /* Specific accent border only on the left */
+    border-left: 5px solid var(--wf-accent-orange); 
+    padding: 20px; 
+    background-color: var(--wf-dominant-spring-wood);
+    border-radius: var(--wf-border-radius);
+    margin-bottom: 20px;
+}
+
+/* --- CSS SELECTORS LAB STYLES --- */
+
+#all-challenges {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 20px; 
+    justify-content: space-between;
+}
+
+.challenge-container {
+    /* Karry background for visual distinction */
+    background-color: var(--wf-support-karry); 
+    border-radius: var(--wf-border-radius);
+    padding: 20px;
+    flex: 1 1 45%; 
+    max-width: calc(50% - 10px); 
+    min-width: 380px; 
+    margin-top: 10px; 
+    box-shadow: none; /* No shadow here, relies on main-content shadow */
+}
+
+/* ❗ FIX: Add spacing between target area and UI ❗ */
+.challenge-target-area {
+    /* Using light neutral colors for uniformity within the challenge */
+    border: 1px solid #E2E8F0; 
+    background-color: white; 
+    border-radius: var(--wf-border-radius);
+    padding: 15px;
+    margin-top: 10px;
+    margin-bottom: 20px; /* Added spacing to separate it from challenge-ui */
+    text-align: center;
+}
+
+/* ❗ FIX: Center content and size input/button ❗ */
+.challenge-ui {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically (Fixes previous bug) */
+}
+
+.challenge-ui input[type="text"] {
+    flex-grow: 1; 
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: var(--wf-border-radius);
+    font-family: monospace;
+    font-size: 1em;
+    height: var(--wf-input-height);
+    box-sizing: border-box; /* Include padding/border in height */
+}
+
+/* Visual Uniformity Rules (No hard external borders) */
+.challenge-target-area * { box-sizing: border-box; font-family: 'Inter', sans-serif; }
+
+.challenge-target-area button,
+.challenge-target-area input,
+.challenge-target-area li,
+.challenge-target-area p,
+.challenge-target-area div,
+.challenge-target-area label,
+.challenge-target-area a,
+.challenge-target-area h2,
+.challenge-target-area h3,
+.challenge-target-area span {
+    border: none; /* Removed all internal borders */
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05); /* Soft inner shadow */
+    background-color: white !important; 
+    color: var(--wf-secondary-steel-gray) !important;
+    padding: 8px 12px !important;
+    margin: 6px !important;
+    border-radius: 6px !important; /* Slightly smaller radius for small elements */
+    display: inline-block !important; 
+}
+
+.target-highlight {
+    /* Highlight remains strong red for instructional clarity */
+    border: 2px solid #cc0000 !important; 
+    background-color: #fffac9 !important;
+}
+
+/* --- ACCORDION STYLES (Fixing visibility/collapse) --- */
+
+.validation-feedback { 
+    padding: 20px !important;
+    margin-top: 15px !important;
+    border-radius: var(--wf-border-radius);
+    font-weight: 600;
+}
+
+.accordion {
+    appearance: none !important; /* Fixes button appearance */
+    border: none !important;
+    padding: 12px 15px; 
+    margin-top: 5px;
+    margin-bottom: 5px; 
+    border-radius: var(--wf-border-radius);
+    background-color: #F0F0F0;
+    box-shadow: none; /* Ensure no button shadow */
+}
+
+/* ❗ ACCORDION INTERACTIVITY FIX ❗ */
+.panel {
+    /* CRITICAL: This line controls the hidden/shown state. */
+    max-height: 0; 
+    overflow: hidden; 
+    transition: max-height 0.3s ease-in-out;
+    padding: 0; /* REMOVE PADDING FROM THE HIDING ELEMENT */
+}
+
+.panel-content {
+    /* Apply padding to the inner wrapper */
+    padding: 15px 18px; 
+    border-left: 2px solid var(--wf-accent-orange);
+    background-color: #fff;
+    margin-bottom: 5px;
+}
+
+.panel-content p {
+    margin: 0 !important; 
+    border: none !important;
+    background-color: transparent !important;
+}
+
+.success { 
+    background-color: var(--wf-success); 
+    color: var(--wf-text-success); 
+}
+.error { 
+    background-color: var(--wf-error); 
+    color: var(--wf-text-error); 
+}
+
