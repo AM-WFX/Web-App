@@ -1,30 +1,40 @@
-/* --- Core Page Reset --- */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-    color: #333;
+/* --- GLOBAL BRAND VARIABLES --- */
+:root {
+    --wf-primary-teal: #00B7B9; /* Main Accent Color (Teal) */
+    --wf-secondary-coral: #FF6347; /* CTA/Secondary Accent (Coral) */
+    --wf-text-dark: #1E293B; /* Dark Text/Structural elements */
+    --wf-bg-light: #F8FAFC; /* Very light page background */
+    --wf-shadow-md: rgba(0, 0, 0, 0.05); /* Subtle shadow for lifted cards */
 }
 
-/* --- Top Navigation Bar (FIXED) --- */
+/* --- Core Page Reset and Typography --- */
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--wf-bg-light);
+    color: var(--wf-text-dark);
+}
+
+/* --- Top Navigation Bar --- */
 .navbar {
-    background-color: #333;
-    color: white;
-    padding: 15px 20px;
+    background-color: white; 
+    color: var(--wf-text-dark);
+    padding: 15px 30px;
+    border-bottom: 1px solid #E2E8F0;
     display: flex; 
-    justify-content: flex-start; /* Pushes everything to the left */
+    justify-content: flex-start;
     align-items: center;
     position: sticky; 
     top: 0;
     z-index: 100;
 }
 
-/* Adjustments for top navbar items to place logo/name first */
 .navbar .logo {
     font-size: 1.5em;
-    font-weight: bold;
-    margin-right: 30px; /* Space between WFX-Schools and links */
+    font-weight: 700;
+    color: var(--wf-primary-teal); /* Logo accent color */
+    margin-right: 40px;
 }
 
 .navbar ul {
@@ -35,45 +45,50 @@ body {
 }
 
 .navbar li {
-    margin-right: 20px; /* Using right margin instead of left */
+    margin-right: 20px;
 }
 
 .navbar a {
-    color: white;
+    color: var(--wf-text-dark);
     text-decoration: none;
-    padding: 5px 10px;
-    transition: background-color 0.3s;
+    font-size: 0.95em;
+    padding: 5px 0;
+    transition: all 0.3s;
 }
 
-.navbar a:hover, .navbar a.active {
-    background-color: #555;
+.navbar a.active {
+    /* Active link uses the primary Teal accent color */
+    color: var(--wf-primary-teal);
+    border-bottom: 2px solid var(--wf-primary-teal); 
 }
 
-/* --- Overall Container Structure (FIXED: Single Column) --- */
+/* --- Core Layout Structure (No Sidebar Grid) --- */
 .container {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 30px;
 }
 
-/* 🧱 CRITICAL LAYOUT: REMOVED SIDEBAR GRID */
 #content-wrapper {
-    /* Now uses a single column grid that spans the whole container width */
     display: block; 
     padding: 20px 0;
 }
 
-/* ⚠️ SIDEBAR STYLES (Retained but redundant, will be ignored as <aside> is removed) */
-.sidebar {
-    display: none; /* Explicitly hides the sidebar if the tag remains */
+/* Base style for all major content areas (the lifted card effect) */
+.main-content {
+    padding: 30px; /* Increased internal padding */
+    background-color: white;
+    border-radius: 8px;
+    /* Authentic Whatfix shadow lift */
+    box-shadow: 0 4px 6px -1px var(--wf-shadow-md), 0 2px 4px -2px var(--wf-shadow-md); 
 }
-
 
 /* --- Footer --- */
 footer {
     text-align: center;
-    padding: 10px;
-    background-color: #333;
+    padding: 20px;
+    background-color: var(--wf-text-dark); /* Dark Structural Color */
     color: white;
-    margin-top: 20px;
+    margin-top: 40px;
+    font-size: 0.9em;
 }
