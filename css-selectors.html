@@ -7,22 +7,29 @@
     <link rel="stylesheet" href="styles.css"> 
     
     <style>
-        /* --- General Layout and Formatting (Guaranteed Container Layout) --- */
+        /* --- General Layout and Formatting --- */
         .container {
+            /* Max width for the entire page content */
             max-width: 1400px; 
             margin: 0 auto;
-            padding: 20px 0; /* Add vertical padding */
-            
-            /* ❗ FIX START: Enforce Sidebar/Main Content Layout using CSS Grid ❗ */
+            padding: 20px 0;
+        }
+
+        /* ❗ FINAL FIX: Enforce Sidebar/Main Content Layout using CSS Grid on a dedicated wrapper ❗ */
+        #content-wrapper {
             display: grid;
             /* Define 2 columns: 1 for sidebar (200px), 1 for main content (rest of space) */
             grid-template-columns: 200px 1fr; 
             gap: 20px;
-            /* ❗ FIX END ❗ */
         }
         
-        /* NOTE: The 'sidebar' class styling is assumed to be handled by the external styles.css, 
-                 but if not, it will automatically fit into the 200px grid column. */
+        /* Sidebar Styling (Just for visibility) */
+        .sidebar {
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
 
         .main-content {
             /* This fills the second column of the grid */
@@ -34,7 +41,6 @@
 
         /* --- Side-by-Side Challenge Layout (The challenge boxes themselves) --- */
         #all-challenges {
-            /* This property is essential for side-by-side layout of the challenges */
             display: flex;
             flex-wrap: wrap; 
             gap: 20px; 
@@ -42,7 +48,6 @@
         }
         
         .challenge-container {
-            /* Guarantees two challenges fit cleanly */
             width: calc(50% - 10px); 
             min-width: 400px; 
             
@@ -97,7 +102,6 @@
         }
         
         /* --- UI and Feedback Elements (Retained) --- */
-
         .challenge-header h3 { margin: 0; color: #1a5c9a; }
         .challenge-ui { display: flex; gap: 10px; margin-bottom: 10px; }
         .challenge-ui input[type="text"] { flex-grow: 1; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-family: monospace; font-size: 1em; }
@@ -141,20 +145,22 @@
     </header>
 
     <div class="container">
-        <aside class="sidebar">
-            <h3>Navigation</h3>
-            <p>Links should be styled by your main stylesheet.</p>
-        </aside>
-        
-        <main class="content main-content">
-            <h1>The Ultimate CSS Selector Lab 🎯</h1>
-            <p>Your task: Write a selector that targets **only the element currently highlighted** within each challenge box. You must remove the highlight by entering the correct selector and clicking 'Validate'.</p>
+        <div id="content-wrapper">
+            <aside class="sidebar">
+                <h3>Navigation</h3>
+                <p>Links should be styled by your main stylesheet.</p>
+            </aside>
             
-            <div id="all-challenges">
-                </div>
-            
-        </main>
-    </div>
+            <main class="content main-content">
+                <h1>The Ultimate CSS Selector Lab 🎯</h1>
+                <p>Your task: Write a selector that targets **only the element currently highlighted** within each challenge box. You must remove the highlight by entering the correct selector and clicking 'Validate'.</p>
+                
+                <div id="all-challenges">
+                    </div>
+                
+            </main>
+        </div>
+        </div>
 
     <footer>
         <p>&copy; 2025 My Awesome Website</p>
