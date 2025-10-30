@@ -7,32 +7,54 @@ body {
     color: #333;
 }
 
-/* --- Top Navbar (from original plan) --- */
+/* --- Top Navigation Bar (Fixing links being misplaced) --- */
 .navbar {
     background-color: #333;
     color: white;
     padding: 15px 20px;
-    display: flex;
-    justify-content: space-between;
+    display: flex; 
+    justify-content: space-between; /* Pushes logo to left, nav links to right */
     align-items: center;
-    position: sticky; /* Keeps navbar visible when scrolling */
+    position: sticky; 
     top: 0;
     z-index: 100;
 }
 
-/* --- Core Layout Fix: Sidebar and Main Content --- */
-.container {
-    /* The CSS Grid enforces the side-by-side structure */
-    display: grid;
-    /* Define 2 columns: 1 for sidebar (250px), 1 for content (rest of the space) */
-    grid-template-columns: 250px 1fr; 
-    gap: 20px; /* Space between sidebar and content */
-    padding: 20px;
-    max-width: 1400px; /* Must match the max-width in the css-selectors.html style block */
-    margin: 0 auto;
+.navbar ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
 }
 
-/* --- Sidebar Styling --- */
+.navbar li {
+    margin-left: 20px;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    padding: 5px 10px;
+    transition: background-color 0.3s;
+}
+
+/* --- Core Layout Fix: Sidebar and Main Content --- */
+/* The .container holds the content-wrapper, which enforces the grid. */
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px; /* Add horizontal padding to prevent content touching edges */
+}
+
+/* This is the new wrapper that enforces the two-column grid */
+#content-wrapper {
+    display: grid;
+    grid-template-columns: 200px 1fr; /* Sidebar fixed width, main content fills rest */
+    gap: 20px; 
+    padding: 20px 0;
+}
+
+/* --- Sidebar Styling (Making the text look like links) --- */
 .sidebar {
     background-color: white;
     padding: 15px;
@@ -51,4 +73,13 @@ body {
     display: block;
     padding: 8px;
     border-radius: 4px;
+}
+
+/* --- Footer --- */
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #333;
+    color: white;
+    margin-top: 20px;
 }
