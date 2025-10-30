@@ -1,124 +1,89 @@
-/* --------------------------------------------------------- */
-/* --- COLOR VARIABLES (60-30-10 Whatfix Branding) --- */
-/* --------------------------------------------------------- */
-:root {
-    /* 60% Dominant/Background - Very light neutral */
-    --wf-dominant-springwood: #F9F9F2; 
-    /* 30% Secondary/Text/Structural - High contrast dark color */
-    --wf-secondary-steelgray: #25223B; 
-    /* 10% Accent/Primary Brand/CTA - High visibility orange */
-    --wf-accent-orange: #FF6B18; 
-    /* <5% Support/Neutral - Very light tint of orange (Karry) */
-    --wf-support-karry: #FFE9DC; 
+/* ---------------------------------------------------- */
+/* --- 🧱 WHATFIX BRANDING & CORE LAYOUT STYLES --- */
+/* ---------------------------------------------------- */
 
-    /* Feedback Colors */
-    --wf-feedback-success-bg: #E1F7E6; 
-    --wf-feedback-error-bg: #FFE0E0;
-    --wf-feedback-text-success: #155724;
-    --wf-feedback-text-error: #721c24;
+/* CSS Variables for Brand Colors */
+:root {
+    --wf-dominant-spring-wood: #F9F9F2;
+    --wf-secondary-steel-gray: #25223B;
+    --wf-accent-orange: #FF6B18;
+    --wf-support-karry: #FFE9DC;
+    
+    /* General UI Colors */
+    --wf-success: #E6F7E1; 
+    --wf-error: #FFF0F0;
+    --wf-text-success: #155724;
+    --wf-text-error: #721c24;
+    
+    /* Aesthetics */
+    --wf-border-radius: 10px;
+    --wf-shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
-/* --------------------------------------------------------- */
-/* --- 🧱 CORE LAYOUT & GLOBAL STYLES --- */
-/* --------------------------------------------------------- */
+/* --- GLOBAL RESET & FONT --- */
 
-/* Global Reset and Typography (Using Inter font) */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
 
 body {
     font-family: 'Inter', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: var(--wf-dominant-springwood); /* 60% Dominant Background */
-    color: var(--wf-secondary-steelgray); /* 30% Secondary Text */
-    line-height: 1.6;
+    background-color: var(--wf-dominant-spring-wood); /* 60% Dominant Background */
+    color: var(--wf-secondary-steel-gray); /* 30% Secondary Text */
 }
 
-/* Headings (30% Secondary Text) */
-h1, h2, h3 {
-    color: var(--wf-secondary-steelgray);
-    font-weight: 700;
-}
+/* --- NAVBAR STYLING --- */
 
-/* Structural Element Styling (Subtle Lifted Cards) */
-.main-content {
-    padding: 30px;
-    background-color: white; /* Clean white for contrast */
-    border-radius: 10px; /* Soft corner radius */
-    /* Subtle shadow for lift (Authentic Whatfix Aesthetic) */
-    box-shadow: 0 4px 6px -1px rgba(37, 34, 59, 0.05), 0 2px 4px -2px rgba(37, 34, 59, 0.05);
-}
-
-/* --- Navigation Bar --- */
 .navbar {
-    background-color: var(--wf-dominant-springwood);
+    background-color: white; 
+    color: var(--wf-secondary-steel-gray);
     padding: 15px 30px;
-    border-bottom: 1px solid #E2E8F0; /* Thin separator line */
+    border-bottom: 1px solid #E2E8F0;
     display: flex; 
     justify-content: flex-start;
     align-items: center;
+    position: sticky; 
+    top: 0;
+    z-index: 100;
 }
 
 .navbar .logo { 
+    font-size: 1.5em; 
     font-weight: 700; 
-    color: var(--wf-secondary-steelgray); /* Logo text color */
+    color: var(--wf-secondary-steel-gray); 
     margin-right: 40px; 
 }
 
-.navbar ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
+.navbar ul { 
+    list-style: none; 
+    margin: 0; 
+    padding: 0; 
+    display: flex; 
 }
 
-.navbar li {
-    margin-right: 20px;
+.navbar li { 
+    margin-right: 25px; 
 }
 
-.navbar a {
-    color: var(--wf-secondary-steelgray);
-    text-decoration: none;
-    font-size: 0.95em;
+.navbar a { 
+    color: var(--wf-secondary-steel-gray); 
+    text-decoration: none; 
+    font-size: 0.95em; 
     padding: 5px 0;
-    transition: color 0.2s, border-bottom 0.2s;
+    transition: color 0.3s, border-bottom 0.3s;
 }
 
-.navbar a:hover, .navbar a.active {
-    color: var(--wf-accent-orange); /* Accent color on active/hover */
+.navbar a.active { 
+    color: var(--wf-accent-orange); /* Active link uses accent color */
     border-bottom: 2px solid var(--wf-accent-orange);
 }
 
-/* --- Call-to-Action (CTA) Button (10% Accent) --- */
-.cta-button {
-    background-color: var(--wf-accent-orange); /* Solid Orange fill */
-    color: white;
-    padding: 12px 30px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: background-color 0.2s;
-    text-decoration: none; /* Required for links used as buttons */
-    display: inline-block;
-}
+/* --- CORE LAYOUT & CARDS --- */
 
-.cta-button:hover {
-    background-color: #E85900; /* Slightly darker orange on hover */
+h1, h2 {
+    color: var(--wf-secondary-steel-gray);
+    font-weight: 700;
 }
-
-/* --- Footer --- */
-footer {
-    text-align: center;
-    padding: 20px;
-    margin-top: 40px;
-    background-color: var(--wf-secondary-steelgray); /* Darker color to ground the page */
-    color: var(--wf-dominant-springwood);
-}
-
-/* --------------------------------------------------------- */
-/* --- LAYOUT FIXES (Single Column Main Content) --- */
-/* --------------------------------------------------------- */
 
 .container {
     max-width: 1400px;
@@ -126,42 +91,71 @@ footer {
     padding: 0 20px;
 }
 
-/* Grid is used to ensure the main content always spans full width */
-.container {
-    display: grid;
-    grid-template-columns: 1fr; 
+#content-wrapper {
+    /* Simple block display after sidebar removal */
+    display: block; 
+    padding: 20px 0;
 }
 
-/* Hide and remove sidebar space, main content takes over */
-.sidebar {
-    display: none;
+.main-content {
+    /* Base for the main content card aesthetic */
+    padding: 30px;
+    background-color: white;
+    border-radius: var(--wf-border-radius);
+    box-shadow: var(--wf-shadow-subtle); 
 }
 
-/* --------------------------------------------------------- */
-/* --- PAGE SPECIFIC STYLES (Moved from HTML) --- */
-/* --------------------------------------------------------- */
+/* --- FOOTER STYLING --- */
 
-/* --- index.html (Home Page Promo Box) --- */
-.promo-box-container {
-    padding: 30px; 
-    background-color: var(--wf-support-karry); /* Karry background */
-    border-radius: 10px;
+footer {
     text-align: center;
-    /* Explicitly use subtle shadow instead of border */
-    box-shadow: 0 2px 4px rgba(37, 34, 59, 0.08); 
-    border-left: 5px solid var(--wf-accent-orange); /* Accent border on one side */
+    padding: 15px;
+    background-color: var(--wf-secondary-steel-gray); /* Dark ground */
+    color: white;
+    margin-top: 40px;
 }
 
-/* --- about.html (Mission Statement) --- */
-.mission-statement-accent {
-    border-left: 5px solid var(--wf-accent-orange); /* Orange accent border */
-    padding: 20px 20px 20px 30px; /* Extra left padding to make space for the border */
-    background-color: var(--wf-support-karry); /* Soft Karry background */
-    border-radius: 0 8px 8px 0;
-    margin-top: 20px;
+/* --- CTA & BUTTON STYLING (10% Accent Rule) --- */
+
+.cta-button {
+    background-color: var(--wf-accent-orange); /* Orange accent */
+    color: white;
+    font-weight: 600;
+    padding: 12px 25px;
+    border: none;
+    border-radius: var(--wf-border-radius);
+    cursor: pointer;
+    transition: background-color 0.2s, box-shadow 0.2s;
+    text-decoration: none;
+    display: inline-block;
 }
 
-/* --- css-selectors.html (Challenge Lab) --- */
+.cta-button:hover {
+    background-color: #E55C00; /* Slightly darker orange */
+    box-shadow: 0 4px 6px -1px rgba(255, 107, 24, 0.3);
+}
+
+/* --- INDEX PAGE PROMOTIONAL BOX --- */
+
+.promo-box {
+    background-color: var(--wf-support-karry); /* Karry support color */
+    border-radius: var(--wf-border-radius);
+    padding: 30px;
+    text-align: center;
+    border: none; /* Borderless design */
+}
+
+/* --- ABOUT US PAGE ACCENT --- */
+
+.mission-statement {
+    /* Specific accent border only on the left */
+    border-left: 5px solid var(--wf-accent-orange); 
+    padding: 20px; 
+    background-color: var(--wf-dominant-spring-wood);
+    border-radius: var(--wf-border-radius);
+}
+
+/* --- CSS SELECTORS LAB STYLES --- */
 
 #all-challenges {
     display: flex;
@@ -171,20 +165,29 @@ footer {
 }
 
 .challenge-container {
+    /* Karry background for visual distinction */
+    background-color: var(--wf-support-karry); 
+    border-radius: var(--wf-border-radius);
+    padding: 20px;
     flex: 1 1 45%; 
     max-width: calc(50% - 10px); 
     min-width: 380px; 
-    
     margin-top: 10px; 
-    padding: 20px;
-    background-color: var(--wf-support-karry); /* Karry background for boxes */
-    border-radius: 10px; 
-    /* Rely on the implicit shadow of .main-content, no explicit border */
-    box-shadow: 0 2px 4px rgba(37, 34, 59, 0.05);
+    box-shadow: none; /* No shadow here, relies on main-content shadow */
 }
 
-/* VISUAL UNIFORMITY RULES */
-.challenge-target-area * { box-sizing: border-box; }
+.challenge-target-area {
+    /* Using light neutral colors for uniformity within the challenge */
+    border: 1px solid #E2E8F0; 
+    background-color: white; 
+    border-radius: var(--wf-border-radius);
+    padding: 15px;
+    margin-top: 10px;
+    text-align: center;
+}
+
+/* Visual Uniformity Rules (No hard external borders) */
+.challenge-target-area * { box-sizing: border-box; font-family: 'Inter', sans-serif; }
 
 .challenge-target-area button,
 .challenge-target-area input,
@@ -196,78 +199,35 @@ footer {
 .challenge-target-area h2,
 .challenge-target-area h3,
 .challenge-target-area span {
-    border: none !important; /* NO BORDERS */
-    background-color: white !important; /* White inner elements */
-    color: var(--wf-secondary-steelgray) !important;
-    font-family: inherit !important;
-    font-size: 0.9em !important;
-    line-height: 1.2 !important;
+    border: 1px solid #E2E8F0 !important; 
+    background-color: white !important; 
+    color: var(--wf-secondary-steel-gray) !important;
     padding: 8px 12px !important;
     margin: 6px !important;
-    border-radius: 6px !important; /* Softened corner radius */
+    border-radius: 6px !important; /* Slightly smaller radius for small elements */
     display: inline-block !important; 
-    text-align: left !important;
-    /* Soft elevation for interactive elements */
-    box-shadow: 0 1px 3px rgba(37, 34, 59, 0.1); 
 }
 
-.challenge-target-area button { 
-    background-color: #F8FAFC !important; /* Very light background for secondary buttons */
-    font-weight: 400 !important;
-    cursor: default !important;
-}
-
-.challenge-target-area ul, .challenge-target-area ol, .challenge-target-area div#settings-modal {
-    border: 2px dashed #B0BEC5 !important; /* Subtle dashed border for structural containers */
-    padding: 10px !important; margin: 10px auto !important; 
-    background-color: #F0F4F7 !important; /* Very light, cool gray structural background */
-    display: block !important; 
-    text-align: left !important; max-width: 90%; width: auto;
-    border-radius: 8px !important;
-}
-.challenge-target-area li, .challenge-target-area label { list-style-type: none; }
-
-/* Dynamic Highlight */
 .target-highlight {
-    border: 2px solid var(--wf-accent-orange) !important; /* Use Orange accent for highlight border */
-    background-color: var(--wf-support-karry) !important; 
+    /* Highlight remains strong red for instructional clarity */
+    border: 2px solid #cc0000 !important; 
+    background-color: #fffac9 !important;
     padding: 7px 11px !important; 
     margin: 5px !important;
 }
 
-/* Feedback Box Styling */
 .validation-feedback { 
-    padding: 20px !important; 
-    min-height: 50px; 
-    border-radius: 8px;
-    margin-top: 10px;
-    line-height: 1.5;
-    /* No border, rely on background color */
+    padding: 20px !important;
+    margin-top: 15px !important;
+    border-radius: var(--wf-border-radius);
+    font-weight: 600;
 }
 
 .success { 
-    background-color: var(--wf-feedback-success-bg); 
-    color: var(--wf-feedback-text-success); 
+    background-color: var(--wf-success); 
+    color: var(--wf-text-success); 
 }
 .error { 
-    background-color: var(--wf-feedback-error-bg); 
-    color: var(--wf-feedback-text-error); 
-}
-.info { 
-    background-color: var(--wf-support-karry); 
-    color: var(--wf-secondary-steelgray); 
-}
-
-/* Accordion Styles */
-.accordion {
-    background-color: #E2E8F0; 
-    color: var(--wf-secondary-steelgray); 
-    border-radius: 6px;
-    /* Removed margin-top/bottom here as it's handled by padding */
-}
-
-.panel {
-    background-color: white; 
-    border-left: 3px solid var(--wf-accent-orange); 
-    border-radius: 0 0 6px 6px;
+    background-color: var(--wf-error); 
+    color: var(--wf-text-error); 
 }
