@@ -119,8 +119,8 @@ footer {
 
 /* --- CTA & BUTTON STYLING (10% Accent Rule) --- */
 
-/* ❗ FIX 1: Target the button inside .challenge-ui directly ❗ */
-.challenge-ui button, 
+/* ❗ FINAL FIX: Target the validate button by its unique onclick attribute ❗ */
+button[onclick*="validateChallenge"], 
 .cta-button {
     /* Critical Reset for native browser styling */
     appearance: none !important;
@@ -145,7 +145,7 @@ footer {
 }
 
 .cta-button:hover,
-.challenge-ui button:hover {
+button[onclick*="validateChallenge"]:hover {
     background-color: #E55C00 !important; /* Slightly darker orange */
     box-shadow: 0 4px 8px -2px rgba(255, 107, 24, 0.5); /* Stronger shadow on hover */
 }
@@ -191,6 +191,7 @@ footer {
     box-shadow: none; /* No shadow here, relies on main-content shadow */
 }
 
+/* ❗ FIX: Add uniform height and centering ❗ */
 .challenge-target-area {
     /* Using light neutral colors for uniformity within the challenge */
     border: 1px solid #E2E8F0; 
@@ -198,8 +199,15 @@ footer {
     border-radius: var(--wf-border-radius);
     padding: 15px;
     margin-top: 10px;
-    margin-bottom: 20px; /* Added spacing to separate it from challenge-ui */
+    margin-bottom: 20px; 
     text-align: center;
+    
+    /* New styles for uniform height and centering */
+    min-height: 150px; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .challenge-ui {
@@ -244,11 +252,13 @@ footer {
     display: inline-block !important; 
 }
 
+/* ❗ REMOVED: The .target-highlight rule is no longer needed ❗ */
+/*
 .target-highlight {
-    /* Highlight remains strong red for instructional clarity */
     border: 2px solid #cc0000 !important; 
     background-color: #fffac9 !important;
 }
+*/
 
 /* --- ACCORDION STYLES (Fixing visibility/collapse) --- */
 
@@ -260,14 +270,27 @@ footer {
 }
 
 .accordion {
-    appearance: none !important; /* Fixes button appearance */
+    appearance: none !important;
+    -webkit-appearance: none !important;
     border: none !important;
-    padding: 12px 15px; 
+    padding: 12px 15px !important; 
     margin-top: 5px;
     margin-bottom: 5px; 
-    border-radius: var(--wf-border-radius);
-    background-color: #F0F0F0;
-    box-shadow: none; /* Ensure no button shadow */
+    border-radius: var(--wf-border-radius) !important;
+    background-color: #F0F0F0 !important;
+    box-shadow: none !important;
+    
+    /* Copied from .challenge-ui to ensure consistency */
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100%;
+    text-align: left;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 0.9em !important;
+    font-weight: 600 !important;
+    color: var(--wf-secondary-steel-gray) !important;
+    cursor: pointer !important;
 }
 
 .panel {
@@ -287,7 +310,7 @@ footer {
 }
 
 .panel-content p {
-    /* ❗ FIX 2: Force margin to 0 to prevent leaking outside collapsed panel ❗ */
+    /* ❗ FIX: Force margin to 0 to prevent leaking outside collapsed panel ❗ */
     margin: 0 !important; 
     border: none !important;
     background-color: transparent !important;
