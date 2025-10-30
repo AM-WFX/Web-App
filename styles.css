@@ -117,16 +117,18 @@ footer {
 
 /* --- CTA & BUTTON STYLING (10% Accent Rule) --- */
 
-/* ❗ FIX: Aggressive reset and styling for CTA button ❗ */
-.challenge-ui .cta-button, 
-.cta-button {
+/* ❗ FIX 1: Aggressively target native button tag and reset appearance ❗ */
+button.cta-button {
     /* Critical Resets for native browser styling */
     appearance: none !important;
     -webkit-appearance: none !important;
     border: none !important;
     border-style: none !important; 
     margin: 0 !important; /* Reset default button margin */
-    
+}
+
+.challenge-ui .cta-button, 
+.cta-button {
     /* Enforced Brand Styling */
     background-color: var(--wf-accent-orange) !important; /* Force Orange color */
     color: white;
@@ -187,7 +189,7 @@ footer {
     box-shadow: none; /* No shadow here, relies on main-content shadow */
 }
 
-/* ❗ FIX: UI Layout and Input Sizing ❗ */
+/* ❗ FIX 2: UI Layout and Input Sizing ❗ */
 .challenge-ui {
     display: flex;
     align-items: center; /* Vertically center items */
@@ -253,11 +255,15 @@ footer {
 
 /* --- ACCORDION STYLES (Fixing appearance/padding) --- */
 .accordion {
+    /* FIX 3: Reset appearance for accordion headers */
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    border: none !important;
+    
     padding: 12px 15px; 
     margin-top: 5px;
     margin-bottom: 5px; 
     border-radius: var(--wf-border-radius);
-    /* Ensure the accordion button background is lighter than the CTA button */
     background-color: #F0F0F0;
 }
 
@@ -265,15 +271,23 @@ footer {
     margin-left: 10px; 
 }
 
-/* ❗ ACCORDION INTERACTIVITY FIX ❗ */
+/* ❗ FIX 4: Ensure Padding is inside the collapsing element (.panel-content) ❗ */
+/* Apply max-height: 0 to the panel wrapper */
 .panel {
     max-height: 0; 
     overflow: hidden; 
     transition: max-height 0.3s ease-in-out;
-    padding: 15px 18px; 
+    /* Remove padding from here */
 }
 
-.panel p {
+/* Add a new element to hold the visible content and padding */
+.panel-content {
+    padding: 15px 18px; /* Apply padding here */
+    border-left: 5px solid #ccc;
+    background-color: #f7f7f7;
+}
+
+.panel-content p {
     margin: 0 !important; 
     border: none !important;
     background-color: transparent !important;
