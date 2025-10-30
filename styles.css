@@ -7,7 +7,7 @@ body {
     color: #333;
 }
 
-/* --- Top Navigation Bar (Fixing links being misplaced) --- */
+/* --- Top Navigation Bar (Navbar) --- */
 .navbar {
     background-color: #333;
     color: white;
@@ -38,28 +38,36 @@ body {
     transition: background-color 0.3s;
 }
 
-/* --- Core Layout Fix: Sidebar and Main Content --- */
-/* The .container holds the content-wrapper, which enforces the grid. */
+.navbar a:hover, .navbar a.active {
+    background-color: #555;
+}
+
+/* --- Overall Container and Grid Layout --- */
 .container {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 0 20px; /* Add horizontal padding to prevent content touching edges */
+    padding: 0 20px; /* Horizontal padding for spacing */
 }
 
-/* This is the new wrapper that enforces the two-column grid */
+/* 🧱 CRITICAL LAYOUT: Enforces Sidebar and Main Content side-by-side using Grid */
 #content-wrapper {
     display: grid;
-    grid-template-columns: 200px 1fr; /* Sidebar fixed width, main content fills rest */
+    /* Sidebar fixed width (200px), main content fills the rest (1fr) */
+    grid-template-columns: 200px 1fr; 
     gap: 20px; 
     padding: 20px 0;
 }
 
-/* --- Sidebar Styling (Making the text look like links) --- */
+/* --- Sidebar Styling --- */
 .sidebar {
     background-color: white;
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar h3 {
+    margin-top: 0;
 }
 
 .sidebar ul {
@@ -73,6 +81,15 @@ body {
     display: block;
     padding: 8px;
     border-radius: 4px;
+}
+
+/* --- Main Content Area --- */
+.main-content {
+    /* Main styling is mostly in the inline block for specificity, but keep basics here */
+    padding: 20px; 
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* --- Footer --- */
