@@ -1,54 +1,42 @@
 // =========================================================================
-// === JQUERY CODE (FOR index.html and about.html) ===
+// === JAVASCRIPT MASTER LOADER ===
+// This function ensures ALL code runs AFTER the HTML structure is loaded.
 // =========================================================================
 
-$(document).ready(function() {
-
-    // ----------------------------------------------------
-    // --- SELECTORS FOR index.html (Home Page) ---
-    // ----------------------------------------------------
-
-    // 1. ID Selector (#): Targets a single, specific element.
-    // ACTION: Change the text of the paragraph with the ID 'target-p'.
-    $('#target-p').text('--- SUCCESSFULLY CHANGED BY ID SELECTOR (#target-p) ---');
-
-
-    // 2. Element Selector (p): Targets all elements of a specific tag type.
-    // ACTION: Add a class and border to ALL <p> elements on the page.
-    $('p').addClass('highlight'); 
-
-
-    // ----------------------------------------------------
-    // --- SELECTORS FOR about.html (About Page) ---
-    // ----------------------------------------------------
+document.addEventListener('DOMContentLoaded', function() {
     
-    // 3. Class Selector (.): Targets all elements sharing a specific class.
-    // ACTION: Change the background color of all elements with the class 'highlight-me'.
-    $('.highlight-me').css('background-color', 'lightgreen');
-    
-    
-    // 4. Attribute Selector ([attr=value]): Targets elements based on a specific attribute value.
-    // ACTION: Change the text of the paragraph where the attribute data-status is "pending".
-    $('p[data-status="pending"]').text('STATUS UPDATED: Review is IN PROGRESS (Targeted by Attribute)');
-    
-    // ACTION: Hide the elements where data-status is "complete".
-    $('p[data-status="complete"]').hide();
+    // --- Existing JQUERY Code (Wrapped in a safety check) ---
+    if (typeof jQuery !== 'undefined') {
+        $(document).ready(function() {
+            // ----------------------------------------------------
+            // --- SELECTORS FOR index.html (Home Page) ---
+            // ----------------------------------------------------
+            $('#target-p').text('--- SUCCESSFULLY CHANGED BY ID SELECTOR (#target-p) ---');
+            $('p').addClass('highlight'); 
 
+            // ----------------------------------------------------
+            // --- SELECTORS FOR about.html (About Page) ---
+            // ----------------------------------------------------
+            $('.highlight-me').css('background-color', 'lightgreen');
+            $('p[data-status="pending"]').text('STATUS UPDATED: Review is IN PROGRESS (Targeted by Attribute)');
+            $('p[data-status="complete"]').hide();
 
-    // ----------------------------------------------------
-    // --- TRAVERSING / COMBINATION SELECTOR ---
-    // ----------------------------------------------------
+            // ----------------------------------------------------
+            // --- TRAVERSING / COMBINATION SELECTOR ---
+            // ----------------------------------------------------
+            $('header a').css('font-size', '18px');
+        });
+    }
 
-    // 5. Hierarchy Selector (Descendant): Targets specific elements nested inside another.
-    // ACTION: Find the navigation links inside the header on all pages and give them a font size.
-    $('header a').css('font-size', '18px');
+    // --- VANILLA JAVASCRIPT CODE (CSS Selector Lab) ---
+    // This is the primary function for the current page (css-selectors.html)
+    initializeChallenges();
 
 });
 
 
 // =========================================================================
-// === VANILLA JAVASCRIPT CODE (FOR css-selectors.html - The Selector Lab) ===
-// NOTE: This code is designed to run once the DOM is fully loaded.
+// === VANILLA JS CHALLENGE LOGIC (The bulk of the code) ===
 // =========================================================================
 
 // Store the state of each challenge
@@ -311,7 +299,8 @@ const challengeDefinitions = [
     },
 ];
 
-// --- CORE STATE MANAGEMENT & INITIALIZATION (JS functions below) ---
+// --- CORE STATE MANAGEMENT & INITIALIZATION (All functions follow) ---
+// (All functions from initializeChallenges down to resetChallenge are needed here)
 
 function initializeChallenges() {
     const container = document.getElementById('all-challenges');
@@ -623,6 +612,3 @@ function resetChallenge(challengeId) {
 
     applyHighlighting(challengeId);
 }
-
-// Run the initialization function when the page loads
-document.addEventListener('DOMContentLoaded', initializeChallenges);
