@@ -9,18 +9,19 @@
     <style>
         /* --- Challenge-Specific and Visual Uniformity Styles (Kept Inline) --- */
 
-        /* --- Side-by-Side Challenge Layout --- */
+        /* --- Side-by-Side Challenge Layout (FIX) --- */
         #all-challenges {
             display: flex;
             flex-wrap: wrap; 
             gap: 20px; 
-            justify-content: space-between;
+            /* Ensures challenges spread horizontally across the main content area */
+            justify-content: space-between; 
         }
         
         .challenge-container {
-            /* Flex properties ensure two challenges fit in a row */
-            flex: 1 1 calc(50% - 10px); 
-            max-width: calc(50% - 10px); 
+            /* This flex definition ensures two boxes fill the available space evenly */
+            flex: 1 1 45%; 
+            max-width: calc(50% - 10px); /* Strict max to prevent a single box taking 100% */
             min-width: 380px; 
             
             margin-top: 10px; 
@@ -31,7 +32,7 @@
             background-color: #f6faff;
         }
         
-        /* --- VISUAL UNIFORMITY RULES (Ensures elements look the same) --- */
+        /* --- VISUAL UNIFORMITY RULES (Elements look the same) --- */
         
         .challenge-target-area * { box-sizing: border-box; }
 
