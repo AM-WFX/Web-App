@@ -458,6 +458,7 @@ function handleSuccess(challengeId, correctSelector) {
                 Alternative ${index + 1}: <code>${alt.selector}</code>
             </button>
             <div class="panel">
+                <!-- ❗❗ FIX: Added inner panel-content div ❗❗ -->
                 <div class="panel-content">
                     <p><strong>How it works:</strong> ${alt.explanation}</p>
                 </div>
