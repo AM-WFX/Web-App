@@ -3,144 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WFX-Schools - CSS Selectors</title>
+    <title>The Ultimate CSS Selector Lab</title>
     <!-- Links the jQuery library (needed for your existing code) -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
+    <!-- Links to the external stylesheet for core layout -->
     <link rel="stylesheet" href="styles.css"> 
-    
-    <style>
-        /* --- CHALLENGE-SPECIFIC AND VISUAL UNIFORMITY STYLES (Kept Inline) --- */
-
-        /* --- Side-by-Side Challenge Layout --- */
-        #all-challenges {
-            display: flex;
-            flex-wrap: wrap; 
-            gap: 20px; 
-            justify-content: space-between;
-        }
-        
-        .challenge-container {
-            /* This flex definition ensures two boxes fill the available space evenly */
-            flex: 1 1 45%; 
-            max-width: calc(50% - 10px); 
-            min-width: 380px; 
-            
-            margin-top: 10px; 
-            padding: 20px;
-            /* Applying Karry background and soft corners/shadows */
-            background-color: var(--wf-support-karry); 
-            border-radius: 10px;
-            box-shadow: 0 4px 6px -1px rgba(37, 34, 59, 0.05); /* Soft Shadow lift */
-        }
-        
-        /* --- VISUAL UNIFORMITY RULES (Ensures elements look the same) --- */
-        
-        .challenge-target-area * { box-sizing: border-box; }
-
-        .challenge-target-area button,
-        .challenge-target-area input,
-        .challenge-target-area li,
-        .challenge-target-area p,
-        .challenge-target-area div,
-        .challenge-target-area label,
-        .challenge-target-area a,
-        .challenge-target-area h2,
-        .challenge-target-area h3,
-        .challenge-target-area span {
-            /* Removing all hard borders */
-            border: none; 
-            background-color: white; 
-            color: var(--wf-text-dark);
-            font-family: 'Inter', sans-serif;
-            font-size: 0.9em;
-            line-height: 1.2;
-            padding: 8px 12px;
-            margin: 6px;
-            border-radius: 10px; /* Softened radius */
-            display: inline-block; 
-            text-align: left;
-            /* Subtle internal shadow lift */
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08); 
-        }
-
-        /* Specific overrides to keep button/input background uniform */
-        .challenge-target-area button { background-color: white; font-weight: normal; cursor: default; }
-        .challenge-target-area input[type="text"], .challenge-target-area input[type="checkbox"] { width: auto; }
-        
-        /* Structure element styling */
-        .challenge-target-area ul, .challenge-target-area ol {
-            list-style-type: none; 
-        }
-
-        .challenge-target-area ul, .challenge-target-area ol, .challenge-target-area div#settings-modal {
-            border: 2px dashed var(--wf-secondary-coral); /* Using Coral for structural borders */
-            padding: 10px; 
-            margin: 10px auto;
-            background-color: var(--wf-bg-light);
-            display: block;
-            text-align: left;
-            max-width: 90%;
-            width: auto;
-            border-radius: 10px;
-        }
-        .challenge-target-area li, .challenge-target-area label { display: list-item; list-style-type: none; background-color: white; }
-
-        /* The Visual Target Highlight (Applied by JS) */
-        .target-highlight {
-            border: 2px solid var(--wf-secondary-coral) !important; /* Coral border for target */
-            background-color: var(--wf-support-karry) !important; /* Soft background */
-            padding: 7px 11px !important; 
-            margin: 5px !important;
-            box-shadow: 0 0 5px rgba(255, 107, 24, 0.5); /* Glowing coral shadow */
-        }
-        
-        /* --- UI and Feedback Elements --- */
-
-        .challenge-header h3 { margin: 0; color: var(--wf-text-dark); }
-        .challenge-ui { display: flex; gap: 10px; margin-bottom: 10px; }
-        .challenge-ui input[type="text"] { flex-grow: 1; padding: 10px; border: 1px solid #ccc; border-radius: 10px; font-family: monospace; font-size: 1em; }
-        
-        /* Feedback Styling */
-        .validation-feedback { 
-            padding: 20px; 
-            min-height: 50px; 
-            border-radius: 10px;
-            margin-top: 10px;
-            line-height: 1.5;
-        }
-
-        .success { background-color: var(--color-success-bg); color: var(--color-text-success); border: 1px solid var(--color-text-success); }
-        .error { background-color: var(--color-error-bg); color: var(--color-text-error); border: 1px solid var(--color-text-error); }
-        .info { background-color: var(--wf-support-karry); color: var(--wf-text-dark); border: 1px solid var(--wf-primary-teal); }
-
-        .accordion {
-            display: flex; justify-content: space-between; align-items: center; background-color: var(--wf-bg-light); color: var(--wf-text-dark); cursor: pointer; padding: 10px; width: 100%; border: none; text-align: left; outline: none; font-size: 0.9em; transition: 0.4s; margin-top: 5px; border-radius: 10px;
-        }
-        .active-accordion, .accordion:hover { background-color: #E2E8F0; }
-        .accordion::after {
-            content: ' \25BC';
-            color: var(--wf-text-dark);
-            font-weight: bold;
-            transition: 0.4s;
-            transform: rotate(0deg);
-        }
-        .active-accordion::after { transform: rotate(-180deg); }
-        .panel {
-            padding: 0 18px; background-color: white; max-height: 0; overflow: hidden; transition: max-height 0.3s ease-in-out; border-left: 2px solid var(--wf-secondary-coral); margin-bottom: 5px;
-        }
-        .reveal-button {
-            background-color: var(--wf-secondary-coral); color: white; margin-top: 10px; border: none; padding: 8px 15px; border-radius: 10px; cursor: pointer;
-        }
-    </style>
 </head>
 <body>
 
-    <!-- Top Navbar -->
+    <!-- Top Navbar (Styled by styles.css) -->
     <header class="navbar">
         <div class="logo">WFX-Schools</div>
         <nav>
             <ul>
-                <li><a href="index.html">Home</a></li>
+                <li><a href="home.html">Home</a></li>
                 <li><a href="about.html">About Us</a></li>
                 <li><a href="css-selectors.html" class="active">CSS Selectors</a></li>
             </ul>
@@ -148,24 +24,74 @@
     </header>
 
     <div class="container">
-        <!-- Main content spans the full width -->
+        <!-- The main content area (Styled by styles.css) -->
         <main class="content main-content">
             <h1>The Ultimate CSS Selector Lab 🎯</h1>
-            <p>Your task: Write a selector that targets <b>only the element currently highlighted</b> within each challenge box. You must remove the highlight by entering the correct selector and clicking 'Validate'.</p>
+            <p>Your task: Write a selector that targets **only the element currently highlighted** within each challenge box. You must remove the highlight by entering the correct selector and clicking 'Validate'.</p>
             
             <div id="all-challenges">
                 <!-- Challenges will be inserted here by JavaScript -->
+                
+                <!-- 
+                    These initial challenges are placed directly in HTML to ensure content loads, 
+                    bypassing potential script execution failures.
+                    The JavaScript logic in script.js will read and replace this content 
+                    immediately with its dynamically generated challenges. 
+                    If you see this placeholder, it means the script failed to run.
+                -->
+                <div id="challenge-1" class="challenge-container">
+                    <div class="challenge-header">
+                        <h3 id="challenge-title-1">Challenge 1</h3>
+                        <span id="status-1" style="color: var(--wf-text-dark);">(Unsolved)</span>
+                    </div>
+                    <p id="prompt-1">Target the Primary Login Button using its unique ID.</p>
+                    
+                    <div id="target-area-1" class="challenge-target-area">
+                        <button id="login-primary" class="btn btn-primary target-highlight">Primary Login Button</button>
+                        <button id="login-secondary" class="btn btn-secondary">Secondary Button</button>
+                    </div>
+                    
+                    <div class="challenge-ui">
+                        <input type="text" id="selector-input-1" placeholder="Enter your selector here (e.g., #id-name)" data-id="1">
+                        <button class="cta-button" onclick="validateChallenge(1)">Validate</button>
+                    </div>
+                    <div id="feedback-1" class="validation-feedback"></div>
+                </div>
+
+                <div id="challenge-2" class="challenge-container">
+                    <div class="challenge-header">
+                        <h3 id="challenge-title-2">Challenge 2</h3>
+                        <span id="status-2" style="color: var(--wf-text-dark);">(Unsolved)</span>
+                    </div>
+                    <p id="prompt-2">Target the item marked Urgent using its class.</p>
+                    
+                    <div id="target-area-2" class="challenge-target-area">
+                        <ul>
+                            <li class="list-item task-default">Normal Item</li>
+                            <li class="list-item task-urgent target-highlight">Urgent Item</li>
+                            <li class="list-item task-default">Another Normal Item</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="challenge-ui">
+                        <input type="text" id="selector-input-2" placeholder="Enter your selector here (e.g., .class-name)" data-id="2">
+                        <button class="cta-button" onclick="validateChallenge(2)">Validate</button>
+                    </div>
+                    <div id="feedback-2" class="validation-feedback"></div>
+                </div>
+
             </div>
             
         </main>
     </div>
 
-    <!-- Footer -->
+    <!-- Simplified Footer (Styled by styles.css) -->
     <footer>
-        <p>Copyright © 2025 WFX-Schools</p>
+        <p>&copy; 2025 WFX-Schools</p>
     </footer>
 
     <!-- Link the external JavaScript file at the end of the <body> for performance -->
     <script src="script.js"></script>
+
 </body>
 </html>
