@@ -7,34 +7,44 @@
     <link rel="stylesheet" href="styles.css"> 
     
     <style>
-        /* --- General Layout and Formatting (Re-verified) --- */
+        /* --- General Layout and Formatting (Guaranteed Container Layout) --- */
         .container {
-            /* Max width for the entire page content */
             max-width: 1400px; 
             margin: 0 auto;
-            /* Assume the sidebar and main content layout is handled by external styles.css */
+            padding: 20px 0; /* Add vertical padding */
+            
+            /* ❗ FIX START: Enforce Sidebar/Main Content Layout using CSS Grid ❗ */
+            display: grid;
+            /* Define 2 columns: 1 for sidebar (200px), 1 for main content (rest of space) */
+            grid-template-columns: 200px 1fr; 
+            gap: 20px;
+            /* ❗ FIX END ❗ */
         }
+        
+        /* NOTE: The 'sidebar' class styling is assumed to be handled by the external styles.css, 
+                 but if not, it will automatically fit into the 200px grid column. */
 
         .main-content {
+            /* This fills the second column of the grid */
             padding: 20px;
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        /* --- Side-by-Side Challenge Layout (The main fix) --- */
+        /* --- Side-by-Side Challenge Layout (The challenge boxes themselves) --- */
         #all-challenges {
-            /* This property is essential for side-by-side layout */
+            /* This property is essential for side-by-side layout of the challenges */
             display: flex;
-            flex-wrap: wrap; /* Allows challenges to wrap onto the next line */
-            gap: 20px; /* Space between challenges */
+            flex-wrap: wrap; 
+            gap: 20px; 
             justify-content: flex-start;
         }
         
         .challenge-container {
-            /* Guarantees two challenges fit cleanly, even with a 20px gap */
+            /* Guarantees two challenges fit cleanly */
             width: calc(50% - 10px); 
-            min-width: 400px; /* Ensures challenges are readable */
+            min-width: 400px; 
             
             margin-top: 10px; 
             padding: 20px;
@@ -46,9 +56,7 @@
         
         /* --- VISUAL UNIFORMITY RULES (Elements look the same) --- */
         
-        .challenge-target-area * {
-            box-sizing: border-box; 
-        }
+        .challenge-target-area * { box-sizing: border-box; }
 
         .challenge-target-area button,
         .challenge-target-area input,
@@ -73,43 +81,14 @@
             text-align: left !important;
         }
 
-        .challenge-target-area button {
-            background-color: #eee !important; 
-            border-color: #ccc !important;
-            font-weight: normal !important;
-            cursor: default !important;
+        .challenge-target-area button { background-color: #eee !important; border-color: #ccc !important; font-weight: normal !important; cursor: default !important; }
+        .challenge-target-area input[type="text"], .challenge-target-area input[type="checkbox"] { border: 1px solid #ccc !important; width: auto; }
+        .challenge-target-area ul, .challenge-target-area ol, .challenge-target-area div#settings-modal {
+            border: 2px dashed #999 !important; padding: 10px !important; margin: 10px auto !important; background-color: #f0f0f0 !important; display: block !important; text-align: left !important; max-width: 90%; width: auto;
         }
-        
-        .challenge-target-area input[type="text"],
-        .challenge-target-area input[type="checkbox"] {
-            border: 1px solid #ccc !important;
-            width: auto;
-        }
-        
-        .challenge-target-area ul, 
-        .challenge-target-area ol, 
-        .challenge-target-area div#settings-modal {
-            border: 2px dashed #999 !important; 
-            padding: 10px !important;
-            margin: 10px auto !important;
-            background-color: #f0f0f0 !important;
-            display: block !important;
-            text-align: left !important;
-            max-width: 90%;
-            width: auto;
-        }
-        .challenge-target-area li, .challenge-target-area label {
-            display: list-item !important; 
-            list-style-type: none; 
-            border: 1px solid #ddd !important;
-            background-color: #fff !important;
-        }
-        .challenge-target-area p {
-            line-height: 1.5 !important;
-        }
+        .challenge-target-area li, .challenge-target-area label { display: list-item !important; list-style-type: none; border: 1px solid #ddd !important; background-color: #fff !important; }
+        .challenge-target-area p { line-height: 1.5 !important; }
 
-
-        /* The Visual Target Highlight (Applied by JS) */
         .target-highlight {
             border: 2px solid #cc0000 !important;
             background-color: #fffac9 !important;
@@ -162,7 +141,10 @@
     </header>
 
     <div class="container">
-        <aside class="sidebar" style="/* Layout style here */">...</aside>
+        <aside class="sidebar">
+            <h3>Navigation</h3>
+            <p>Links should be styled by your main stylesheet.</p>
+        </aside>
         
         <main class="content main-content">
             <h1>The Ultimate CSS Selector Lab 🎯</h1>
@@ -566,7 +548,6 @@
             } catch (e) {
                 // Check for the specific Attribute Equals error that caused the issue
                 const isAttributeEqualsClass = userInput.includes('[class=');
-                const isAttributeEqualsID = userInput.includes('[id=') && userInput.includes('#');
 
                 if (isAttributeEqualsClass) {
                      // Provide targeted, actionable feedback for the specific mistake
