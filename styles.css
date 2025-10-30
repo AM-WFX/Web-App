@@ -1,94 +1,103 @@
-/* --- GLOBAL BRAND VARIABLES --- */
+/* --------------------------------------------------------- */
+/* --- WFX-SCHOOLS BRAND STYLES (60-30-10 Rule Applied) --- */
+/* --------------------------------------------------------- */
+
+/* Import Google Font: Inter */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+/* Brand Colors (60-30-10 Palette) */
 :root {
-    --wf-primary-teal: #00B7B9; /* Main Accent Color (Teal) */
-    --wf-secondary-coral: #FF6347; /* CTA/Secondary Accent (Coral) */
-    --wf-text-dark: #1E293B; /* Dark Text/Structural elements */
-    --wf-bg-light: #F8FAFC; /* Very light page background */
-    --wf-shadow-md: rgba(0, 0, 0, 0.05); /* Subtle shadow for lifted cards */
+    --wf-bg-dominant: #F9F9F2;      /* 60% - Spring Wood (Main Background) */
+    --wf-text-secondary: #25223B;   /* 30% - Steel Gray (Primary Text/Headings) */
+    --wf-accent-primary: #FF6B18;   /* 10% - Orange (CTA/Accent) */
+    --wf-support-neutral: #FFE9DC;  /* Karry (Subtle Support Backgrounds) */
+    
+    --wf-shadow-md: rgba(0, 0, 0, 0.1); /* Slightly more prominent shadow */
 }
 
-/* --- Core Page Reset and Typography --- */
+/* Core Reset and Typography */
 body {
     font-family: 'Inter', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: var(--wf-bg-light);
-    color: var(--wf-text-dark);
+    background-color: var(--wf-bg-dominant); /* 60% Background */
+    color: var(--wf-text-secondary);        /* 30% Text */
 }
 
-/* --- Top Navigation Bar --- */
+/* --- Top Navigation Bar (Navbar) --- */
 .navbar {
     background-color: white; 
-    color: var(--wf-text-dark);
+    color: var(--wf-text-secondary);
     padding: 15px 30px;
     border-bottom: 1px solid #E2E8F0;
     display: flex; 
-    justify-content: flex-start;
+    justify-content: flex-start; 
     align-items: center;
     position: sticky; 
     top: 0;
     z-index: 100;
 }
 
-.navbar .logo {
-    font-size: 1.5em;
-    font-weight: 700;
-    color: var(--wf-primary-teal); /* Logo accent color */
-    margin-right: 40px;
+.navbar .logo { 
+    font-size: 1.5em; 
+    font-weight: 700; 
+    color: var(--wf-accent-primary); /* Use Primary Accent for Logo */
+    margin-right: 40px; 
 }
 
-.navbar ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-}
-
-.navbar li {
-    margin-right: 20px;
-}
-
-.navbar a {
-    color: var(--wf-text-dark);
-    text-decoration: none;
-    font-size: 0.95em;
+.navbar ul { list-style: none; margin: 0; padding: 0; display: flex; }
+.navbar li { margin-right: 20px; }
+.navbar a { 
+    color: var(--wf-text-secondary); 
+    text-decoration: none; 
+    font-size: 0.95em; 
     padding: 5px 0;
-    transition: all 0.3s;
+    transition: color 0.3s, border-bottom 0.3s;
+}
+.navbar a.active { 
+    color: var(--wf-accent-primary); /* Accent color for active link */
+    border-bottom: 2px solid var(--wf-accent-primary); 
+}
+.navbar a:hover {
+    color: var(--wf-accent-primary);
 }
 
-.navbar a.active {
-    /* Active link uses the primary Teal accent color */
-    color: var(--wf-primary-teal);
-    border-bottom: 2px solid var(--wf-primary-teal); 
-}
-
-/* --- Core Layout Structure (No Sidebar Grid) --- */
+/* --- Overall Container Structure --- */
 .container {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 0 30px;
+    padding: 0 20px;
 }
 
+/* Base Layout for Home/About Pages (Assuming no sidebar structure is needed) */
 #content-wrapper {
     display: block; 
     padding: 20px 0;
 }
 
-/* Base style for all major content areas (the lifted card effect) */
+/* --- Main Content Area (Card Aesthetic - Softened) --- */
 .main-content {
-    padding: 30px; /* Increased internal padding */
+    padding: 30px;
     background-color: white;
-    border-radius: 8px;
-    /* Authentic Whatfix shadow lift */
-    box-shadow: 0 4px 6px -1px var(--wf-shadow-md), 0 2px 4px -2px var(--wf-shadow-md); 
+    /* Increased corner radius (10px) */
+    border-radius: 10px; 
+    /* Subtle lifted shadow effect, NO HARD BORDERS */
+    box-shadow: 0 4px 10px -2px var(--wf-shadow-md), 0 2px 4px -4px var(--wf-shadow-md); 
+}
+
+/* --- Utility/Reused Elements --- */
+.main-content h1 {
+    color: var(--wf-text-secondary);
+    font-weight: 700;
+    font-size: 2em;
+    margin-top: 0;
 }
 
 /* --- Footer --- */
 footer {
     text-align: center;
-    padding: 20px;
-    background-color: var(--wf-text-dark); /* Dark Structural Color */
-    color: white;
+    padding: 15px;
+    background-color: var(--wf-text-secondary); /* Dark Steel Gray background */
+    color: var(--wf-bg-dominant); 
     margin-top: 40px;
-    font-size: 0.9em;
 }
