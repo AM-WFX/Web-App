@@ -337,32 +337,20 @@ function initializeChallenges() {
 
     // Replace the container's content with the dynamically generated challenges
     container.innerHTML = htmlContent;
-    challengeDefinitions.forEach(def => applyHighlighting(def.id));
+    // No longer need to apply highlighting, as it's removed.
+    // challengeDefinitions.forEach(def => applyHighlighting(def.id));
 }
 
 function applyHighlighting(challengeId) {
-    const state = challengeStates[challengeId];
-    if (state.isSolved) return;
-
+    // This function is now only used to clean up highlights during a reset.
     const targetArea = document.getElementById(`target-area-${challengeId}`);
     if (!targetArea) return;
 
     try {
+        // Find any highlights (from the old placeholder HTML) and remove them.
         targetArea.querySelectorAll('.target-highlight').forEach(el => el.classList.remove('target-highlight'));
-        
-        const targetElement = targetArea.querySelector(state.correctTarget);
-        if (targetElement) {
-            targetElement.classList.add('target-highlight');
-        }
     } catch (e) {
-        console.error(`Error highlighting target for challenge ${challengeId}: ${e.message}`);
-    }
-}
-
-function removeHighlighting(challengeId) {
-    const targetArea = document.getElementById(`target-area-${challengeId}`);
-    if (targetArea) {
-        targetArea.querySelectorAll('.target-highlight').forEach(el => el.classList.remove('target-highlight'));
+        console.error(`Error cleaning up highlights for challenge ${challengeId}: ${e.message}`);
     }
 }
 
@@ -400,16 +388,10 @@ function validateChallenge(challengeId) {
             return;
         }
         
-        // --- FIX: Temporarily REMOVE dynamic highlight class for accurate validation ---
-        correctTarget.classList.remove('target-highlight');
+        // --- Highlighting logic is removed ---
         
-        // Query the DOM using the user's selector against the PRISTINE element state
+        // Query the DOM using the user's selector
         const selectedElements = targetArea.querySelectorAll(userInput);
-
-        // Re-apply the highlight immediately after querying
-        correctTarget.classList.add('target-highlight');
-
-        // --- END FIX ---
         
         const isCorrect = selectedElements.length === 1 && selectedElements[0] === correctTarget;
 
@@ -456,7 +438,7 @@ function handleSuccess(challengeId, correctSelector) {
     if (!state.isSolved) {
         statusElement.textContent = "(SOLVED!)";
         statusElement.style.color = '#155724';
-        removeHighlighting(challengeId);
+        // Highlighting removal no longer needed
     }
 
     state.isSolved = true;
@@ -484,7 +466,7 @@ function handleSuccess(challengeId, correctSelector) {
 
     feedbackElement.classList.add('success');
     feedbackElement.innerHTML = `
-        🎉 **PERFECT!** You successfully targeted the element with <code>${correctSelector}</code>.
+        🎉 <b>PERFECT!</b> You successfully targeted the element with <code>${correctSelector}</code>.
         <br><br>
         <strong>Lesson Learned: ${challengeDef.type}</strong> 💡
         <div class="hint-message">${challengeDef.trivia}</div>
@@ -508,18 +490,18 @@ function handleFailure(challengeId, userInput, selectedElements, correctTarget) 
     if (state.attempts === 1) {
         let nudge;
         if (selectedElements.length === 0) {
-            nudge = `Incorrect. Your selector selected **no elements**. Check your basic syntax (e.g., did you miss a '.' or '#')?`;
+            nudge = `Incorrect. Your selector selected <b>no elements</b>. Check your basic syntax (e.g., did you miss a '.' or '#')?`;
         } else if (Array.from(selectedElements).includes(correctTarget)) {
-            nudge = `Close! Your selector selected **${selectedElements.length} elements**, including the target. Try to be more specific to select *only* the target.`;
+            nudge = `Close! Your selector selected <b>${selectedElements.length} elements</b>, including the target. Try to be more specific to select *only* the target.`;
         } else {
-            nudge = `Incorrect. Your selector selected **${selectedElements.length} element(s)**, but the target was not among them. Check the attributes of the highlighted element!`;
+            nudge = `Incorrect. Your selector selected <b>${selectedElements.length} element(s)</b>, but the target was not among them. Check the attributes of the highlighted element!`;
         }
         message = `${nudge}`;
     } 
     
     else if (state.attempts === 2) {
         message = `Still incorrect. 
-            <br><div class="hint-message info">🚨 **Hint 2:** The type of selector you need to master here is a **${challengeDef.type}**. Focus your learning on that concept!</div>`;
+            <br><div class="hint-message info">🚨 <b>Hint 2:</b> The type of selector you need to master here is a <b>${challengeDef.type}</b>. Focus your learning on that concept!</div>`;
         feedbackElement.classList.remove('error');
         feedbackElement.classList.add('info');
     } 
@@ -527,28 +509,28 @@ function handleFailure(challengeId, userInput, selectedElements, correctTarget) 
     else if (state.attempts === 3) {
         const hintType = challengeDef.type.includes('Combinator') ? 'Combinator' : challengeDef.type.includes('Pseudo') ? 'Pseudo-class' : 'Attribute Selector';
         message = `Three strikes. 
-            <br><div class="hint-message info">💡 **Hint 3:** This challenge requires a **${hintType}**. Look for relationships (parent/sibling) or a specific state (checked/disabled) in the HTML structure.</div>`;
+            <br><div class="hint-message info">💡 <b>Hint 3:</b> This challenge requires a <b>${hintType}</b>. Look for relationships (parent/sibling) or a specific state (checked/disabled) in the HTML structure.</div>`;
         feedbackElement.classList.remove('error');
         feedbackElement.classList.add('info');
     } 
     
     else if (state.attempts === 4) {
         let operatorHint = '';
-        if (challengeDef.type.includes('Descendant')) operatorHint = 'Use a **space** between selectors.';
-        else if (challengeDef.type.includes('Child')) operatorHint = 'Use the **>** operator.';
-        else if (challengeDef.type.includes('Adjacent')) operatorHint = 'Use the **+** operator.';
-        else if (challengeDef.type.includes('General')) operatorHint = 'Use the **~** operator.';
-        else if (challengeDef.type.includes('Attribute')) operatorHint = 'Use brackets **[ ]** and an operator like **[*=]**.';
-        else if (challengeDef.type.includes('Pseudo')) operatorHint = 'Use the colon **:** followed by the selector name.';
+        if (challengeDef.type.includes('Descendant')) operatorHint = 'Use a <b>space</b> between selectors.';
+        else if (challengeDef.type.includes('Child')) operatorHint = 'Use the <b>&gt;</b> operator.';
+        else if (challengeDef.type.includes('Adjacent')) operatorHint = 'Use the <b>+</b> operator.';
+        else if (challengeDef.type.includes('General')) operatorHint = 'Use the <b>~</b> operator.';
+        else if (challengeDef.type.includes('Attribute')) operatorHint = 'Use brackets <b>[ ]</b> and an operator like <b>[*=]</b>.';
+        else if (challengeDef.type.includes('Pseudo')) operatorHint = 'Use the colon <b>:</b> followed by the selector name.';
         
         message = `Final attempt nudge. 
-            <br><div class="hint-message info">🧠 **Hint 4 (Deep Dive):** ${operatorHint}</div>`;
+            <br><div class="hint-message info">🧠 <b>Hint 4 (Deep Dive):</b> ${operatorHint}</div>`;
         feedbackElement.classList.remove('error');
         feedbackElement.classList.add('info');
     } 
     
     else if (state.attempts >= 5 && !state.isRevealed) {
-        message = `🛑 **5 Failed Attempts.** It's time to learn! Would you like to reveal the solution for this specific challenge and then immediately try a new, related challenge to ensure the lesson sticks?
+        message = `🛑 <b>5 Failed Attempts.</b> It's time to learn! Would you like to reveal the solution for this specific challenge and then immediately try a new, related challenge to ensure the lesson sticks?
             <br><button class="reveal-button" onclick="revealSolution(${challengeId})">Yes, Reveal Solution & Try New Challenge</button>`;
         feedbackElement.classList.remove('info');
         feedbackElement.classList.add('error');
@@ -571,12 +553,12 @@ function revealSolution(challengeId) {
     feedbackElement.classList.remove('error', 'info');
     feedbackElement.classList.add('success');
     feedbackElement.innerHTML = `
-        ✅ **Solution Revealed:** The correct selector was <code>${state.correctTarget}</code>.
+        ✅ <b>Solution Revealed:</b> The correct selector was <code>${state.correctTarget}</code>.
         <br>
-        <p style="margin-top: 10px;">Please study the solution, then click the button below to solidify your understanding with a **fresh challenge** of the same selector type.</p>
-        <button class="accordion" style="background-color: #007bff; color: white; margin-right: 5px;" onclick="resetChallenge(${challengeId})">🔄 Try New ${challengeDef.type} Challenge</button>
+        <p style="margin-top: 10px;">Please study the solution, then click the button below to solidify your understanding with a <b>fresh challenge</b> of the same selector type.</p>
+        <button class="accordion" style="background-color: #007bff; color: white; margin-right: 5px;" onclick="resetChallenge(${challengeId})">🔄 Try New ${def.type} Challenge</button>
     `;
-    removeHighlighting(challengeId);
+    // Highlighting removal no longer needed
 }
 
 function resetChallenge(challengeId) {
@@ -604,9 +586,11 @@ function resetChallenge(challengeId) {
     
     promptElement.textContent = updatedPrompt; 
     
-    feedbackElement.innerHTML = `🌟 **New Challenge!** Apply the **${challengeDef.type}** logic to this new structure.`;
+    feedbackElement.innerHTML = `🌟 <b>New Challenge!</b> Apply the <b>${challengeDef.type}</b> logic to this new structure.`;
     statusElement.textContent = "(Unsolved)";
     statusElement.style.color = 'grey';
 
+    // Call applyHighlighting to clean up any old highlights from the previous attempt
     applyHighlighting(challengeId);
 }
+
