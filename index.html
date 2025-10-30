@@ -3,26 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Homepage | Project App</title>
-    <link rel="stylesheet" href="styles.css"> 
+    <title>WFX-Schools - Home</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
+
+    <!-- Top Navbar: Updated title and links adjusted for the "CSS Selectors" page -->
+    <header class="navbar">
+        <div class="logo">WFX-Schools</div>
         <nav>
-            <a href="index.html" class="active-nav">Home</a> | 
-            <a href="about.html">About Us</a> |
-            <a href="css-selectors.html">About Us</a>
+            <ul>
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="css-selectors.html">CSS Selectors</a></li>
+            </ul>
         </nav>
-        <h1 id="main-heading">Welcome to the Multi-Page Project</h1>
     </header>
 
-    <div class="data-box">
-        <p class="section-text">This is the first standard paragraph.</p>
-        <p class="section-text">This is the second standard paragraph.</p>
-        <p class="section-text" id="target-p">This paragraph will be changed by a specific ID selector.</p>
+    <div class="container">
+        <div id="content-wrapper">
+            <aside class="sidebar">
+                <h3>Navigation</h3>
+                <ul>
+                    <li><a href="index.html" class="active">Homepage</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="css-selectors.html">CSS Selectors</a></li>
+                </ul>
+            </aside>
+            
+            <main class="content main-content">
+                <h1>Welcome to WFX-Schools!</h1>
+                <p id="target-p">This is the main content of the home page. This text will be changed by a jQuery ID Selector.</p>
+                <p class="highlight">This paragraph, along with all others, will receive a highlight class via an Element Selector.</p>
+                
+                <hr style="margin: 30px 0;">
+
+                <!-- New Div describing the CSS Selectors page goal -->
+                <div style="padding: 20px; background-color: #f0f8ff; border: 2px solid #007bff; border-radius: 8px; text-align: center;">
+                    <h2>Master CSS Selectors Through Practice</h2>
+                    <p>Our **CSS Selectors Lab** provides an interactive, gamified environment where you test your knowledge against real HTML structures. Stop guessing and start mastering Combinators, Pseudo-classes, and Attributes with instant, educational feedback.</p>
+                    <a href="css-selectors.html" style="text-decoration: none;">
+                        <button style="padding: 10px 25px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; margin-top: 15px;">
+                            Go to CSS Selectors Lab &raquo;
+                        </button>
+                    </a>
+                </div>
+
+            </main>
+        </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script> 
+    <footer>
+        <p>&copy; 2025 WFX-Schools</p>
+    </footer>
     <script src="script.js"></script>
 </body>
 </html>
