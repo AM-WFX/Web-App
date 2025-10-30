@@ -7,35 +7,162 @@
     <link rel="stylesheet" href="styles.css"> 
     
     <style>
-        /* [Styles remain identical for layout and visual uniformity as previous correct response] */
-        .container { max-width: 1300px; margin: 0 auto; }
-        .main-content { padding: 20px; background-color: #fff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); }
-        #all-challenges { display: flex; flex-wrap: wrap; gap: 20px; justify-content: flex-start; }
-        .challenge-container { width: calc(50% - 10px); min-width: 400px; margin-top: 10px; padding: 20px; border: 1px solid #c9e6ff; border-radius: 6px; margin-bottom: 20px; background-color: #f6faff; }
-        .challenge-target-area * { box-sizing: border-box; }
-        .challenge-target-area button, .challenge-target-area input, .challenge-target-area li, .challenge-target-area p, .challenge-target-area div, .challenge-target-area label, .challenge-target-area a, .challenge-target-area h2, .challenge-target-area h3, .challenge-target-area span {
-            border: 1px solid #ccc !important; background-color: #fcfcfc !important; color: #333 !important; font-family: inherit !important; font-size: 0.9em !important; line-height: 1.2 !important; padding: 8px 12px !important; margin: 6px !important; border-radius: 4px !important; display: inline-block !important; text-align: left !important;
+        /* --- General Layout and Formatting --- */
+        .container {
+            /* 1. WIDER CONTAINER: Increased max-width for more horizontal space */
+            max-width: 1400px; 
+            margin: 0 auto;
         }
-        .challenge-target-area button { background-color: #eee !important; border-color: #ccc !important; font-weight: normal !important; cursor: default !important; }
-        .challenge-target-area input[type="text"], .challenge-target-area input[type="checkbox"] { border: 1px solid #ccc !important; width: auto; }
-        .challenge-target-area ul, .challenge-target-area ol, .challenge-target-area div#settings-modal {
-            border: 2px dashed #999 !important; padding: 10px !important; margin: 10px auto !important; background-color: #f0f0f0 !important; display: block !important; text-align: left !important; max-width: 90%; width: auto;
+
+        .main-content {
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-        .challenge-target-area li, .challenge-target-area label { display: list-item !important; list-style-type: none; border: 1px solid #ddd !important; background-color: #fff !important; }
-        .challenge-target-area p { line-height: 1.5 !important; }
-        .target-highlight { border: 2px solid #cc0000 !important; background-color: #fffac9 !important; padding: 7px 11px !important; margin: 5px !important; }
-        .challenge-header h3 { margin: 0; color: #1a5c9a; }
-        .challenge-ui { display: flex; gap: 10px; margin-bottom: 10px; }
-        .challenge-ui input[type="text"] { flex-grow: 1; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-family: monospace; font-size: 1em; }
-        .challenge-ui button { padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; white-space: nowrap; }
+
+        /* --- Side-by-Side Challenge Layout (The main fix) --- */
+        #all-challenges {
+            /* This property is essential for side-by-side layout */
+            display: flex;
+            flex-wrap: wrap; 
+            gap: 20px; 
+            justify-content: flex-start;
+        }
+        
+        .challenge-container {
+            /* Ensures two challenges fit in a row within the main-content area */
+            width: calc(50% - 10px); 
+            min-width: 400px; 
+            
+            margin-top: 10px; 
+            padding: 20px;
+            border: 1px solid #c9e6ff;
+            border-radius: 6px;
+            margin-bottom: 20px; 
+            background-color: #f6faff;
+        }
+        
+        /* --- VISUAL UNIFORMITY RULES (Elements look the same) --- */
+        
+        .challenge-target-area * {
+            box-sizing: border-box; 
+        }
+
+        .challenge-target-area button,
+        .challenge-target-area input,
+        .challenge-target-area li,
+        .challenge-target-area p,
+        .challenge-target-area div,
+        .challenge-target-area label,
+        .challenge-target-area a,
+        .challenge-target-area h2,
+        .challenge-target-area h3,
+        .challenge-target-area span {
+            border: 1px solid #ccc !important; 
+            background-color: #fcfcfc !important; 
+            color: #333 !important;
+            font-family: inherit !important;
+            font-size: 0.9em !important;
+            line-height: 1.2 !important;
+            padding: 8px 12px !important;
+            margin: 6px !important;
+            border-radius: 4px !important;
+            display: inline-block !important; 
+            text-align: left !important;
+        }
+
+        .challenge-target-area button {
+            background-color: #eee !important; 
+            border-color: #ccc !important;
+            font-weight: normal !important;
+            cursor: default !important;
+        }
+        
+        .challenge-target-area input[type="text"],
+        .challenge-target-area input[type="checkbox"] {
+            border: 1px solid #ccc !important;
+            width: auto;
+        }
+        
+        .challenge-target-area ul, 
+        .challenge-target-area ol, 
+        .challenge-target-area div#settings-modal {
+            border: 2px dashed #999 !important; 
+            padding: 10px !important;
+            margin: 10px auto !important;
+            background-color: #f0f0f0 !important;
+            display: block !important;
+            text-align: left !important;
+            max-width: 90%;
+            width: auto;
+        }
+        .challenge-target-area li, .challenge-target-area label {
+            display: list-item !important; 
+            list-style-type: none; 
+            border: 1px solid #ddd !important;
+            background-color: #fff !important;
+        }
+        .challenge-target-area p {
+            line-height: 1.5 !important;
+        }
+
+
+        /* The Visual Target Highlight (Applied by JS) */
+        .target-highlight {
+            border: 2px solid #cc0000 !important;
+            background-color: #fffac9 !important;
+            padding: 7px 11px !important; 
+            margin: 5px !important;
+        }
+        
+        /* --- UI and Feedback Elements --- */
+
+        .challenge-header h3 {
+            margin: 0;
+            color: #1a5c9a;
+        }
+
+        .challenge-ui {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .challenge-ui input[type="text"] {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 1em;
+        }
+
+        .challenge-ui button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        
         .success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
         .error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
         .info { background-color: #e2f4fb; color: #0c5460; border: 1px solid #bee5eb; }
+
         .accordion {
             display: flex; justify-content: space-between; align-items: center; background-color: #eee; color: #444; cursor: pointer; padding: 10px; width: 100%; border: none; text-align: left; outline: none; font-size: 0.9em; transition: 0.4s; margin-top: 5px; border-radius: 4px;
         }
         .active-accordion, .accordion:hover { background-color: #ccc; }
-        .accordion::after { content: ' \25BC'; color: #777; font-weight: bold; transition: 0.4s; transform: rotate(0deg); }
+        .accordion::after {
+            content: ' \25BC';
+            color: #777;
+            font-weight: bold;
+            transition: 0.4s;
+            transform: rotate(0deg);
+        }
         .active-accordion::after { transform: rotate(-180deg); }
         .panel {
             padding: 0 18px; background-color: white; max-height: 0; overflow: hidden; transition: max-height 0.3s ease-in-out; border-left: 2px solid #007bff; margin-bottom: 5px;
@@ -449,6 +576,7 @@
 
                 // Re-apply the highlight immediately after querying
                 correctTarget.classList.add('target-highlight');
+
                 // --- END FIX ---
                 
                 const isCorrect = selectedElements.length === 1 && selectedElements[0] === correctTarget;
@@ -461,15 +589,16 @@
 
             } catch (e) {
                 // Check for the specific Attribute Equals error that caused the issue
-                const isAttributeEqualsError = userInput.includes('[class=') || userInput.includes('[id=');
+                const isAttributeEqualsClass = userInput.includes('[class=');
+                const isAttributeEqualsID = userInput.includes('[id=') && userInput.includes('#');
 
-                if (isAttributeEqualsError) {
+                if (isAttributeEqualsClass) {
                      // Provide targeted, actionable feedback for the specific mistake
                     feedbackElement.innerHTML = `
                         ❌ Syntax Error (Specific): Your selector <code>${userInput}</code> is failing. 
                         <br>
-                        <strong>The Attribute Equals Selector ([attr="value"]) requires the value to be an EXACT match.</strong> 
-                        <br>Since your target element has multiple classes (e.g., 'btn-save' and others), the exact match fails. You should use the **Class Selector (.)** or the **Attribute Contains Selector ([attr~="value"] or [attr*="value"])** instead.
+                        <strong>The Attribute Equals Selector ([attr="value"]) requires the class value to be an EXACT match.</strong> 
+                        <br>Since your target element has multiple classes, the exact match fails. You should use the **Class Selector (.)** or the **Attribute Contains Selector ([attr~="value"] or [attr*="value"])** instead.
                     `;
                     feedbackElement.classList.add('error');
                 } else {
