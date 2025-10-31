@@ -79,10 +79,12 @@ body {
     margin: 0; 
     padding: 0; 
     display: flex; 
+    align-items: center; /* Vertically align nav items */
 }
 
 .navbar li { 
     margin-right: 25px; 
+    position: relative; /* Needed for tooltip positioning */
 }
 
 .navbar a { 
@@ -99,23 +101,62 @@ body {
     border-bottom: 2px solid var(--wf-accent-orange);
 }
 
-/* ❗ NEW: Styles for "Coming Soon" links ❗ */
+/* ❗ UPDATED: Styles for "Coming Soon" links ❗ */
 .navbar a.nav-disabled {
     color: #94A3B8; /* Muted gray text */
     cursor: not-allowed;
+    display: flex; /* Use flex to align text and tag */
+    align-items: center;
 }
 .navbar a.nav-disabled:hover {
     border-bottom: none;
+    color: #94A3B8; /* Keep color muted on hover */
 }
 .coming-soon-tag {
     background-color: #E2E8F0;
     color: #64748B;
     font-size: 0.65em;
     font-weight: 700;
-    padding: 3px 5px;
+    padding: 3px 6px; /* Slightly more padding */
     border-radius: 4px;
-    margin-left: 5px;
+    margin-left: 8px; /* More space */
     vertical-align: middle;
+}
+
+/* ❗ NEW: CSS-Only Tooltip for Navbar ❗ */
+.nav-disabled .tooltip-text {
+    visibility: hidden;
+    width: 200px;
+    background-color: var(--wf-secondary-steel-gray);
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px;
+    position: absolute;
+    z-index: 1;
+    bottom: 150%; /* Position above the link */
+    left: 50%;
+    margin-left: -100px; /* Use half of the width to center */
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 0.85em;
+    font-weight: 400;
+}
+/* Tooltip arrow */
+.nav-disabled .tooltip-text::after {
+    content: "";
+    position: absolute;
+    top: 100%; /* At the bottom of the tooltip */
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: var(--wf-secondary-steel-gray) transparent transparent transparent;
+}
+/* Show on hover */
+.nav-disabled:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
 }
 
 
