@@ -34,19 +34,19 @@
     --wf-border-radius: 10px;
     --wf-shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.05);
     --wf-shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
-    --wf-input-height: 44px; /* Defined for vertical centering */
+    /* ❗ RATIO: Set button height to 60px ❗ */
+    --wf-button-height: 60px; 
 }
 
 /* --- GLOBAL RESET & FONT --- */
 
 body {
-    /* ❗ FONT: Applying Aeonik globally */
     font-family: 'Aeonik', sans-serif;
     font-weight: 400;
     margin: 0;
     padding: 0;
-    background-color: var(--wf-dominant-spring-wood); /* 60% Dominant Background */
-    color: var(--wf-secondary-steel-gray); /* 30% Secondary Text */
+    background-color: var(--wf-dominant-spring-wood); 
+    color: var(--wf-secondary-steel-gray); 
 }
 
 /* --- ❗ NAVBAR STYLING (WHATFIX REPLICATION) ❗ --- */
@@ -54,9 +54,7 @@ body {
 .navbar {
     background-color: white; 
     color: var(--wf-secondary-steel-gray);
-    /* Increased padding for a more modern, spacious header */
     padding: 20px 30px; 
-    /* Replaced border with subtle shadow */
     border-bottom: none;
     box-shadow: var(--wf-shadow-subtle);
     display: flex; 
@@ -97,7 +95,7 @@ body {
 }
 
 .navbar a.active { 
-    color: var(--wf-accent-orange); /* Active link uses accent color */
+    color: var(--wf-accent-orange); 
     border-bottom: 2px solid var(--wf-accent-orange);
 }
 
@@ -205,6 +203,7 @@ footer {
 
 /* --- CTA & BUTTON STYLING (10% Accent Rule) --- */
 
+/* ❗ RATIO FIX: Target the validate button by its unique onclick attribute ❗ */
 button[onclick*="validateChallenge"], 
 .cta-button {
     appearance: none !important;
@@ -216,16 +215,21 @@ button[onclick*="validateChallenge"],
     color: white !important;
     font-weight: 400 !important;
     padding: 12px 25px !important;
-    border-radius: var(--wf-border-radius) !important;
+    /* ❗ RADIUS: Changed to 96px for pill shape ❗ */
+    border-radius: 96px !important; 
     cursor: pointer !important;
     transition: background-color 0.2s, box-shadow 0.2s;
     text-decoration: none !important;
-    display: inline-block !important;
+    
+    /* ❗ RATIO FIX: Set height to 60px and use flex to center text ❗ */
+    height: var(--wf-button-height) !important; /* 60px */
+    display: inline-flex !important; /* Use inline-flex for centering */
+    align-items: center; /* Vertically center text */
+    justify-content: center; /* Horizontally center text */
     
     font-family: 'Aeonik', sans-serif !important;
-    font-size: 1em !important;
-    line-height: 1; 
-    height: var(--wf-input-height);
+    font-size: 1em !important; /* This will be 16px */
+    height: var(--wf-button-height) !important; /* 60px */
 }
 
 .cta-button:hover,
@@ -334,10 +338,12 @@ button[onclick*="validateChallenge"]:hover {
     flex-grow: 1; 
     padding: 10px 15px;
     border: 1px solid #ccc;
-    border-radius: var(--wf-border-radius);
+    /* ❗ RADIUS: Changed to 96px to match button ❗ */
+    border-radius: 96px; 
     font-family: monospace;
     font-size: 1em;
-    height: var(--wf-input-height);
+    /* ❗ RATIO: Set input height to 60px to match button ❗ */
+    height: var(--wf-button-height);
     box-sizing: border-box; 
 }
 
