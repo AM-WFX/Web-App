@@ -2,23 +2,6 @@
 /* --- 🧱 WHATFIX BRANDING & CORE LAYOUT STYLES --- */
 /* ---------------------------------------------------- */
 
-/* ❗ FONT: Import local Aeonik font files (Updated to .ttf format) ❗ */
-@font-face {
-    font-family: 'Aeonik';
-    /* Make sure your .ttf files are in the 'fonts' folder */
-    src: url('fonts/Aeonik-Regular.ttf') format('truetype');
-    font-weight: 400; /* 400 is 'normal' */
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'Aeonik';
-    src: url('fonts/Aeonik-Bold.ttf') format('truetype');
-    font-weight: 700; /* 700 is 'bold' */
-    font-style: normal;
-}
-
-
 /* CSS Variables for Brand Colors */
 :root {
     --wf-dominant-spring-wood: #F9F9F2;
@@ -41,11 +24,12 @@
 
 /* --- GLOBAL RESET & FONT --- */
 
-/* ❗ REMOVED: Google Font @import */
+/* ❗ FONT: Importing Manrope (replaces Aeonik/Inter) */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&display=swap');
 
 body {
-    /* ❗ FONT: Applying Aeonik globally */
-    font-family: 'Aeonik', sans-serif;
+    /* ❗ FONT: Applying Manrope globally */
+    font-family: 'Manrope', sans-serif;
     margin: 0;
     padding: 0;
     background-color: var(--wf-dominant-spring-wood); /* 60% Dominant Background */
@@ -113,6 +97,7 @@ h1, h2, h3 {
     max-width: 1400px;
     margin: 0 auto;
     padding: 0 20px;
+    margin-top: 20px; /* ❗ FIX: Added padding between navbar and main content ❗ */
 }
 
 #content-wrapper {
@@ -139,15 +124,16 @@ footer {
 
 /* --- CTA & BUTTON STYLING (10% Accent Rule) --- */
 
-/* This styles the Orange "Validate" and "Promo" buttons */
+/* ❗ FINAL FIX: Target the validate button by its unique onclick attribute ❗ */
 button[onclick*="validateChallenge"], 
 .cta-button {
+    /* Critical Reset for native browser styling */
     appearance: none !important;
-    -webkit-appearance: none !important;
+    -webkit-appearance: none !important; /* For older WebKit browsers */
     border: none !important;
-    border-style: none !important; 
+    border-style: none !important; /* Remove outlook/inlay border */
     
-    background-color: var(--wf-accent-orange) !important; 
+    background-color: var(--wf-accent-orange) !important; /* Force Orange color */
     color: white !important;
     font-weight: 600 !important;
     padding: 12px 25px !important;
@@ -156,17 +142,17 @@ button[onclick*="validateChallenge"],
     transition: background-color 0.2s, box-shadow 0.2s;
     text-decoration: none !important;
     display: inline-block !important;
-    /* ❗ FONT: Applying Aeonik */
-    font-family: 'Aeonik', sans-serif !important;
+    /* Ensure font is also inherited/set correctly */
+    font-family: 'Manrope', sans-serif !important;
     font-size: 1em !important;
-    line-height: 1; 
+    line-height: 1; /* Ensures proper vertical centering */
     height: var(--wf-input-height);
 }
 
 .cta-button:hover,
 button[onclick*="validateChallenge"]:hover {
-    background-color: #E55C00 !important; 
-    box-shadow: 0 4px 8px -2px rgba(255, 107, 24, 0.5);
+    background-color: #E55C00 !important; /* Slightly darker orange */
+    box-shadow: 0 4px 8px -2px rgba(255, 107, 24, 0.5); /* Stronger shadow on hover */
 }
 
 /* --- HOME & ABOUT PAGE SPECIFICS --- */
@@ -248,8 +234,7 @@ button[onclick*="validateChallenge"]:hover {
 /* Visual Uniformity Rules (No hard external borders) */
 .challenge-target-area * { 
     box-sizing: border-box; 
-    /* ❗ FONT: Applying Aeonik */
-    font-family: 'Aeonik', sans-serif;
+    font-family: 'Manrope', sans-serif;
 }
 
 .challenge-target-area button,
@@ -275,6 +260,7 @@ button[onclick*="validateChallenge"]:hover {
 /* --- ❗ ACCORDION STYLING (WHATFIX REPLICATION) ❗ --- */
 
 .validation-feedback { 
+    display: none; /* ❗ FIX: Hide by default ❗ */
     padding: 20px !important;
     margin-top: 15px !important;
     border-radius: var(--wf-border-radius);
@@ -304,8 +290,7 @@ button[onclick*="validateChallenge"]:hover {
     width: 100%;
     text-align: left;
     
-    /* ❗ FONT: Applying Aeonik */
-    font-family: 'Aeonik', sans-serif !important;
+    font-family: 'Manrope', sans-serif !important;
     font-size: 0.9em !important;
     font-weight: 600 !important;
     color: var(--wf-secondary-steel-gray) !important;
@@ -357,11 +342,18 @@ button[onclick*="validateChallenge"]:hover {
 }
 
 .success { 
+    display: block; /* ❗ FIX: Show when class is added ❗ */
     background-color: var(--wf-success); 
     color: var(--wf-text-success); 
 }
 .error { 
+    display: block; /* ❗ FIX: Show when class is added ❗ */
     background-color: var(--wf-error); 
     color: var(--wf-text-error); 
 }
-
+.info {
+    display: block; /* ❗ FIX: Show when class is added ❗ */
+    background-color: var(--wf-support-karry); 
+    color: var(--wf-secondary-steel-gray);
+    border: 1px solid var(--wf-accent-orange);
+}
