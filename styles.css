@@ -39,17 +39,13 @@
 
 /* --- GLOBAL RESET & FONT --- */
 
-/* ❗ REMOVED: Google Font @import for Manrope */
-
 body {
-    /* ❗ FONT: Applying Aeonik globally */
     font-family: 'Aeonik', sans-serif;
-    /* ❗ FONT WEIGHT: Set base weight to 400 ❗ */
     font-weight: 400;
     margin: 0;
     padding: 0;
-    background-color: var(--wf-dominant-spring-wood); /* 60% Dominant Background */
-    color: var(--wf-secondary-steel-gray); /* 30% Secondary Text */
+    background-color: var(--wf-dominant-spring-wood); 
+    color: var(--wf-secondary-steel-gray); 
 }
 
 /* --- ❗ NAVBAR STYLING (WHATFIX REPLICATION) ❗ --- */
@@ -57,9 +53,7 @@ body {
 .navbar {
     background-color: white; 
     color: var(--wf-secondary-steel-gray);
-    /* Increased padding for a more modern, spacious header */
     padding: 20px 30px; 
-    /* Replaced border with subtle shadow */
     border-bottom: none;
     box-shadow: var(--wf-shadow-subtle);
     display: flex; 
@@ -91,15 +85,14 @@ body {
 .navbar a { 
     color: var(--wf-secondary-steel-gray); 
     text-decoration: none; 
-    font-size: 1em; /* Standardized font size */
-    /* ❗ FONT WEIGHT: Changed from 600 to 400 ❗ */
+    font-size: 1em; 
     font-weight: 400; 
     padding: 5px 0;
     transition: color 0.3s, border-bottom 0.3s;
 }
 
 .navbar a.active { 
-    color: var(--wf-accent-orange); /* Active link uses accent color */
+    color: var(--wf-accent-orange); 
     border-bottom: 2px solid var(--wf-accent-orange);
 }
 
@@ -114,7 +107,7 @@ h1, h2, h3 {
     max-width: 1400px;
     margin: 0 auto;
     padding: 0 20px;
-    margin-top: 20px; /* ❗ FIX: Added padding between navbar and main content ❗ */
+    margin-top: 20px; 
 }
 
 #content-wrapper {
@@ -134,25 +127,22 @@ h1, h2, h3 {
 footer {
     text-align: center;
     padding: 15px;
-    background-color: var(--wf-secondary-steel-gray); /* Dark ground */
+    background-color: var(--wf-secondary-steel-gray); 
     color: white;
     margin-top: 40px;
 }
 
 /* --- CTA & BUTTON STYLING (10% Accent Rule) --- */
 
-/* ❗ FINAL FIX: Target the validate button by its unique onclick attribute ❗ */
 button[onclick*="validateChallenge"], 
 .cta-button {
-    /* Critical Reset for native browser styling */
     appearance: none !important;
-    -webkit-appearance: none !important; /* For older WebKit browsers */
+    -webkit-appearance: none !important;
     border: none !important;
-    border-style: none !important; /* Remove outlook/inlay border */
+    border-style: none !important; 
     
-    background-color: var(--wf-accent-orange) !important; /* Force Orange color */
+    background-color: var(--wf-accent-orange) !important; 
     color: white !important;
-    /* ❗ FONT WEIGHT: Changed from 600 to 400 ❗ */
     font-weight: 400 !important;
     padding: 12px 25px !important;
     border-radius: var(--wf-border-radius) !important;
@@ -161,17 +151,16 @@ button[onclick*="validateChallenge"],
     text-decoration: none !important;
     display: inline-block !important;
     
-    /* ❗ FONT: Applying Aeonik */
     font-family: 'Aeonik', sans-serif !important;
     font-size: 1em !important;
-    line-height: 1; /* Ensures proper vertical centering */
+    line-height: 1; 
     height: var(--wf-input-height);
 }
 
 .cta-button:hover,
 button[onclick*="validateChallenge"]:hover {
-    background-color: #E55C00 !important; /* Slightly darker orange */
-    box-shadow: 0 4px 8px -2px rgba(255, 107, 24, 0.5); /* Stronger shadow on hover */
+    background-color: #E55C00 !important; 
+    box-shadow: 0 4px 8px -2px rgba(255, 107, 24, 0.5);
 }
 
 /* --- HOME & ABOUT PAGE SPECIFICS --- */
@@ -191,6 +180,32 @@ button[onclick*="validateChallenge"]:hover {
     background-color: var(--wf-dominant-spring-wood);
     border-radius: var(--wf-border-radius);
     margin-bottom: 20px;
+}
+
+/* --- ❗ NEW INSTRUCTION BOX (FOR CSS-SELECTORS PAGE) ❗ --- */
+.instructions-box {
+    background-color: var(--wf-dominant-spring-wood);
+    border: 1px solid #E2E8F0;
+    border-radius: var(--wf-border-radius);
+    padding: 25px;
+    margin-bottom: 30px;
+    font-size: 1.05em;
+    line-height: 1.6;
+}
+.instructions-box h2 {
+    margin-top: 0;
+    color: var(--wf-accent-orange);
+}
+.instructions-box code {
+    background-color: #E2E8F0;
+    padding: 3px 6px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.95em;
+}
+.instructions-box ul {
+    margin-top: 10px;
+    padding-left: 20px;
 }
 
 /* --- CSS SELECTORS LAB STYLES --- */
@@ -213,17 +228,13 @@ button[onclick*="validateChallenge"]:hover {
     box-shadow: none;
 }
 
-/* ❗ FIX: Uniform Height, Centering, and Contrast ❗ */
 .challenge-target-area {
-    /* ❗ CONTRAST: Use Spring Wood to contrast with white elements inside */
     background-color: var(--wf-dominant-spring-wood); 
     border: 1px solid #E2E8F0; 
     border-radius: var(--wf-border-radius);
     padding: 15px;
     margin-top: 10px;
     margin-bottom: 20px; 
-    
-    /* ❗ UNIFORM HEIGHT: Set fixed height and center content */
     height: 200px; 
     display: flex;
     flex-direction: column;
@@ -250,10 +261,9 @@ button[onclick*="validateChallenge"]:hover {
     box-sizing: border-box; 
 }
 
-/* Visual Uniformity Rules (No hard external borders) */
+/* ❗ FIX: Increased element size/padding ❗ */
 .challenge-target-area * { 
     box-sizing: border-box; 
-    /* ❗ FONT: Applying Aeonik */
     font-family: 'Aeonik', sans-serif;
 }
 
@@ -271,51 +281,42 @@ button[onclick*="validateChallenge"]:hover {
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05); 
     background-color: white !important; 
     color: var(--wf-secondary-steel-gray) !important;
-    padding: 8px 12px !important;
+    /* Increased padding and font size */
+    padding: 10px 14px !important;
     margin: 6px !important;
+    font-size: 1em !important; 
     border-radius: 6px !important; 
     display: inline-block !important; 
 }
 
-/* --- ❗ ACCORDION STYLING (WHATFIX REPLICATION) ❗ --- */
+/* --- ACCORDION STYLING (WHATFIX REPLICATION) --- */
 
 .validation-feedback { 
     display: none; 
     padding: 20px !important;
     margin-top: 15px !important;
     border-radius: var(--wf-border-radius);
-    /* ❗ FONT WEIGHT: Changed from 600 to 400 ❗ */
     font-weight: 400;
 }
 
-/* This is the accordion 'button' */
 .accordion {
-    /* Reset all button appearance */
     appearance: none !important;
     -webkit-appearance: none !important;
     border: none !important;
-    /* ❗ FIX: Set background to white ❗ */
     background-color: white !important; 
     box-shadow: none !important;
-    
-    /* Style as a text header */
     padding: 12px 15px; 
     margin-top: 5px;
     margin-bottom: 0; 
     border-bottom: 1px solid #E2E8F0; 
-    /* ❗ FIX: Set full radius by default (when closed) ❗ */
     border-radius: var(--wf-border-radius); 
-    
-    /* Flexbox to separate text from icon */
     display: flex !important;
     justify-content: space-between !important;
     align-items: center !important;
     width: 100%;
     text-align: left;
-    
     font-family: 'Aeonik', sans-serif !important;
     font-size: 0.9em !important;
-    /* ❗ FONT WEIGHT: Changed from 600 to 400 ❗ */
     font-weight: 400 !important;
     color: var(--wf-secondary-steel-gray) !important;
     cursor: pointer !important;
@@ -326,17 +327,12 @@ button[onclick*="validateChallenge"]:hover {
     color: var(--wf-accent-orange) !important;
 }
 
-/* ❗ FIX: Added .active-accordion rule ❗ */
-/* This rule activates when the accordion is clicked (by JS) */
 .active-accordion {
-    /* Set sharp bottom corners when open */
     border-radius: var(--wf-border-radius) var(--wf-border-radius) 0 0 !important;
-    /* Remove bottom border to connect to panel */
     border-bottom: 1px solid transparent !important;
     margin-bottom: 0 !important;
 }
 
-/* The new +/- icon */
 .accordion::after {
     content: '\002B'; /* Plus Sign (+) */
     font-size: 1.5em;
@@ -351,15 +347,13 @@ button[onclick*="validateChallenge"]:hover {
     transform: rotate(180deg);
 }
 
-
-/* Panel (the collapsible area) */
 .panel {
     max-height: 0; 
     overflow: hidden; 
     transition: max-height 0.3s ease-in-out;
     padding: 0; 
     background-color: white;
-    border-radius: 0 0 var(--wf-border-radius) var(--wf-border-radius); /* Rounded bottom corners */
+    border-radius: 0 0 var(--wf-border-radius) var(--wf-border-radius); 
     margin-bottom: 5px;
 }
 
@@ -381,21 +375,18 @@ button[onclick*="validateChallenge"]:hover {
 
 .success { 
     display: block; 
-    /* ❗ FIX: Use Karry background, no border ❗ */
     background-color: var(--wf-support-karry); 
     color: var(--wf-secondary-steel-gray); 
     border: none;
 }
 .error { 
     display: block; 
-    /* ❗ FIX: Use Karry background, no border, keep red text ❗ */
     background-color: var(--wf-support-karry); 
     color: var(--wf-text-error); 
     border: none;
 }
 .info {
     display: block; 
-    /* ❗ FIX: Use Karry background, no border ❗ */
     background-color: var(--wf-support-karry); 
     color: var(--wf-secondary-steel-gray);
     border: none;
