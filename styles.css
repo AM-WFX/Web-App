@@ -149,9 +149,9 @@ button[onclick*="validateChallenge"],
     
     background-color: var(--wf-accent-orange) !important; /* Force Orange color */
     color: white !important;
-    font-weight: 400 !important;
+    font-weight: 600 !important;
     padding: 12px 25px !important;
-    border-radius: 96px !important;
+    border-radius: var(--wf-border-radius) !important;
     cursor: pointer !important;
     transition: background-color 0.2s, box-shadow 0.2s;
     text-decoration: none !important;
@@ -358,10 +358,12 @@ button[onclick*="validateChallenge"]:hover {
     box-shadow: none !important;
 }
 
+/* ❗ FIX: Update success color to match Whatfix palette ❗ */
 .success { 
-    display: block; /* ❗ FIX: Show when class is added ❗ */
-    background-color: var(--wf-success); 
-    color: var(--wf-text-success); 
+    display: block; 
+    background-color: var(--wf-support-karry); /* Use Karry */
+    color: var(--wf-secondary-steel-gray); /* Use Steel Gray text */
+    border: 1px solid var(--wf-accent-orange); /* Use Orange border for success */
 }
 .error { 
     display: block; /* ❗ FIX: Show when class is added ❗ */
