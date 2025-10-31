@@ -44,6 +44,8 @@
 body {
     /* ❗ FONT: Applying Aeonik globally */
     font-family: 'Aeonik', sans-serif;
+    /* ❗ FONT WEIGHT: Set base weight to 400 ❗ */
+    font-weight: 400;
     margin: 0;
     padding: 0;
     background-color: var(--wf-dominant-spring-wood); /* 60% Dominant Background */
@@ -90,7 +92,8 @@ body {
     color: var(--wf-secondary-steel-gray); 
     text-decoration: none; 
     font-size: 1em; /* Standardized font size */
-    font-weight: 600; /* Bolder font for header links */
+    /* ❗ FONT WEIGHT: Changed from 600 to 400 ❗ */
+    font-weight: 400; 
     padding: 5px 0;
     transition: color 0.3s, border-bottom 0.3s;
 }
@@ -104,7 +107,7 @@ body {
 
 h1, h2, h3 {
     color: var(--wf-secondary-steel-gray);
-    font-weight: 700;
+    font-weight: 700; /* Headers remain bold */
 }
 
 .container {
@@ -149,7 +152,8 @@ button[onclick*="validateChallenge"],
     
     background-color: var(--wf-accent-orange) !important; /* Force Orange color */
     color: white !important;
-    font-weight: 600 !important;
+    /* ❗ FONT WEIGHT: Changed from 600 to 400 ❗ */
+    font-weight: 400 !important;
     padding: 12px 25px !important;
     border-radius: var(--wf-border-radius) !important;
     cursor: pointer !important;
@@ -280,7 +284,8 @@ button[onclick*="validateChallenge"]:hover {
     padding: 20px !important;
     margin-top: 15px !important;
     border-radius: var(--wf-border-radius);
-    font-weight: 600;
+    /* ❗ FONT WEIGHT: Changed from 600 to 400 ❗ */
+    font-weight: 400;
 }
 
 /* This is the accordion 'button' */
@@ -294,11 +299,12 @@ button[onclick*="validateChallenge"]:hover {
     box-shadow: none !important;
     
     /* Style as a text header */
-    padding: 12px 15px; /* Added horizontal padding */
+    padding: 12px 15px; 
     margin-top: 5px;
-    margin-bottom: 0; /* Removed bottom margin */
-    border-bottom: 1px solid #E2E8F0; /* Subtle line separator */
-    border-radius: var(--wf-border-radius) var(--wf-border-radius) 0 0; /* Rounded top corners */
+    margin-bottom: 0; 
+    border-bottom: 1px solid #E2E8F0; 
+    /* ❗ FIX: Set full radius by default (when closed) ❗ */
+    border-radius: var(--wf-border-radius); 
     
     /* Flexbox to separate text from icon */
     display: flex !important;
@@ -309,7 +315,8 @@ button[onclick*="validateChallenge"]:hover {
     
     font-family: 'Aeonik', sans-serif !important;
     font-size: 0.9em !important;
-    font-weight: 600 !important;
+    /* ❗ FONT WEIGHT: Changed from 600 to 400 ❗ */
+    font-weight: 400 !important;
     color: var(--wf-secondary-steel-gray) !important;
     cursor: pointer !important;
     transition: color 0.3s;
@@ -317,6 +324,16 @@ button[onclick*="validateChallenge"]:hover {
 
 .accordion:hover {
     color: var(--wf-accent-orange) !important;
+}
+
+/* ❗ FIX: Added .active-accordion rule ❗ */
+/* This rule activates when the accordion is clicked (by JS) */
+.active-accordion {
+    /* Set sharp bottom corners when open */
+    border-radius: var(--wf-border-radius) var(--wf-border-radius) 0 0 !important;
+    /* Remove bottom border to connect to panel */
+    border-bottom: 1px solid transparent !important;
+    margin-bottom: 0 !important;
 }
 
 /* The new +/- icon */
@@ -341,7 +358,6 @@ button[onclick*="validateChallenge"]:hover {
     overflow: hidden; 
     transition: max-height 0.3s ease-in-out;
     padding: 0; 
-    /* ❗ FIX: Set background to white ❗ */
     background-color: white;
     border-radius: 0 0 var(--wf-border-radius) var(--wf-border-radius); /* Rounded bottom corners */
     margin-bottom: 5px;
