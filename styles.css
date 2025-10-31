@@ -142,8 +142,9 @@ button[onclick*="validateChallenge"],
     transition: background-color 0.2s, box-shadow 0.2s;
     text-decoration: none !important;
     display: inline-block !important;
-    /* Ensure font is also inherited/set correctly */
-    font-family: 'Manrope', sans-serif !important;
+    
+    /* ❗ FONT FIX: Removed Manrope override from button ❗ */
+    /* font-family: 'Manrope', sans-serif !important; */
     font-size: 1em !important;
     line-height: 1; /* Ensures proper vertical centering */
     height: var(--wf-input-height);
@@ -234,6 +235,7 @@ button[onclick*="validateChallenge"]:hover {
 /* Visual Uniformity Rules (No hard external borders) */
 .challenge-target-area * { 
     box-sizing: border-box; 
+    /* ❗ FONT: Applying Manrope */
     font-family: 'Manrope', sans-serif;
 }
 
@@ -290,6 +292,7 @@ button[onclick*="validateChallenge"]:hover {
     width: 100%;
     text-align: left;
     
+    /* ❗ FONT: Applying Manrope */
     font-family: 'Manrope', sans-serif !important;
     font-size: 0.9em !important;
     font-weight: 600 !important;
@@ -357,3 +360,4 @@ button[onclick*="validateChallenge"]:hover {
     color: var(--wf-secondary-steel-gray);
     border: 1px solid var(--wf-accent-orange);
 }
+
