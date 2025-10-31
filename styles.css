@@ -276,7 +276,7 @@ button[onclick*="validateChallenge"]:hover {
 /* --- ❗ ACCORDION STYLING (WHATFIX REPLICATION) ❗ --- */
 
 .validation-feedback { 
-    display: none; /* ❗ FIX: Hide by default ❗ */
+    display: none; 
     padding: 20px !important;
     margin-top: 15px !important;
     border-radius: var(--wf-border-radius);
@@ -289,15 +289,16 @@ button[onclick*="validateChallenge"]:hover {
     appearance: none !important;
     -webkit-appearance: none !important;
     border: none !important;
-    background-color: transparent !important; /* No background */
+    /* ❗ FIX: Set background to white ❗ */
+    background-color: white !important; 
     box-shadow: none !important;
     
     /* Style as a text header */
-    padding: 12px 0; /* Padding only top/bottom */
+    padding: 12px 15px; /* Added horizontal padding */
     margin-top: 5px;
-    margin-bottom: 5px; 
+    margin-bottom: 0; /* Removed bottom margin */
     border-bottom: 1px solid #E2E8F0; /* Subtle line separator */
-    border-radius: 0; /* No radius */
+    border-radius: var(--wf-border-radius) var(--wf-border-radius) 0 0; /* Rounded top corners */
     
     /* Flexbox to separate text from icon */
     display: flex !important;
@@ -306,7 +307,6 @@ button[onclick*="validateChallenge"]:hover {
     width: 100%;
     text-align: left;
     
-    /* ❗ FONT: Applying Aeonik */
     font-family: 'Aeonik', sans-serif !important;
     font-size: 0.9em !important;
     font-weight: 600 !important;
@@ -341,12 +341,17 @@ button[onclick*="validateChallenge"]:hover {
     overflow: hidden; 
     transition: max-height 0.3s ease-in-out;
     padding: 0; 
+    /* ❗ FIX: Set background to white ❗ */
+    background-color: white;
+    border-radius: 0 0 var(--wf-border-radius) var(--wf-border-radius); /* Rounded bottom corners */
+    margin-bottom: 5px;
 }
 
 .panel-content {
     padding: 15px 18px; 
     border-left: 3px solid var(--wf-accent-orange);
-    background-color: var(--wf-dominant-spring-wood); /* Spring Wood background */
+    /* ❗ FIX: Set background to white ❗ */
+    background-color: white; 
     margin-bottom: 5px;
     margin-top: 5px;
 }
@@ -358,22 +363,25 @@ button[onclick*="validateChallenge"]:hover {
     box-shadow: none !important;
 }
 
-/* ❗ FIX: Update success color to match Whatfix palette ❗ */
 .success { 
     display: block; 
-    background-color: var(--wf-support-karry); /* Use Karry */
-    color: var(--wf-secondary-steel-gray); /* Use Steel Gray text */
-    border: 1px solid var(--wf-accent-orange); /* Use Orange border for success */
+    /* ❗ FIX: Use Karry background, no border ❗ */
+    background-color: var(--wf-support-karry); 
+    color: var(--wf-secondary-steel-gray); 
+    border: none;
 }
 .error { 
-    display: block; /* ❗ FIX: Show when class is added ❗ */
-    background-color: var(--wf-error); 
+    display: block; 
+    /* ❗ FIX: Use Karry background, no border, keep red text ❗ */
+    background-color: var(--wf-support-karry); 
     color: var(--wf-text-error); 
+    border: none;
 }
 .info {
-    display: block; /* ❗ FIX: Show when class is added ❗ */
+    display: block; 
+    /* ❗ FIX: Use Karry background, no border ❗ */
     background-color: var(--wf-support-karry); 
     color: var(--wf-secondary-steel-gray);
-    border: 1px solid var(--wf-accent-orange);
+    border: none;
 }
 
