@@ -1,90 +1,177 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>wfx-dojo</title>
+
     <!-- Links the jQuery library -->
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
+
     <!-- Links to the external stylesheet -->
+
     <link rel="stylesheet" href="styles.css"> 
+
 </head>
+
 <body>
 
+
+
     <!-- Top Navbar (Styled by styles.css) -->
+
     <header class="navbar">
+
         <div class="logo">wfx-dojo</div>
+
         <nav>
+
             <ul>
+
                 <li><a href="home.html" class="active">Home</a></li>
+
                 <li><a href="about.html">About Us</a></li>
+
                 <li><a href="css-selector-lab.html">CSS Target Practice</a></li>
+
                 <!-- ❗ UPDATED "Coming Soon" Links with Tooltip ❗ -->
+
                 <li class="nav-disabled">
+
                     <a href="#" class="nav-disabled">
+
                         jQuery Selectors 
+
                         <span class="coming-soon-tag">Coming Soon</span>
+
                         <span class="tooltip-text">Exciting new challenges for jQuery are on the way!</span>
+
                     </a>
+
                 </li>
+
                 <li class="nav-disabled">
+
                     <a href="#" class="nav-disabled">
+
                         Shadow DOM 
+
                         <span class="coming-soon-tag">Coming Soon</span>
+
                         <span class="tooltip-text">Learn to pierce the Shadow DOM! Coming soon.</span>
+
                     </a>
+
                 </li>
+
             </ul>
+
         </nav>
+
     </header>
 
+
+
     <div class="container">
+
         <!-- The content wrapper (Styled by styles.css) -->
+
         <div id="content-wrapper">
+
             
+
             <main class="content main-content">
+
                 <h1>Welcome to wfx-dojo!</h1>
+
                 <p>Your new home for mastering modern web development skills.</p>
+
                 
+
                 <hr style="margin: 30px 0; border: none; border-top: 1px solid #E2E8F0;">
 
+
+
                 <div class="promo-box">
+
                     <h2>CSS Target Practice</h2>
+
                     <p>Master CSS selectors in our interactive lab. Test your skills against real HTML structures with instant feedback.</p>
+
                     <a href="css-selector-lab.html" style="text-decoration: none;">
+
                         <button class="cta-button">
+
                             Start Practicing &raquo;
+
                         </button>
+
                     </a>
+
                 </div>
+
+
 
                 <!-- ❗ "Future Challenges" section MOVED here ❗ -->
+
                 <h2 style="margin-top: 40px; border-top: 1px solid #E2E8F0; padding-top: 20px;">Future Challenges</h2>
+
                 <p>We're always working on new ways to test your skills. Coming soon:</p>
+
                 
+
                 <div class="promo-box" style="margin-bottom: 20px; text-align: left;">
+
                     <h3>jQuery Selectors (Coming Soon)</h3>
+
                     <p>Learn to target elements using jQuery's powerful and concise syntax, like <code>$('div:first')</code> or <code>$('[href$=".pdf"]')</code>.</p>
+
                 </div>
+
                 
+
                 <div class="promo-box" style="margin-bottom: 20px; text-align: left;">
+
                     <h3>Shadow DOM Selectors (Coming Soon)</h3>
+
                     <p>Master the complexities of targeting elements inside a Shadow DOM, a key skill for modern web components.</p>
+
                 </div>
+
                 <!-- ❗ END NEW SECTION ❗ -->
 
+
+
             </main>
+
         </div>
+
     </div>
 
+
+
     <!-- Simplified Footer (Styled by styles.css) -->
+
     <footer>
+
         <p>&copy; 2025 wfx-dojo</p>
+
     </footer>
 
+
+
     <!-- Link the external JavaScript file at the end of the <body> for performance -->
+
     <script src="script.js"></script>
 
-</body>
-</html>
 
+
+</body>
+
+</html>
