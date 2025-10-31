@@ -365,8 +365,8 @@ button[onclick*="validateChallenge"]:hover {
 
 .panel-content {
     padding: 15px 18px; 
-    border-left: 3px solid var(--wf-accent-orange);
-    /* ❗ FIX: Set background to white ❗ */
+    /* ❗ FIX: Removed orange left border ❗ */
+    /* border-left: 3px solid var(--wf-accent-orange); */
     background-color: white; 
     margin-bottom: 5px;
     margin-top: 5px;
