@@ -4,52 +4,77 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WFX-Schools - Home</title>
-    <!-- Links the jQuery library (needed for your existing code) -->
+    <!-- Links the jQuery library -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
-    <link rel="stylesheet" href="styles.css">
+    <!-- Links to the external stylesheet -->
+    <link rel="stylesheet" href="styles.css"> 
 </head>
 <body>
 
-    <!-- Top Navbar -->
+    <!-- Top Navbar (Styled by styles.css) -->
     <header class="navbar">
         <div class="logo">WFX-Schools</div>
         <nav>
             <ul>
-                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="home.html" class="active">Home</a></li>
                 <li><a href="about.html">About Us</a></li>
-                <li><a href="css-selector-lab.html">CSS Selector Lab</a></li>
+                <li><a href="css-selectors.html">CSS Target Practice</a></li>
+                <!-- ❗ NEW: Coming Soon Links Added ❗ -->
+                <li><a href="#" class="nav-disabled">jQuery Selectors <span class="coming-soon-tag">Soon</span></a></li>
+                <li><a href="#" class="nav-disabled">Shadow DOM <span class="coming-soon-tag">Soon</span></a></li>
             </ul>
         </nav>
     </header>
 
     <div class="container">
-        <!-- Content wrapper: Ensures main content spans full width -->
+        <!-- The content wrapper (Styled by styles.css) -->
         <div id="content-wrapper">
             
             <main class="content main-content">
                 <h1>Welcome to WFX-Schools!</h1>
+                <p>Your new home for mastering modern web development skills.</p>
+                <!-- This p tag is for the jQuery demo in script.js -->
+                <p id="target-p"></p>
                 
-                <p>Welcome to our platform. Below is a tool designed to help you master CSS fundamentals quickly and effectively.</p>
-                
-                <hr class="separator">
+                <hr style="margin: 30px 0; border: none; border-top: 1px solid #E2E8F0;">
 
-                <!-- Promotional Div (Styled with Whatfix aesthetic) -->
                 <div class="promo-box">
-                    <h2>Master CSS Selectors Through Practice</h2>
-                    <p>Our <b>CSS Selector Lab 💻</b> provides an interactive, gamified environment where you test your knowledge against real HTML structures. Stop guessing and start mastering Combinators, Pseudo-classes, and Attributes with instant, educational feedback.</p>
+                    <h2>CSS Target Practice</h2>
+                    <p>Master CSS selectors in our interactive lab. Test your skills against real HTML structures with instant feedback.</p>
                     <a href="css-selectors.html" style="text-decoration: none;">
                         <button class="cta-button">
-                            Start Mastering Selectors Now &raquo;
+                            Start Practicing &raquo;
                         </button>
                     </a>
                 </div>
+
+                <!-- ❗ NEW SECTION ADDED ❗ -->
+                <h2 style="margin-top: 40px; border-top: 1px solid #E2E8F0; padding-top: 20px;">Future Challenges</h2>
+                <p>We're always working on new ways to test your skills. Coming soon:</p>
+                
+                <div class="promo-box" style="margin-bottom: 20px; text-align: left;">
+                    <h3>jQuery Selectors (Coming Soon)</h3>
+                    <p>Learn to target elements using jQuery's powerful and concise syntax, like <code>$('div:first')</code> or <code>$('[href$=".pdf"]')</code>.</p>
+                </div>
+                
+                <div class="promo-box" style="margin-bottom: 20px; text-align: left;">
+                    <h3>Shadow DOM Selectors (Coming Soon)</h3>
+                    <p>Master the complexities of targeting elements inside a Shadow DOM, a key skill for modern web components.</p>
+                </div>
+                <!-- ❗ END NEW SECTION ❗ -->
+
             </main>
         </div>
     </div>
 
+    <!-- Simplified Footer (Styled by styles.css) -->
     <footer>
         <p>&copy; 2025 WFX-Schools</p>
     </footer>
+
+    <!-- Link the external JavaScript file at the end of the <body> for performance -->
     <script src="script.js"></script>
+
 </body>
 </html>
+
