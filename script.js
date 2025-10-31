@@ -9,17 +9,22 @@ document.addEventListener('DOMContentLoaded', function() {
     // This runs on every page, but only affects elements on index.html and about.html
     if (typeof jQuery !== 'undefined') {
         $(document).ready(function() {
-            // --- SELECTORS FOR index.html (Home Page) ---
-            $('#target-p').text('--- SUCCESSFULLY CHANGED BY ID SELECTOR ---');
-            $('p').addClass('highlight'); 
+            // --- SELECTORS FOR home.html (Home Page) ---
+            // Note: These actions will fail gracefully if the elements don't exist on the current page
+            $('#target-p').text('This text was changed by jQuery!');
+            $('p').addClass('highlight'); // This class is not defined in styles.css, but we keep the logic
 
             // --- SELECTORS FOR about.html (About Page) ---
+            // 1. Class Selector
             $('.highlight-me').css('background-color', 'var(--wf-support-karry)');
+            
+            // 2. Attribute Selectors
             $('p[data-status="pending"]').text('STATUS: Review In Progress (Targeted by Attribute)').css('border', '1px dashed var(--wf-accent-orange)');
             $('p[data-status="complete"]').text('STATUS: Complete (Targeted by Attribute)').css('border', '1px dashed green');
 
             // --- TRAVERSING / COMBINATION SELECTOR ---
-            $('header a').css('font-size', '16px');
+            // This is handled by CSS now, but we'll keep the JS logic
+            // $('header a').css('font-size', '16px'); 
         });
     }
 
@@ -110,8 +115,7 @@ const challengeDefinitions = [
         targetSelector: "#login-primary",
         type: "ID Selector",
         alternatives: [
-            { selector: "button#login-primary", explanation: "This uses the tag name and the ID. Since IDs are already unique, adding the tag name is redundant but valid. It increases specificity unnecessarily, which is often avoided in production." },
-            { selector: "*#login-primary", explanation: "This uses the universal selector (*) combined with the ID. The universal selector is low specificity, but the ID still makes this selection highly efficient and correct." }
+            { selector: "button#login-primary", explanation: "This uses the tag name and the ID. Since IDs are already unique, adding the tag name is redundant but valid. It increases specificity unnecessarily, which is often avoided in production." }
         ],
         trivia: "The ID selector is the most powerful in terms of specificity (100 points). It should be used sparingly for major, unique page elements.",
         html: `
@@ -184,8 +188,7 @@ const challengeDefinitions = [
         targetSelector: ".first-element + li",
         type: "Adjacent Sibling Combinator",
         alternatives: [
-            { selector: "li.first-element + li.list-item", explanation: "A highly specific version. It requires that both the preceding element and the target element are list items (li) and have their respective classes, ensuring precision." },
-            { selector: ".first-element + *", explanation: "Uses the universal selector (`+ *`) to select the immediate sibling, regardless of its tag name. Useful if the structure might change from `li` to `div` but remain a sibling." }
+            { selector: "li.first-element + li.list-item", explanation: "A highly specific version. It requires that both the preceding element and the target element are list items (li) and have their respective classes, ensuring precision." }
         ],
         trivia: "The Adjacent Sibling Combinator (`+`) only selects the *one* element that immediately follows the first selector. It's great for applying spacing after a specific element.",
         html: `
@@ -221,7 +224,6 @@ const challengeDefinitions = [
         targetSelector: "input[name*='user']",
         type: "Attribute Selector (Substring Match)",
         alternatives: [
-            { selector: "*[name*='user']", explanation: "Uses the universal selector (*). This selects any element, regardless of tag, that has a `name` attribute containing 'user'. This is the most flexible (and least specific) approach." },
             { selector: "input[name~='data-username']", explanation: "Uses the tilde operator (`~=`), which matches a whole word in a space-separated list of values. This would work if the name value was 'data-username other', but fails on 'data-username' as one contiguous string." }
         ],
         trivia: "The `*=` operator is the 'contains' attribute selector, which looks for the specified substring anywhere within the attribute's value. This is powerful when dealing with dynamic or auto-generated attributes.",
