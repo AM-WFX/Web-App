@@ -2,6 +2,23 @@
 /* --- 🧱 WHATFIX BRANDING & CORE LAYOUT STYLES --- */
 /* ---------------------------------------------------- */
 
+/* ❗ FONT: Import local Aeonik font files (Updated to .ttf format) ❗ */
+@font-face {
+    font-family: 'Aeonik';
+    /* Make sure your .ttf files are in the 'fonts' folder */
+    src: url('fonts/Aeonik-Regular.ttf') format('truetype');
+    font-weight: 400; /* 400 is 'normal' */
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Aeonik';
+    src: url('fonts/Aeonik-Bold.ttf') format('truetype');
+    font-weight: 700; /* 700 is 'bold' */
+    font-style: normal;
+}
+
+
 /* CSS Variables for Brand Colors */
 :root {
     --wf-dominant-spring-wood: #F9F9F2;
@@ -24,12 +41,11 @@
 
 /* --- GLOBAL RESET & FONT --- */
 
-/* ❗ FONT: Importing Manrope (replaces Inter) */
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&display=swap');
+/* ❗ REMOVED: Google Font @import */
 
 body {
-    /* ❗ FONT: Applying Manrope globally */
-    font-family: 'Manrope', sans-serif;
+    /* ❗ FONT: Applying Aeonik globally */
+    font-family: 'Aeonik', sans-serif;
     margin: 0;
     padding: 0;
     background-color: var(--wf-dominant-spring-wood); /* 60% Dominant Background */
@@ -140,8 +156,8 @@ button[onclick*="validateChallenge"],
     transition: background-color 0.2s, box-shadow 0.2s;
     text-decoration: none !important;
     display: inline-block !important;
-    /* ❗ FONT: Applying Manrope */
-    font-family: 'Manrope', sans-serif !important;
+    /* ❗ FONT: Applying Aeonik */
+    font-family: 'Aeonik', sans-serif !important;
     font-size: 1em !important;
     line-height: 1; 
     height: var(--wf-input-height);
@@ -232,8 +248,8 @@ button[onclick*="validateChallenge"]:hover {
 /* Visual Uniformity Rules (No hard external borders) */
 .challenge-target-area * { 
     box-sizing: border-box; 
-    /* ❗ FONT: Applying Manrope */
-    font-family: 'Manrope', sans-serif;
+    /* ❗ FONT: Applying Aeonik */
+    font-family: 'Aeonik', sans-serif;
 }
 
 .challenge-target-area button,
@@ -288,8 +304,8 @@ button[onclick*="validateChallenge"]:hover {
     width: 100%;
     text-align: left;
     
-    /* ❗ FONT: Applying Manrope */
-    font-family: 'Manrope', sans-serif !important;
+    /* ❗ FONT: Applying Aeonik */
+    font-family: 'Aeonik', sans-serif !important;
     font-size: 0.9em !important;
     font-weight: 600 !important;
     color: var(--wf-secondary-steel-gray) !important;
