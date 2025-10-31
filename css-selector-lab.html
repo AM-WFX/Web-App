@@ -1,80 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSS Target Practice</title>
-    <!-- Links the jQuery library (needed for your existing code) -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
-    <!-- Links to the external stylesheet for core layout -->
-    <link rel="stylesheet" href="styles.css"> 
+    <meta charset="UTF-8">
+    <!-- 1. ADDED VIEWPORT TAG: This is the most important fix -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Target Practice</title>
+    <!-- Links the jQuery library (needed for your existing code) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
+    <!-- Links to the external stylesheet for core layout -->
+    <link rel="stylesheet" href="styles.css"> 
 </head>
 <body>
 
-    <!-- Top Navbar (Styled by styles.css) --> 
-    <header class="navbar">
-        <div class="logo">wfx-dojo</div>
-        <nav>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About Us</a></li>
-                <!-- ❗ RENAMED LINK ❗ -->
-                <li><a href="css-selector-lab.html" class="active">CSS Target Practice</a></li>
-                <!-- ❗ UPDATED "Coming Soon" Links with Tooltip ❗ -->
-                <li class="nav-disabled">
-                    <a href="#" class="nav-disabled">
-                        jQuery Selectors 
-                        <span class="coming-soon-tag">Coming Soon</span>
-                        <span class="tooltip-text">Exciting new challenges for jQuery are on the way!</span>
-                    </a>
-                </li>
-                <li class="nav-disabled">
-                    <a href="#" class="nav-disabled">
-                        Shadow DOM 
-                        <span class="coming-soon-tag">Coming Soon</span>
-                        <span class="tooltip-text">Learn to pierce the Shadow DOM! Coming soon.</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    </header>
+    <!-- Top Navbar (Styled by styles.css) --> 
+    <header class="navbar">
+        <div class="logo">wfx-dojo</div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <!-- 2. FIXED LINK PATH AND ACTIVE CLASS: Was "css-selector-lab.html" -->
+                <li><a href="css-selectors.html" class="active">CSS Target Practice</a></li>
+                <!-- "Coming Soon" Links with Tooltip -->
+                <li class="nav-disabled">
+                    <a href="#" class="nav-disabled">
+                        jQuery Selectors 
+                        <span class="coming-soon-tag">Coming Soon</span>
+                        <span class="tooltip-text">Exciting new challenges for jQuery are on the way!</span>
+                    </a>
+                </li>
+                <li class="nav-disabled">
+                    <a href="#" class="nav-disabled">
+                        Shadow DOM 
+                        <span class="coming-soon-tag">Coming Soon</span>
+                        <span class="tooltip-text">Learn to pierce the Shadow DOM! Coming soon.</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
 
-    <div class="container">
-        <!-- The content wrapper (Styled by styles.css) -->
-        <div id="content-wrapper">
-            
-            <main class="content main-content">
-                <h1>CSS Target Practice 🎯</h1>
-                <p>Your task: Find a selector that targets the specified element in each challenge, enter it with the right syntax into the input field, and click the Validate button.</p>
+    <div class="container">
+        <!-- The content wrapper (Styled by styles.css) -->
+        <div id="content-wrapper">
+            
+            <main class="content main-content">
+                <h1>CSS Target Practice 🎯</h1>
+                <p>Your task: Find a selector that targets the specified element in each challenge, enter it with the right syntax into the input field, and click the Validate button.</p>
 
-                <div class="instructions-box">
-                    <h2>How to Use This Lab</h2>
-                    <p>This lab accepts a wide variety of valid CSS selectors. Your goal is to find a selector that is <b>precise enough to select only the target element</b>. For example, if the target has an ID of <code>#normal-selector</code>, many answers are valid:</p>
-                    <ul>
-                        <li><b>ID Selector:</b> <code>#normal-selector</code></li>
-                        <li><b>Attribute Selector:</b> <code>[id="normal-selector"]</code></li>
-                        <li><b>Partial Attribute Selectors:</b> <code>[id*="normal"]</code> (contains), <code>[id^="norm"]</code> (starts with), or <code>[id$="lector"]</code> (ends with)</li>
-                    </ul>
-                    <p>The key is precision. If your selector (like <code>div</code> or <code>.common-class</code>) matches other elements in the box, it will fail. Good luck!</p>
-                </div>
-                
-                <div id="all-challenges">
-                    <!-- Challenges will be inserted here by JavaScript -->
-                </div>
+                <div class="instructions-box">
+                    <h2>How to Use This Lab</h2>
+                    <p>This lab accepts a wide variety of valid CSS selectors. Your goal is to find a selector that is <b>precise enough to select only the target element</b>. For example, if the target has an ID of <code>#normal-selector</code>, many answers are valid:</p>
+                    <ul>
+                        <li><b>ID Selector:</b> <code>#normal-selector</code></li>
+                        <li><b>Attribute Selector:</b> <code>[id="normal-selector"]</code></li>
+                        <li><b>Partial Attribute Selectors:</b> <code>[id*="normal"]</code> (contains), <code>[id^="norm"]</code> (starts with), or <code>[id$="lector"]</code> (ends with)</li>
+                  .eot   <p>The key is precision. If your selector (like <code>div</code> or <code>.common-class</code>) matches other elements in the box, it will fail. Good luck!</p>
+                </div>
+                
+                <div id="all-challenges">
+NT                   <!-- Challenges will be inserted here by JavaScript -->
+                </div>
+                
+            </main>
+        </div>
+    </div>
 
-                <!-- ❗ "Future Challenges" section REMOVED ❗ -->
-                
-            </main>
-        </div>
-    </div>
+    <!-- Simplified Footer (Styled by styles.css) -->
+    <footer>
+        <p>&copy; 2025 wfx-dojo</p>
+    </footer>
 
-    <!-- Simplified Footer (Styled by styles.css) -->
-    <footer>
-        <p>&copy; 2025 wfx-dojo</p>
-    </footer>
-
-    <!-- Link the external JavaScript file at the end of the <body> for performance -->
-    <script src="script.js"></script>
+    <!-- Link the external JavaScript file at the end of the <body> for performance -->
+    <script src="script.js"></script>
 
 </body>
 </html>
