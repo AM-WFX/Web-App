@@ -24,65 +24,31 @@
     </header>
 
     <div class="container">
-        <!-- The main content area (Styled by styles.css) -->
-        <main class="content main-content">
-            <h1>The Ultimate CSS Selector Lab 🎯</h1>
-            <p>Your task: Find a selector that targets the specified element in each challenge, enter it with the right syntax into the input field, and click the Validate button.</p>
+        <!-- The content wrapper (Styled by styles.css) -->
+        <div id="content-wrapper">
             
-            <div id="all-challenges">
-                <!-- Challenges will be inserted here by JavaScript -->
+            <main class="content main-content">
+                <h1>The Ultimate CSS Selector Lab 🎯</h1>
+                <p>Your task: Find a selector that targets the specified element in each challenge, enter it with the right syntax into the input field, and click the Validate button.</p>
+
+                <!-- ❗ NEW: Added Detailed Instruction Box ❗ -->
+                <div class="instructions-box">
+                    <h2>How to Use This Lab</h2>
+                    <p>This lab accepts a wide variety of valid CSS selectors. Your goal is to find a selector that is <b>precise enough to select only the target element</b>. For example, if the target has an ID of <code>#normal-selector</code>, many answers are valid:</p>
+                    <ul>
+                        <li><b>ID Selector:</b> <code>#normal-selector</code></li>
+                        <li><b>Attribute Selector:</b> <code>[id="normal-selector"]</code></li>
+                        <li><b>Partial Attribute Selectors:</b> <code>[id*="normal"]</code> (contains), <code>[id^="norm"]</code> (starts with), or <code>[id$="lector"]</code> (ends with)</li>
+                    </ul>
+                    <p>The key is precision. If your selector (like <code>div</code> or <code>.common-class</code>) matches other elements in the box, it will fail. Good luck!</p>
+                </div>
                 
-                <!-- 
-                    These initial challenges are placed directly in HTML to ensure content loads, 
-                    bypassing potential script execution failures.
-                    The JavaScript logic in script.js will read and replace this content 
-                    immediately with its dynamically generated challenges. 
-                    If you see this placeholder, it means the script failed to run.
-                -->
-                <div id="challenge-1" class="challenge-container">
-                    <div class="challenge-header">
-                        <h3 id="challenge-title-1">Challenge 1</h3>
-                        <span id="status-1" style="color: var(--wf-text-dark);">(Unsolved)</span>
-                    </div>
-                    <p id="prompt-1">Target the Primary Login Button using its unique ID.</p>
-                    
-                    <div id="target-area-1" class="challenge-target-area">
-                        <button id="login-primary" class="btn btn-primary target-highlight">Primary Login Button</button>
-                        <button id="login-secondary" class="btn btn-secondary">Secondary Button</button>
-                    </div>
-                    
-                    <div class="challenge-ui">
-                        <input type="text" id="selector-input-1" placeholder="Enter your selector here (e.g., #id-name)" data-id="1">
-                        <button class="cta-button" onclick="validateChallenge(1)">Validate</button>
-                    </div>
-                    <div id="feedback-1" class="validation-feedback"></div>
+                <div id="all-challenges">
+                    <!-- Challenges will be inserted here by JavaScript -->
                 </div>
-
-                <div id="challenge-2" class="challenge-container">
-                    <div class="challenge-header">
-                        <h3 id="challenge-title-2">Challenge 2</h3>
-                        <span id="status-2" style="color: var(--wf-text-dark);">(Unsolved)</span>
-                    </div>
-                    <p id="prompt-2">Target the item marked Urgent using its class.</p>
-                    
-                    <div id="target-area-2" class="challenge-target-area">
-                        <ul>
-                            <li class="list-item task-default">Normal Item</li>
-                            <li class="list-item task-urgent target-highlight">Urgent Item</li>
-                            <li class="list-item task-default">Another Normal Item</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="challenge-ui">
-                        <input type="text" id="selector-input-2" placeholder="Enter your selector here (e.g., .class-name)" data-id="2">
-                        <button class="cta-button" onclick="validateChallenge(2)">Validate</button>
-                    </div>
-                    <div id="feedback-2" class="validation-feedback"></div>
-                </div>
-
-            </div>
-            
-        </main>
+                
+            </main>
+        </div>
     </div>
 
     <!-- Simplified Footer (Styled by styles.css) -->
@@ -95,3 +61,4 @@
 
 </body>
 </html>
+
