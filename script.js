@@ -4,29 +4,6 @@
 // =========================================================================
 
 document.addEventListener('DOMContentLoaded', function() {
-    
-    // --- Existing JQUERY Code (Wrapped in a safety check) ---
-    // This runs on every page, but only affects elements on index.html and about.html
-    if (typeof jQuery !== 'undefined') {
-        $(document).ready(function() {
-            // --- SELECTORS FOR home.html (Home Page) ---
-            // Note: These actions will fail gracefully if the elements don't exist on the current page
-            $('#target-p').text('This text was changed by jQuery!');
-            $('p').addClass('highlight'); // This class is not defined in styles.css, but we keep the logic
-
-            // --- SELECTORS FOR about.html (About Page) ---
-            // 1. Class Selector
-            $('.highlight-me').css('background-color', 'var(--wf-support-karry)');
-            
-            // 2. Attribute Selectors
-            $('p[data-status="pending"]').text('STATUS: Review In Progress (Targeted by Attribute)').css('border', '1px dashed var(--wf-accent-orange)');
-            $('p[data-status="complete"]').text('STATUS: Complete (Targeted by Attribute)').css('border', '1px dashed green');
-
-            // --- TRAVERSING / COMBINATION SELECTOR ---
-            // This is handled by CSS now, but we'll keep the JS logic
-            // $('header a').css('font-size', '16px'); 
-        });
-    }
 
     // --- VANILLA JAVASCRIPT CODE (CSS Selector Lab) ---
     // This checks if the #all-challenges div exists on the current page.
