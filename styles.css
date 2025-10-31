@@ -151,7 +151,7 @@ button[onclick*="validateChallenge"],
     color: white !important;
     font-weight: 600 !important;
     padding: 12px 25px !important;
-    border-radius: var(--wf-border-radius) !important;
+    border-radius: 96px !important;
     cursor: pointer !important;
     transition: background-color 0.2s, box-shadow 0.2s;
     text-decoration: none !important;
