@@ -1,545 +1,907 @@
 /* ---------------------------------------------------- */
+
 /* --- 🧱 WHATFIX BRANDING & CORE LAYOUT STYLES --- */
+
 /* ---------------------------------------------------- */
 
+
+
 /* ❗ FONT: Import local Aeonik font files (.ttf format) ❗ */
-@font-face {
-    font-family: 'Aeonik';
-    src: url('fonts/Aeonik-Regular.ttf') format('truetype');
-    font-weight: 400; /* 400 is 'normal' */
-    font-style: normal;
-}
 
 @font-face {
-    font-family: 'Aeonik';
-    src: url('fonts/Aeonik-Bold.ttf') format('truetype');
-    font-weight: 700; /* 700 is 'bold' */
-    font-style: normal;
+
+    font-family: 'Aeonik';
+
+    src: url('fonts/Aeonik-Regular.ttf') format('truetype');
+
+    font-weight: 400; /* 400 is 'normal' */
+
+    font-style: normal;
+
 }
+
+
+
+@font-face {
+
+    font-family: 'Aeonik';
+
+    src: url('fonts/Aeonik-Bold.ttf') format('truetype');
+
+    font-weight: 700; /* 700 is 'bold' */
+
+    font-style: normal;
+
+}
+
+
 
 /* CSS Variables for Brand Colors */
+
 :root {
-    --wf-dominant-spring-wood: #F9F9F2;
-    --wf-secondary-steel-gray: #25223B;
-    --wf-accent-orange: #FF6B18;
-    --wf-support-karry: #FFE9DC;
-    
-    /* General UI Colors */
-    --wf-success: #E6F7E1; 
-    --wf-error: #FFF0F0;
-    --wf-text-success: #155724;
-    --wf-text-error: #721c24;
-    
-    /* Aesthetics */
-    --wf-border-radius: 10px;
-    --wf-shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.05);
-    --wf-shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
-    
-    /* ❗ Set button height to 40px ❗ */
-    --wf-button-height: 40px; 
+
+    --wf-dominant-spring-wood: #F9F9F2;
+
+    --wf-secondary-steel-gray: #25223B;
+
+    --wf-accent-orange: #FF6B18;
+
+    --wf-support-karry: #FFE9DC;
+
+    
+
+    /* General UI Colors */
+
+    --wf-success: #E6F7E1; 
+
+    --wf-error: #FFF0F0;
+
+    --wf-text-success: #155724;
+
+    --wf-text-error: #721c24;
+
+    
+
+    /* Aesthetics */
+
+    --wf-border-radius: 10px;
+
+    --wf-shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.05);
+
+    --wf-shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+
+    
+
+    /* ❗ Set button height to 40px ❗ */
+
+    --wf-button-height: 40px; 
+
 }
 
-/* --- 1. GLOBAL RESET & FONT (FIXES TRANSPARENT SPACE) --- */
 
-/* This reset removes default browser margins (like on the <body>)
-   which cause the "transparent space" above your navbar.
-   box-sizing: border-box makes layouts much easier. */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+
+/* --- GLOBAL RESET & FONT --- */
+
+
 
 body {
-    font-family: 'Aeonik', sans-serif;
-    font-weight: 400;
-    /* margin: 0; and padding: 0; are now handled by the * reset */
-    background-color: var(--wf-dominant-spring-wood); 
-    color: var(--wf-secondary-steel-gray); 
-    /* This prevents horizontal overflow if an element is too wide */
-    overflow-x: hidden; 
+
+    font-family: 'Aeonik', sans-serif;
+
+    font-weight: 400;
+
+    margin: 0;
+
+    padding: 0;
+
+    background-color: var(--wf-dominant-spring-wood); 
+
+    color: var(--wf-secondary-steel-gray); 
+
 }
+
+
 
 /* --- ❗ NAVBAR STYLING (WHATFIX REPLICATION) ❗ --- */
 
+
+
 .navbar {
-    background-color: white; 
-    color: var(--wf-secondary-steel-gray);
-    padding: 20px 30px; 
-    border-bottom: none;
-    box-shadow: var(--wf-shadow-subtle);
-    display: flex; 
-    justify-content: flex-start;
-    align-items: center;
-    position: sticky; 
-    top: 0;
-    z-index: 100;
-    /* Added to prevent items from shrinking too much */
-    flex-wrap: wrap; 
+
+    background-color: white; 
+
+    color: var(--wf-secondary-steel-gray);
+
+    padding: 20px 30px; 
+
+    border-bottom: none;
+
+    box-shadow: var(--wf-shadow-subtle);
+
+    display: flex; 
+
+    justify-content: flex-start;
+
+    align-items: center;
+
+    position: sticky; 
+
+    top: 0;
+
+    z-index: 100;
+
 }
 
-.navbar .logo { 
-    font-size: 1.5em; 
-    font-weight: 700; 
-    color: var(--wf-secondary-steel-gray); 
-    margin-right: 40px; 
+
+
+.navbar .logo { 
+
+    font-size: 1.5em; 
+
+    font-weight: 700; 
+
+    color: var(--wf-secondary-steel-gray); 
+
+    margin-right: 40px; 
+
 }
 
-.navbar nav {
-    /* Allows the nav to grow and wrap if needed */
-    flex-grow: 1;
+
+
+.navbar ul { 
+
+    list-style: none; 
+
+    margin: 0; 
+
+    padding: 0; 
+
+    display: flex; 
+
+    align-items: center; /* Vertically align nav items */
+
 }
 
-.navbar ul { 
-    list-style: none; 
-    margin: 0; 
-    padding: 0; 
-    display: flex; 
-    align-items: center; /* Vertically align nav items */
-    /* Allows nav items to wrap onto the next line on small screens */
-    flex-wrap: wrap;
+
+
+.navbar li { 
+
+    margin-right: 25px; 
+
+    position: relative; /* Needed for tooltip positioning */
+
 }
 
-.navbar li { 
-    margin-right: 25px; 
-    position: relative; /* Needed for tooltip positioning */
+
+
+.navbar a { 
+
+    color: var(--wf-secondary-steel-gray); 
+
+    text-decoration: none; 
+
+    font-size: 1em; /* Standardized font size */
+
+    font-weight: 400; 
+
+    padding: 5px 0;
+
+    transition: color 0.3s, border-bottom 0.3s;
+
 }
 
-.navbar a { 
-    color: var(--wf-secondary-steel-gray); 
-    text-decoration: none; 
-    font-size: 1em; /* Standardized font size */
-    font-weight: 400; 
-    padding: 5px 0;
-    transition: color 0.3s, border-bottom 0.3s;
+
+
+.navbar a.active { 
+
+    color: var(--wf-accent-orange); /* Active link uses accent color */
+
+    border-bottom: 2px solid var(--wf-accent-orange);
+
 }
 
-.navbar a.active { 
-    color: var(--wf-accent-orange); /* Active link uses accent color */
-    border-bottom: 2px solid var(--wf-accent-orange);
-}
+
 
 /* ❗ UPDATED: Styles for "Coming Soon" links ❗ */
+
 .navbar a.nav-disabled {
-    color: #94A3B8; /* Muted gray text */
-    cursor: not-allowed;
-    display: flex; /* Use flex to align text and tag */
-    align-items: center;
-}
-.navbar a.nav-disabled:hover {
-    border-bottom: none;
-    color: #94A3B8; /* Keep color muted on hover */
-}
-.coming-soon-tag {
-    background-color: #E2E8F0;
-    color: #64748B;
-    font-size: 0.65em;
-    font-weight: 700;
-    padding: 3px 6px; /* Slightly more padding */
-    border-radius: 4px;
-    margin-left: 8px; /* More space */
-    vertical-align: middle;
+
+    color: #94A3B8; /* Muted gray text */
+
+    cursor: not-allowed;
+
+    display: flex; /* Use flex to align text and tag */
+
+    align-items: center;
+
 }
 
+.navbar a.nav-disabled:hover {
+
+    border-bottom: none;
+
+    color: #94A3B8; /* Keep color muted on hover */
+
+}
+
+.coming-soon-tag {
+
+    background-color: #E2E8F0;
+
+    color: #64748B;
+
+    font-size: 0.65em;
+
+    font-weight: 700;
+
+    padding: 3px 6px; /* Slightly more padding */
+
+    border-radius: 4px;
+
+    margin-left: 8px; /* More space */
+
+    vertical-align: middle;
+
+}
+
+
+
 /* ❗ FIX: CSS-Only Tooltip for Navbar ❗ */
+
 .nav-disabled .tooltip-text {
-    visibility: hidden;
-    width: 200px;
-    background-color: var(--wf-secondary-steel-gray);
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 8px;
-    position: absolute;
-    z-index: 1;
-    
-    top: 150%; 
-    left: 50%;
-    
-    margin-left: -100px; /* Use half of the width to center */
-    opacity: 0;
-    transition: opacity 0.3s;
-    font-size: 0.85em;
-    font-weight: 400;
+
+    visibility: hidden;
+
+    width: 200px;
+
+    background-color: var(--wf-secondary-steel-gray);
+
+    color: #fff;
+
+    text-align: center;
+
+    border-radius: 6px;
+
+    padding: 8px;
+
+    position: absolute;
+
+    z-index: 1;
+
+    
+
+    top: 150%; 
+
+    left: 50%;
+
+    
+
+    margin-left: -100px; /* Use half of the width to center */
+
+    opacity: 0;
+
+    transition: opacity 0.3s;
+
+    font-size: 0.85em;
+
+    font-weight: 400;
+
 }
+
 .nav-disabled .tooltip-text::after {
-    content: "";
-    position: absolute;
-    
-    bottom: 100%; 
-    left: 50%;
-    
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: transparent transparent var(--wf-secondary-steel-gray) transparent;
+
+    content: "";
+
+    position: absolute;
+
+    
+
+    bottom: 100%; 
+
+    left: 50%;
+
+    
+
+    margin-left: -5px;
+
+    border-width: 5px;
+
+    border-style: solid;
+
+    border-color: transparent transparent var(--wf-secondary-steel-gray) transparent;
+
 }
+
 .nav-disabled:hover .tooltip-text {
-    visibility: visible;
-    opacity: 1;
+
+    visibility: visible;
+
+    opacity: 1;
+
 }
+
+
+
 
 
 /* --- CORE LAYOUT & CARDS --- */
 
+
+
 h1, h2, h3 {
-    color: var(--wf-secondary-steel-gray);
-    font-weight: 700; /* Headers remain bold */
+
+    color: var(--wf-secondary-steel-gray);
+
+    font-weight: 700; /* Headers remain bold */
+
 }
+
+
 
 .container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 20px;
-    margin-top: 20px; 
+
+    max-width: 1400px;
+
+    margin: 0 auto;
+
+    padding: 0 20px;
+
+    margin-top: 20px; 
+
 }
+
+
 
 #content-wrapper {
-    display: block; 
-    padding: 20px 0;
+
+    display: block; 
+
+    padding: 20px 0;
+
 }
 
+
+
 .main-content {
-    padding: 30px;
-    background-color: white;
-    border-radius: var(--wf-border-radius);
-    box-shadow: var(--wf-shadow-card); 
+
+    padding: 30px;
+
+    background-color: white;
+
+    border-radius: var(--wf-border-radius);
+
+    box-shadow: var(--wf-shadow-card); 
+
 }
+
+
 
 /* --- FOOTER STYLING --- */
 
+
+
 footer {
-    text-align: center;
-    padding: 15px;
-    background-color: var(--wf-secondary-steel-gray); 
-    color: white;
-    margin-top: 40px;
+
+    text-align: center;
+
+    padding: 15px;
+
+    background-color: var(--wf-secondary-steel-gray); 
+
+    color: white;
+
+    margin-top: 40px;
+
 }
+
+
 
 /* --- CTA & BUTTON STYLING (10% Accent Rule) --- */
 
-button[onclick*="validateChallenge"], 
+
+
+button[onclick*="validateChallenge"], 
+
 .cta-button {
-    appearance: none !important;
-    -webkit-appearance: none !important;
-    border: none !important;
-    border-style: none !important; 
-    
-    background-color: var(--wf-accent-orange) !important; 
-    color: white !important;
-    font-weight: 400 !important;
-    
-    padding-left: 25px !important;
-    padding-right: 25px !important;
-    
-    border-radius: 96px !important; 
-    cursor: pointer !important;
-    transition: background-color 0.2s, box-shadow 0.2s;
-    text-decoration: none !important;
-    
-    height: var(--wf-button-height) !important; /* 40px */
-    display: inline-flex !important;s
-    align-items: center; 
-    justify-content: center;
-    
-    font-family: 'Aeonik', sans-serif !important;
-    
-    /* ❗ RATIO FIX: Set font size to 11px to match 16:60 ratio at 40px height ❗ */
-    font-size: 11px !important; 
-    
-    box-sizing: border-box;
+
+    appearance: none !important;
+
+    -webkit-appearance: none !important;
+
+    border: none !important;
+
+    border-style: none !important; 
+
+    
+
+    background-color: var(--wf-accent-orange) !important; 
+
+    color: white !important;
+
+    font-weight: 400 !important;
+
+    
+
+    padding-left: 25px !important;
+
+    padding-right: 25px !important;
+
+    
+
+    border-radius: 96px !important; 
+
+    cursor: pointer !important;
+
+    transition: background-color 0.2s, box-shadow 0.2s;
+
+    text-decoration: none !important;
+
+    
+
+    height: var(--wf-button-height) !important; /* 40px */
+
+    display: inline-flex !important; 
+
+    align-items: center; 
+
+    justify-content: center;
+
+    
+
+    font-family: 'Aeonik', sans-serif !important;
+
+    
+
+    /* ❗ RATIO FIX: Set font size to 11px to match 16:60 ratio at 40px height ❗ */
+
+    font-size: 11px !important; 
+
+    
+
+    box-sizing: border-box;
+
 }
 
+
+
 .cta-button:hover,
+
 button[onclick*="validateChallenge"]:hover {
-    background-color: #E55C00 !important; 
-    box-shadow: 0 4px 8px -2px rgba(255, 107, 24, 0.5);
+
+    background-color: #E55C00 !important; 
+
+    box-shadow: 0 4px 8px -2px rgba(255, 107, 24, 0.5);
+
 }
+
+
 
 /* --- HOME & ABOUT PAGE SPECIFICS --- */
 
+
+
 .promo-box {
-    background-color: var(--wf-support-karry); 
-    border-radius: var(--wf-border-radius);
-    padding: 30px;
-    text-align: center;
-    border: none; 
-    box-shadow: none;
-}
-.promo-box h3 {
-    margin-top: 0;
-}
-.promo-box code {
-    background-color: #F9F9F2;
-    padding: 2px 5px;
-    border-radius: 4px;
-    font-family: monospace;
+
+    background-color: var(--wf-support-karry); 
+
+    border-radius: var(--wf-border-radius);
+
+    padding: 30px;
+
+    text-align: center;
+
+    border: none; 
+
+    box-shadow: none;
+
 }
 
-.mission-statement {
-    border-left: 5px solid var(--wf-accent-orange); 
-    padding: 20px; 
-    background-color: var(--wf-dominant-spring-wood);
-    border-radius: var(--wf-border-radius);
-    margin-bottom: 20px;
+.promo-box h3 {
+
+    margin-top: 0;
+
 }
+
+.promo-box code {
+
+    background-color: #F9F9F2;
+
+    padding: 2px 5px;
+
+    border-radius: 4px;
+
+    font-family: monospace;
+
+}
+
+
+
+.mission-statement {
+
+    border-left: 5px solid var(--wf-accent-orange); 
+
+    padding: 20px; 
+
+    background-color: var(--wf-dominant-spring-wood);
+
+    border-radius: var(--wf-border-radius);
+
+    margin-bottom: 20px;
+
+}
+
+
 
 /* --- CSS SELECTORS LAB STYLES --- */
 
+
+
 .instructions-box {
-    background-color: var(--wf-dominant-spring-wood);
-    border: 1px solid #E2E8F0;
-    border-radius: var(--wf-border-radius);
-    padding: 25px;
-    margin-bottom: 30px;
-    font-size: 1.05em;
-    line-height: 1.6;
+
+    background-color: var(--wf-dominant-spring-wood);
+
+    border: 1px solid #E2E8F0;
+
+    border-radius: var(--wf-border-radius);
+
+    padding: 25px;
+
+    margin-bottom: 30px;
+
+    font-size: 1.05em;
+
+    line-height: 1.6;
+
 }
+
 .instructions-box h2 {
-    margin-top: 0;
-    color: var(--wf-accent-orange);
+
+    margin-top: 0;
+
+    color: var(--wf-accent-orange);
+
 }
+
 .instructions-box code {
-    background-color: #E2E8F0;
-    padding: 3px 6px;
-    border-radius: 4px;
-    font-family: monospace;
-    font-size: 0.95em;
+
+    background-color: #E2E8F0;
+
+    padding: 3px 6px;
+
+    border-radius: 4px;
+
+    font-family: monospace;
+
+    font-size: 0.95em;
+
 }
+
 .instructions-box ul {
-    margin-top: 10px;
-    padding-left: 20px;
+
+    margin-top: 10px;
+
+    padding-left: 20px;
+
 }
+
+
+
 
 
 #all-challenges {
-    display: flex;
-    flex-wrap: wrap; 
-    gap: 20px; 
-    justify-content: space-between;
+
+    display: flex;
+
+    flex-wrap: wrap; 
+
+    gap: 20px; 
+
+    justify-content: space-between;
+
 }
+
+
 
 .challenge-container {
-    background-color: var(--wf-support-karry); 
-    border-radius: var(--wf-border-radius);
-    padding: 20px;
-    flex: 1 1 45%; 
-    max-width: calc(50% - 10px); 
-    min-width: 380px; 
-    margin-top: 10px; 
-    box-shadow: none;
+
+    background-color: var(--wf-support-karry); 
+
+    border-radius: var(--wf-border-radius);
+
+    padding: 20px;
+
+    flex: 1 1 45%; 
+
+    max-width: calc(50% - 10px); 
+
+    min-width: 380px; 
+
+    margin-top: 10px; 
+
+    box-shadow: none;
+
 }
+
+
 
 .challenge-target-area {
-    background-color: var(--wf-dominant-spring-wood); 
-    border: 1px solid #E2E8F0; 
-    border-radius: var(--wf-border-radius);
-    padding: 15px;
-    margin-top: 10px;
-    margin-bottom: 20px;s
-    height: 200px; 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+
+    background-color: var(--wf-dominant-spring-wood); 
+
+    border: 1px solid #E2E8F0; 
+
+    border-radius: var(--wf-border-radius);
+
+    padding: 15px;
+
+    margin-top: 10px;
+
+    margin-bottom: 20px; 
+
+    height: 200px; 
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
 }
+
+
 
 .challenge-ui {
-    display: flex;
-    gap: 10px;
-    margin-top: 10px;
-    justify-content: center; 
-    align-items: center; 
+
+    display: flex;
+
+    gap: 10px;
+
+    margin-top: 10px;
+
+    justify-content: center; 
+
+    align-items: center; 
+
 }
+
+
 
 .challenge-ui input[type="text"] {
-    flex-grow: 1; 
-    padding: 0 20px;
-    border: 1px solid #ccc;
-    border-radius: 96px; 
-    font-family: monospace;
-    font-size: 1em;
-    height: var(--wf-button-height); /* 40px */
-    box-sizing: border-box; 
+
+    flex-grow: 1; 
+
+    padding: 0 20px;
+
+    border: 1px solid #ccc;
+
+    border-radius: 96px; 
+
+    font-family: monospace;
+
+    font-size: 1em;
+
+    height: var(--wf-button-height); /* 40px */
+
+    box-sizing: border-box; 
+
 }
+
+
 
 /* Visual Uniformity Rules (No hard external borders) */
-.challenge-target-area * { 
-    box-sizing: border-box; 
-    font-family: 'Aeonik', sans-serif;
+
+.challenge-target-area * { 
+
+    box-sizing: border-box; 
+
+    font-family: 'Aeonik', sans-serif;
+
 }
 
+
+
 .challenge-target-area button,
+
 .challenge-target-area input,
+
 .challenge-target-area li,
+
 .challenge-target-area p,
+
 .challenge-target-area div,
+
 .challenge-target-area label,
+
 .challenge-target-area a,
+
 .challenge-target-area h2,
+
 .challenge-target-area h3,
+
 .challenge-target-area span {
-    border: none; 
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05); 
-    background-color: white !important; 
-    color: var(--wf-secondary-steel-gray) !important;
-    padding: 10px 14px !important;
-    margin: 6px !important;
-    font-size: 1em !important; 
-    border-radius: 6px !important;s
-    display: inline-block !important; 
+
+    border: none; 
+
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05); 
+
+    background-color: white !important; 
+
+    color: var(--wf-secondary-steel-gray) !important;
+
+    padding: 10px 14px !important;
+
+    margin: 6px !important;
+
+    font-size: 1em !important; 
+
+    border-radius: 6px !important; 
+
+    display: inline-block !important; 
+
 }
+
+
 
 /* --- ACCORDION STYLING (WHATFIX REPLICATION) --- */
 
-.validation-feedback { 
-    display: none; 
-    padding: 20px !important;
-    margin-top: 15px !important;
-    border-radius: var(--wf-border-radius);
-    font-weight: 400;
+
+
+.validation-feedback { 
+
+    display: none; 
+
+    padding: 20px !important;
+
+    margin-top: 15px !important;
+
+    border-radius: var(--wf-border-radius);
+
+    font-weight: 400;
+
 }
+
+
 
 .accordion {
-    appearance: none !important;
-    -webkit-appearance: none !important;
-    border: none !important;
-    background-color: white !important;s
-    box-shadow: none !important;
-    padding: 12px 15px; 
-    margin-top: 5px;
-    margin-bottom: 0; 
-    border-bottom: 1px solid #E2E8F0; 
-    border-radius: var(--wf-border-radius); 
-    display: flex !important;
-    justify-content: space-between !important;
-    align-items: center !important;
-s   width: 100%;
-    text-align: left;
-    font-family: 'Aeonik', sans-serif !important;
-    font-size: 0.9em !important;
-    font-weight: 400 !important;
-    color: var(--wf-secondary-steel-gray) !important;
-    cursor: pointer !important;
-    transition: color 0.3s;
+
+    appearance: none !important;
+
+    -webkit-appearance: none !important;
+
+    border: none !important;
+
+    background-color: white !important; 
+
+    box-shadow: none !important;
+
+    padding: 12px 15px; 
+
+    margin-top: 5px;
+
+    margin-bottom: 0; 
+
+    border-bottom: 1px solid #E2E8F0; 
+
+    border-radius: var(--wf-border-radius); 
+
+    display: flex !important;
+
+    justify-content: space-between !important;
+
+    align-items: center !important;
+
+    width: 100%;
+
+    text-align: left;
+
+    font-family: 'Aeonik', sans-serif !important;
+
+    font-size: 0.9em !important;
+
+    font-weight: 400 !important;
+
+    color: var(--wf-secondary-steel-gray) !important;
+
+    cursor: pointer !important;
+
+    transition: color 0.3s;
+
 }
+
+
 
 .accordion:hover {
-    color: var(--wf-accent-orange) !important;
+
+    color: var(--wf-accent-orange) !important;
+
 }
+
+
 
 .active-accordion {
-s   border-radius: var(--wf-border-radius) var(--wf-border-radius) 0 0 !important;
-    border-bottom: 1px solid transparent !important;
-    margin-bottom: 0 !important;
+
+    border-radius: var(--wf-border-radius) var(--wf-border-radius) 0 0 !important;
+
+    border-bottom: 1px solid transparent !important;
+
+    margin-bottom: 0 !important;
+
 }
+
+
 
 .accordion::after {
-    content: '\002B'; /* Plus Sign (+) */
-    font-size: 1.5em;
-    font-weight: 400;
-    color: var(--wf-accent-orange);
-    transition: transform 0.3s ease-in-out;
-    transform: rotate(0deg);
+
+    content: '\002B'; /* Plus Sign (+) */
+
+    font-size: 1.5em;
+
+    font-weight: 400;
+
+    color: var(--wf-accent-orange);
+
+    transition: transform 0.3s ease-in-out;
+
+    transform: rotate(0deg);
+
 }
+
+
 
 .active-accordion::after {
-s   content: '\2212'; /* Minus Sign (−) */
-    transform: rotate(180deg);
+
+    content: '\2212'; /* Minus Sign (−) */
+
+    transform: rotate(180deg);
+
 }
+
+
 
 .panel {
-    max-height: 0; 
-    overflow: hidden; 
-    transition: max-height 0.3s ease-in-out;
-    padding: 0;s
-    background-color: white;
-    border-radius: 0 0 var(--wf-border-radius) var(--wf-border-radius); 
-    margin-bottom: 5px;
+
+    max-height: 0; 
+
+    overflow: hidden; 
+
+    transition: max-height 0.3s ease-in-out;
+
+    padding: 0; 
+
+    background-color: white;
+
+    border-radius: 0 0 var(--wf-border-radius) var(--wf-border-radius); 
+
+    margin-bottom: 5px;
+
 }
+
+
 
 .panel-content {
-    padding: 15px 18px; 
-    /* border-left: 3px solid var(--wf-accent-orange); */ /* Removed */
-    background-color: white; 
-    margin-bottom: 5px;
-    margin-top: 5px;
+
+    padding: 15px 18px; 
+
+    /* border-left: 3px solid var(--wf-accent-orange); */ /* Removed */
+
+    background-color: white; 
+
+    margin-bottom: 5px;
+
+    margin-top: 5px;
+
 }
+
+
 
 .panel-content p {
-    margin: 0 !important; 
-    border: none !important;
-    background-color: transparent !important;
-    box-shadow: none !important
-}
 
+    margin: 0 !important; 
 
-/* ---------------------------------------------------- */
-/* --- 📱 2. MOBILE RESPONSIVENESS FIXES 📱 --- */
-/* ---------------------------------------------------- */
+    border: none !important;
 
-/* This media query applies all rules inside it ONLY
-   to screens 768px wide or smaller (like tablets and phones) */
-@media (max-width: 768px) {
+    background-color: transparent !important;
 
-    /* --- General Layout Fixes --- */
-    .container {
-        padding: 0 10px; /* Reduces side padding on mobile */
-        margin-top: 10px;
-    }
-
-    .main-content {
-        padding: 20px; /* Reduces padding inside cards on mobile */
-    }
-
-    /* --- Navbar Fix (Stops horizontal cutoff) --- */
-    .navbar {
-        flex-direction: column; /* Stacks logo and nav links */
-        align-items: flex-start; /* Aligns logo to the left */
-        padding: 15px;
-    }
-
-    .navbar nav {
-        width: 100%; /* Makes nav take full width */
-    }
-
-    .navbar ul {
-        flex-direction: column; /* Stacks nav links vertically */
-        width: 100%;
-        align-items: flex-start; /* Aligns links to the left */
-        margin-top: 15px; /* Adds space between logo and links */
-    }
-
-    .navbar li {
-        margin-right: 0; /* Removes horizontal margin */
-        width: 100%; /* Makes each link full-width */
-    }
-
-    .navbar a {
-        padding: 10px 0; /* Gives more vertical space to tap */
-        width: 100%; /* Ensures the link is easy to tap */
-    }
-
-    /* --- CSS Lab Fix (Stops horizontal cutoff) --- */
-    #all-challenges {
-        flex-direction: column; /* Stacks challenge boxes vertically */
-        gap: 15px;
-    }
-
-    .challenge-container {
-        /* Makes challenge boxes full-width on mobile */
-        max-width: 100%;
-        min-width: 100%; /* Overrides the 380px min-width */
-        flex: 1 1 100%;
-        margin-top: 0;
-    }
-
-    .challenge-ui {
-        flex-direction: column; /* Stacks the input and button */
-        align-items: stretch; /* Makes them full-width */
-    }
-
-    .challenge-ui input[type="text"] {
-        font-size: 0.9em; /* Makes text a bit smaller if needed */
-    }
-}
+    box-shadow: none !important
