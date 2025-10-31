@@ -35,7 +35,7 @@
     --wf-shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.05);
     --wf-shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
     
-    /* ❗ FIX: Set button height to 40px ❗ */
+    /* ❗ Set button height to 40px ❗ */
     --wf-button-height: 40px; 
 }
 
@@ -210,7 +210,6 @@ button[onclick*="validateChallenge"],
     color: white !important;
     font-weight: 400 !important;
     
-    /* ❗ FIX: Removed vertical padding, added horizontal */
     padding-left: 25px !important;
     padding-right: 25px !important;
     
@@ -219,14 +218,15 @@ button[onclick*="validateChallenge"],
     transition: background-color 0.2s, box-shadow 0.2s;
     text-decoration: none !important;
     
-    /* ❗ FIX: Set height to 40px ❗ */
     height: var(--wf-button-height) !important; /* 40px */
     display: inline-flex !important; 
     align-items: center; 
     justify-content: center;
     
     font-family: 'Aeonik', sans-serif !important;
-    font-size: 1em !important; /* This will be 16px */
+    
+    /* ❗ RATIO FIX: Set font size to 11px to match 16:60 ratio at 40px height ❗ */
+    font-size: 11px !important; 
     
     box-sizing: border-box;
 }
@@ -340,7 +340,6 @@ button[onclick*="validateChallenge"]:hover {
     border-radius: 96px; 
     font-family: monospace;
     font-size: 1em;
-    /* ❗ FIX: Set input height to 40px ❗ */
     height: var(--wf-button-height); /* 40px */
     box-sizing: border-box; 
 }
@@ -452,24 +451,5 @@ button[onclick*="validateChallenge"]:hover {
     margin: 0 !important; 
     border: none !important;
     background-color: transparent !important;
-    box-shadow: none !important;
-}
+    box-shadow: none !impor
 
-.success { 
-    display: block; 
-    background-color: var(--wf-support-karry); 
-    color: var(--wf-secondary-steel-gray); 
-    border: none;
-}
-.error { 
-    display: block; 
-    background-color: var(--wf-support-karry); 
-    color: var(--wf-text-error); 
-    border: none;
-}
-.info {
-    display: block; 
-    background-color: var(--wf-support-karry); 
-    color: var(--wf-secondary-steel-gray);
-    border: none;
-}
