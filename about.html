@@ -1,73 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>wfx-dojo - About Us</title>
-    <!-- Links the jQuery library -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
-    <!-- Links to the external stylesheet -->
-    <link rel="stylesheet" href="styles.css"> 
+    <meta charset="UTF-8">
+    <!-- 1. ADDED VIEWPORT TAG: This is the most important fix -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>wfx-dojo - About Us</title>
+    <!-- Links the jQuery library -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
+    <!-- Links to the external stylesheet -->
+    <link rel="stylesheet" href="styles.css"> 
 </head>
 <body>
 
-    <!-- Top Navbar (Styled by styles.css) -->
-    <header class="navbar">
-        <div class="logo">wfx-dojo</div>
-        <nav>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html" class="active">About Us</a></li>
-                <li><a href="css-selector-lab.html">CSS Target Practice</a></li>
-                <!-- ❗ UPDATED "Coming Soon" Links with Tooltip ❗ -->
-                <li class="nav-disabled">
-                    <a href="#" class="nav-disabled">
-                        jQuery Selectors 
-                        <span class="coming-soon-tag">Coming Soon</span>
-                        <span class="tooltip-text">Exciting new challenges for jQuery are on the way!</span>
-                    </a>
-                </li>
-                <li class="nav-disabled">
-                    <a href="#" class="nav-disabled">
-                        Shadow DOM 
-                        <span class="coming-soon-tag">Coming Soon</span>
-                        <span class="tooltip-text">Learn to pierce the Shadow DOM! Coming soon.</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    </header>
+    <!-- Top Navbar (Styled by styles.css) -->
+    <header class="navbar">
+        <div class="logo">wfx-dojo</div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html" class="active">About Us</a></li>
+            <!-- 2. FIXED LINK PATH: Was "css-selector-lab.html" -->
+                <li><a href="css-selectors.html">CSS Target Practice</a></li>
+                <!-- "Coming Soon" Links with Tooltip -->
+                <li class="nav-disabled">
+                    <a href="#" class="nav-disabled">
+                        jQuery Selectors 
+                        <span class="coming-soon-tag">Coming Soon</span>
+                        <span class="tooltip-text">Exciting new challenges for jQuery are on the way!</span>
+                    </a>
+                </li>
+                <li class="nav-disabled">
+                    <a href="#" class="nav-disabled">
+                        Shadow DOM 
+                        <span class="coming-soon-tag">Coming Soon</span>
+                        <span class="tooltip-text">Learn to pierce the Shadow DOM! Coming soon.</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
 
-    <div class="container">
-        <!-- The content wrapper (Styled by styles.css) -->
-        <div id="content-wrapper">
-            
-            <main class="content main-content">
-                <h1>Our Mission</h1>
-                
-                <!-- Goal and Mission Statement -->
-                <div class="mission-statement">
-                    <h2>Our Goal & Mission</h2>
-                    
-                    <h3>Goal</h3>
-                    <p>To demystify <b>CSS Selectors</b> and eliminate the frustration often associated with web styling. We aim to convert complex CSS concepts into clear, actionable, and repeatable knowledge for every user, regardless of their starting skill level.</p>
-                    
-                    <h3>Mission Statement</h3>
-                    <p>wfx-dojo is dedicated to providing <b>free, interactive, and high-quality educational tools</b> that ensure everyone can learn CSS selectors easily and effectively. By focusing on practical application, immediate feedback, and clear explanations, we empower learners to write efficient, robust, and maintainable CSS for modern web development.</p>
-                </div>
+    <div class="container">
+        <!-- The content wrapper (Styled by styles.css) -->
+        <div id="content-wrapper">
+            
+            <main class="content main-content">
+                <h1>Our Mission</h1>
+                
+                <!-- Goal and Mission Statement -->
+                <div class="mission-statement">
+                    <h2>Our Goal & Mission</h2>
+                    
+                    <h3>Goal</h3>
+                    <p>To demystify <b>CSS Selectors</b> and eliminate the frustration often associated with web styling. We aim to convert complex CSS concepts into clear, actionable, and repeatable knowledge for every user, regardless of their starting skill level.</p>
+                    
+                    <h3>Mission Statement</h3>
+                    <p>wfx-dojo is dedicated to providing <b>free, interactive, and high-quality educational tools</b> that ensure everyone can learn CSS selectors easily and effectively. By focusing on practical application, immediate feedback, and clear explanations, we empower learners to write efficient, robust, and maintainable CSS for modern web development.</p>
+                </div>
 
-            </main>
-        </div>
-    </div>
+            </main>
+        </div>
+    </div>
 
-    <!-- Simplified Footer (Styled by styles.css) -->
-    <footer>
-        <p>&copy; 2025 wfx-dojo</p>
-    </footer>
+    <!-- Simplified Footer (Styled by styles.css) -->
+    <footer>
+        <p>&copy; 2025 wfx-dojo</p>
+    </footer>
 
-    <!-- Link the external JavaScript file at the end of the <body> for performance -->
-    <script src="script.js"></script>
+    <!-- Link the external JavaScript file at the end of the <body> for performance -->
+    <script src="script.js"></script>
 
 </body>
 </html>
-
