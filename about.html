@@ -4,56 +4,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WFX-Schools - About Us</title>
+    <!-- Links the jQuery library -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
-    <link rel="stylesheet" href="styles.css">
+    <!-- Links to the external stylesheet -->
+    <link rel="stylesheet" href="styles.css"> 
 </head>
 <body>
 
-    <!-- Top Navbar -->
+    <!-- Top Navbar (Styled by styles.css) -->
     <header class="navbar">
         <div class="logo">WFX-Schools</div>
         <nav>
             <ul>
                 <li><a href="home.html">Home</a></li>
                 <li><a href="about.html" class="active">About Us</a></li>
-                <li><a href="css-selector-lab.html">CSS Selector Lab</a></li>
+                <li><a href="css-selectors.html">CSS Target Practice</a></li>
+                <!-- ❗ NEW: Coming Soon Links Added ❗ -->
+                <li><a href="#" class="nav-disabled">jQuery Selectors <span class="coming-soon-tag">Soon</span></a></li>
+                <li><a href="#" class="nav-disabled">Shadow DOM <span class="coming-soon-tag">Soon</span></a></li>
             </ul>
         </nav>
     </header>
 
     <div class="container">
-        <!-- Content wrapper: Ensures main content spans full width -->
-        <main class="content main-content">
-            <h1>Our Mission: Mastering Selectors</h1>
+        <!-- The content wrapper (Styled by styles.css) -->
+        <div id="content-wrapper">
             
-            <!-- Placeholder for jQuery Class Selector demonstration -->
-            <p class="highlight-me"></p>
-            
-            <hr class="separator">
-
-            <!-- Goal and Mission Statement (Styled with Whatfix accent and soft background) -->
-            <div class="mission-statement">
-                <h2>Our Goal & Mission</h2>
+            <main class="content main-content">
+                <h1>Our Mission</h1>
                 
-                <h3>Goal</h3>
-                <p>To demystify <b>CSS Selectors</b> and eliminate the frustration often associated with web styling. We aim to convert complex CSS concepts into clear, actionable, and repeatable knowledge for every user, regardless of their starting skill level.</p>
+                <!-- This p tag is for the jQuery demo in script.js -->
+                <p class="highlight-me" style="min-height: 1.5em;"></p>
                 
-                <h3>Mission Statement</h3>
-                <p>WFX-Schools is dedicated to providing <b>free, interactive, and high-quality educational tools</b> that ensure everyone can learn CSS selectors easily and effectively. By focusing on practical application, immediate feedback, and clear explanations, we empower learners to write efficient, robust, and maintainable CSS for modern web development.</p>
-            </div>
-            
-            <hr class="separator">
-            
-            <!-- Placeholder content for jQuery Attribute Selector demonstration -->
-            <p data-status="pending"></p>
-            <p data-status="complete"></p>
+                <!-- Goal and Mission Statement -->
+                <div class="mission-statement">
+                    <h2>Our Goal & Mission</h2>
+                    
+                    <h3>Goal</h3>
+                    <p>To demystify <b>CSS Selectors</b> and eliminate the frustration often associated with web styling. We aim to convert complex CSS concepts into clear, actionable, and repeatable knowledge for every user, regardless of their starting skill level.</p>
+                    
+                    <h3>Mission Statement</h3>
+                    <p>WFX-Schools is dedicated to providing <b>free, interactive, and high-quality educational tools</b> that ensure everyone can learn CSS selectors easily and effectively. By focusing on practical application, immediate feedback, and clear explanations, we empower learners to write efficient, robust, and maintainable CSS for modern web development.</p>
+                </div>
+                
+                <hr style="margin: 30px 0; border: none; border-top: 1px solid #E2E8F0;">
+                
+                <!-- Placeholder content for jQuery Attribute Selector demonstration -->
+                <p data-status="pending" style="padding: 10px;"></p>
+                <p data-status="complete" style="padding: 10px;"></p>
 
-        </main>
+            </main>
+        </div>
     </div>
 
+    <!-- Simplified Footer (Styled by styles.css) -->
     <footer>
         <p>&copy; 2025 WFX-Schools</p>
     </footer>
+
+    <!-- Link the external JavaScript file at the end of the <body> for performance -->
     <script src="script.js"></script>
+
 </body>
 </html>
+
