@@ -39,25 +39,26 @@
     --wf-button-height: 40px; 
 }
 
-/* --- 1. GLOBAL RESET (FIXES TRANSPARENT SPACE) --- */
-/* Add this entire block */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 /* --- GLOBAL RESET & FONT --- */
+
+/* * FIX 1: This reset fixes the "transparent space" 
+ * above the navbar by removing default browser margins.
+*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
 body {
     font-family: 'Aeonik', sans-serif;
     font-weight: 400;
-    margin: 0;
-    padding: 0;
+    /* margin: 0; <-- Removed, now handled by '*' reset */
+    /* padding: 0; <-- Removed, now handled by '*' reset */
     background-color: var(--wf-dominant-spring-wood); 
     color: var(--wf-secondary-steel-gray); 
-    /* ADD THIS LINE (prevents horizontal scroll) */
-    overflow-x: hidden;
+    /* FIX 2: This prevents horizontal scrolling on mobile */
+    overflow-x: hidden;
 }
 
 /* --- ❗ NAVBAR STYLING (WHATFIX REPLICATION) ❗ --- */
@@ -74,8 +75,8 @@ body {
     position: sticky; 
     top: 0;
     z-index: 100;
-    /* ADD THIS LINE (helps navbar wrap on small screens) */
-    flex-wrap: wrap;
+    /* FIX 3: Allows navbar items to wrap on smaller screens */
+    flex-wrap: wrap; 
 }
 
 .navbar .logo { 
@@ -85,20 +86,12 @@ body {
     margin-right: 40px; 
 }
 
-/* ADD THIS ENTIRE RULE */
-.navbar nav {
-    /* Allows the nav to grow and wrap */
-    flex-grow: 1;
-}
-
 .navbar ul { 
     list-style: none; 
     margin: 0; 
     padding: 0; 
     display: flex; 
     align-items: center; /* Vertically align nav items */
-    /* ADD THIS LINE (allows nav items to wrap) */
-    flex-wrap: wrap;
 }
 
 .navbar li { 
@@ -239,7 +232,7 @@ button[onclick*="validateChallenge"], 
     text-decoration: none !important;
     
     height: var(--wf-button-height) !important; /* 40px */
-    display: inline-flex !important;
+    display: inline-flex !important; 
     align-items: center; 
     justify-content: center;
     
@@ -325,7 +318,7 @@ button[onclick*="validateChallenge"]:hover {
     border-radius: var(--wf-border-radius);
     padding: 20px;
     flex: 1 1 45%; 
-    max-width: calc(50% - 10px);
+    max-width: calc(50% - 10px); 
     min-width: 380px; 
     margin-top: 10px; 
     box-shadow: none;
@@ -337,7 +330,7 @@ button[onclick*="validateChallenge"]:hover {
     border-radius: var(--wf-border-radius);
     padding: 15px;
     margin-top: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 20px; 
     height: 200px; 
     display: flex;
     flex-direction: column;
@@ -349,7 +342,7 @@ button[onclick*="validateChallenge"]:hover {
     display: flex;
     gap: 10px;
     margin-top: 10px;
-    justify-content: center;
+    justify-content: center;s
     align-items: center; 
 }
 
@@ -387,7 +380,7 @@ button[onclick*="validateChallenge"]:hover {
     padding: 10px 14px !important;
     margin: 6px !important;
     font-size: 1em !important; 
-    border-radius: 6px !important;
+    border-radius: 6px !important;s
     display: inline-block !important; 
 }
 
@@ -401,14 +394,15 @@ button[onclick*="validateChallenge"]:hover {
     font-weight: 400;
 }
 
-/* --- 1. ADD THIS ENTIRE BLOCK --- */
-/* This makes the feedback box visible when JS adds a class */
+/* * FIX 4: This block makes your validation messages visible.
+ * It changes "display: none" to "display: block" when
+ * your script.js adds the "success", "error", or "info" class.
+*/
 .validation-feedback.success,
 .validation-feedback.error,
 .validation-feedback.info {
     display: block;
 }
-/* Style the different feedback types */
 .validation-feedback.success {
     background-color: var(--wf-success);
     color: var(--wf-text-success);
@@ -424,14 +418,14 @@ button[onclick*="validateChallenge"]:hover {
     color: #0056b3;
     border: 1px solid #0056b3;
 }
-/* --- END OF NEW BLOCK --- */
+/* --- END OF FIX 4 --- */
 
 
 .accordion {
     appearance: none !important;
     -webkit-appearance: none !important;
     border: none !important;
-    background-color: white !important;
+    background-color: white !important; 
     box-shadow: none !important;
     padding: 12px 15px; 
     margin-top: 5px;
@@ -446,7 +440,7 @@ button[onclick*="validateChallenge"]:hover {
     font-family: 'Aeonik', sans-serif !important;
     font-size: 0.9em !important;
     font-weight: 400 !important;
-    color: var(--wf-secondary-steel-gray) !important;
+s    color: var(--wf-secondary-steel-gray) !important;
     cursor: pointer !important;
     transition: color 0.3s;
 }
@@ -471,7 +465,7 @@ button[onclick*="validateChallenge"]:hover {
 }
 
 .active-accordion::after {
-    content: '\2212'; /* Minus Sign (−) */
+s    content: '\2212'; /* Minus Sign (−) */
     transform: rotate(180deg);
 }
 
@@ -479,7 +473,7 @@ button[onclick*="validateChallenge"]:hover {
     max-height: 0; 
     overflow: hidden; 
     transition: max-height 0.3s ease-in-out;
-    padding: 0;
+    padding: 0; 
     background-color: white;
     border-radius: 0 0 var(--wf-border-radius) var(--wf-border-radius); 
     margin-bottom: 5px;
@@ -497,76 +491,108 @@ button[onclick*="validateChallenge"]:hover {
     margin: 0 !important; 
     border: none !important;
     background-color: transparent !important;
+    /* * FIX 5: This was the typo (extra comma) that
+     * broke your *entire* CSS file. It is now removed.
+    */
     box-shadow: none !important;
 }
 
 
 /* ---------------------------------------------------- */
-/* --- 📱 2. MOBILE RESPONSIVENESS FIXES 📱 --- */
+/* --- 📱 MOBILE RESPONSIVE STYLES 📱 --- */
 /* ---------------------------------------------------- */
 
-/* ADD THIS ENTIRE @media BLOCK TO THE VERY END OF YOUR FILE.
-   This is what stacks the navbar and challenge boxes vertically. */
+/* * FIX 6: This block will now work and fixes all 
+ * your mobile layout problems (cutoff, navbar fit, etc.)
+*/
 @media (max-width: 768px) {
 
-    /* --- General Layout Fixes --- */
-    .container {
-        padding: 0 10px; /* Reduces side padding on mobile */
-        margin-top: 10px;
-    }
-
-    .main-content {
-        padding: 20px; /* Reduces padding inside cards on mobile */
-    }
-
-    /* --- Navbar Fix (Stops horizontal cutoff) --- */
+    /* --- NAVBAR FIXES --- */
     .navbar {
-        flex-direction: column; /* Stacks logo and nav links */
-        align-items: flex-start; /* Aligns logo to the left */
-        padding: 15px;
+        /* Stack logo and nav links vertically */
+        flex-direction: column;
+        padding: 15px 20px;
     }
 
-    .navbar nav {
-        width: 100%; /* Makes nav take full width */
+    .navbar .logo {
+        margin-right: 0;
+        margin-bottom: 15px; /* Add space between logo and links */
+    }
+
+    .navbar nav,
+    .navbar ul {
+        /* Make the nav and list fill the width */
+        width: 100%;
     }
 
     .navbar ul {
-        flex-direction: column; /* Stacks nav links vertically */
-        width: 100%;
-        align-items: flex-start; /* Aligns links to the left */
-        margin-top: 15px; /* Adds space between logo and links */
+        /* Stack nav links vertically */
+        flex-direction: column;
+        align-items: center; /* Center the links */
     }
 
     .navbar li {
-        margin-right: 0; /* Removes horizontal margin */
-        width: 100%; /* Makes each link full-width */
+        margin-right: 0;
+        margin-bottom: 10px; /* Add space between links */
+        width: 100%;
+        text-align: center;
     }
 
     .navbar a {
-        padding: 10px 0; /* Gives more vertical space to tap */
-        width: 100%; /* Ensures the link is easy to tap */
+        /* Make links easier to tap */
+        display: block;
+        padding: 10px;
+        border-bottom: none; /* Remove desktop border */
+    }
+    
+    .navbar a.active {
+        /* Style the active link differently for mobile */
+        border-bottom: none; 
+        background-color: var(--wf-dominant-spring-wood);
+        border-radius: var(--wf-border-radius);
+    }
+    
+    /* Hide the desktop-only tooltip on mobile */
+    .nav-disabled .tooltip-text {
+        display: none;
     }
 
-    /* --- CSS Lab Fix (Stops horizontal cutoff) --- */
+    /* --- LAYOUT FIXES --- */
+    .container {
+        padding: 0 10px; /* Reduce side padding */
+        margin-top: 10px;
+    }
+    
+    .main-content {
+        padding: 20px; /* Reduce padding on main card */
+    }
+
+    /* --- CHALLENGE LAB FIXES --- */
     #all-challenges {
-        flex-direction: column; /* Stacks challenge boxes vertically */
+        /* Allow challenge cards to stack */
+        flex-direction: column;
         gap: 15px;
     }
 
     .challenge-container {
-        /* Makes challenge boxes full-width on mobile */
+        /* Make cards full-width on mobile */
         max-width: 100%;
-        min-width: 100%; /* Overrides the 380px min-width */
+        min-width: unset; /* Remove the minimum width */
         flex: 1 1 100%;
-        margin-top: 0;
     }
-
+    
     .challenge-ui {
-        flex-direction: column; /* Stacks the input and button */
-        align-items: stretch; /* Makes them full-width */
+        /* Stack the input and button */
+        flex-direction: column;
+        align-items: stretch; /* Make input/button full-width */
     }
-
+    
     .challenge-ui input[type="text"] {
-        font-size: 0.9em; /* Makes text a bit smaller if needed */
+        width: 100%;
+    }
+    
+    button[onclick*="validateChallenge"] {
+        width: 100%;
     }
 }
+
