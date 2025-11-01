@@ -26,7 +26,7 @@ function generateNewChallengeHTML(def) {
     let html;
     let newTargetSelector;
     let newPrompt; 
-
+    
     // Simple structure changes for different types
     if (def.type.includes('ID Selector')) {
         html = `
@@ -90,7 +90,7 @@ const challengeDefinitions = [
         id: 1,
         prompt: "Target the Primary Login Button using its unique ID.",
         targetSelector: "#login-primary",
-        type: "ID Selector", // Used for strict check
+        type: "ID Selector",
         alternatives: [
             { selector: "button#login-primary", explanation: "This uses the tag name and the ID. Since IDs are already unique, adding the tag name is redundant but valid. It increases specificity unnecessarily, which is often avoided in production." }
         ],
@@ -104,7 +104,7 @@ const challengeDefinitions = [
         id: 2,
         prompt: "Target the item marked Urgent using its class.",
         targetSelector: ".task-urgent",
-        type: "Class Selector", // Used for strict check
+        type: "Class Selector",
         alternatives: [
             { selector: "li.task-urgent", explanation: "This is a great technique: combining the tag name (li) with the class. It increases specificity slightly and clearly scopes the selection to only list items, improving readability." },
             { selector: ".task-urgent.list-item", explanation: "This chains two class selectors together. This is useful if you want to ensure an element has *both* classes. It also increases specificity (20 points) which can be helpful if you need to override other styles." }
@@ -122,7 +122,7 @@ const challengeDefinitions = [
         id: 3,
         prompt: "Target the Save button that is contained *anywhere* inside the #settings-modal.",
         targetSelector: "#settings-modal .btn-save",
-        type: "Descendant Combinator", // Used for strict check
+        type: "Descendant Combinator",
         alternatives: [
             { selector: "#settings-modal button.btn-save", explanation: "This is highly specific. It combines the ID of the container, the tag name, and the class name. This clearly states that the selector should target a button with the class `.btn-save` inside the ID `#settings-modal`." },
             { selector: "div#settings-modal button.btn-save", explanation: "This is the most explicit form, using the tag name for the container (div) as well as its ID. It makes the selector very rigid but ensures zero ambiguity." }
@@ -141,7 +141,7 @@ const challengeDefinitions = [
         id: 4,
         prompt: "Target the Title text that is a direct child of the .card-header.",
         targetSelector: ".card-header > h2",
-        type: "Child Combinator", // Used for strict check
+        type: "Child Combinator",
         alternatives: [
             { selector: ".card-header>h2", explanation: "This is identical to the primary answer; whitespace around the '>' operator is optional and doesn't affect selection, though many prefer spaces for readability." },
             { selector: ".card > .card-header > h2", explanation: "This chains multiple Child Combinators, ensuring that the selection only occurs if `.card-header` is a direct child of `.card` AND `h2` is a direct child of `.card-header`." }
@@ -163,7 +163,7 @@ const challengeDefinitions = [
         id: 5,
         prompt: "Target the Second Item that immediately follows the element with the class .first-element.",
         targetSelector: ".first-element + li",
-        type: "Adjacent Sibling Combinator", // Used for strict check
+        type: "Adjacent Sibling Combinator",
         alternatives: [
             { selector: "li.first-element + li.list-item", explanation: "A highly specific version. It requires that both the preceding element and the target element are list items (li) and have their respective classes, ensuring precision." }
         ],
@@ -181,7 +181,7 @@ const challengeDefinitions = [
         id: 6,
         prompt: "Target the Comments button given in the area below, which appears somewhere after the h3 element.",
         targetSelector: "h3 ~ button.comments",
-        type: "General Sibling Combinator", // Used for strict check
+        type: "General Sibling Combinator",
         alternatives: [
             { selector: "h3 ~ .comments", explanation: "Less specific than the one provided. It selects any element with the class `.comments` that follows an `h3` in the same parent. This is correct but risks selecting a non-button element." },
             { selector: "button.like ~ button.comments", explanation: "This targets the Comments button based on a different preceding sibling, the Like button. It demonstrates the flexibility of the General Sibling Combinator." }
@@ -199,7 +199,7 @@ const challengeDefinitions = [
         id: 7,
         prompt: "Target the input field whose name attribute contains the word 'user'.",
         targetSelector: "input[name*='user']",
-        type: "Attribute Selector (Substring Match)", // Used for strict check
+        type: "Attribute Selector (Substring Match)",
         alternatives: [
             { selector: "input[name~='data-username']", explanation: "Uses the tilde operator (`~=`), which matches a whole word in a space-separated list of values. This would work if the name value was 'data-username other', but fails on 'data-username' as one contiguous string." }
         ],
@@ -214,7 +214,7 @@ const challengeDefinitions = [
         id: 8,
         prompt: "Target the third item in the list, regardless of its tag name, using :nth-child.",
         targetSelector: "li:nth-child(3)",
-        type: "Structural Pseudo-class (:nth-child)", // Used for strict check
+        type: "Structural Pseudo-class (:nth-child)",
         alternatives: [
             { selector: "ol li:nth-child(3)", explanation: "More specific by scoping the selection to `li` elements inside an ordered list (`ol`). This is generally safer than using just the pseudo-class alone." },
             { selector: "li:nth-of-type(3)", explanation: "This selects the third item *of its type* (the third `li` element) among its siblings. It works here because all siblings are list items." }
@@ -233,7 +233,7 @@ const challengeDefinitions = [
         id: 9,
         prompt: "Target the Save button which does not have the class .disabled.",
         targetSelector: "button:not(.disabled)",
-        type: "Negation Pseudo-class (:not)", // Used for strict check
+        type: "Negation Pseudo-class (:not)",
         alternatives: [
             { selector: ".btn-save:not(.disabled)", explanation: "This targets any element with the class `.btn-save` that is not disabled. This is less specific but often clearer when writing component-based CSS." },
             { selector: "button.btn-save:not(.disabled)", explanation: "The most specific option. Combines tag name, class name, and the negation pseudo-class, clearly defining the exact criteria." }
@@ -249,7 +249,7 @@ const challengeDefinitions = [
         id: 10,
         prompt: "Target the checkbox that is currently checked.",
         targetSelector: "input:checked",
-        type: "UI State Pseudo-class (:checked)", // Used for strict check
+        type: "UI State Pseudo-class (:checked)",
         alternatives: [
             { selector: "input[type='checkbox']:checked", explanation: "This adds the attribute selector for `type='checkbox'`, ensuring the selector only applies to checkbox inputs, not radio buttons or other checked inputs." }
         ],
@@ -400,9 +400,9 @@ function validateChallenge(challengeId) {
     if (!strictCheckPassed) {
         feedbackElement.innerHTML = strictFailMessage;
         feedbackElement.classList.add('error');
-        return; // Stop validation early
+        return; // Stop validation if the type check fails
     }
-    // --- END OF STRICT VALIDATION LOGIC ---
+    // --- END OF STRICT VALIDATION ---
 
 
     try {
@@ -464,7 +464,7 @@ function handleSuccess(challengeId, correctSelector) {
     
     if (!state.isSolved) {
         statusElement.textContent = "(SOLVED!)";
-        statusElement.style.color = '#155724'; // This color is fine for the small (SOLVED!) text
+        statusElement.style.color = 'var(--wf-text-success)'; // Use brand color
     }
 
     state.isSolved = true;
@@ -614,9 +614,7 @@ function resetChallenge(challengeId) {
     promptElement.textContent = updatedPrompt; 
     
     feedbackElement.innerHTML = `🌟 <b>New Challenge!</b> Apply the <b>${challengeDef.type}</b> logic to this new structure.`;
-    
-    // --- 2. NEW: SHOW "NEW CHALLENGE" MESSAGE ---
-    // This line makes the "New Challenge!" message visible.
+    // ❗❗ FIX: This line makes the "New Challenge!" message visible ❗❗
     feedbackElement.classList.add('info'); 
     
     statusElement.textContent = "(Unsolved)";
