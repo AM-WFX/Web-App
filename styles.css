@@ -403,9 +403,10 @@ button[onclick*="validateChallenge"]:hover {
 }
 
 .validation-feedback.success {
-    background-color: var(--wf-success);
-    color: var(--wf-text-success);
-    border-color: #C3E6CB;
+    /* CHANGED: Use brand's orange theme */
+    background-color: var(--wf-support-karry);
+    color: var(--wf-accent-orange);
+    border-color: var(--wf-accent-orange);
 }
 
 .validation-feedback.error {
@@ -568,4 +569,5 @@ button[onclick*="validateChallenge"]:hover {
         width: 100%;
     }
 }
+
 
