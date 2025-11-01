@@ -360,7 +360,7 @@ const challengeDefinitions = [
 
         id: 6,
 
-        prompt: "Target the Comments button, which appears somewhere after the h3 element.",
+        prompt: "Target the Comments button given in the area below, which appears somewhere after the h3 element.",
 
         targetSelector: "h3 ~ button.comments",
 
@@ -378,7 +378,6 @@ const challengeDefinitions = [
 
         html: `
 
-            <button class="share">Share</button>
 
             <h3>Post Title</h3>
 
