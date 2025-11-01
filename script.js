@@ -358,26 +358,26 @@ function validateChallenge(challengeId) {
         return;
     }
 
-    // --- CHANGE 1: STRICT VALIDATION LOGIC ---
+    // --- 1. NEW: STRICT VALIDATION LOGIC ---
     // Check if the user is using the *correct type* of selector for the lesson.
     let strictCheckPassed = true;
     let strictFailMessage = "";
 
     if (challengeDef.type === "ID Selector" && !userInput.includes('#')) {
         strictCheckPassed = false;
-        strictFailMessage = "Incorrect. For this challenge, you must use an **ID selector** (which starts with a `#`).";
+        strictFailMessage = "Incorrect. For this challenge, you must use an <b>ID selector</b> (which starts with a <b>#</b>).";
     } else if (challengeDef.type === "Class Selector" && !userInput.includes('.')) {
         strictCheckPassed = false;
-        strictFailMessage = "Incorrect. For this challenge, you must use a **Class selector** (which starts with a `.`).";
+        strictFailMessage = "Incorrect. For this challenge, you must use a <b>Class selector</b> (which starts with a <b>.</b>).";
     } else if (challengeDef.type.includes("Combinator") && !userInput.match(/[\s>+~]/)) {
         strictCheckPassed = false;
-        strictFailMessage = "Incorrect. This challenge requires a **Combinator**. You need to use a space (descendant), `>` (child), `+` (adjacent), or `~` (general sibling).";
+        strictFailMessage = "Incorrect. This challenge requires a <b>Combinator</b>. You need to use a space (descendant), <b>&gt;</b> (child), <b>+</b> (adjacent), or <b>~</b> (general sibling).";
     } else if (challengeDef.type.includes("Attribute") && !userInput.includes('[')) {
         strictCheckPassed = false;
-        strictFailMessage = "Incorrect. This challenge requires an **Attribute selector**. Your selector must include brackets (e.g., `[attribute=value]`).";
+        strictFailMessage = "Incorrect. This challenge requires an <b>Attribute selector</b>. Your selector must include brackets (e.g., <b>[attribute=value]</b>).";
     } else if (challengeDef.type.includes("Pseudo") && !userInput.includes(':')) {
         strictCheckPassed = false;
-        strictFailMessage = "Incorrect. This challenge requires a **Pseudo-class selector**. Your selector must include a colon (e.g., `:checked`, `:nth-child(n)`, or `:not(...)`).";
+        strictFailMessage = "Incorrect. This challenge requires a <b>Pseudo-class selector</b>. Your selector must include a colon (e.g., <b>:checked</b>, <b>:nth-child(n)</b>, or <b>:not(...)</b>).";
     }
 
     if (!strictCheckPassed) {
@@ -421,7 +421,7 @@ function validateChallenge(challengeId) {
                 ❌ Syntax Error (Specific): Your selector <code>${userInput}</code> is failing. 
                 <br>
                 <strong>The Attribute Equals Selector ([attr="value"]) requires the class value to be an EXACT match.</strong> 
-                <br>Since your target element has multiple classes, the exact match fails. You should use the **Class Selector (.)** or the **Attribute Contains Selector ([attr~="value"] or [attr*="value"])** instead.
+                <br>Since your target element has multiple classes, the exact match fails. You should use the <b>Class Selector (.)</b> or the <b>Attribute Contains Selector ([attr~="value"] or [attr*="value"])</b> instead.
             `;
             feedbackElement.classList.add('error');
         } else {
@@ -598,7 +598,7 @@ function resetChallenge(challengeId) {
     
     feedbackElement.innerHTML = `🌟 <b>New Challenge!</b> Apply the <b>${challengeDef.type}</b> logic to this new structure.`;
     
-    // --- CHANGE 2: SHOW "NEW CHALLENGE" MESSAGE ---
+    // --- 2. NEW: SHOW "NEW CHALLENGE" MESSAGE ---
     // This line makes the "New Challenge!" message visible.
     feedbackElement.classList.add('info'); 
     
@@ -608,4 +608,3 @@ function resetChallenge(challengeId) {
     // Call applyHighlighting to clean up any old highlights from the previous attempt
     applyHighlighting(challengeId);
 }
-
