@@ -308,7 +308,7 @@ button[onclick*="validateChallenge"]:hover {
 
 #all-challenges {
     display: flex;
-    flex-wrap: wrap; 
+  s flex-wrap: wrap; 
     gap: 20px; 
     justify-content: space-between;
 }
@@ -318,7 +318,7 @@ button[onclick*="validateChallenge"]:hover {
     border-radius: var(--wf-border-radius);
     padding: 20px;
     flex: 1 1 45%; 
-    max-width: calc(50% - 10px);s
+    max-width: calc(50% - 10px);
     min-width: 380px; 
     margin-top: 10px; 
     box-shadow: none;
@@ -441,7 +441,7 @@ button[onclick*="validateChallenge"]:hover {
     font-size: 0.9em !important;
     font-weight: 400 !important;
     color: var(--wf-secondary-steel-gray) !important;
-s    cursor: pointer !important;
+    cursor: pointer !important;
     transition: color 0.3s;
 }
 
@@ -473,9 +473,9 @@ s    cursor: pointer !important;
     max-height: 0; 
     overflow: hidden; 
     transition: max-height 0.3s ease-in-out;
-    padding: 0;s
+    padding: 0;
     background-color: white;
-    border-radius: 0 0 var(--wf-border-radius) var(--wf-border-radius); 
+    border-radius: 0 0 var(--wf-border-radius) var(--wf-border-radius);s
     margin-bottom: 5px;
 }
 
@@ -489,7 +489,7 @@ s    cursor: pointer !important;
 
 .panel-content p {
     margin: 0 !important; 
-  	border: none !important;
+S   border: none !important;
   	background-color: transparent !important;
     /* * FIX 5: This was the typo (extra comma) that
      * broke your *entire* CSS file. It is now removed.
