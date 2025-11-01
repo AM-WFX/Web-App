@@ -232,7 +232,7 @@ button[onclick*="validateChallenge"], 
     text-decoration: none !important;
     
     height: var(--wf-button-height) !important; /* 40px */
-    display: inline-flex !important;s
+    display: inline-flex !important;
     align-items: center; 
     justify-content: center;
     
@@ -318,7 +318,7 @@ button[onclick*="validateChallenge"]:hover {
     border-radius: var(--wf-border-radius);
     padding: 20px;
     flex: 1 1 45%; 
-    max-width: calc(50% - 10px); 
+    max-width: calc(50% - 10px);s
     min-width: 380px; 
     margin-top: 10px; 
     box-shadow: none;
@@ -326,7 +326,7 @@ button[onclick*="validateChallenge"]:hover {
 
 .challenge-target-area {
     background-color: var(--wf-dominant-spring-wood); 
-  S border: 1px solid #E2E8F0; 
+    border: 1px solid #E2E8F0; 
     border-radius: var(--wf-border-radius);
     padding: 15px;
     margin-top: 10px;
@@ -342,7 +342,7 @@ button[onclick*="validateChallenge"]:hover {
     display: flex;
     gap: 10px;
     margin-top: 10px;
-    justify-content: center; 
+    justify-content: center;
     align-items: center; 
 }
 
@@ -425,7 +425,7 @@ button[onclick*="validateChallenge"]:hover {
     appearance: none !important;
     -webkit-appearance: none !important;
     border: none !important;
-    background-color: white !important;s
+    background-color: white !important; 
     box-shadow: none !important;
     padding: 12px 15px; 
     margin-top: 5px;
@@ -435,13 +435,13 @@ button[onclick*="validateChallenge"]:hover {
     display: flex !important;
     justify-content: space-between !important;
     align-items: center !important;
-S width: 100%;
+    width: 100%;
     text-align: left;
     font-family: 'Aeonik', sans-serif !important;
     font-size: 0.9em !important;
     font-weight: 400 !important;
     color: var(--wf-secondary-steel-gray) !important;
-    cursor: pointer !important;
+s    cursor: pointer !important;
     transition: color 0.3s;
 }
 
@@ -457,7 +457,7 @@ S width: 100%;
 
 .accordion::after {
     content: '\002B'; /* Plus Sign (+) */
-    font-size: 1.5em;
+  	font-size: 1.5em;
     font-weight: 400;
     color: var(--wf-accent-orange);
     transition: transform 0.3s ease-in-out;
@@ -482,19 +482,19 @@ S width: 100%;
 .panel-content {
     padding: 15px 18px; 
     /* border-left: 3px solid var(--wf-accent-orange); */ /* Removed */
-    background-color: white; 
+  	background-color: white; 
     margin-bottom: 5px;
     margin-top: 5px;
 }
 
 .panel-content p {
     margin: 0 !important; 
-    border: none !important;
-    background-color: transparent !important;
+  	border: none !important;
+  	background-color: transparent !important;
     /* * FIX 5: This was the typo (extra comma) that
      * broke your *entire* CSS file. It is now removed.
     */
-CSS    box-shadow: none !important;
+    box-shadow: none !important;
 }
 
 
@@ -595,4 +595,3 @@ CSS    box-shadow: none !important;
         width: 100%;
     }
 }
-
