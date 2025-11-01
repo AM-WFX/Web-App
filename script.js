@@ -378,7 +378,6 @@ const challengeDefinitions = [
 
         html: `
 
-            <button class="share">Share</button>
 
             <h3>Post Title</h3>
 
