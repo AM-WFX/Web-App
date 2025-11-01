@@ -405,7 +405,8 @@ button[onclick*="validateChallenge"]:hover {
 .validation-feedback.success {
     /* CHANGED: Use brand's orange theme */
     background-color: var(--wf-support-karry);
-    color: var(--wf-accent-orange);
+    /* 1. FIX: Changed text color to your brand's dark color */
+    color: var(--wf-secondary-steel-gray);
     border-color: var(--wf-accent-orange);
 }
 
@@ -419,6 +420,12 @@ button[onclick*="validateChallenge"]:hover {
     background-color: #EBF8FF;
     color: #2A4365;
     border-color: #BEE3F8;
+}
+
+/* 2. FIX: Add this rule to create space for the <p> tag 
+   (like "Explore other ways...") inside the feedback box. */
+.validation-feedback p {
+    margin-bottom: 10px;
 }
 
 
@@ -569,5 +576,3 @@ button[onclick*="validateChallenge"]:hover {
         width: 100%;
     }
 }
-
-
