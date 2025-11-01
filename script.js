@@ -358,24 +358,41 @@ function validateChallenge(challengeId) {
         return;
     }
 
-    // --- 1. NEW: STRICT VALIDATION LOGIC ---
+    // --- 1. UPDATED: STRICT VALIDATION LOGIC ---
     // Check if the user is using the *correct type* of selector for the lesson.
     let strictCheckPassed = true;
     let strictFailMessage = "";
+    const type = challengeDef.type; // Get the specific type from our definitions
 
-    if (challengeDef.type === "ID Selector" && !userInput.includes('#')) {
+    if (type === "ID Selector" && !userInput.includes('#') && !userInput.includes('[id')) {
         strictCheckPassed = false;
-        strictFailMessage = "Incorrect. For this challenge, you must use an <b>ID selector</b> (which starts with a <b>#</b>).";
-    } else if (challengeDef.type === "Class Selector" && !userInput.includes('.')) {
+        strictFailMessage = "Incorrect. For this challenge, you must use an <b>ID selector</b> (which starts with a <b>#</b>) or an <b>Attribute selector</b> that targets the ID (e.g., <b>[id=...]</b>).";
+    
+    } else if (type === "Class Selector" && !userInput.includes('.') && !userInput.includes('[class')) {
         strictCheckPassed = false;
-        strictFailMessage = "Incorrect. For this challenge, you must use a <b>Class selector</b> (which starts with a <b>.</b>).";
-    } else if (challengeDef.type.includes("Combinator") && !userInput.match(/[\s>+~]/)) {
+        strictFailMessage = "Incorrect. For this challenge, you must use a <b>Class selector</b> (which starts with a <b>.</b>) or an <b>Attribute selector</b> that targets the class (e.g., <b>[class*=\"...\"]</b>).";
+    
+    } else if (type === "Descendant Combinator" && !userInput.includes(' ')) {
         strictCheckPassed = false;
-        strictFailMessage = "Incorrect. This challenge requires a <b>Combinator</b>. You need to use a space (descendant), <b>&gt;</b> (child), <b>+</b> (adjacent), or <b>~</b> (general sibling).";
-    } else if (challengeDef.type.includes("Attribute") && !userInput.includes('[')) {
+        strictFailMessage = "Incorrect. This challenge requires a <b>Descendant Combinator</b> (a <b>space</b> between selectors).";
+    
+    } else if (type === "Child Combinator" && !userInput.includes('>')) {
+        strictCheckPassed = false;
+        strictFailMessage = "Incorrect. This challenge requires a <b>Child Combinator</b> (the <b>&gt;</b> symbol).";
+    
+    } else if (type === "Adjacent Sibling Combinator" && !userInput.includes('+')) {
+        strictCheckPassed = false;
+        strictFailMessage = "Incorrect. This challenge requires an <b>Adjacent Sibling Combinator</b> (the <b>+</b> symbol).";
+    
+    } else if (type === "General Sibling Combinator" && !userInput.includes('~')) {
+        strictCheckPassed = false;
+        strictFailMessage = "Incorrect. This challenge requires a <b>General Sibling Combinator</b> (the <b>~</b> symbol).";
+    
+    } else if (type.includes("Attribute") && !userInput.includes('[')) {
         strictCheckPassed = false;
         strictFailMessage = "Incorrect. This challenge requires an <b>Attribute selector</b>. Your selector must include brackets (e.g., <b>[attribute=value]</b>).";
-    } else if (challengeDef.type.includes("Pseudo") && !userInput.includes(':')) {
+    
+    } else if (type.includes("Pseudo") && !userInput.includes(':')) {
         strictCheckPassed = false;
         strictFailMessage = "Incorrect. This challenge requires a <b>Pseudo-class selector</b>. Your selector must include a colon (e.g., <b>:checked</b>, <b>:nth-child(n)</b>, or <b>:not(...)</b>).";
     }
