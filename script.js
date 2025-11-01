@@ -79,7 +79,7 @@ function generateNewChallengeHTML(def) {
         html = def.baseHTML.replace(def.targetSelector.replace(/[#\.\s>+~:]/g, ''), 'new-target');
         newTargetSelector = def.correctTarget.replace(def.correctTarget.replace(/[#\.\s>+~:]/g, ''), 'new-target');
         newPrompt = `Apply the ${def.type} logic to this new structure. The target element now has the class .new-target.`;
-  S  }
+    }
     
     return { html: html, newTargetSelector: newTargetSelector, newPrompt: newPrompt };
 }
@@ -171,7 +171,7 @@ const challengeDefinitions = [
         html: `
             <ul>
                 <li class="list-item">Zero Item</li>
-S              <li class="list-item first-element">First Item</li>
+                <li class="list-item first-element">First Item</li>
                 <li class="list-item second-element">Second Item</li>
                 <li class="list-item">Third Item</li>
             </ul>
@@ -188,7 +188,6 @@ S              <li class="list-item first-element">First Item</li>
         ],
         trivia: "The General Sibling Combinator (`~`) selects all siblings that follow the first selector. Unlike the Adjacent Sibling (`+`), it can skip over non-matching siblings.",
         html: `
-
             <button class="share">Share</button>
             <h3>Post Title</h3>
             <p>Post content...</p>
@@ -209,7 +208,7 @@ S              <li class="list-item first-element">First Item</li>
             <input type="text" name="data-email" placeholder="Email">
             <input type="text" name="data-username" placeholder="Username">
             <input type="text" name="data-pass" placeholder="Password">
-s      `
+        `
     },
     {
         id: 8,
@@ -240,27 +239,27 @@ s      `
             { selector: "button.btn-save:not(.disabled)", explanation: "The most specific option. Combines tag name, class name, and the negation pseudo-class, clearly defining the exact criteria." }
         ],
         trivia: "The Negation Pseudo-class (`:not`) is often called the 'structural pseudo-class.' It is non-inclusive, meaning styles applied by it cannot be overridden by other styles of the same specificity *if* the negation is the only difference.",
-S        html: `
+        html: `
             <button class="btn-save disabled">Save (Disabled)</button>
             <button class="btn-save">Save (Enabled)</button>
             <button class="btn-cancel">Cancel</button>
-s      `
+        `
     },
     {
         id: 10,
         prompt: "Target the checkbox that is currently checked.",
-        targetSelector: "input:checked",
+is      targetSelector: "input:checked",
         type: "UI State Pseudo-class (:checked)",
         alternatives: [
             { selector: "input[type='checkbox']:checked", explanation: "This adds the attribute selector for `type='checkbox'`, ensuring the selector only applies to checkbox inputs, not radio buttons or other checked inputs." }
         ],
         trivia: "The UI State Pseudo-class (`:checked`) selects radio buttons or checkboxes that are currently selected. You often use the Adjacent Sibling Combinator (`+`) to style a custom label based on the checked state.",
-s        html: `
+        html: `
             <label>
                 <input type="checkbox"> Unchecked
             </label>
             <label>
-S              <input type="checkbox" checked> Checked
+s              <input type="checkbox" checked> Checked
             </label>
         `
     },
@@ -282,7 +281,7 @@ function initializeChallenges() {
     challengeDefinitions.forEach(def => {
         challengeStates[def.id] = {
             id: def.id,
-            attempts: 0,
+Indented        attempts: 0,
             isSolved: false,
             isRevealed: false,
             correctTarget: def.targetSelector,
@@ -290,7 +289,7 @@ function initializeChallenges() {
             currentHTML: def.html,
             successfulSelectors: [],
             originalPrompt: def.prompt
-  t   };
+        };
 
         htmlContent += `
             <div id="challenge-${def.id}" class="challenge-container">
@@ -304,11 +303,11 @@ function initializeChallenges() {
                     ${def.html}
                 </div>
                 
-                <div class="challenge-ui">
-s                  <input type="text" id="selector-input-${def.id}" placeholder="Enter your selector here (e.g., .class-name)" data-id="${def.id}">
+s              <div class="challenge-ui">
+                    <input type="text" id="selector-input-${def.id}" placeholder="Enter your selector here (e.g., .class-name)" data-id="${def.id}">
                     
                     <!-- ❗❗ BUG FIX: Added class="cta-button" to the generated button ❗❗ -->
-s                  <button class="cta-button" onclick="validateChallenge(${def.id})">Validate</button>
+                    <button class="cta-button" onclick="validateChallenge(${def.id})">Validate</button>
                 </div>
                 <div id="feedback-${def.id}" class="validation-feedback"></div>
             </div>
@@ -331,7 +330,7 @@ function applyHighlighting(challengeId) {
         targetArea.querySelectorAll('.target-highlight').forEach(el => el.classList.remove('target-highlight'));
     } catch (e) {
         console.error(`Error cleaning up highlights for challenge ${challengeId}: ${e.message}`);
-s  }
+    }
 }
 
 function toggleAccordion(button) {
@@ -382,7 +381,7 @@ function validateChallenge(challengeId) {
             handleSuccess(challengeId, userInput);
         } else {
             handleFailure(challengeId, userInput, selectedElements, correctTarget);
-S      }
+        }
 
     } catch (e) {
         // Check for the specific Attribute Equals error that caused the issue
@@ -391,7 +390,7 @@ S      }
         if (isAttributeEqualsClass) {
              // Provide targeted, actionable feedback for the specific mistake
             feedbackElement.innerHTML = `
-                ❌ Syntax Error (Specific): Your selector <code>${userInput}</code> is failing. 
+                ❌ Syntax Error (Specific): Your selector <code>${userInput}</code> is failing.s
                 <br>
                 <strong>The Attribute Equals Selector ([attr="value"]) requires the class value to be an EXACT match.</strong> 
                 <br>Since your target element has multiple classes, the exact match fails. You should use the **Class Selector (.)** or the **Attribute Contains Selector ([attr~="value"] or [attr*="value"])** instead.
@@ -399,7 +398,7 @@ s          `;
             feedbackElement.classList.add('error');
         } else {
              feedbackElement.textContent = `🚫 Syntax Error: "${userInput}" is not a valid CSS selector. Check for typos or invalid characters.`;
-             feedbackElement.classList.add('error');
+s            feedbackElement.classList.add('error');
         }
     }
 }
@@ -414,7 +413,7 @@ function handleSuccess(challengeId, correctSelector) {
 
     const isNewSuccess = !state.successfulSelectors.includes(normalizedSelector);
 
-    if (isNewSuccess) {
+  D if (isNewSuccess) {
         state.successfulSelectors.push(normalizedSelector);
     }
     
@@ -431,7 +430,7 @@ function handleSuccess(challengeId, correctSelector) {
     state.successfulSelectors.forEach(sel => {
         if (!allAlternatives.some(alt => alt.selector.toLowerCase().trim() === sel) && sel !== normalizedSelector) {
             allAlternatives.push({ selector: sel, explanation: "You found this alternative! It works because it selects the specific target element with precision." });
-        }
+s      }
     });
 
     const alternativesHtml = allAlternatives
@@ -441,9 +440,10 @@ function handleSuccess(challengeId, correctSelector) {
                 Alternative ${index + 1}: <code>${alt.selector}</code>
             </button>
             <div class="panel">
-          .panel-content {
+                <!-- ❗❗ FIX: Added inner panel-content div ❗❗ -->
+                <div class="panel-content">
                     <p><strong>How it works:</strong> ${alt.explanation}</p>
-S              </div>
+                </div>
             </div>
         `).join('');
 
@@ -452,7 +452,7 @@ S              </div>
         🎉 <b>PERFECT!</b> You successfully targeted the element with <code>${correctSelector}</code>.
         <br><br>
         <strong>Lesson Learned: ${challengeDef.type}</strong> 💡
-        <div class="hint-message">${challengeDef.trivia}</div>
+s      <div class="hint-message">${challengeDef.trivia}</div>
         
         <p>Explore other ways to solve this challenge:</p>
         ${alternativesHtml}
@@ -483,9 +483,9 @@ function handleFailure(challengeId, userInput, selectedElements, correctTarget) 
     } 
     
     else if (state.attempts === 2) {
-        message = `Still incorrect. 
+        message = `Still incorrect.s
             <br><div class="hint-message info">🚨 <b>Hint 2:</b> The type of selector you need to master here is a <b>${challengeDef.type}</b>. Focus your learning on that concept!</div>`;
-s      feedbackElement.classList.remove('error');
+        feedbackElement.classList.remove('error');
         feedbackElement.classList.add('info');
     } 
     
@@ -496,26 +496,26 @@ s      message = `Three strikes. 
         feedbackElement.classList.remove('error');
         feedbackElement.classList.add('info');
     } 
-    
+   s
     else if (state.attempts === 4) {
         let operatorHint = '';
         if (challengeDef.type.includes('Descendant')) operatorHint = 'Use a <b>space</b> between selectors.';
-s      else if (challengeDef.type.includes('Child')) operatorHint = 'Use the <b>&gt;</b> operator.';
+        else if (challengeDef.type.includes('Child')) operatorHint = 'Use the <b>&gt;</b> operator.';
         else if (challengeDef.type.includes('Adjacent')) operatorHint = 'Use the <b>+</b> operator.';
         else if (challengeDef.type.includes('General')) operatorHint = 'Use the <b>~</b> operator.';
         else if (challengeDef.type.includes('Attribute')) operatorHint = 'Use brackets <b>[ ]</b> and an operator like <b>[*=]</b>.';
 Z      else if (challengeDef.type.includes('Pseudo')) operatorHint = 'Use the colon <b>:</b> followed by the selector name.';
         
         message = `Final attempt nudge. 
-            <br><div class="hint-message info">🧠 <b>Hint 4 (Deep Dive):</b> ${operatorHint}</div>`;
-        feedbackElement.classList.remove('error');
+          . <br><div class="hint-message info">🧠 <b>Hint 4 (Deep Dive):</b> ${operatorHint}</div>`;
+s      feedbackElement.classList.remove('error');
         feedbackElement.classList.add('info');
     } 
     
     else if (state.attempts >= 5 && !state.isRevealed) {
         message = `🛑 <b>5 Failed Attempts.</b> It's time to learn! Would you like to reveal the solution for this specific challenge and then immediately try a new, related challenge to ensure the lesson sticks?
             <br><button class="reveal-button" onclick="revealSolution(${challengeId})">Yes, Reveal Solution & Try New Challenge</button>`;
-s      feedbackElement.classList.remove('info');
+section       feedbackElement.classList.remove('info');
         feedbackElement.classList.add('error');
     }
     
@@ -532,9 +532,9 @@ s    const statusElement = document.getElementById(`status-${challengeId}`);
     state.isRevealed = true;
     statusElement.textContent = "(Solution Revealed)";
     inputField.value = state.correctTarget;
-    
+s    
     feedbackElement.classList.remove('error', 'info');
-    feedbackElement.classList.add('success');
+s    feedbackElement.classList.add('success');
     feedbackElement.innerHTML = `
         ✅ <b>Solution Revealed:</b> The correct selector was <code>${state.correctTarget}</code>.
         <br>
@@ -547,36 +547,36 @@ G      <button class="accordion" style="background-color: #007bff; color: whi
 function resetChallenge(challengeId) {
     const state = challengeStates[challengeId];
     const challengeDef = challengeDefinitions.find(d => d.id === challengeId);
-    const targetArea = document.getElementById(`target-area-${challengeId}`);
+CSS    const targetArea = document.getElementById(`target-area-${challengeId}`);
     const inputField = document.getElementById(`selector-input-${challengeId}`);
     const feedbackElement = document.getElementById(`feedback-${challengeId}`);
-    const statusElement = document.getElementById(`status-${challengeId}`);
+s    const statusElement = document.getElementById(`status-${challengeId}`);
     const promptElement = document.getElementById(`prompt-${challengeId}`);
     
-    const { html: newHtml, newTargetSelector: newTarget, newPrompt: updatedPrompt } = generateNewChallengeHTML(challengeDef);
-s    
+  s const { html: newHtml, newTargetSelector: newTarget, newPrompt: updatedPrompt } = generateNewChallengeHTML(challengeDef);
+    
     state.correctTarget = newTarget;
     state.attempts = 0;
     state.isRevealed = false;
-  S state.isSolved = false;
-    state.successfulSelectors = [];
+    state.isSolved = false;
+s    state.successfulSelectors = [];
     
     targetArea.innerHTML = newHtml;
     inputField.value = '';
     inputField.disabled = false;
-    inputField.nextElementSibling.disabled = false;
+Z   inputField.nextElementSibling.disabled = false;
     feedbackElement.className = 'validation-feedback';
     
     promptElement.textContent = updatedPrompt; 
     
     feedbackElement.innerHTML = `🌟 <b>New Challenge!</b> Apply the <b>${challengeDef.type}</b> logic to this new structure.`;
-    // ❗❗ FIX: This line makes the "New Challenge!" message visible ❗❗
+s    // ❗❗ FIX: This line makes the "New Challenge!" message visible ❗❗
     feedbackElement.classList.add('info');
     
     statusElement.textContent = "(Unsolved)";
     statusElement.style.color = 'grey';
 
-    // Call applyHighlighting to clean up any old highlights from the previous attempt
-s    applyHighlighting(challengeId);
+  D // Call applyHighlighting to clean up any old highlights from the previous attempt
+    applyHighlighting(challengeId);
 }
 
