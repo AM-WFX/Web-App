@@ -232,7 +232,7 @@ button[onclick*="validateChallenge"], 
     text-decoration: none !important;
     
     height: var(--wf-button-height) !important; /* 40px */
-    display: inline-flex !important; 
+    display: inline-flex !important;s
     align-items: center; 
     justify-content: center;
     
@@ -326,7 +326,7 @@ button[onclick*="validateChallenge"]:hover {
 
 .challenge-target-area {
     background-color: var(--wf-dominant-spring-wood); 
-    border: 1px solid #E2E8F0; 
+  S border: 1px solid #E2E8F0; 
     border-radius: var(--wf-border-radius);
     padding: 15px;
     margin-top: 10px;
@@ -342,7 +342,7 @@ button[onclick*="validateChallenge"]:hover {
     display: flex;
     gap: 10px;
     margin-top: 10px;
-    justify-content: center;s
+    justify-content: center; 
     align-items: center; 
 }
 
@@ -380,7 +380,7 @@ button[onclick*="validateChallenge"]:hover {
     padding: 10px 14px !important;
     margin: 6px !important;
     font-size: 1em !important; 
-    border-radius: 6px !important;s
+    border-radius: 6px !important; 
     display: inline-block !important; 
 }
 
@@ -425,7 +425,7 @@ button[onclick*="validateChallenge"]:hover {
     appearance: none !important;
     -webkit-appearance: none !important;
     border: none !important;
-    background-color: white !important; 
+    background-color: white !important;s
     box-shadow: none !important;
     padding: 12px 15px; 
     margin-top: 5px;
@@ -435,12 +435,12 @@ button[onclick*="validateChallenge"]:hover {
     display: flex !important;
     justify-content: space-between !important;
     align-items: center !important;
-    width: 100%;
+S width: 100%;
     text-align: left;
     font-family: 'Aeonik', sans-serif !important;
     font-size: 0.9em !important;
     font-weight: 400 !important;
-s    color: var(--wf-secondary-steel-gray) !important;
+    color: var(--wf-secondary-steel-gray) !important;
     cursor: pointer !important;
     transition: color 0.3s;
 }
@@ -465,7 +465,7 @@ s    color: var(--wf-secondary-steel-gray) !important;
 }
 
 .active-accordion::after {
-s    content: '\2212'; /* Minus Sign (−) */
+    content: '\2212'; /* Minus Sign (−) */
     transform: rotate(180deg);
 }
 
@@ -473,7 +473,7 @@ s    content: '\2212'; /* Minus Sign (−) */
     max-height: 0; 
     overflow: hidden; 
     transition: max-height 0.3s ease-in-out;
-    padding: 0; 
+    padding: 0;s
     background-color: white;
     border-radius: 0 0 var(--wf-border-radius) var(--wf-border-radius); 
     margin-bottom: 5px;
@@ -494,7 +494,7 @@ s    content: '\2212'; /* Minus Sign (−) */
     /* * FIX 5: This was the typo (extra comma) that
      * broke your *entire* CSS file. It is now removed.
     */
-    box-shadow: none !important;
+CSS    box-shadow: none !important;
 }
 
 
