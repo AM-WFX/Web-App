@@ -288,7 +288,8 @@ function initializeChallenges() {
             baseHTML: def.html,
             currentHTML: def.html,
             successfulSelectors: [],
-            originalPrompt: def.prompt
+            originalPrompt: def.prompt,
+            type: def.type // Store the type for validation
         };
 
         htmlContent += `
@@ -316,8 +317,6 @@ function initializeChallenges() {
 
     // Replace the container's content with the dynamically generated challenges
     container.innerHTML = htmlContent;
-    // No longer need to apply highlighting, as it's removed.
-    // challengeDefinitions.forEach(def => applyHighlighting(def.id));
 }
 
 function applyHighlighting(challengeId) {
@@ -348,7 +347,9 @@ function validateChallenge(challengeId) {
     const inputField = document.getElementById(`selector-input-${challengeId}`);
     const feedbackElement = document.getElementById(`feedback-${challengeId}`);
     const userInput = inputField.value.trim();
-    const challengeDef = challengeDefinitions.find(d => d.id === challengeId); // Get challenge definition
+    
+    // Use the type stored in the state
+    const challengeType = state.type; 
 
     feedbackElement.className = 'validation-feedback';
 
@@ -362,37 +363,36 @@ function validateChallenge(challengeId) {
     // Check if the user is using the *correct type* of selector for the lesson.
     let strictCheckPassed = true;
     let strictFailMessage = "";
-    const type = challengeDef.type; // Get the specific type from our definitions
 
-    if (type === "ID Selector" && !userInput.includes('#') && !userInput.includes('[id')) {
+    if (challengeType === "ID Selector" && !userInput.includes('#') && !userInput.includes('[id')) {
         strictCheckPassed = false;
         strictFailMessage = "Incorrect. For this challenge, you must use an <b>ID selector</b> (which starts with a <b>#</b>) or an <b>Attribute selector</b> that targets the ID (e.g., <b>[id=...]</b>).";
     
-    } else if (type === "Class Selector" && !userInput.includes('.') && !userInput.includes('[class')) {
+    } else if (challengeType === "Class Selector" && !userInput.includes('.') && !userInput.includes('[class')) {
         strictCheckPassed = false;
         strictFailMessage = "Incorrect. For this challenge, you must use a <b>Class selector</b> (which starts with a <b>.</b>) or an <b>Attribute selector</b> that targets the class (e.g., <b>[class*=\"...\"]</b>).";
     
-    } else if (type === "Descendant Combinator" && !userInput.includes(' ')) {
+    } else if (challengeType === "Descendant Combinator" && !userInput.includes(' ')) {
         strictCheckPassed = false;
         strictFailMessage = "Incorrect. This challenge requires a <b>Descendant Combinator</b> (a <b>space</b> between selectors).";
     
-    } else if (type === "Child Combinator" && !userInput.includes('>')) {
+    } else if (challengeType === "Child Combinator" && !userInput.includes('>')) {
         strictCheckPassed = false;
         strictFailMessage = "Incorrect. This challenge requires a <b>Child Combinator</b> (the <b>&gt;</b> symbol).";
     
-    } else if (type === "Adjacent Sibling Combinator" && !userInput.includes('+')) {
+    } else if (challengeType === "Adjacent Sibling Combinator" && !userInput.includes('+')) {
         strictCheckPassed = false;
         strictFailMessage = "Incorrect. This challenge requires an <b>Adjacent Sibling Combinator</b> (the <b>+</b> symbol).";
     
-    } else if (type === "General Sibling Combinator" && !userInput.includes('~')) {
+    } else if (challengeType === "General Sibling Combinator" && !userInput.includes('~')) {
         strictCheckPassed = false;
         strictFailMessage = "Incorrect. This challenge requires a <b>General Sibling Combinator</b> (the <b>~</b> symbol).";
     
-    } else if (type.includes("Attribute") && !userInput.includes('[')) {
+    } else if (challengeType.includes("Attribute") && !userInput.includes('[')) {
         strictCheckPassed = false;
         strictFailMessage = "Incorrect. This challenge requires an <b>Attribute selector</b>. Your selector must include brackets (e.g., <b>[attribute=value]</b>).";
     
-    } else if (type.includes("Pseudo") && !userInput.includes(':')) {
+    } else if (challengeType.includes("Pseudo") && !userInput.includes(':')) {
         strictCheckPassed = false;
         strictFailMessage = "Incorrect. This challenge requires a <b>Pseudo-class selector</b>. Your selector must include a colon (e.g., <b>:checked</b>, <b>:nth-child(n)</b>, or <b>:not(...)</b>).";
     }
@@ -414,8 +414,6 @@ function validateChallenge(challengeId) {
             feedbackElement.classList.add('error');
             return;
         }
-        
-        // --- Highlighting logic is removed ---
         
         // Query the DOM using the user's selector
         const selectedElements = targetArea.querySelectorAll(userInput);
@@ -484,7 +482,6 @@ function handleSuccess(challengeId, correctSelector) {
                 Alternative ${index + 1}: <code>${alt.selector}</code>
             </button>
             <div class="panel">
-                <!-- ❗❗ FIX: Added inner panel-content div ❗❗ -->
                 <div class="panel-content">
                     <p><strong>How it works:</strong> ${alt.explanation}</p>
                 </div>
@@ -508,7 +505,7 @@ function handleSuccess(challengeId, correctSelector) {
 function handleFailure(challengeId, userInput, selectedElements, correctTarget) {
     const state = challengeStates[challengeId];
     const feedbackElement = document.getElementById(`feedback-${challengeId}`);
-    const challengeDef = challengeDefinitions.find(d => d.id === challengeId);
+    const challengeType = state.type; // Use state's type
     state.attempts++;
 
     let message = '';
@@ -521,20 +518,20 @@ function handleFailure(challengeId, userInput, selectedElements, correctTarget) 
         } else if (Array.from(selectedElements).includes(correctTarget)) {
             nudge = `Close! Your selector selected <b>${selectedElements.length} elements</b>, including the target. Try to be more specific to select *only* the target.`;
         } else {
-            nudge = `Incorrect. Your selector selected <b>${selectedElements.length} element(s)</b>, but the target was not among them. Check the attributes of the highlighted element!`;
+            nudge = `Incorrect. Your selector selected <b>${selectedElements.length} element(s)</b>, but the target was not among them.`;
         }
         message = `${nudge}`;
     } 
     
     else if (state.attempts === 2) {
         message = `Still incorrect. 
-            <br><div class="hint-message info">🚨 <b>Hint 2:</b> The type of selector you need to master here is a <b>${challengeDef.type}</b>. Focus your learning on that concept!</div>`;
+            <br><div class="hint-message info">🚨 <b>Hint 2:</b> The type of selector you need to master here is a <b>${challengeType}</b>. Focus your learning on that concept!</div>`;
         feedbackElement.classList.remove('error');
         feedbackElement.classList.add('info');
     } 
     
     else if (state.attempts === 3) {
-        const hintType = challengeDef.type.includes('Combinator') ? 'Combinator' : challengeDef.type.includes('Pseudo') ? 'Pseudo-class' : 'Attribute Selector';
+        const hintType = challengeType.includes('Combinator') ? 'Combinator' : challengeType.includes('Pseudo') ? 'Pseudo-class' : 'Attribute Selector';
         message = `Three strikes. 
             <br><div class="hint-message info">💡 <b>Hint 3:</b> This challenge requires a <b>${hintType}</b>. Look for relationships (parent/sibling) or a specific state (checked/disabled) in the HTML structure.</div>`;
         feedbackElement.classList.remove('error');
@@ -543,12 +540,15 @@ function handleFailure(challengeId, userInput, selectedElements, correctTarget) 
     
     else if (state.attempts === 4) {
         let operatorHint = '';
-        if (challengeDef.type.includes('Descendant')) operatorHint = 'Use a <b>space</b> between selectors.';
-        else if (challengeDef.type.includes('Child')) operatorHint = 'Use the <b>&gt;</b> operator.';
-        else if (challengeDef.type.includes('Adjacent')) operatorHint = 'Use the <b>+</b> operator.';
-        else if (challengeDef.type.includes('General')) operatorHint = 'Use the <b>~</b> operator.';
-        else if (challengeDef.type.includes('Attribute')) operatorHint = 'Use brackets <b>[ ]</b> and an operator like <b>[*=]</b>.';
-        else if (challengeDef.type.includes('Pseudo')) operatorHint = 'Use the colon <b>:</b> followed by the selector name.';
+        // 2. UPDATED: Add specific hints for ID and Class selectors
+        if (challengeType.includes('ID Selector')) operatorHint = 'Use the <b>#</b> symbol followed by the ID name, or an attribute selector <b>[id=...]</b>.';
+        else if (challengeType.includes('Class Selector')) operatorHint = 'Use the <b>.</b> symbol followed by the class name, or an attribute selector <b>[class*="..."]</b>.';
+        else if (challengeType.includes('Descendant')) operatorHint = 'Use a <b>space</b> between selectors.';
+        else if (challengeType.includes('Child')) operatorHint = 'Use the <b>&gt;</b> operator.';
+        else if (challengeType.includes('Adjacent')) operatorHint = 'Use the <b>+</b> operator.';
+        else if (challengeType.includes('General')) operatorHint = 'Use the <b>~</b> operator.';
+        else if (challengeType.includes('Attribute')) operatorHint = 'Use brackets <b>[ ]</b> and an operator like <b>[*=]</b>.';
+        else if (challengeType.includes('Pseudo')) operatorHint = 'Use the colon <b>:</b> followed by the selector name.';
         
         message = `Final attempt nudge. 
             <br><div class="hint-message info">🧠 <b>Hint 4 (Deep Dive):</b> ${operatorHint}</div>`;
@@ -583,9 +583,8 @@ function revealSolution(challengeId) {
         ✅ <b>Solution Revealed:</b> The correct selector was <code>${state.correctTarget}</code>.
         <br>
         <p style="margin-top: 10px;">Please study the solution, then click the button below to solidify your understanding with a <b>fresh challenge</b> of the same selector type.</p>
-        <button class="accordion" style="background-color: #007bff; color: white; margin-right: 5px;" onclick="resetChallenge(${challengeId})">🔄 Try New ${def.type} Challenge</button>
+        <button class="accordion" style="background-color: #007bff; color: white; margin-right: 5px;" onclick="resetChallenge(${challengeId})">🔄 Try New ${challengeDef.type} Challenge</button>
     `;
-    // Highlighting removal no longer needed
 }
 
 function resetChallenge(challengeId) {
