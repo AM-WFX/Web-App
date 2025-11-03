@@ -525,6 +525,51 @@ button[onclick*="validateChallenge"]:hover {
 
 
 /* ---------------------------------------------------- */
+/* --- ➕ PADDING INCREASE FIXES (USER REQUEST) --- */
+/* ---------------------------------------------------- */
+
+/* 1. Increase vertical spacing and padding for all headers (H1, H2, H3) */
+h1, h2, h3 {
+    margin-top: 1.5em;    /* More space above headers */
+    margin-bottom: 0.5em; /* More space below headers */
+    padding-left: 5px;    /* Subtle left padding for visual distinction */
+}
+
+/* 2. Increase padding for all paragraphs (p) */
+p {
+    padding: 5px 0; /* Add top/bottom padding to paragraphs */
+    margin-bottom: 1em; /* Ensure good vertical separation */
+}
+
+/* 3. Target the entire #prompt container and increase padding for ALL elements inside it */
+#prompt, #prompt * {
+    /* Adding padding to the container itself */
+    padding: 20px !important; 
+    /* Adding extra margin around all elements inside (for separation) */
+    margin: 10px !important; 
+}
+
+/* 4. Overrides to maintain specific component layouts (prevents excessive padding) */
+
+/* Re-adjust text elements inside the challenge-target-area */
+.challenge-target-area p,
+.challenge-target-area button,
+.challenge-target-area input,
+.challenge-target-area a,
+.challenge-target-area span {
+    /* Use original tight padding and margin for card-like elements */
+    padding: 10px 14px !important; 
+    margin: 6px !important;
+}
+
+/* Re-adjust feedback box content to prevent excessive padding from the 'p' rule */
+.validation-feedback p {
+    padding: 0 !important; 
+    margin-bottom: 10px !important; 
+}
+
+
+/* ---------------------------------------------------- */
 /* --- 📱 MOBILE RESPONSIVE FIXES --- */
 /* ---------------------------------------------------- */
 
