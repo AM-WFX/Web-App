@@ -549,7 +549,24 @@ p {
     margin: 10px !important; 
 }
 
-/* 4. Overrides to maintain specific component layouts (prevents excessive padding) */
+/* 4. Challenge-specific element styling (based on HTML IDs provided) */
+#challenge-title-1 {
+    font-size: 1.4em;
+    color: var(--wf-secondary-steel-gray);
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+#status-1 {
+    /* Use brand accent for success/progress status */
+    color: var(--wf-accent-orange); 
+    font-weight: 700;
+    font-size: 0.9em;
+    display: inline-block;
+    padding: 2px 0;
+}
+
+/* 5. Overrides to maintain specific component layouts (prevents excessive padding) */
 
 /* Re-adjust text elements inside the challenge-target-area */
 .challenge-target-area p,
