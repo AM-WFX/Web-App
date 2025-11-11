@@ -525,46 +525,55 @@ button[onclick*="validateChallenge"]:hover {
 
 
 /* ---------------------------------------------------- */
-/* --- ➕ PADDING INCREASE FIXES (USER REQUEST) --- */
+/* --- ➕ PADDING/ALIGNMENT FIXES (USER REQUEST) --- */
 /* ---------------------------------------------------- */
 
-/* 1. Increase vertical spacing and padding for all headers (H1, H2, H3) */
+/* 1. Reset general header padding to fix the main issue */
 h1, h2, h3 {
-    margin-top: 1.5em;    /* More space above headers */
-    margin-bottom: 0.5em; /* More space below headers */
-    padding-left: 5px;    /* Subtle left padding for visual distinction */
+    color: var(--wf-secondary-steel-gray);
+    font-weight: 700;
+    margin-top: 1.5em;    
+    margin-bottom: 0.5em; 
+    padding-left: 0;    /* <-- REMOVED padding-left: 5px to fix alignment */
 }
 
 /* 2. Increase padding for all paragraphs (p) */
 p {
-    padding: 5px 0; /* Add top/bottom padding to paragraphs */
-    margin-bottom: 1em; /* Ensure good vertical separation */
+    padding: 5px 0; 
+    margin-bottom: 1em; 
 }
 
 /* 3. Target the entire #prompt container and increase padding for ALL elements inside it */
 #prompt, #prompt * {
-    /* Adding padding to the container itself */
     padding: 20px !important; 
-    /* Adding extra margin around all elements inside (for separation) */
     margin: 10px !important; 
 }
 
-/* 4. Challenge-specific element styling (based on HTML IDs provided) */
-#challenge-title-1 {
+/* 4. Challenge-specific element styling (Ensures h3 and p are aligned) */
+/* Targets all challenge titles (h3) */
+h3[id*="challenge-title-"] {
     font-size: 1.4em;
-    color: var(--wf-secondary-steel-gray);
     font-weight: 700;
     margin-bottom: 5px;
+    padding-left: 0 !important; /* Explicitly ensure no extra padding */
 }
 
-#status-1 {
-    /* Use brand accent for success/progress status */
+/* Targets all status spans */
+span[id*="status-"] {
     color: var(--wf-accent-orange); 
     font-weight: 700;
     font-size: 0.9em;
-    display: inline-block;
+    display: block; /* Change to block to ensure it starts on a new line and aligns */
     padding: 2px 0;
+    margin-left: 0 !important;
 }
+
+/* Targets all prompt paragraphs (p) */
+p[id*="prompt-"] {
+    padding: 5px 0 !important;
+    margin-left: 0 !important;
+}
+
 
 /* 5. Overrides to maintain specific component layouts (prevents excessive padding) */
 
