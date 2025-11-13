@@ -332,27 +332,26 @@ button[onclick*="validateChallenge"]:hover {
     text-align: left;
 }
 
+/* ❗ --- THIS RULE IS NOW CORRECT --- ❗ */
 /* This rule forces block elements to BE block elements */
-.target-element[style*="block"],
-.target-element.card,
-.target-element.footer,
-.target-element[id*="settings-modal"],
-.target-element p,
-.target-element h2,
-.target-element h3,
-.target-element li {
+p.target-element,
+h2.target-element,
+h3.target-element,
+li.target-element {
     display: block !important;
     width: auto; /* Let it be natural width */
 }
 
-/* ❗ --- THIS IS THE NEW RULE THAT FIXES CHALLENGE 6 --- ❗ */
+/* ❗ --- THIS RULE IS NOW CORRECT --- ❗ */
 /* This rule makes all *direct children* of a complex box a full-width block */
+/* This is what fixes Challenge 6's uniformity. */
 .challenge-target-area.is-complex > .target-element {
     display: block !important;
     width: auto; /* Let it be natural width */
 }
 
 /* And make sure invisible wrappers are invisible */
+/* ❗ --- THIS RULE IS NOW CORRECT --- ❗ */
 .challenge-target-area div,
 .challenge-target-area ul,
 .challenge-target-area ol {
@@ -361,6 +360,8 @@ button[onclick*="validateChallenge"]:hover {
     padding: 0 !important;
     margin: 0 !important;
     width: 100%;
+    /* We also add 'display: block' to be certain */
+    display: block !important; 
 }
 
 
@@ -504,7 +505,6 @@ button[onclick*="validateChallenge"]:hover {
 /* ---------------------------------------------------- */
 /* --- ➕ PADDING/ALIGNMENT FIXES (USER REQUEST) --- */
 /* ---------------------------------------------------- */
-/* (This section is unchanged and correct) */
 h1, h2, h3 {
     margin-top: 1.5em;    
     margin-bottom: 0.5em; 
@@ -549,7 +549,6 @@ p[id*="prompt-"] {
 /* ---------------------------------------------------- */
 /* --- 📱 MOBILE RESPONSIVE FIXES --- */
 /* ---------------------------------------------------- */
-/* (This section is unchanged and correct) */
 @media (max-width: 768px) {
     .navbar {
         flex-direction: column;
