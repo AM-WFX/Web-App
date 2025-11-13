@@ -7,9 +7,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- VANILLA JAVASCRIPT CODE (CSS Selector Lab) ---
     // This checks if the #all-challenges div exists on the current page.
-    // It will only run on css-selectors.html.
     if (document.getElementById('all-challenges')) {
         initializeChallenges();
+        
+        // ❗ --- NEW FUNCTION --- ❗
+        // This runs AFTER the HTML is built to apply our styles.
+        applyChallengeStyling();
     }
 });
 
@@ -91,10 +94,11 @@ const challengeDefinitions = [
         prompt: "Target the Primary Login Button using its unique ID.",
         targetSelector: "#login-primary",
         type: "ID Selector",
+        isComplex: false, // <-- NEW FLAG
         alternatives: [
-            { selector: "button#login-primary", explanation: "This uses the tag name and the ID. Since IDs are already unique, adding the tag name is redundant but valid. It increases specificity unnecessarily, which is often avoided in production." }
+            { selector: "button#login-primary", explanation: "This uses the tag name and the ID. Since IDs are already unique, adding the tag name is redundant but valid." }
         ],
-        trivia: "The ID selector is the most powerful in terms of specificity (100 points). It should be used sparingly for major, unique page elements.",
+        trivia: "The ID selector is the most powerful in terms of specificity (100 points).",
         html: `
             <button id="login-primary" class="btn btn-primary">Primary Login Button</button>
             <button id="login-secondary" class="btn btn-secondary">Secondary Button</button>
@@ -105,11 +109,12 @@ const challengeDefinitions = [
         prompt: "Target the item marked Urgent using its class.",
         targetSelector: ".task-urgent",
         type: "Class Selector",
+        isComplex: true, // <-- NEW FLAG (<ul> wrapper)
         alternatives: [
-            { selector: "li.task-urgent", explanation: "This is a great technique: combining the tag name (li) with the class. It increases specificity slightly and clearly scopes the selection to only list items, improving readability." },
-            { selector: ".task-urgent.list-item", explanation: "This chains two class selectors together. This is useful if you want to ensure an element has *both* classes. It also increases specificity (20 points) which can be helpful if you need to override other styles." }
+            { selector: "li.task-urgent", explanation: "This is a great technique: combining the tag name (li) with the class." },
+            { selector: ".task-urgent.list-item", explanation: "This chains two class selectors together, ensuring an element has *both* classes." }
         ],
-        trivia: "Class selectors contribute 10 points to specificity. You can chain multiple classes without a space, like `.classA.classB`.",
+        trivia: "Class selectors contribute 10 points to specificity. You can chain multiple classes, like `.classA.classB`.",
         html: `
             <ul>
                 <li class="list-item task-default">Normal Item</li>
@@ -123,11 +128,11 @@ const challengeDefinitions = [
         prompt: "Target the Save button that is contained *anywhere* inside the #settings-modal.",
         targetSelector: "#settings-modal .btn-save",
         type: "Descendant Combinator",
+        isComplex: true, // <-- NEW FLAG (nested divs)
         alternatives: [
-            { selector: "#settings-modal button.btn-save", explanation: "This is highly specific. It combines the ID of the container, the tag name, and the class name. This clearly states that the selector should target a button with the class `.btn-save` inside the ID `#settings-modal`." },
-            { selector: "div#settings-modal button.btn-save", explanation: "This is the most explicit form, using the tag name for the container (div) as well as its ID. It makes the selector very rigid but ensures zero ambiguity." }
+            { selector: "#settings-modal button.btn-save", explanation: "This is highly specific. It combines the ID of the container, the tag name, and the class name." },
         ],
-        trivia: "A single space is the Descendant Combinator. It selects elements nested at *any* depth, making it the most flexible but potentially the least performant of the combinators.",
+        trivia: "A single space is the Descendant Combinator. It selects elements nested at *any* depth.",
         html: `
             <div id="settings-modal" style="padding: 10px; border: 1px solid #ccc;">
                 <button class="btn-cancel">Cancel</button>
@@ -142,11 +147,12 @@ const challengeDefinitions = [
         prompt: "Target the Title text that is a direct child of the .card-header.",
         targetSelector: ".card-header > h2",
         type: "Child Combinator",
+        isComplex: true, // <-- NEW FLAG
         alternatives: [
-            { selector: ".card-header>h2", explanation: "This is identical to the primary answer; whitespace around the '>' operator is optional and doesn't affect selection, though many prefer spaces for readability." },
-            { selector: ".card > .card-header > h2", explanation: "This chains multiple Child Combinators, ensuring that the selection only occurs if `.card-header` is a direct child of `.card` AND `h2` is a direct child of `.card-header`." }
+            { selector: ".card-header>h2", explanation: "Whitespace around the '>' operator is optional." },
+            { selector: ".card > .card-header > h2", explanation: "This chains multiple Child Combinators, ensuring a rigid structure." }
         ],
-        trivia: "The Child Combinator (`>`) ensures the relationship is direct (one level deep). This makes the CSS rule more robust against future changes in nested markup.",
+        trivia: "The Child Combinator (`>`) ensures the relationship is direct (one level deep).",
         html: `
             <div class="card" style="border: 1px solid #ccc; padding: 10px;">
                 <div class="card-header">
@@ -164,10 +170,11 @@ const challengeDefinitions = [
         prompt: "Target the Second Item that immediately follows the element with the class .first-element.",
         targetSelector: ".first-element + li",
         type: "Adjacent Sibling Combinator",
+        isComplex: true, // <-- NEW FLAG (<ul> wrapper)
         alternatives: [
-            { selector: "li.first-element + li.list-item", explanation: "A highly specific version. It requires that both the preceding element and the target element are list items (li) and have their respective classes, ensuring precision." }
+            { selector: "li.first-element + li.list-item", explanation: "A highly specific version that ensures both elements are list items." }
         ],
-        trivia: "The Adjacent Sibling Combinator (`+`) only selects the *one* element that immediately follows the first selector. It's great for applying spacing after a specific element.",
+        trivia: "The Adjacent Sibling Combinator (`+`) only selects the *one* element that immediately follows.",
         html: `
             <ul>
                 <li class="list-item">Zero Item</li>
@@ -182,12 +189,12 @@ const challengeDefinitions = [
         prompt: "Target the Comments button given in the area below, which appears somewhere after the h3 element.",
         targetSelector: "h3 ~ button.comments",
         type: "General Sibling Combinator",
+        isComplex: true, // <-- NEW FLAG
         alternatives: [
-            { selector: "h3 ~ .comments", explanation: "Less specific than the one provided. It selects any element with the class `.comments` that follows an `h3` in the same parent. This is correct but risks selecting a non-button element." },
-            { selector: "button.like ~ button.comments", explanation: "This targets the Comments button based on a different preceding sibling, the Like button. It demonstrates the flexibility of the General Sibling Combinator." }
+            { selector: "h3 ~ .comments", explanation: "Less specific. This is correct but risks selecting a non-button element." },
+            { selector: "button.like ~ button.comments", explanation: "This targets the Comments button based on the Like button. Also correct!" }
         ],
-        trivia: "The General Sibling Combinator (`~`) selects all siblings that follow the first selector. Unlike the Adjacent Sibling (`+`), it can skip over non-matching siblings.",
-        // MODIFIED HTML: Added a wrapper DIV for the buttons to control row flow
+        trivia: "The General Sibling Combinator (`~`) selects all siblings that follow, not just the immediate one.",
         html: `
             <button class="share">Share</button>
             <h3>Post Title</h3>
@@ -203,10 +210,11 @@ const challengeDefinitions = [
         prompt: "Target the input field whose name attribute contains the word 'user'.",
         targetSelector: "input[name*='user']",
         type: "Attribute Selector (Substring Match)",
+        isComplex: false, // <-- NEW FLAG (simple)
         alternatives: [
-            { selector: "input[name~='data-username']", explanation: "Uses the tilde operator (`~=`), which matches a whole word in a space-separated list of values. This would work if the name value was 'data-username other', but fails on 'data-username' as one contiguous string." }
+            { selector: "input[name~='data-username']", explanation: "Uses the tilde operator (`~=`), which matches a whole word in a space-separated list. This would fail." }
         ],
-        trivia: "The `*=` operator is the 'contains' attribute selector, which looks for the specified substring anywhere within the attribute's value. This is powerful when dealing with dynamic or auto-generated attributes.",
+        trivia: "The `*=` operator is the 'contains' attribute selector, looking for the substring anywhere in the value.",
         html: `
             <input type="text" name="data-email" placeholder="Email">
             <input type="text" name="data-username" placeholder="Username">
@@ -218,11 +226,12 @@ const challengeDefinitions = [
         prompt: "Target the third item in the list, regardless of its tag name, using :nth-child.",
         targetSelector: "li:nth-child(3)",
         type: "Structural Pseudo-class (:nth-child)",
+        isComplex: true, // <-- NEW FLAG (<ol> wrapper)
         alternatives: [
-            { selector: "ol li:nth-child(3)", explanation: "More specific by scoping the selection to `li` elements inside an ordered list (`ol`). This is generally safer than using just the pseudo-class alone." },
-            { selector: "li:nth-of-type(3)", explanation: "This selects the third item *of its type* (the third `li` element) among its siblings. It works here because all siblings are list items." }
+            { selector: "ol li:nth-child(3)", explanation: "More specific by scoping the selection to `li` elements inside an ordered list (`ol`)." },
+            { selector: "li:nth-of-type(3)", explanation: "This selects the third `li` element. It works here, but is a different selector." }
         ],
-        trivia: "`:nth-child(n)` counts elements based on their position among *all* siblings, regardless of tag name. It is commonly used for things like zebra-striping rows in a table (`:nth-child(odd)`).",
+        trivia: "`:nth-child(n)` counts elements based on their position among *all* siblings, regardless of tag name.",
         html: `
             <ol>
                 <li>First Item</li>
@@ -237,11 +246,12 @@ const challengeDefinitions = [
         prompt: "Target the Save button which does not have the class .disabled.",
         targetSelector: "button:not(.disabled)",
         type: "Negation Pseudo-class (:not)",
+        isComplex: false, // <-- NEW FLAG (simple)
         alternatives: [
-            { selector: ".btn-save:not(.disabled)", explanation: "This targets any element with the class `.btn-save` that is not disabled. This is less specific but often clearer when writing component-based CSS." },
-            { selector: "button.btn-save:not(.disabled)", explanation: "The most specific option. Combines tag name, class name, and the negation pseudo-class, clearly defining the exact criteria." }
+            { selector: ".btn-save:not(.disabled)", explanation: "This targets any element with the class `.btn-save` that is not disabled." },
+            { selector: "button.btn-save:not(.disabled)", explanation: "The most specific option. Combines tag name, class name, and the negation." }
         ],
-        trivia: "The Negation Pseudo-class (`:not`) is often called the 'structural pseudo-class.' It is non-inclusive, meaning styles applied by it cannot be overridden by other styles of the same specificity *if* the negation is the only difference.",
+        trivia: "The Negation Pseudo-class (`:not`) is often called the 'structural pseudo-class.'",
         html: `
             <button class="btn-save disabled">Save (Disabled)</button>
             <button class="btn-save">Save (Enabled)</button>
@@ -253,10 +263,11 @@ const challengeDefinitions = [
         prompt: "Target the checkbox that is currently checked.",
         targetSelector: "input:checked",
         type: "UI State Pseudo-class (:checked)",
+        isComplex: false, // <-- NEW FLAG (simple)
         alternatives: [
-            { selector: "input[type='checkbox']:checked", explanation: "This adds the attribute selector for `type='checkbox'`, ensuring the selector only applies to checkbox inputs, not radio buttons or other checked inputs." }
+            { selector: "input[type='checkbox']:checked", explanation: "This adds the attribute selector for `type='checkbox'`, ensuring the selector only applies to checkbox inputs." }
         ],
-        trivia: "The UI State Pseudo-class (`:checked`) selects radio buttons or checkboxes that are currently selected. You often use the Adjacent Sibling Combinator (`+`) to style a custom label based on the checked state.",
+        trivia: "The UI State Pseudo-class (`:checked`) selects radio buttons or checkboxes that are currently selected.",
         html: `
             <label>
                 <input type="checkbox"> Unchecked
@@ -271,13 +282,8 @@ const challengeDefinitions = [
 // --- CORE STATE MANAGEMENT & INITIALIZATION (All functions follow) ---
 
 function initializeChallenges() {
-    // Check if the container element exists on this page
     const container = document.getElementById('all-challenges');
-    if (!container) {
-        // If #all-challenges doesn't exist, we are not on the css-selectors.html page.
-        // Silently exit to avoid errors on index.html or about.html
-        return;
-    }
+    if (!container) return;
 
     let htmlContent = '';
 
@@ -292,8 +298,12 @@ function initializeChallenges() {
             currentHTML: def.html,
             successfulSelectors: [],
             originalPrompt: def.prompt,
-            type: def.type // Store the type for validation
+            type: def.type,
+            isComplex: def.isComplex // <-- Store the flag
         };
+
+        // ❗ MODIFICATION: Add the isComplex flag to the container ❗
+        const complexClass = def.isComplex ? 'is-complex' : '';
 
         htmlContent += `
             <div id="challenge-${def.id}" class="challenge-container">
@@ -303,13 +313,12 @@ function initializeChallenges() {
                 </div>
                 <p id="prompt-${def.id}">${def.prompt}</p>
                 
-                <div id="target-area-${def.id}" class="challenge-target-area">
+                <div id="target-area-${def.id}" class="challenge-target-area ${complexClass}">
                     ${def.html}
                 </div>
                 
                 <div class="challenge-ui">
-                    <input type="text" id="selector-input-${def.id}" placeholder="Enter your selector here (e.g., .class-name)" data-id="${def.id}">
-                    
+                    <input type="text" id="selector-input-${def.id}" placeholder="Enter your selector here..." data-id="${def.id}">
                     <button class="cta-button" onclick="validateChallenge(${def.id})">Validate</button>
                 </div>
                 <div id="feedback-${def.id}" class="validation-feedback"></div>
@@ -317,17 +326,31 @@ function initializeChallenges() {
         `;
     });
 
-    // Replace the container's content with the dynamically generated challenges
     container.innerHTML = htmlContent;
 }
 
+// ❗ --- NEW FUNCTION TO APPLY STYLES --- ❗
+function applyChallengeStyling() {
+    challengeDefinitions.forEach(def => {
+        const targetArea = document.getElementById(`target-area-${def.id}`);
+        if (!targetArea) return;
+
+        // Find all elements we want to turn into "pills"
+        const elementsToStyle = targetArea.querySelectorAll('p, button, li, h2, h3, span, a, label, input');
+        
+        elementsToStyle.forEach(el => {
+            el.classList.add('target-element');
+        });
+    });
+}
+
+
 function applyHighlighting(challengeId) {
-    // This function is now only used to clean up highlights during a reset.
+    // ... (rest of the function is unchanged)
     const targetArea = document.getElementById(`target-area-${challengeId}`);
     if (!targetArea) return;
 
     try {
-        // Find any highlights (from the old placeholder HTML) and remove them.
         targetArea.querySelectorAll('.target-highlight').forEach(el => el.classList.remove('target-highlight'));
     } catch (e) {
         console.error(`Error cleaning up highlights for challenge ${challengeId}: ${e.message}`);
@@ -335,6 +358,7 @@ function applyHighlighting(challengeId) {
 }
 
 function toggleAccordion(button) {
+    // ... (rest of the function is unchanged)
     button.classList.toggle("active-accordion");
     let panel = button.nextElementSibling;
     if (panel.style.maxHeight) {
@@ -345,12 +369,11 @@ function toggleAccordion(button) {
 }
 
 function validateChallenge(challengeId) {
+    // ... (rest of the function is unchanged)
     const state = challengeStates[challengeId];
     const inputField = document.getElementById(`selector-input-${challengeId}`);
     const feedbackElement = document.getElementById(`feedback-${challengeId}`);
     const userInput = inputField.value.trim();
-    
-    // Use the type stored in the state
     const challengeType = state.type; 
 
     feedbackElement.className = 'validation-feedback';
@@ -361,51 +384,42 @@ function validateChallenge(challengeId) {
         return;
     }
 
-    // --- 1. UPDATED: STRICT VALIDATION LOGIC ---
-    // Check if the user is using the *correct type* of selector for the lesson.
+    // --- 1. STRICT VALIDATION LOGIC ---
     let strictCheckPassed = true;
     let strictFailMessage = "";
 
     if (challengeType === "ID Selector" && !userInput.includes('#') && !userInput.includes('[id')) {
         strictCheckPassed = false;
-        strictFailMessage = "Incorrect. For this challenge, you must use an <b>ID selector</b> (which starts with a <b>#</b>) or an <b>Attribute selector</b> that targets the ID (e.g., <b>[id=...]</b>).";
-    
+        strictFailMessage = "Incorrect. For this challenge, you must use an <b>ID selector</b> (which starts with a <b>#</b>).";
     } else if (challengeType === "Class Selector" && !userInput.includes('.') && !userInput.includes('[class')) {
         strictCheckPassed = false;
-        strictFailMessage = "Incorrect. For this challenge, you must use a <b>Class selector</b> (which starts with a <b>.</b>) or an <b>Attribute selector</b> that targets the class (e.g., <b>[class*=\"...\"]</b>).";
-    
+        strictFailMessage = "Incorrect. For this challenge, you must use a <b>Class selector</b> (which starts with a <b>.</b>).";
     } else if (challengeType === "Descendant Combinator" && !userInput.includes(' ')) {
         strictCheckPassed = false;
-        strictFailMessage = "Incorrect. This challenge requires a <b>Descendant Combinator</b> (a <b>space</b> between selectors).";
-    
+        strictFailMessage = "Incorrect. This challenge requires a <b>Descendant Combinator</b> (a <b>space</b>).";
     } else if (challengeType === "Child Combinator" && !userInput.includes('>')) {
         strictCheckPassed = false;
         strictFailMessage = "Incorrect. This challenge requires a <b>Child Combinator</b> (the <b>&gt;</b> symbol).";
-    
     } else if (challengeType === "Adjacent Sibling Combinator" && !userInput.includes('+')) {
         strictCheckPassed = false;
         strictFailMessage = "Incorrect. This challenge requires an <b>Adjacent Sibling Combinator</b> (the <b>+</b> symbol).";
-    
     } else if (challengeType === "General Sibling Combinator" && !userInput.includes('~')) {
         strictCheckPassed = false;
         strictFailMessage = "Incorrect. This challenge requires a <b>General Sibling Combinator</b> (the <b>~</b> symbol).";
-    
     } else if (challengeType.includes("Attribute") && !userInput.includes('[')) {
         strictCheckPassed = false;
-        strictFailMessage = "Incorrect. This challenge requires an <b>Attribute selector</b>. Your selector must include brackets (e.g., <b>[attribute=value]</b>).";
-    
+        strictFailMessage = "Incorrect. This challenge requires an <b>Attribute selector</b> (e.g., <b>[attribute=value]</b>).";
     } else if (challengeType.includes("Pseudo") && !userInput.includes(':')) {
         strictCheckPassed = false;
-        strictFailMessage = "Incorrect. This challenge requires a <b>Pseudo-class selector</b>. Your selector must include a colon (e.g., <b>:checked</b>, <b>:nth-child(n)</b>, or <b>:not(...)</b>).";
+        strictFailMessage = "Incorrect. This challenge requires a <b>Pseudo-class selector</b> (e.g., <b>:checked</b>).";
     }
 
     if (!strictCheckPassed) {
         feedbackElement.innerHTML = strictFailMessage;
         feedbackElement.classList.add('error');
-        return; // Stop validation if the type check fails
+        return; 
     }
     // --- END OF STRICT VALIDATION ---
-
 
     try {
         const targetArea = document.getElementById(`target-area-${challengeId}`);
@@ -417,9 +431,7 @@ function validateChallenge(challengeId) {
             return;
         }
         
-        // Query the DOM using the user's selector
         const selectedElements = targetArea.querySelectorAll(userInput);
-        
         const isCorrect = selectedElements.length === 1 && selectedElements[0] === correctTarget;
 
         if (isCorrect) {
@@ -429,33 +441,29 @@ function validateChallenge(challengeId) {
         }
 
     } catch (e) {
-        // Check for the specific Attribute Equals error that caused the issue
         const isAttributeEqualsClass = userInput.includes('[class=');
-
         if (isAttributeEqualsClass) {
-             // Provide targeted, actionable feedback for the specific mistake
             feedbackElement.innerHTML = `
                 ❌ Syntax Error (Specific): Your selector <code>${userInput}</code> is failing. 
-                <br>
-                <strong>The Attribute Equals Selector ([attr="value"]) requires the class value to be an EXACT match.</strong> 
-                <br>Since your target element has multiple classes, the exact match fails. You should use the <b>Class Selector (.)</b> or the <b>Attribute Contains Selector ([attr~="value"] or [attr*="value"])</b> instead.
+                <br><strong>The Attribute Equals Selector ([attr="value"]) requires an EXACT match.</strong> 
+                <br>Try the <b>Class Selector (.)</b> or the <b>Attribute Contains Selector ([attr~="value"])</b> instead.
             `;
             feedbackElement.classList.add('error');
         } else {
-             feedbackElement.textContent = `🚫 Syntax Error: "${userInput}" is not a valid CSS selector. Check for typos or invalid characters.`;
+             feedbackElement.textContent = `🚫 Syntax Error: "${userInput}" is not a valid CSS selector.`;
              feedbackElement.classList.add('error');
         }
     }
 }
 
 function handleSuccess(challengeId, correctSelector) {
+    // ... (rest of the function is unchanged)
     const state = challengeStates[challengeId];
     const feedbackElement = document.getElementById(`feedback-${challengeId}`);
     const statusElement = document.getElementById(`status-${challengeId}`);
     const challengeDef = challengeDefinitions.find(d => d.id === challengeId);
     
     const normalizedSelector = correctSelector.toLowerCase().trim().replace(/\s+/g, ' ');
-
     const isNewSuccess = !state.successfulSelectors.includes(normalizedSelector);
 
     if (isNewSuccess) {
@@ -464,11 +472,10 @@ function handleSuccess(challengeId, correctSelector) {
     
     if (!state.isSolved) {
         statusElement.textContent = "(SOLVED!)";
-        statusElement.style.color = 'var(--wf-text-success)'; // Use brand color
+        statusElement.style.color = 'var(--wf-text-success)'; 
     }
 
     state.isSolved = true;
-    
     let allAlternatives = [...challengeDef.alternatives];
     
     state.successfulSelectors.forEach(sel => {
@@ -496,7 +503,6 @@ function handleSuccess(challengeId, correctSelector) {
         <br><br>
         <strong>Lesson Learned: ${challengeDef.type}</strong> 💡
         <div class="hint-message">${challengeDef.trivia}</div>
-        
         <p>Explore other ways to solve this challenge:</p>
         ${alternativesHtml}
     `;
@@ -505,9 +511,10 @@ function handleSuccess(challengeId, correctSelector) {
 }
 
 function handleFailure(challengeId, userInput, selectedElements, correctTarget) {
+    // ... (rest of the function is unchanged)
     const state = challengeStates[challengeId];
     const feedbackElement = document.getElementById(`feedback-${challengeId}`);
-    const challengeType = state.type; // Use state's type
+    const challengeType = state.type; 
     state.attempts++;
 
     let message = '';
@@ -518,57 +525,37 @@ function handleFailure(challengeId, userInput, selectedElements, correctTarget) 
         if (selectedElements.length === 0) {
             nudge = `Incorrect. Your selector selected <b>no elements</b>. Check your basic syntax (e.g., did you miss a '.' or '#')?`;
         } else if (Array.from(selectedElements).includes(correctTarget)) {
-            nudge = `Close! Your selector selected <b>${selectedElements.length} elements</b>, including the target. Try to be more specific to select *only* the target.`;
+            nudge = `Close! Your selector selected <b>${selectedElements.length} elements</b>, including the target. Try to be more specific.`;
         } else {
             nudge = `Incorrect. Your selector selected <b>${selectedElements.length} element(s)</b>, but the target was not among them.`;
         }
         message = `${nudge}`;
     } 
-    
     else if (state.attempts === 2) {
         message = `Still incorrect. 
-            <br><div class="hint-message info">🚨 <b>Hint 2:</b> The type of selector you need to master here is a <b>${challengeType}</b>. Focus your learning on that concept!</div>`;
+            <br><div class="hint-message info">🚨 <b>Hint 2:</b> The type of selector you need is a <b>${challengeType}</b>.</div>`;
         feedbackElement.classList.remove('error');
         feedbackElement.classList.add('info');
     } 
-    
-    else if (state.attempts === 3) {
-        const hintType = challengeType.includes('Combinator') ? 'Combinator' : challengeType.includes('Pseudo') ? 'Pseudo-class' : 'Attribute Selector';
-        message = `Three strikes. 
-            <br><div class="hint-message info">💡 <b>Hint 3:</b> This challenge requires a <b>${hintType}</b>. Look for relationships (parent/sibling) or a specific state (checked/disabled) in the HTML structure.</div>`;
-        feedbackElement.classList.remove('error');
-        feedbackElement.classList.add('info');
-    } 
-    
-    else if (state.attempts === 4) {
-        let operatorHint = '';
-        // 2. UPDATED: Add specific hints for ID and Class selectors
-        if (challengeType.includes('ID Selector')) operatorHint = 'Use the <b>#</b> symbol followed by the ID name, or an attribute selector <b>[id=...]</b>.';
-        else if (challengeType.includes('Class Selector')) operatorHint = 'Use the <b>.</b> symbol followed by the class name, or an attribute selector <b>[class*="..."]</b>.';
-        else if (challengeType.includes('Descendant')) operatorHint = 'Use a <b>space</b> between selectors.';
-        else if (challengeType.includes('Child')) operatorHint = 'Use the <b>&gt;</b> operator.';
-        else if (challengeType.includes('Adjacent')) operatorHint = 'Use the <b>+</b> operator.';
-        else if (challengeType.includes('General')) operatorHint = 'Use the <b>~</b> operator.';
-        else if (challengeType.includes('Attribute')) operatorHint = 'Use brackets <b>[ ]</b> and an operator like <b>[*=]</b>.';
-        else if (challengeType.includes('Pseudo')) operatorHint = 'Use the colon <b>:</b> followed by the selector name.';
-        
-        message = `Final attempt nudge. 
-            <br><div class="hint-message info">🧠 <b>Hint 4 (Deep Dive):</b> ${operatorHint}</div>`;
-        feedbackElement.classList.remove('error');
-        feedbackElement.classList.add('info');
-    } 
-    
     else if (state.attempts >= 5 && !state.isRevealed) {
-        message = `🛑 <b>5 Failed Attempts.</b> It's time to learn! Would you like to reveal the solution for this specific challenge and then immediately try a new, related challenge to ensure the lesson sticks?
+        message = `🛑 <b>5 Failed Attempts.</b> Would you like to reveal the solution and try a new, related challenge?
             <br><button class="reveal-button" onclick="revealSolution(${challengeId})">Yes, Reveal Solution & Try New Challenge</button>`;
         feedbackElement.classList.remove('info');
         feedbackElement.classList.add('error');
+    }
+    else {
+        // Fallback for attempts 3, 4, etc.
+        message = `Still incorrect. 
+            <br><div class="hint-message info"><b>Hint:</b> The type of selector you need is a <b>${challengeType}</b>.</div>`;
+        feedbackElement.classList.remove('error');
+        feedbackElement.classList.add('info');
     }
     
     feedbackElement.innerHTML = message;
 }
 
 function revealSolution(challengeId) {
+    // ... (rest of the function is unchanged)
     const state = challengeStates[challengeId];
     const feedbackElement = document.getElementById(`feedback-${challengeId}`);
     const inputField = document.getElementById(`selector-input-${challengeId}`);
@@ -584,12 +571,13 @@ function revealSolution(challengeId) {
     feedbackElement.innerHTML = `
         ✅ <b>Solution Revealed:</b> The correct selector was <code>${state.correctTarget}</code>.
         <br>
-        <p style="margin-top: 10px;">Please study the solution, then click the button below to solidify your understanding with a <b>fresh challenge</b> of the same selector type.</p>
+        <p style="margin-top: 10px;">Please study the solution, then click the button below to try a new challenge of the same type.</p>
         <button class="accordion" style="background-color: #007bff; color: white; margin-right: 5px;" onclick="resetChallenge(${challengeId})">🔄 Try New ${challengeDef.type} Challenge</button>
     `;
 }
 
 function resetChallenge(challengeId) {
+    // ... (rest of the function is unchanged)
     const state = challengeStates[challengeId];
     const challengeDef = challengeDefinitions.find(d => d.id === challengeId);
     const targetArea = document.getElementById(`target-area-${challengeId}`);
@@ -613,14 +601,16 @@ function resetChallenge(challengeId) {
     feedbackElement.className = 'validation-feedback';
     
     promptElement.textContent = updatedPrompt; 
-    
     feedbackElement.innerHTML = `🌟 <b>New Challenge!</b> Apply the <b>${challengeDef.type}</b> logic to this new structure.`;
-    // ❗❗ FIX: This line makes the "New Challenge!" message visible ❗❗
     feedbackElement.classList.add('info'); 
     
     statusElement.textContent = "(Unsolved)";
     statusElement.style.color = 'grey';
 
-    // Call applyHighlighting to clean up any old highlights from the previous attempt
-    applyHighlighting(challengeId);
+    // ❗ --- RE-APPLY STYLING --- ❗
+    // This is crucial for the new elements.
+    const elementsToStyle = targetArea.querySelectorAll('p, button, li, h2, h3, span, a, label, input');
+    elementsToStyle.forEach(el => {
+        el.classList.add('target-element');
+    });
 }
