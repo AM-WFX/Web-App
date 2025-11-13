@@ -271,6 +271,8 @@ button[onclick*="validateChallenge"]:hover {
     gap: 20px; 
     justify-content: space-between;
 }
+
+/* ❗ FIX 1: Center all content (title, prompt, box, UI) ❗ */
 .challenge-container {
     background-color: var(--wf-support-karry); 
     border-radius: var(--wf-border-radius);
@@ -280,11 +282,14 @@ button[onclick*="validateChallenge"]:hover {
     min-width: 380px; 
     margin-top: 10px; 
     box-shadow: none;
+    
+    /* New rules to center all inner content */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center horizontally */
 }
 
-/* --- THIS IS THE FIX (PART 1) --- */
-
-/* This is the DEFAULT state for ALL challenges. */
+/* ❗ FIX 2: Set fixed height, center all content H&V ❗ */
 .challenge-target-area {
     background-color: var(--wf-dominant-spring-wood); 
     border: 1px solid #E2E8F0; 
@@ -292,34 +297,22 @@ button[onclick*="validateChallenge"]:hover {
     padding: 15px;
     margin-top: 10px;
     margin-bottom: 20px; 
+    width: 100%; /* Make sure it takes the space */
     
-    /* ❗ FIX 1: Fixed height and overflow: hidden ❗ */
-    /* This makes all boxes the same height (uniformity) */
-    /* and cuts off content that is too long (as requested). */
-    height: 250px; 
-    overflow: hidden; 
-    
-    /* Default: Center layout for simple elements */
+    /* This is the new, combined rule for all boxes */
+    height: 230px; 
+    overflow: hidden; /* Cut off content as requested */
     display: flex;
     flex-direction: column; 
     align-items: center;     
     justify-content: center;
 }
 
-/* This is the MODIFIER state for COMPLEX challenges (like 4, 6, 8) */
-.challenge-target-area.is-complex {
-    
-    /* ❗ FIX 2: Changed to 'flex-start' ❗ */
-    /* This aligns content to the top-left */
-    /* and stops pills from stretching to 100% width. */
-    align-items: flex-start;
-    justify-content: flex-start;
-}
+/* ❗ DELETED the broken .is-complex rule ❗ */
 
-/* --- THIS IS THE FIX (PART 2) --- */
 
-/* This is our one, perfect "pill" style. */
-/* It styles all elements identically without forcing a display property. */
+/* ❗ FIX 3: This is the new, simple "pill" style ❗ */
+/* This one rule styles all elements uniformly */
 .challenge-target-area p,
 .challenge-target-area button,
 .challenge-target-area input,
@@ -340,8 +333,7 @@ button[onclick*="validateChallenge"]:hover {
     border-radius: 6px !important; 
     font-family: 'Aeonik', sans-serif;
     
-    /* ❗ FIX 3: Let width be 'max-content' ❗ */
-    /* This makes pills only as wide as their text. */
+    /* This makes pills only as wide as their content */
     width: max-content;
     max-width: 95%; 
     text-align: left;
@@ -359,6 +351,11 @@ button[onclick*="validateChallenge"]:hover {
     width: 100%;
     /* We must also remove the 'pill' styles from these wrappers */
     border-radius: 0 !important;
+    /* Center the content inside (like the buttons in #3) */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 /* And that list items are still list items */
@@ -375,6 +372,7 @@ button[onclick*="validateChallenge"]:hover {
     margin-top: 10px;
     justify-content: center; 
     align-items: center; 
+    width: 100%; /* Make UI fill width */
 }
 
 .challenge-ui input[type="text"] {
@@ -395,6 +393,7 @@ button[onclick*="validateChallenge"]:hover {
     margin-top: 15px !important;
     border-radius: var(--wf-border-radius);
     font-weight: 400;
+    width: 100%; /* Make feedback fill width */
 }
 .validation-feedback.success,
 .validation-feedback.error,
@@ -538,6 +537,7 @@ span[id*="status-"] {
 p[id*="prompt-"] {
     padding: 5px 0 !important;
     margin-left: 0 !important;
+    text-align: center; /* Center the prompt text */
 }
 .validation-feedback p {
     padding: 0 !important; 
