@@ -55,7 +55,7 @@ body {
 }
 
 /* --- ❗ NAVBAR STYLING (WHATFIX REPLICATION) ❗ --- */
-
+/* (This section is unchanged and correct) */
 .navbar {
     background-color: white; 
     color: var(--wf-secondary-steel-gray);
@@ -70,14 +70,12 @@ body {
     z-index: 100;
     flex-wrap: wrap;
 }
-
 .navbar .logo { 
     font-size: 1.5em; 
     font-weight: 700; 
     color: var(--wf-secondary-steel-gray); 
     margin-right: 40px; 
 }
-
 .navbar ul { 
     list-style: none; 
     margin: 0; 
@@ -85,12 +83,10 @@ body {
     display: flex; 
     align-items: center; 
 }
-
 .navbar li { 
     margin-right: 25px; 
     position: relative; 
 }
-
 .navbar a { 
     color: var(--wf-secondary-steel-gray); 
     text-decoration: none; 
@@ -99,12 +95,10 @@ body {
     padding: 5px 0;
     transition: color 0.3s, border-bottom 0.3s;
 }
-
 .navbar a.active { 
     color: var(--wf-accent-orange); 
     border-bottom: 2px solid var(--wf-accent-orange);
 }
-
 .navbar a.nav-disabled {
     color: #94A3B8; 
     cursor: not-allowed;
@@ -125,7 +119,6 @@ body {
     margin-left: 8px; 
     vertical-align: middle;
 }
-
 .nav-disabled .tooltip-text {
     visibility: hidden;
     width: 200px;
@@ -161,24 +154,21 @@ body {
 
 
 /* --- CORE LAYOUT & CARDS --- */
-
+/* (This section is unchanged and correct) */
 h1, h2, h3 {
     color: var(--wf-secondary-steel-gray);
     font-weight: 700; 
 }
-
 .container {
     max-width: 1400px;
     margin: 0 auto;
     padding: 0 20px;
     margin-top: 20px; 
 }
-
 #content-wrapper {
     display: block; 
     padding: 20px 0;
 }
-
 .main-content {
     padding: 30px;
     background-color: white;
@@ -187,7 +177,7 @@ h1, h2, h3 {
 }
 
 /* --- FOOTER STYLING --- */
-
+/* (This section is unchanged and correct) */
 footer {
     text-align: center;
     padding: 15px;
@@ -196,8 +186,8 @@ footer {
     margin-top: 40px;
 }
 
-/* --- CTA & BUTTON STYLING (10% Accent Rule) --- */
-
+/* --- CTA & BUTTON STYLING --- */
+/* (This section is unchanged and correct) */
 button[onclick*="validateChallenge"], 
 .cta-button {
     appearance: none !important;
@@ -221,7 +211,6 @@ button[onclick*="validateChallenge"],
     font-size: 11px !important; 
     box-sizing: border-box;
 }
-
 .cta-button:hover,
 button[onclick*="validateChallenge"]:hover {
     background-color: #E55C00 !important; 
@@ -229,7 +218,7 @@ button[onclick*="validateChallenge"]:hover {
 }
 
 /* --- HOME & ABOUT PAGE SPECIFICS --- */
-
+/* (This section is unchanged and correct) */
 .promo-box {
     background-color: var(--wf-support-karry); 
     border-radius: var(--wf-border-radius);
@@ -238,16 +227,13 @@ button[onclick*="validateChallenge"]:hover {
     border: none; 
     box-shadow: none;
 }
-.promo-box h3 {
-    margin-top: 0;
-}
+.promo-box h3 { margin-top: 0; }
 .promo-box code {
     background-color: #F9F9F2;
     padding: 2px 5px;
     border-radius: 4px;
     font-family: monospace;
 }
-
 .mission-statement {
     border-left: 5px solid var(--wf-accent-orange); 
     padding: 20px; 
@@ -282,15 +268,12 @@ button[onclick*="validateChallenge"]:hover {
     margin-top: 10px;
     padding-left: 20px;
 }
-
-
 #all-challenges {
     display: flex;
     flex-wrap: wrap; 
     gap: 20px; 
     justify-content: space-between;
 }
-
 .challenge-container {
     background-color: var(--wf-support-karry); 
     border-radius: var(--wf-border-radius);
@@ -303,8 +286,7 @@ button[onclick*="validateChallenge"]:hover {
 }
 
 /* ❗ --- THIS IS THE FIX (PART 1 of 2) --- ❗ */
-/* We change height to min-height to allow boxes to grow (no scrollbars). */
-/* We also ensure justify-content is 'center' (fixes Challenge 3). */
+/* This is the DEFAULT state for SIMPLE challenges. It centers them. */
 .challenge-target-area {
     background-color: var(--wf-dominant-spring-wood); 
     border: 1px solid #E2E8F0; 
@@ -312,24 +294,69 @@ button[onclick*="validateChallenge"]:hover {
     padding: 15px;
     margin-top: 10px;
     margin-bottom: 20px; 
+    min-height: 200px; /* Allows container to grow */
+    overflow: hidden; /* Prevents scrollbars */
     
-    min-height: 200px; /* <-- CHANGED from height to min-height */
-    
+    /* Default: Center layout for simple elements */
     display: flex;
     flex-direction: column; 
     align-items: center;     
-    justify-content: center; /* <-- RE-CENTERED */
-    overflow: hidden; /* <-- CHANGED from auto to hidden */
+    justify-content: center;
 }
 
-/* This wrapper from your JS (Challenge 6) will now work perfectly. */
-.challenge-action-buttons {
-    display: flex;
-    gap: 10px;
-    width: 100%; 
-    justify-content: center;
-    margin-top: 10px;
+/* This is the MODIFIER state for COMPLEX challenges (like 4, 6, 8) */
+.challenge-target-area.is-complex {
+    /* Override: Align to the top-left to allow natural document flow */
+    align-items: flex-start;
+    justify-content: flex-start;
 }
+
+/* ❗ --- THIS IS THE FIX (PART 2 of 2) --- ❗ */
+/* This is our one, perfect "pill" style. */
+/* It is only applied via JavaScript to the elements we want. */
+.target-element {
+    box-sizing: border-box;
+    border: none; 
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05); 
+    background-color: white !important; 
+    color: var(--wf-secondary-steel-gray) !important;
+    padding: 10px 14px !important;
+    margin: 6px !important;
+    font-size: 1em !important; 
+    border-radius: 6px !important; 
+    font-family: 'Aeonik', sans-serif;
+    
+    /* This rule lets elements be 'block' or 'inline-block' */
+    /* and they will just look right. */
+    display: inline-block;
+    max-width: 95%; 
+    text-align: left;
+}
+
+/* We just need to fix 'block' elements that we styled as inline */
+.target-element[style*="block"],
+.target-element.card,
+.target-element.footer,
+.target-element[id*="settings-modal"],
+.target-element p,
+.target-element h2,
+.target-element h3,
+.target-element li {
+    display: block !important;
+    width: auto;
+}
+
+/* And make sure invisible wrappers are invisible */
+.challenge-target-area div,
+.challenge-target-area ul,
+.challenge-target-area ol {
+    background-color: transparent !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100%;
+}
+
 
 .challenge-ui {
     display: flex;
@@ -350,59 +377,8 @@ button[onclick*="validateChallenge"]:hover {
     box-sizing: border-box; 
 }
 
-/* ❗ --- THIS IS THE FIX (PART 2 of 2) --- ❗ */
-/* We DELETE all the old, broken uniformity rules and replace them with this ONE. */
-/* This rule styles *only* the elements we want, and lets them keep their */
-/* natural display (block or inline) so they don't overflow. */
-
-.challenge-target-area p,
-.challenge-target-area button,
-.challenge-target-area input,
-.challenge-target-area li,
-.challenge-target-area h2,
-.challenge-target-area h3,
-.challenge-target-area span,
-.challenge-target-area a,
-.challenge-target-area label {
-    /* Aesthetics */
-    box-sizing: border-box;
-    border: none; 
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05); 
-    background-color: white !important; 
-    color: var(--wf-secondary-steel-gray) !important;
-    padding: 10px 14px !important;
-    margin: 6px !important;
-    font-size: 1em !important; 
-    border-radius: 6px !important; 
-    font-family: 'Aeonik', sans-serif;
-    
-    /* Layout - We let the browser decide 'display' */
-    /* This makes p, h2, h3 stack, and buttons/spans sit inline */
-    width: auto; 
-    max-width: 95%; /* Prevents pills from touching the edges */
-    text-align: left;
-}
-
-/* We just need to make sure lists are invisible containers */
-.challenge-target-area ul,
-.challenge-target-area ol,
-.challenge-target-area div { /* Also target DIVs (like .card) */
-    background-color: transparent !important;
-    box-shadow: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    width: 100%; /* Containers should be full-width */
-}
-
-/* And that list items are still list items */
-.challenge-target-area li {
-    display: list-item !important; 
-    margin-left: 30px !important; /* Indent */
-}
-
-
-/* --- ACCORDION STYLING (WHATFIX REPLICATION) --- */
-
+/* --- ACCORDION & FEEDBACK STYLING --- */
+/* (This section is unchanged and correct) */
 .validation-feedback { 
     display: none; 
     padding: 20px !important;
@@ -410,37 +386,30 @@ button[onclick*="validateChallenge"]:hover {
     border-radius: var(--wf-border-radius);
     font-weight: 400;
 }
-
 .validation-feedback.success,
 .validation-feedback.error,
 .validation-feedback.info {
     display: block; 
     border: 1px solid;
 }
-
 .validation-feedback.success {
     background-color: var(--wf-support-karry);
     color: var(--wf-secondary-steel-gray);
     border-color: var(--wf-accent-orange);
 }
-
 .validation-feedback.error {
     background-color: var(--wf-error);
     color: var(--wf-text-error);
     border-color: #F5C6CB;
 }
-
 .validation-feedback.info {
     background-color: #EBF8FF;
     color: #2A4365;
     border-color: #BEE3F8;
 }
-
 .validation-feedback p {
     margin-bottom: 10px;
 }
-
-
 .accordion {
     appearance: none !important;
     -webkit-appearance: none !important;
@@ -464,17 +433,14 @@ button[onclick*="validateChallenge"]:hover {
     cursor: pointer !important;
     transition: color 0.3s;
 }
-
 .accordion:hover {
     color: var(--wf-accent-orange) !important;
 }
-
 .active-accordion {
     border-radius: var(--wf-border-radius) var(--wf-border-radius) 0 0 !important;
     border-bottom: 1px solid transparent !important;
     margin-bottom: 0 !important;
 }
-
 .accordion::after {
     content: '\002B'; 
     font-size: 1.5em;
@@ -483,12 +449,10 @@ button[onclick*="validateChallenge"]:hover {
     transition: transform 0.3s ease-in-out;
     transform: rotate(0deg);
 }
-
 .active-accordion::after {
     content: '\2212'; 
     transform: rotate(180deg);
 }
-
 .panel {
     max-height: 0; 
     overflow: hidden; 
@@ -498,21 +462,18 @@ button[onclick*="validateChallenge"]:hover {
     border-radius: 0 0 var(--wf-border-radius) var(--wf-border-radius); 
     margin-bottom: 5px;
 }
-
 .panel-content {
     padding: 15px 18px; 
     background-color: white; 
     margin-bottom: 5px;
     margin-top: 5px;
 }
-
 .panel-content p {
     margin: 0 !important; 
     border: none !important;
     background-color: transparent !important;
     box-shadow: none !important; 
 }
-
 .reveal-button {
     appearance: none !important;
     -webkit-appearance: none !important;
@@ -528,7 +489,6 @@ button[onclick*="validateChallenge"]:hover {
     font-size: 0.9em !important;
     transition: background-color 0.2s, color 0.2s;
 }
-
 .reveal-button:hover {
     background-color: var(--wf-text-error) !important;
     color: white !important;
@@ -538,32 +498,26 @@ button[onclick*="validateChallenge"]:hover {
 /* ---------------------------------------------------- */
 /* --- ➕ PADDING/ALIGNMENT FIXES (USER REQUEST) --- */
 /* ---------------------------------------------------- */
-
+/* (This section is unchanged and correct) */
 h1, h2, h3 {
     margin-top: 1.5em;    
     margin-bottom: 0.5em; 
     padding-left: 0;    
 }
-
 p {
     padding: 5px 0; 
     margin-bottom: 1em; 
 }
-
-/* This rule is now safe to remove, but we'll keep it for the #prompt element */
-/* if you still have one outside the challenges */
 #prompt, #prompt * {
     padding: 20px !important; 
     margin: 10px !important; 
 }
-
 h3[id*="challenge-title-"] {
     font-size: 1.4em;
     font-weight: 700;
     margin-bottom: 5px;
     padding-left: 0 !important; 
 }
-
 span[id*="status-"] {
     color: var(--wf-accent-orange); 
     font-weight: 700;
@@ -572,21 +526,15 @@ span[id*="status-"] {
     padding: 2px 0;
     margin-left: 0 !important;
 }
-
 p[id*="prompt-"] {
     padding: 5px 0 !important;
     margin-left: 0 !important;
 }
-
-
-/* 5. Overrides to maintain specific component layouts */
-
 .validation-feedback p {
     padding: 0 !important; 
     margin-bottom: 10px !important; 
     width: 100%; 
     text-align: left;
-    /* Re-override the * rule */
     background-color: transparent !important;
     box-shadow: none !important;
 }
@@ -595,71 +543,48 @@ p[id*="prompt-"] {
 /* ---------------------------------------------------- */
 /* --- 📱 MOBILE RESPONSIVE FIXES --- */
 /* ---------------------------------------------------- */
-
+/* (This section is unchanged and correct) */
 @media (max-width: 768px) {
-    
     .navbar {
         flex-direction: column;
         align-items: flex-start;
         padding: 15px 20px;
     }
-
-    .navbar .logo {
-        margin-bottom: 15px;
-    }
-
-    .navbar nav {
-        width: 100%;
-    }
-
+    .navbar .logo { margin-bottom: 15px; }
+    .navbar nav { width: 100%; }
     .navbar ul {
         flex-direction: column;
         align-items: flex-start;
         width: 100%;
     }
-
     .navbar li {
         margin-right: 0;
         margin-bottom: 10px;
         width: 100%;
     }
-    
     .navbar a {
         padding: 8px 0;
         width: 100%;
         display: block; 
     }
-
     .navbar a.active {
         border-bottom: 2px solid var(--wf-accent-orange);
     }
-    
     .nav-disabled:hover .tooltip-text {
         visibility: hidden; 
         opacity: 0;
         display: none;
     }
-
-    .main-content {
-        padding: 20px;
-    }
-
+    .main-content { padding: 20px; }
     .challenge-container {
         flex-basis: 100%;
         max-width: 100%;
         min-width: 0; 
     }
-
     .challenge-ui {
         flex-direction: column;
         align-items: stretch; 
     }
-
-    .challenge-ui input[type="text"] {
-        width: 100%;
-    }
-
-    .challenge-ui button {
-        width: 100%;
-    }
+    .challenge-ui input[type="text"] { width: 100%; }
+    .challenge-ui button { width: 100%; }
 }
