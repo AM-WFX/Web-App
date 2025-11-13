@@ -319,7 +319,8 @@ button[onclick*="validateChallenge"]:hover {
     box-shadow: none;
 }
 
-/* ❗ FIX: MODIFIED LAYOUT to allow content to wrap onto multiple rows ❗ */
+/* ❗ FIX: REVERTED this rule to its original state. ❗ */
+/* This provides a consistent centered, column layout for all challenges. */
 .challenge-target-area {
     background-color: var(--wf-dominant-spring-wood); 
     border: 1px solid #E2E8F0; 
@@ -328,22 +329,18 @@ button[onclick*="validateChallenge"]:hover {
     margin-top: 10px;
     margin-bottom: 20px; 
     height: 200px; 
-    
-    /* MODIFIED: Use flex row, wrap content, and align to start */
     display: flex;
-    flex-direction: row; 
-    flex-wrap: wrap; 
-    justify-content: flex-start;
-    align-items: flex-start;
-
+    flex-direction: column; /* REVERTED to column */
+    align-items: center;     /* RE-ADDED for centering */
+    justify-content: center; /* RE-ADDED for centering */
     overflow: auto; 
 }
 
-/* Added style for the new wrapper in Challenge 6 HTML */
+/* Style for the wrapper div in Challenge 6 */
 .challenge-action-buttons {
     display: flex;
     gap: 10px;
-    width: 100%; /* Important: ensures buttons take up a new row */
+    width: 100%; 
     justify-content: center;
     margin-top: 10px;
 }
@@ -367,31 +364,44 @@ button[onclick*="validateChallenge"]:hover {
     box-sizing: border-box; 
 }
 
-/* Visual Uniformity Rules (No hard external borders) */
+/* --- ❗❗ THE REAL FIX: Split Visual Uniformity Rules ❗❗ --- */
+
+/* Rule 1: Set base styles for all target elements */
 .challenge-target-area * { 
     box-sizing: border-box; 
     font-family: 'Aeonik', sans-serif;
-}
-
-.challenge-target-area button,
-.challenge-target-area input,
-.challenge-target-area li,
-.challenge-target-area p,
-.challenge-target-area div,
-.challenge-target-area label,
-.challenge-target-area a,
-.challenge-target-area h2,
-.challenge-target-area h3,
-.challenge-target-area span {
     border: none; 
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05); 
     background-color: white !important; 
     color: var(--wf-secondary-steel-gray) !important;
-    padding: 10px 14px !important;
-    margin: 6px !important;
-    font-size: 1em !important; 
     border-radius: 6px !important; 
+    font-size: 1em !important; 
+}
+
+/* Rule 2: Style "Block-like" elements to stack vertically */
+.challenge-target-area p,
+.challenge-target-area div,
+.challenge-target-area h2,
+.challenge-target-area h3,
+.challenge-target-area ul,
+.challenge-target-area ol {
+    display: block !important;
+    width: 95%; /* Use 95% instead of 100% to respect parent padding */
+    text-align: left;
+    padding: 10px 14px !important;
+    margin: 6px 0 !important; /* Vertical margin only */
+}
+
+/* Rule 3: Style "Inline-like" (pill) elements to sit side-by-side */
+.challenge-target-area button,
+.challenge-target-area input,
+.challenge-target-area li,
+.challenge-target-area label,
+.challenge-target-area a,
+.challenge-target-area span {
     display: inline-block !important; 
+    padding: 10px 14px !important;
+    margin: 6px !important; /* Margin on all sides */
 }
 
 /* --- ACCORDION STYLING (WHATFIX REPLICATION) --- */
@@ -591,21 +601,14 @@ p[id*="prompt-"] {
 
 /* 5. Overrides to maintain specific component layouts (prevents excessive padding) */
 
-/* Re-adjust text elements inside the challenge-target-area */
-.challenge-target-area p,
-.challenge-target-area button,
-.challenge-target-area input,
-.challenge-target-area a,
-.challenge-target-area span {
-    /* Use original tight padding and margin for card-like elements */
-    padding: 10px 14px !important; 
-    margin: 6px !important;
-}
-
-/* Re-adjust feedback box content to prevent excessive padding from the 'p' rule */
+/* This rule is now replaced by the split rules above. 
+   We just need to override the feedback box 'p' tag.
+*/
 .validation-feedback p {
     padding: 0 !important; 
     margin-bottom: 10px !important; 
+    width: 100%; /* Ensure it's block-level inside the feedback */
+    text-align: left; /* Ensure it's left-aligned */
 }
 
 
