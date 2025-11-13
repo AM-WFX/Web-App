@@ -105,7 +105,6 @@ body {
     border-bottom: 2px solid var(--wf-accent-orange);
 }
 
-/* ❗ UPDATED: Styles for "Coming Soon" links ❗ */
 .navbar a.nav-disabled {
     color: #94A3B8; 
     cursor: not-allowed;
@@ -127,7 +126,6 @@ body {
     vertical-align: middle;
 }
 
-/* ❗ FIX: CSS-Only Tooltip for Navbar ❗ */
 .nav-disabled .tooltip-text {
     visibility: hidden;
     width: 200px;
@@ -138,10 +136,8 @@ body {
     padding: 8px;
     position: absolute;
     z-index: 1;
-    
     top: 150%; 
     left: 50%;
-    
     margin-left: -100px; 
     opacity: 0;
     transition: opacity 0.3s;
@@ -151,10 +147,8 @@ body {
 .nav-disabled .tooltip-text::after {
     content: "";
     position: absolute;
-    
     bottom: 100%; 
     left: 50%;
-    
     margin-left: -5px;
     border-width: 5px;
     border-style: solid;
@@ -210,24 +204,19 @@ button[onclick*="validateChallenge"],
     -webkit-appearance: none !important;
     border: none !important;
     border-style: none !important; 
-    
     background-color: var(--wf-accent-orange) !important; 
     color: white !important;
     font-weight: 400 !important;
-    
     padding-left: 25px !important;
     padding-right: 25px !important;
-    
     border-radius: 96px !important; 
     cursor: pointer !important;
     transition: background-color 0.2s, box-shadow 0.2s;
     text-decoration: none !important;
-    
     height: var(--wf-button-height) !important; 
     display: inline-flex !important; 
     align-items: center; 
     justify-content: center;
-    
     font-family: 'Aeonik', sans-serif !important;
     font-size: 11px !important; 
     box-sizing: border-box;
@@ -313,9 +302,9 @@ button[onclick*="validateChallenge"]:hover {
     box-shadow: none;
 }
 
-
-/* ❗ --- THIS IS THE FIX (PART 1) --- ❗ */
-/* We change height to min-height to allow boxes to grow. */
+/* ❗ --- THIS IS THE FIX (PART 1 of 2) --- ❗ */
+/* We change height to min-height to allow boxes to grow (no scrollbars). */
+/* We also ensure justify-content is 'center' (fixes Challenge 3). */
 .challenge-target-area {
     background-color: var(--wf-dominant-spring-wood); 
     border: 1px solid #E2E8F0; 
@@ -329,11 +318,11 @@ button[onclick*="validateChallenge"]:hover {
     display: flex;
     flex-direction: column; 
     align-items: center;     
-    justify-content: center; 
-    overflow: auto; 
+    justify-content: center; /* <-- RE-CENTERED */
+    overflow: hidden; /* <-- CHANGED from auto to hidden */
 }
 
-/* Style for the wrapper div in Challenge 6 */
+/* This wrapper from your JS (Challenge 6) will now work perfectly. */
 .challenge-action-buttons {
     display: flex;
     gap: 10px;
@@ -361,12 +350,21 @@ button[onclick*="validateChallenge"]:hover {
     box-sizing: border-box; 
 }
 
-/* ❗ --- THIS IS THE FIX (PART 2) --- ❗ */
-/* We DELETE the old, broken uniformity rules and replace them with these. */
+/* ❗ --- THIS IS THE FIX (PART 2 of 2) --- ❗ */
+/* We DELETE all the old, broken uniformity rules and replace them with this ONE. */
+/* This rule styles *only* the elements we want, and lets them keep their */
+/* natural display (block or inline) so they don't overflow. */
 
-/* Rule 1: Apply "pill" styling to *almost* everything inside the target. */
-/* This rule styles everything but respects their default layout. */
-.challenge-target-area * {
+.challenge-target-area p,
+.challenge-target-area button,
+.challenge-target-area input,
+.challenge-target-area li,
+.challenge-target-area h2,
+.challenge-target-area h3,
+.challenge-target-area span,
+.challenge-target-area a,
+.challenge-target-area label {
+    /* Aesthetics */
     box-sizing: border-box;
     border: none; 
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05); 
@@ -377,37 +375,31 @@ button[onclick*="validateChallenge"]:hover {
     font-size: 1em !important; 
     border-radius: 6px !important; 
     font-family: 'Aeonik', sans-serif;
-    /* We DO NOT define 'display' here. We let the browser handle it. */
+    
+    /* Layout - We let the browser decide 'display' */
+    /* This makes p, h2, h3 stack, and buttons/spans sit inline */
+    width: auto; 
+    max-width: 95%; /* Prevents pills from touching the edges */
+    text-align: left;
 }
 
-/* Rule 2: Un-style list wrappers (ul, ol) so they are invisible. */
+/* We just need to make sure lists are invisible containers */
 .challenge-target-area ul,
-.challenge-target-area ol {
+.challenge-target-area ol,
+.challenge-target-area div { /* Also target DIVs (like .card) */
     background-color: transparent !important;
     box-shadow: none !important;
-    padding: 10px !important;
+    padding: 0 !important;
     margin: 0 !important;
-    width: auto; /* Allow natural width */
-    /* Fix for list markers */
-    list-style-position: inside;
+    width: 100%; /* Containers should be full-width */
 }
 
-/* Rule 3: Make sure list-items (li) look and act like list-items. */
+/* And that list items are still list items */
 .challenge-target-area li {
-    display: list-item !important; /* NOT inline-block */
-    text-align: left;
-    margin-left: 20px !important; /* Indent them */
+    display: list-item !important; 
+    margin-left: 30px !important; /* Indent */
 }
 
-/* Rule 4: Ensure block elements (like cards) stack properly. */
-.challenge-target-area div,
-.challenge-target-area p,
-.challenge-target-area h2,
-.challenge-target-area h3 {
-    display: block !important;
-    width: auto; /* Let them be natural width, not 95% */
-    text-align: left;
-}
 
 /* --- ACCORDION STYLING (WHATFIX REPLICATION) --- */
 
@@ -558,6 +550,8 @@ p {
     margin-bottom: 1em; 
 }
 
+/* This rule is now safe to remove, but we'll keep it for the #prompt element */
+/* if you still have one outside the challenges */
 #prompt, #prompt * {
     padding: 20px !important; 
     margin: 10px !important; 
