@@ -40,7 +40,6 @@
 }
 
 /* --- GLOBAL RESET & FONT --- */
-/* FIX: Adds a global reset to remove default margins/padding (fixes "transparent space") */
 * {
     margin: 0;
     padding: 0;
@@ -52,7 +51,6 @@ body {
     font-weight: 400;
     background-color: var(--wf-dominant-spring-wood); 
     color: var(--wf-secondary-steel-gray); 
-    /* FIX: Prevents horizontal scrollbars on mobile */
     overflow-x: hidden;
 }
 
@@ -70,7 +68,6 @@ body {
     position: sticky; 
     top: 0;
     z-index: 100;
-    /* FIX: Allows navbar items to wrap on small screens */
     flex-wrap: wrap;
 }
 
@@ -86,47 +83,47 @@ body {
     margin: 0; 
     padding: 0; 
     display: flex; 
-    align-items: center; /* Vertically align nav items */
+    align-items: center; 
 }
 
 .navbar li { 
     margin-right: 25px; 
-    position: relative; /* Needed for tooltip positioning */
+    position: relative; 
 }
 
 .navbar a { 
     color: var(--wf-secondary-steel-gray); 
     text-decoration: none; 
-    font-size: 1em; /* Standardized font size */
+    font-size: 1em; 
     font-weight: 400; 
     padding: 5px 0;
     transition: color 0.3s, border-bottom 0.3s;
 }
 
 .navbar a.active { 
-    color: var(--wf-accent-orange); /* Active link uses accent color */
+    color: var(--wf-accent-orange); 
     border-bottom: 2px solid var(--wf-accent-orange);
 }
 
 /* ❗ UPDATED: Styles for "Coming Soon" links ❗ */
 .navbar a.nav-disabled {
-    color: #94A3B8; /* Muted gray text */
+    color: #94A3B8; 
     cursor: not-allowed;
-    display: flex; /* Use flex to align text and tag */
+    display: flex; 
     align-items: center;
 }
 .navbar a.nav-disabled:hover {
     border-bottom: none;
-    color: #94A3B8; /* Keep color muted on hover */
+    color: #94A3B8; 
 }
 .coming-soon-tag {
     background-color: #E2E8F0;
     color: #64748B;
     font-size: 0.65em;
     font-weight: 700;
-    padding: 3px 6px; /* Slightly more padding */
+    padding: 3px 6px; 
     border-radius: 4px;
-    margin-left: 8px; /* More space */
+    margin-left: 8px; 
     vertical-align: middle;
 }
 
@@ -145,7 +142,7 @@ body {
     top: 150%; 
     left: 50%;
     
-    margin-left: -100px; /* Use half of the width to center */
+    margin-left: -100px; 
     opacity: 0;
     transition: opacity 0.3s;
     font-size: 0.85em;
@@ -173,7 +170,7 @@ body {
 
 h1, h2, h3 {
     color: var(--wf-secondary-steel-gray);
-    font-weight: 700; /* Headers remain bold */
+    font-weight: 700; 
 }
 
 .container {
@@ -226,16 +223,13 @@ button[onclick*="validateChallenge"],
     transition: background-color 0.2s, box-shadow 0.2s;
     text-decoration: none !important;
     
-    height: var(--wf-button-height) !important; /* 40px */
+    height: var(--wf-button-height) !important; 
     display: inline-flex !important; 
     align-items: center; 
     justify-content: center;
     
     font-family: 'Aeonik', sans-serif !important;
-    
-    /* ❗ RATIO FIX: Set font size to 11px to match 16:60 ratio at 40px height ❗ */
     font-size: 11px !important; 
-    
     box-sizing: border-box;
 }
 
@@ -319,8 +313,9 @@ button[onclick*="validateChallenge"]:hover {
     box-shadow: none;
 }
 
-/* ❗ FIX: REVERTED this rule to its original state. ❗ */
-/* This provides a consistent centered, column layout for all challenges. */
+
+/* ❗ --- THIS IS THE FIX (PART 1) --- ❗ */
+/* We change height to min-height to allow boxes to grow. */
 .challenge-target-area {
     background-color: var(--wf-dominant-spring-wood); 
     border: 1px solid #E2E8F0; 
@@ -328,11 +323,13 @@ button[onclick*="validateChallenge"]:hover {
     padding: 15px;
     margin-top: 10px;
     margin-bottom: 20px; 
-    height: 200px; 
+    
+    min-height: 200px; /* <-- CHANGED from height to min-height */
+    
     display: flex;
-    flex-direction: column; /* REVERTED to column */
-    align-items: center;     /* RE-ADDED for centering */
-    justify-content: center; /* RE-ADDED for centering */
+    flex-direction: column; 
+    align-items: center;     
+    justify-content: center; 
     overflow: auto; 
 }
 
@@ -360,48 +357,56 @@ button[onclick*="validateChallenge"]:hover {
     border-radius: 96px; 
     font-family: monospace;
     font-size: 1em;
-    height: var(--wf-button-height); /* 40px */
+    height: var(--wf-button-height); 
     box-sizing: border-box; 
 }
 
-/* --- ❗❗ THE REAL FIX: Split Visual Uniformity Rules ❗❗ --- */
+/* ❗ --- THIS IS THE FIX (PART 2) --- ❗ */
+/* We DELETE the old, broken uniformity rules and replace them with these. */
 
-/* Rule 1: Set base styles for all target elements */
-.challenge-target-area * { 
-    box-sizing: border-box; 
-    font-family: 'Aeonik', sans-serif;
+/* Rule 1: Apply "pill" styling to *almost* everything inside the target. */
+/* This rule styles everything but respects their default layout. */
+.challenge-target-area * {
+    box-sizing: border-box;
     border: none; 
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05); 
     background-color: white !important; 
     color: var(--wf-secondary-steel-gray) !important;
-    border-radius: 6px !important; 
+    padding: 10px 14px !important;
+    margin: 6px !important;
     font-size: 1em !important; 
+    border-radius: 6px !important; 
+    font-family: 'Aeonik', sans-serif;
+    /* We DO NOT define 'display' here. We let the browser handle it. */
 }
 
-/* Rule 2: Style "Block-like" elements to stack vertically */
-.challenge-target-area p,
-.challenge-target-area div,
-.challenge-target-area h2,
-.challenge-target-area h3,
+/* Rule 2: Un-style list wrappers (ul, ol) so they are invisible. */
 .challenge-target-area ul,
 .challenge-target-area ol {
-    display: block !important;
-    width: 95%; /* Use 95% instead of 100% to respect parent padding */
-    text-align: left;
-    padding: 10px 14px !important;
-    margin: 6px 0 !important; /* Vertical margin only */
+    background-color: transparent !important;
+    box-shadow: none !important;
+    padding: 10px !important;
+    margin: 0 !important;
+    width: auto; /* Allow natural width */
+    /* Fix for list markers */
+    list-style-position: inside;
 }
 
-/* Rule 3: Style "Inline-like" (pill) elements to sit side-by-side */
-.challenge-target-area button,
-.challenge-target-area input,
-.challenge-target-area li,
-.challenge-target-area label,
-.challenge-target-area a,
-.challenge-target-area span {
-    display: inline-block !important; 
-    padding: 10px 14px !important;
-    margin: 6px !important; /* Margin on all sides */
+/* Rule 3: Make sure list-items (li) look and act like list-items. */
+.challenge-target-area li {
+    display: list-item !important; /* NOT inline-block */
+    text-align: left;
+    margin-left: 20px !important; /* Indent them */
+}
+
+/* Rule 4: Ensure block elements (like cards) stack properly. */
+.challenge-target-area div,
+.challenge-target-area p,
+.challenge-target-area h2,
+.challenge-target-area h3 {
+    display: block !important;
+    width: auto; /* Let them be natural width, not 95% */
+    text-align: left;
 }
 
 /* --- ACCORDION STYLING (WHATFIX REPLICATION) --- */
@@ -414,20 +419,15 @@ button[onclick*="validateChallenge"]:hover {
     font-weight: 400;
 }
 
-/* FIX: Add these rules to show the feedback box 
-   when your JavaScript adds a class to it.
-*/
 .validation-feedback.success,
 .validation-feedback.error,
 .validation-feedback.info {
-    display: block; /* This makes the box visible */
+    display: block; 
     border: 1px solid;
 }
 
 .validation-feedback.success {
-    /* CHANGED: Use brand's orange theme */
     background-color: var(--wf-support-karry);
-    /* 1. FIX: Changed text color to your brand's dark color */
     color: var(--wf-secondary-steel-gray);
     border-color: var(--wf-accent-orange);
 }
@@ -444,8 +444,6 @@ button[onclick*="validateChallenge"]:hover {
     border-color: #BEE3F8;
 }
 
-/* 2. FIX: Add this rule to create space for the <p> tag 
-   (like "Explore other ways...") inside the feedback box. */
 .validation-feedback p {
     margin-bottom: 10px;
 }
@@ -486,7 +484,7 @@ button[onclick*="validateChallenge"]:hover {
 }
 
 .accordion::after {
-    content: '\002B'; /* Plus Sign (+) */
+    content: '\002B'; 
     font-size: 1.5em;
     font-weight: 400;
     color: var(--wf-accent-orange);
@@ -495,7 +493,7 @@ button[onclick*="validateChallenge"]:hover {
 }
 
 .active-accordion::after {
-    content: '\2212'; /* Minus Sign (−) */
+    content: '\2212'; 
     transform: rotate(180deg);
 }
 
@@ -511,7 +509,6 @@ button[onclick*="validateChallenge"]:hover {
 
 .panel-content {
     padding: 15px 18px; 
-    /* border-left: 3px solid var(--wf-accent-orange); */ /* Removed */
     background-color: white; 
     margin-bottom: 5px;
     margin-top: 5px;
@@ -521,11 +518,9 @@ button[onclick*="validateChallenge"]:hover {
     margin: 0 !important; 
     border: none !important;
     background-color: transparent !important;
-    /* FIX: This comma was breaking your entire CSS file. It is now removed. */
     box-shadow: none !important; 
 }
 
-/* 3. FIX: Add styling for the reveal button */
 .reveal-button {
     appearance: none !important;
     -webkit-appearance: none !important;
@@ -552,63 +547,54 @@ button[onclick*="validateChallenge"]:hover {
 /* --- ➕ PADDING/ALIGNMENT FIXES (USER REQUEST) --- */
 /* ---------------------------------------------------- */
 
-/* 1. Reset general header padding to fix the main issue */
 h1, h2, h3 {
-    color: var(--wf-secondary-steel-gray);
-    font-weight: 700;
     margin-top: 1.5em;    
     margin-bottom: 0.5em; 
-    padding-left: 0;    /* <-- REMOVED padding-left: 5px to fix challenge alignment */
+    padding-left: 0;    
 }
 
-/* 2. Increase padding for all paragraphs (p) */
 p {
     padding: 5px 0; 
     margin-bottom: 1em; 
 }
 
-/* 3. Target the entire #prompt container and increase padding for ALL elements inside it */
 #prompt, #prompt * {
     padding: 20px !important; 
     margin: 10px !important; 
 }
 
-/* 4. Challenge-specific element styling (Ensures h3 and p are aligned) */
-/* Targets all challenge titles (h3) */
 h3[id*="challenge-title-"] {
     font-size: 1.4em;
     font-weight: 700;
     margin-bottom: 5px;
-    padding-left: 0 !important; /* Explicitly ensure no extra padding */
+    padding-left: 0 !important; 
 }
 
-/* Targets all status spans */
 span[id*="status-"] {
     color: var(--wf-accent-orange); 
     font-weight: 700;
     font-size: 0.9em;
-    display: block; /* Ensures it aligns to the left margin */
+    display: block; 
     padding: 2px 0;
     margin-left: 0 !important;
 }
 
-/* Targets all prompt paragraphs (p) */
 p[id*="prompt-"] {
     padding: 5px 0 !important;
     margin-left: 0 !important;
 }
 
 
-/* 5. Overrides to maintain specific component layouts (prevents excessive padding) */
+/* 5. Overrides to maintain specific component layouts */
 
-/* This rule is now replaced by the split rules above. 
-   We just need to override the feedback box 'p' tag.
-*/
 .validation-feedback p {
     padding: 0 !important; 
     margin-bottom: 10px !important; 
-    width: 100%; /* Ensure it's block-level inside the feedback */
-    text-align: left; /* Ensure it's left-aligned */
+    width: 100%; 
+    text-align: left;
+    /* Re-override the * rule */
+    background-color: transparent !important;
+    box-shadow: none !important;
 }
 
 
@@ -618,7 +604,6 @@ p[id*="prompt-"] {
 
 @media (max-width: 768px) {
     
-    /* Fix: Stack navbar items vertically */
     .navbar {
         flex-direction: column;
         align-items: flex-start;
@@ -648,36 +633,32 @@ p[id*="prompt-"] {
     .navbar a {
         padding: 8px 0;
         width: 100%;
-        display: block; /* Make links full-width */
+        display: block; 
     }
 
     .navbar a.active {
         border-bottom: 2px solid var(--wf-accent-orange);
     }
     
-    /* Fix: Stop "Coming Soon" tooltips from breaking layout on tap */
     .nav-disabled:hover .tooltip-text {
-        visibility: hidden; /* Changed from 'none' to 'hidden' */
+        visibility: hidden; 
         opacity: 0;
         display: none;
     }
 
-    /* Fix: Main content padding for mobile */
     .main-content {
         padding: 20px;
     }
 
-    /* Fix: Challenge boxes stack vertically */
     .challenge-container {
         flex-basis: 100%;
         max-width: 100%;
-        min-width: 0; /* Allow shrinking below 380px */
+        min-width: 0; 
     }
 
-    /* Fix: Challenge UI stacks vertically */
     .challenge-ui {
         flex-direction: column;
-        align-items: stretch; /* Make input/button full width */
+        align-items: stretch; 
     }
 
     .challenge-ui input[type="text"] {
