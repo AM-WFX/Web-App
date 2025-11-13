@@ -272,7 +272,7 @@ button[onclick*="validateChallenge"]:hover {
     justify-content: space-between;
 }
 
-/* ❗ FIX 1: Use 'gap' for spacing, remove 'justify-content' ❗ */
+/* ❗ FIX 1: Use 'gap' for consistent spacing ❗ */
 .challenge-container {
     background-color: var(--wf-support-karry); 
     border-radius: var(--wf-border-radius);
@@ -291,14 +291,13 @@ button[onclick*="validateChallenge"]:hover {
     gap: 15px; 
 }
 
-/* ❗ FIX 2: Remove all the margins that were fighting ❗ */
+/* This is the box where the content goes. */
 .challenge-target-area {
     background-color: var(--wf-dominant-spring-wood); 
     border: 1px solid #E2E8F0; 
     border-radius: var(--wf-border-radius);
     padding: 15px;
-    /* margin-top: 10px;  <-- REMOVED */
-    /* margin-bottom: 20px; <-- REMOVED */
+    /* margin-top/bottom are REMOVED (gap handles it) */
     width: 100%; 
     
     height: 230px; 
@@ -308,7 +307,6 @@ button[onclick*="validateChallenge"]:hover {
     align-items: center;     
     justify-content: center;
 }
-
 
 /* This is our one, simple "pill" style */
 .challenge-target-area p,
@@ -361,11 +359,10 @@ button[onclick*="validateChallenge"]:hover {
 }
 
 
-/* ❗ FIX 3: Remove all the margins that were fighting ❗ */
 .challenge-ui {
     display: flex;
     gap: 10px;
-    /* margin-top: 10px; <-- REMOVED */
+    /* margin-top: 10px; <-- REMOVED (gap handles it) */
     justify-content: center; 
     align-items: center; 
     width: 100%; /* Make UI fill width */
@@ -383,12 +380,10 @@ button[onclick*="validateChallenge"]:hover {
 }
 
 /* --- ACCORDION & FEEDBACK STYLING --- */
-
-/* ❗ FIX 4: Remove all the margins that were fighting ❗ */
 .validation-feedback { 
     display: none; 
     padding: 20px !important;
-    /* margin-top: 15px !important; <-- REMOVED */
+    /* margin-top: 15px !important; <-- REMOVED (gap handles it) */
     border-radius: var(--wf-border-radius);
     font-weight: 400;
     width: 100%; /* Make feedback fill width */
@@ -519,13 +514,13 @@ p {
     margin: 10px !important; 
 }
 
-/* ❗ FIX 5: Remove all the margins that were fighting ❗ */
+/* ❗ FIX 5: Remove all margins from these elements ❗ */
+/* The parent 'gap' property will handle all spacing */
 h3[id*="challenge-title-"] {
     font-size: 1.4em;
     font-weight: 700;
-    /* margin-bottom: 5px; <-- REMOVED */
+    margin: 0 !important; /* REMOVED all margins */
     padding-left: 0 !important; 
-    margin-top: 0 !important; 
 }
 span[id*="status-"] {
     color: var(--wf-accent-orange); 
@@ -533,14 +528,14 @@ span[id*="status-"] {
     font-size: 0.9em;
     display: block; 
     padding: 2px 0;
-    margin-left: 0 !important;
+    margin: 0 !important; /* ❗ THIS IS THE FIX ❗ */
 }
 p[id*="prompt-"] {
     padding: 5px 0 !important;
-    margin-left: 0 !important;
+    margin: 0 !important; /* REMOVED all margins */
     text-align: center; /* Center the prompt text */
-    margin-bottom: 0 !important; /* Override global 'p' style */
 }
+
 .validation-feedback p {
     padding: 0 !important; 
     margin-bottom: 10px !important; 
