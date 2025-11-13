@@ -319,6 +319,7 @@ button[onclick*="validateChallenge"]:hover {
     box-shadow: none;
 }
 
+/* ❗ FIX: MODIFIED LAYOUT to allow content to wrap onto multiple rows ❗ */
 .challenge-target-area {
     background-color: var(--wf-dominant-spring-wood); 
     border: 1px solid #E2E8F0; 
@@ -327,11 +328,24 @@ button[onclick*="validateChallenge"]:hover {
     margin-top: 10px;
     margin-bottom: 20px; 
     height: 200px; 
+    
+    /* MODIFIED: Use flex row, wrap content, and align to start */
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    flex-direction: row; 
+    flex-wrap: wrap; 
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    overflow: auto; 
+}
+
+/* Added style for the new wrapper in Challenge 6 HTML */
+.challenge-action-buttons {
+    display: flex;
+    gap: 10px;
+    width: 100%; /* Important: ensures buttons take up a new row */
     justify-content: center;
-    overflow: auto; /* Handle potential overflow inside the box */
+    margin-top: 10px;
 }
 
 .challenge-ui {
@@ -534,7 +548,7 @@ h1, h2, h3 {
     font-weight: 700;
     margin-top: 1.5em;    
     margin-bottom: 0.5em; 
-    padding-left: 0;    /* <-- REMOVED padding-left: 5px to fix alignment */
+    padding-left: 0;    /* <-- REMOVED padding-left: 5px to fix challenge alignment */
 }
 
 /* 2. Increase padding for all paragraphs (p) */
@@ -563,7 +577,7 @@ span[id*="status-"] {
     color: var(--wf-accent-orange); 
     font-weight: 700;
     font-size: 0.9em;
-    display: block; /* Change to block to ensure it starts on a new line and aligns */
+    display: block; /* Ensures it aligns to the left margin */
     padding: 2px 0;
     margin-left: 0 !important;
 }
