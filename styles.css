@@ -55,7 +55,6 @@ body {
 }
 
 /* --- ❗ NAVBAR STYLING (WHATFIX REPLICATION) ❗ --- */
-/* (This section is unchanged and correct) */
 .navbar {
     background-color: white; 
     color: var(--wf-secondary-steel-gray);
@@ -154,7 +153,6 @@ body {
 
 
 /* --- CORE LAYOUT & CARDS --- */
-/* (This section is unchanged and correct) */
 h1, h2, h3 {
     color: var(--wf-secondary-steel-gray);
     font-weight: 700; 
@@ -177,7 +175,6 @@ h1, h2, h3 {
 }
 
 /* --- FOOTER STYLING --- */
-/* (This section is unchanged and correct) */
 footer {
     text-align: center;
     padding: 15px;
@@ -187,7 +184,6 @@ footer {
 }
 
 /* --- CTA & BUTTON STYLING --- */
-/* (This section is unchanged and correct) */
 button[onclick*="validateChallenge"], 
 .cta-button {
     appearance: none !important;
@@ -218,7 +214,6 @@ button[onclick*="validateChallenge"]:hover {
 }
 
 /* --- HOME & ABOUT PAGE SPECIFICS --- */
-/* (This section is unchanged and correct) */
 .promo-box {
     background-color: var(--wf-support-karry); 
     border-radius: var(--wf-border-radius);
@@ -338,7 +333,6 @@ button[onclick*="validateChallenge"]:hover {
 }
 
 /* This rule forces block elements to BE block elements */
-/* This was the missing piece. */
 .target-element[style*="block"],
 .target-element.card,
 .target-element.footer,
@@ -351,9 +345,8 @@ button[onclick*="validateChallenge"]:hover {
     width: auto; /* Let it be natural width */
 }
 
-/* ❗ --- THIS IS THE FIX (PART 3) --- ❗ */
-/* This new rule fixes Challenge 6's uniformity. */
-/* It makes all *direct children* of a complex layout stack. */
+/* ❗ --- THIS IS THE NEW RULE THAT FIXES CHALLENGE 6 --- ❗ */
+/* This rule makes all *direct children* of a complex box a full-width block */
 .challenge-target-area.is-complex > .target-element {
     display: block !important;
     width: auto; /* Let it be natural width */
