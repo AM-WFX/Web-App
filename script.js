@@ -9,8 +9,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // This checks if the #all-challenges div exists on the current page.
     if (document.getElementById('all-challenges')) {
         initializeChallenges();
-        
-        // ❗ DELETED the applyChallengeStyling() function call. It's not needed.
     }
 });
 
@@ -92,7 +90,6 @@ const challengeDefinitions = [
         prompt: "Target the Primary Login Button using its unique ID.",
         targetSelector: "#login-primary",
         type: "ID Selector",
-        isComplex: false, // <-- This is correct
         alternatives: [
             { selector: "button#login-primary", explanation: "This uses the tag name and the ID. Since IDs are already unique, adding the tag name is redundant but valid." }
         ],
@@ -107,7 +104,6 @@ const challengeDefinitions = [
         prompt: "Target the item marked Urgent using its class.",
         targetSelector: ".task-urgent",
         type: "Class Selector",
-        isComplex: true, // <-- This is correct
         alternatives: [
             { selector: "li.task-urgent", explanation: "This is a great technique: combining the tag name (li) with the class." },
             { selector: ".task-urgent.list-item", explanation: "This chains two class selectors together, ensuring an element has *both* classes." }
@@ -126,13 +122,13 @@ const challengeDefinitions = [
         prompt: "Target the Save button that is contained *anywhere* inside the #settings-modal.",
         targetSelector: "#settings-modal .btn-save",
         type: "Descendant Combinator",
-        isComplex: true, // <-- This is correct
         alternatives: [
             { selector: "#settings-modal button.btn-save", explanation: "This is highly specific. It combines the ID of the container, the tag name, and the class name." },
         ],
         trivia: "A single space is the Descendant Combinator. It selects elements nested at *any* depth.",
+        // ❗ FIX: Removed the border and padding style from the div
         html: `
-            <div id="settings-modal" style="padding: 10px; border: 1px solid #ccc;">
+            <div id="settings-modal">
                 <button class="btn-cancel">Cancel</button>
                 <div class="footer">
                     <button class="btn-save">Save</button>
@@ -145,14 +141,14 @@ const challengeDefinitions = [
         prompt: "Target the Title text that is a direct child of the .card-header.",
         targetSelector: ".card-header > h2",
         type: "Child Combinator",
-        isComplex: true, // <-- This is correct
         alternatives: [
             { selector: ".card-header>h2", explanation: "Whitespace around the '>' operator is optional." },
             { selector: ".card > .card-header > h2", explanation: "This chains multiple Child Combinators, ensuring a rigid structure." }
         ],
         trivia: "The Child Combinator (`>`) ensures the relationship is direct (one level deep).",
+        // ❗ FIX: Removed the border and padding style from the div
         html: `
-            <div class="card" style="border: 1px solid #ccc; padding: 10px;">
+            <div class="card">
                 <div class="card-header">
                     <h2>Card Title</h2>
                     <h2>Nested Title (Not Target)</h2>
@@ -166,7 +162,6 @@ const challengeDefinitions = [
         prompt: "Target the Second Item that immediately follows the element with the class .first-element.",
         targetSelector: ".first-element + li",
         type: "Adjacent Sibling Combinator",
-        isComplex: true, // <-- This is correct
         alternatives: [
             { selector: "li.first-element + li.list-item", explanation: "A highly specific version that ensures both elements are list items." }
         ],
@@ -185,7 +180,6 @@ const challengeDefinitions = [
         prompt: "Target the Comments button given in the area below, which appears somewhere after the h3 element.",
         targetSelector: "h3 ~ .challenge-action-buttons .comments", // This is the correct selector for your HTML
         type: "General Sibling Combinator",
-        isComplex: true, // <-- This is correct
         alternatives: [
             { selector: "h3 ~ div .comments", explanation: "A slightly less specific, but still correct, alternative." },
             { selector: ".like ~ .comments", explanation: "This is also correct! It targets the .comments button as a sibling of the .like button." }
@@ -205,7 +199,6 @@ const challengeDefinitions = [
         prompt: "Target the input field whose name attribute contains the word 'user'.",
         targetSelector: "input[name*='user']",
         type: "Attribute Selector (Substring Match)",
-        isComplex: false, // <-- This is correct
         alternatives: [
             { selector: "input[name~='data-username']", explanation: "Uses the tilde operator (`~=`), which matches a whole word in a space-separated list. This would fail." }
         ],
@@ -221,7 +214,6 @@ const challengeDefinitions = [
         prompt: "Target the third item in the list, regardless of its tag name, using :nth-child.",
         targetSelector: "li:nth-child(3)",
         type: "Structural Pseudo-class (:nth-child)",
-        isComplex: true, // <-- This is correct
         alternatives: [
             { selector: "ol li:nth-child(3)", explanation: "More specific by scoping the selection to `li` elements inside an ordered list (`ol`)." },
             { selector: "li:nth-of-type(3)", explanation: "This selects the third `li` element. It works here, but is a different selector." }
@@ -241,7 +233,6 @@ const challengeDefinitions = [
         prompt: "Target the Save button which does not have the class .disabled.",
         targetSelector: "button:not(.disabled)",
         type: "Negation Pseudo-class (:not)",
-        isComplex: false, // <-- This is correct
         alternatives: [
             { selector: ".btn-save:not(.disabled)", explanation: "This targets any element with the class `.btn-save` that is not disabled." },
             { selector: "button.btn-save:not(.disabled)", explanation: "The most specific option. Combines tag name, class name, and the negation." }
@@ -258,7 +249,6 @@ const challengeDefinitions = [
         prompt: "Target the checkbox that is currently checked.",
         targetSelector: "input:checked",
         type: "UI State Pseudo-class (:checked)",
-        isComplex: false, // <-- This is correct
         alternatives: [
             { selector: "input[type='checkbox']:checked", explanation: "This adds the attribute selector for `type='checkbox'`, ensuring the selector only applies to checkbox inputs." }
         ],
@@ -294,11 +284,8 @@ function initializeChallenges() {
             successfulSelectors: [],
             originalPrompt: def.prompt,
             type: def.type,
-            isComplex: def.isComplex // <-- Store the flag
+            // ❗ We no longer need the isComplex flag
         };
-
-        // This is the key: add the .is-complex class to the container
-        const complexClass = def.isComplex ? 'is-complex' : '';
 
         htmlContent += `
             <div id="challenge-${def.id}" class="challenge-container">
@@ -308,7 +295,7 @@ function initializeChallenges() {
                 </div>
                 <p id="prompt-${def.id}">${def.prompt}</p>
                 
-                <div id="target-area-${def.id}" class="challenge-target-area ${complexClass}">
+                <div id="target-area-${def.id}" class="challenge-target-area">
                     ${def.html}
                 </div>
                 
@@ -324,7 +311,6 @@ function initializeChallenges() {
     container.innerHTML = htmlContent;
 }
 
-// ❗ DELETED the applyChallengeStyling() function. It is not needed.
 
 function applyHighlighting(challengeId) {
     const targetArea = document.getElementById(`target-area-${challengeId}`);
@@ -579,7 +565,4 @@ function resetChallenge(challengeId) {
     
     statusElement.textContent = "(Unsolved)";
     statusElement.style.color = 'grey';
-    
-    // ❗ Note: We don't need to re-run applyChallengeStyling()
-    // because the new CSS rules are general and will apply automatically.
 }
