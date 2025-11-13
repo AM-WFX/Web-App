@@ -66,7 +66,7 @@ function generateNewChallengeHTML(def) {
         newTargetSelector = "ul.nav-menu > li.new-target";
         newPrompt = "Target the list item with the class `.new-target` that is a direct child of the unordered list (`ul.nav-menu`).";
     } else if (def.type.includes('Adjacent Sibling Combinator')) {
-         html = `
+        html = `
             <button id="prev-sibling">Previous</button>
             <p class="new-target">Target Paragraph</p>
             <p>Next Paragraph</p>
@@ -75,7 +75,7 @@ function generateNewChallengeHTML(def) {
         newPrompt = "Target the paragraph that immediately follows the `#prev-sibling` button.";
     }
      else {
-         // Fallback for others - simple structure swap
+        // Fallback for others - simple structure swap
         html = def.baseHTML.replace(def.targetSelector.replace(/[#\.\s>+~:]/g, ''), 'new-target');
         newTargetSelector = def.correctTarget.replace(def.correctTarget.replace(/[#\.\s>+~:]/g, ''), 'new-target');
         newPrompt = `Apply the ${def.type} logic to this new structure. The target element now has the class .new-target.`;
@@ -187,12 +187,15 @@ const challengeDefinitions = [
             { selector: "button.like ~ button.comments", explanation: "This targets the Comments button based on a different preceding sibling, the Like button. It demonstrates the flexibility of the General Sibling Combinator." }
         ],
         trivia: "The General Sibling Combinator (`~`) selects all siblings that follow the first selector. Unlike the Adjacent Sibling (`+`), it can skip over non-matching siblings.",
+        // MODIFIED HTML: Added a wrapper DIV for the buttons to control row flow
         html: `
             <button class="share">Share</button>
             <h3>Post Title</h3>
             <p>Post content...</p>
-            <button class="like">Like</button>
-            <button class="comments">Comments</button>
+            <div class="challenge-action-buttons"> 
+                <button class="like">Like</button>
+                <button class="comments">Comments</button>
+            </div>
         `
     },
     {
@@ -307,7 +310,6 @@ function initializeChallenges() {
                 <div class="challenge-ui">
                     <input type="text" id="selector-input-${def.id}" placeholder="Enter your selector here (e.g., .class-name)" data-id="${def.id}">
                     
-                    <!-- ❗❗ BUG FIX: Added class="cta-button" to the generated button ❗❗ -->
                     <button class="cta-button" onclick="validateChallenge(${def.id})">Validate</button>
                 </div>
                 <div id="feedback-${def.id}" class="validation-feedback"></div>
