@@ -187,12 +187,17 @@ const challengeDefinitions = [
     {
         id: 6,
         prompt: "Target the Comments button given in the area below, which appears somewhere after the h3 element.",
-        targetSelector: "h3 ~ button.comments",
+        
+        // ❗ --- JAVASCRIPT FIX --- ❗
+        // The old selector was "h3 ~ button.comments", which was broken.
+        // This new selector correctly finds the target.
+        targetSelector: "h3 ~ .challenge-action-buttons .comments",
+
         type: "General Sibling Combinator",
         isComplex: true, // <-- NEW FLAG
         alternatives: [
-            { selector: "h3 ~ .comments", explanation: "Less specific. This is correct but risks selecting a non-button element." },
-            { selector: "button.like ~ button.comments", explanation: "This targets the Comments button based on the Like button. Also correct!" }
+            { selector: "h3 ~ div .comments", explanation: "A slightly less specific, but still correct, alternative." },
+            { selector: ".like ~ .comments", explanation: "This is also correct! It targets the .comments button as a sibling of the .like button." }
         ],
         trivia: "The General Sibling Combinator (`~`) selects all siblings that follow, not just the immediate one.",
         html: `
@@ -302,7 +307,6 @@ function initializeChallenges() {
             isComplex: def.isComplex // <-- Store the flag
         };
 
-        // ❗ MODIFICATION: Add the isComplex flag to the container ❗
         const complexClass = def.isComplex ? 'is-complex' : '';
 
         htmlContent += `
