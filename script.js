@@ -10,9 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (document.getElementById('all-challenges')) {
         initializeChallenges();
         
-        // ❗ --- NEW FUNCTION --- ❗
-        // This runs AFTER the HTML is built to apply our styles.
-        applyChallengeStyling();
+        // ❗ DELETED the applyChallengeStyling() function call.
     }
 });
 
@@ -94,7 +92,7 @@ const challengeDefinitions = [
         prompt: "Target the Primary Login Button using its unique ID.",
         targetSelector: "#login-primary",
         type: "ID Selector",
-        isComplex: false, // <-- NEW FLAG
+        isComplex: false, // <-- This is correct
         alternatives: [
             { selector: "button#login-primary", explanation: "This uses the tag name and the ID. Since IDs are already unique, adding the tag name is redundant but valid." }
         ],
@@ -109,7 +107,7 @@ const challengeDefinitions = [
         prompt: "Target the item marked Urgent using its class.",
         targetSelector: ".task-urgent",
         type: "Class Selector",
-        isComplex: true, // <-- NEW FLAG (<ul> wrapper)
+        isComplex: true, // <-- This is correct
         alternatives: [
             { selector: "li.task-urgent", explanation: "This is a great technique: combining the tag name (li) with the class." },
             { selector: ".task-urgent.list-item", explanation: "This chains two class selectors together, ensuring an element has *both* classes." }
@@ -128,7 +126,7 @@ const challengeDefinitions = [
         prompt: "Target the Save button that is contained *anywhere* inside the #settings-modal.",
         targetSelector: "#settings-modal .btn-save",
         type: "Descendant Combinator",
-        isComplex: true, // <-- NEW FLAG (nested divs)
+        isComplex: true, // <-- This is correct
         alternatives: [
             { selector: "#settings-modal button.btn-save", explanation: "This is highly specific. It combines the ID of the container, the tag name, and the class name." },
         ],
@@ -147,7 +145,7 @@ const challengeDefinitions = [
         prompt: "Target the Title text that is a direct child of the .card-header.",
         targetSelector: ".card-header > h2",
         type: "Child Combinator",
-        isComplex: true, // <-- NEW FLAG
+        isComplex: true, // <-- This is correct
         alternatives: [
             { selector: ".card-header>h2", explanation: "Whitespace around the '>' operator is optional." },
             { selector: ".card > .card-header > h2", explanation: "This chains multiple Child Combinators, ensuring a rigid structure." }
@@ -170,7 +168,7 @@ const challengeDefinitions = [
         prompt: "Target the Second Item that immediately follows the element with the class .first-element.",
         targetSelector: ".first-element + li",
         type: "Adjacent Sibling Combinator",
-        isComplex: true, // <-- NEW FLAG (<ul> wrapper)
+        isComplex: true, // <-- This is correct
         alternatives: [
             { selector: "li.first-element + li.list-item", explanation: "A highly specific version that ensures both elements are list items." }
         ],
@@ -187,14 +185,9 @@ const challengeDefinitions = [
     {
         id: 6,
         prompt: "Target the Comments button given in the area below, which appears somewhere after the h3 element.",
-        
-        // ❗ --- JAVASCRIPT FIX --- ❗
-        // The old selector was "h3 ~ button.comments", which was broken.
-        // This new selector correctly finds the target.
-        targetSelector: "h3 ~ .challenge-action-buttons .comments",
-
+        targetSelector: "h3 ~ .challenge-action-buttons .comments", // This is the correct selector for your HTML
         type: "General Sibling Combinator",
-        isComplex: true, // <-- NEW FLAG
+        isComplex: true, // <-- This is correct
         alternatives: [
             { selector: "h3 ~ div .comments", explanation: "A slightly less specific, but still correct, alternative." },
             { selector: ".like ~ .comments", explanation: "This is also correct! It targets the .comments button as a sibling of the .like button." }
@@ -215,7 +208,7 @@ const challengeDefinitions = [
         prompt: "Target the input field whose name attribute contains the word 'user'.",
         targetSelector: "input[name*='user']",
         type: "Attribute Selector (Substring Match)",
-        isComplex: false, // <-- NEW FLAG (simple)
+        isComplex: false, // <-- This is correct
         alternatives: [
             { selector: "input[name~='data-username']", explanation: "Uses the tilde operator (`~=`), which matches a whole word in a space-separated list. This would fail." }
         ],
@@ -231,7 +224,7 @@ const challengeDefinitions = [
         prompt: "Target the third item in the list, regardless of its tag name, using :nth-child.",
         targetSelector: "li:nth-child(3)",
         type: "Structural Pseudo-class (:nth-child)",
-        isComplex: true, // <-- NEW FLAG (<ol> wrapper)
+        isComplex: true, // <-- This is correct
         alternatives: [
             { selector: "ol li:nth-child(3)", explanation: "More specific by scoping the selection to `li` elements inside an ordered list (`ol`)." },
             { selector: "li:nth-of-type(3)", explanation: "This selects the third `li` element. It works here, but is a different selector." }
@@ -251,7 +244,7 @@ const challengeDefinitions = [
         prompt: "Target the Save button which does not have the class .disabled.",
         targetSelector: "button:not(.disabled)",
         type: "Negation Pseudo-class (:not)",
-        isComplex: false, // <-- NEW FLAG (simple)
+        isComplex: false, // <-- This is correct
         alternatives: [
             { selector: ".btn-save:not(.disabled)", explanation: "This targets any element with the class `.btn-save` that is not disabled." },
             { selector: "button.btn-save:not(.disabled)", explanation: "The most specific option. Combines tag name, class name, and the negation." }
@@ -268,7 +261,7 @@ const challengeDefinitions = [
         prompt: "Target the checkbox that is currently checked.",
         targetSelector: "input:checked",
         type: "UI State Pseudo-class (:checked)",
-        isComplex: false, // <-- NEW FLAG (simple)
+        isComplex: false, // <-- This is correct
         alternatives: [
             { selector: "input[type='checkbox']:checked", explanation: "This adds the attribute selector for `type='checkbox'`, ensuring the selector only applies to checkbox inputs." }
         ],
@@ -307,6 +300,7 @@ function initializeChallenges() {
             isComplex: def.isComplex // <-- Store the flag
         };
 
+        // This is the key: add the .is-complex class to the container
         const complexClass = def.isComplex ? 'is-complex' : '';
 
         htmlContent += `
@@ -333,27 +327,11 @@ function initializeChallenges() {
     container.innerHTML = htmlContent;
 }
 
-// ❗ --- NEW FUNCTION TO APPLY STYLES --- ❗
-function applyChallengeStyling() {
-    challengeDefinitions.forEach(def => {
-        const targetArea = document.getElementById(`target-area-${def.id}`);
-        if (!targetArea) return;
-
-        // Find all elements we want to turn into "pills"
-        const elementsToStyle = targetArea.querySelectorAll('p, button, li, h2, h3, span, a, label, input');
-        
-        elementsToStyle.forEach(el => {
-            el.classList.add('target-element');
-        });
-    });
-}
-
+// ❗ DELETED the applyChallengeStyling() function. It is not needed.
 
 function applyHighlighting(challengeId) {
-    // ... (rest of the function is unchanged)
     const targetArea = document.getElementById(`target-area-${challengeId}`);
     if (!targetArea) return;
-
     try {
         targetArea.querySelectorAll('.target-highlight').forEach(el => el.classList.remove('target-highlight'));
     } catch (e) {
@@ -362,7 +340,6 @@ function applyHighlighting(challengeId) {
 }
 
 function toggleAccordion(button) {
-    // ... (rest of the function is unchanged)
     button.classList.toggle("active-accordion");
     let panel = button.nextElementSibling;
     if (panel.style.maxHeight) {
@@ -373,7 +350,6 @@ function toggleAccordion(button) {
 }
 
 function validateChallenge(challengeId) {
-    // ... (rest of the function is unchanged)
     const state = challengeStates[challengeId];
     const inputField = document.getElementById(`selector-input-${challengeId}`);
     const feedbackElement = document.getElementById(`feedback-${challengeId}`);
@@ -461,7 +437,6 @@ function validateChallenge(challengeId) {
 }
 
 function handleSuccess(challengeId, correctSelector) {
-    // ... (rest of the function is unchanged)
     const state = challengeStates[challengeId];
     const feedbackElement = document.getElementById(`feedback-${challengeId}`);
     const statusElement = document.getElementById(`status-${challengeId}`);
@@ -515,7 +490,6 @@ function handleSuccess(challengeId, correctSelector) {
 }
 
 function handleFailure(challengeId, userInput, selectedElements, correctTarget) {
-    // ... (rest of the function is unchanged)
     const state = challengeStates[challengeId];
     const feedbackElement = document.getElementById(`feedback-${challengeId}`);
     const challengeType = state.type; 
@@ -559,7 +533,6 @@ function handleFailure(challengeId, userInput, selectedElements, correctTarget) 
 }
 
 function revealSolution(challengeId) {
-    // ... (rest of the function is unchanged)
     const state = challengeStates[challengeId];
     const feedbackElement = document.getElementById(`feedback-${challengeId}`);
     const inputField = document.getElementById(`selector-input-${challengeId}`);
@@ -581,7 +554,6 @@ function revealSolution(challengeId) {
 }
 
 function resetChallenge(challengeId) {
-    // ... (rest of the function is unchanged)
     const state = challengeStates[challengeId];
     const challengeDef = challengeDefinitions.find(d => d.id === challengeId);
     const targetArea = document.getElementById(`target-area-${challengeId}`);
@@ -610,11 +582,7 @@ function resetChallenge(challengeId) {
     
     statusElement.textContent = "(Unsolved)";
     statusElement.style.color = 'grey';
-
-    // ❗ --- RE-APPLY STYLING --- ❗
-    // This is crucial for the new elements.
-    const elementsToStyle = targetArea.querySelectorAll('p, button, li, h2, h3, span, a, label, input');
-    elementsToStyle.forEach(el => {
-        el.classList.add('target-element');
-    });
+    
+    // ❗ Note: We don't need to re-run applyChallengeStyling()
+    // because the new CSS rules are general and will apply automatically.
 }
