@@ -305,16 +305,24 @@ button[onclick*="validateChallenge"]:hover {
 /* This is the MODIFIER state for COMPLEX challenges (like 4, 6, 8) */
 /* This class is added by our new JavaScript function. */
 .challenge-target-area.is-complex {
-    /* Override: Align to the top-left to allow natural document flow */
-    align-items: flex-start;
+    /* Override: Align to the top, and stretch children to be full-width */
+    align-items: stretch;
     justify-content: flex-start;
 }
 
 /* --- THIS IS THE FIX (PART 2) --- */
 
 /* This is our one, perfect "pill" style. */
-/* It is only applied via JavaScript to the elements we want. */
-.target-element {
+/* We select all the targetable elements INSIDE the box */
+.challenge-target-area p,
+.challenge-target-area button,
+.challenge-target-area input,
+.challenge-target-area li,
+.challenge-target-area h2,
+.challenge-target-area h3,
+.challenge-target-area span,
+.challenge-target-area a,
+.challenge-target-area label {
     box-sizing: border-box;
     border: none; 
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05); 
@@ -326,32 +334,18 @@ button[onclick*="validateChallenge"]:hover {
     border-radius: 6px !important; 
     font-family: 'Aeonik', sans-serif;
     
-    /* Let the element be inline-block by default */
-    display: inline-block;
+    /* We DO NOT set 'display' here. 
+      We let the flex container (.challenge-target-area) decide.
+      - In 'simple' mode (center), elements will be 'auto' width.
+      - In 'complex' mode (stretch), elements will be 'full' width.
+    */
+    
     max-width: 95%; 
     text-align: left;
 }
 
-/* ❗ --- THIS RULE IS NOW CORRECT --- ❗ */
-/* This rule forces block elements to BE block elements */
-p.target-element,
-h2.target-element,
-h3.target-element,
-li.target-element {
-    display: block !important;
-    width: auto; /* Let it be natural width */
-}
 
-/* ❗ --- THIS RULE IS NOW CORRECT --- ❗ */
-/* This rule makes all *direct children* of a complex box a full-width block */
-/* This is what fixes Challenge 6's uniformity. */
-.challenge-target-area.is-complex > .target-element {
-    display: block !important;
-    width: auto; /* Let it be natural width */
-}
-
-/* And make sure invisible wrappers are invisible */
-/* ❗ --- THIS RULE IS NOW CORRECT --- ❗ */
+/* We just need to make sure lists/divs are invisible containers */
 .challenge-target-area div,
 .challenge-target-area ul,
 .challenge-target-area ol {
@@ -360,8 +354,12 @@ li.target-element {
     padding: 0 !important;
     margin: 0 !important;
     width: 100%;
-    /* We also add 'display: block' to be certain */
-    display: block !important; 
+}
+
+/* And that list items are still list items */
+.challenge-target-area li {
+    display: list-item !important; 
+    margin-left: 30px !important; /* Indent */
 }
 
 
@@ -385,7 +383,6 @@ li.target-element {
 }
 
 /* --- ACCORDION & FEEDBACK STYLING --- */
-/* (This section is unchanged and correct) */
 .validation-feedback { 
     display: none; 
     padding: 20px !important;
