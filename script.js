@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (document.getElementById('all-challenges')) {
         initializeChallenges();
         
-        // ❗ DELETED the applyChallengeStyling() function call.
+        // ❗ DELETED the applyChallengeStyling() function call. It's not needed.
     }
 });
 
@@ -155,9 +155,7 @@ const challengeDefinitions = [
             <div class="card" style="border: 1px solid #ccc; padding: 10px;">
                 <div class="card-header">
                     <h2>Card Title</h2>
-                    <span>
-                        <h2>Nested Title (Not Target)</h2>
-                    </span>
+                    <h2>Nested Title (Not Target)</h2>
                 </div>
                 <p>Card Body</p>
             </div>
@@ -194,7 +192,6 @@ const challengeDefinitions = [
         ],
         trivia: "The General Sibling Combinator (`~`) selects all siblings that follow, not just the immediate one.",
         html: `
-            <button class="share">Share</button>
             <h3>Post Title</h3>
             <p>Post content...</p>
             <div class="challenge-action-buttons"> 
