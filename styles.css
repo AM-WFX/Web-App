@@ -305,7 +305,7 @@ button[onclick*="validateChallenge"]:hover {
 /* This is the MODIFIER state for COMPLEX challenges (like 4, 6, 8) */
 /* This class is added by our new JavaScript function. */
 .challenge-target-area.is-complex {
-    /* Override: Align to the top, and stretch children to be full-width */
+    /* Override: Align to the top-left to allow natural document flow */
     align-items: stretch;
     justify-content: flex-start;
 }
