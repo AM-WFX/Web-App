@@ -272,7 +272,7 @@ button[onclick*="validateChallenge"]:hover {
     justify-content: space-between;
 }
 
-/* ❗ FIX 1: Added 'justify-content: center' ❗ */
+/* ❗ FIX 1: Use 'gap' for spacing, remove 'justify-content' ❗ */
 .challenge-container {
     background-color: var(--wf-support-karry); 
     border-radius: var(--wf-border-radius);
@@ -283,33 +283,32 @@ button[onclick*="validateChallenge"]:hover {
     margin-top: 10px; 
     box-shadow: none;
     
-    /* This now centers all children (title, prompt, box, etc) */
-    /* horizontally AND vertically within the container */
     display: flex;
     flex-direction: column;
     align-items: center; /* Center horizontally */
-    justify-content: center; /* Center vertically */
+    
+    /* This adds a consistent 15px space between all children */
+    gap: 15px; 
 }
 
-/* This is the box where the content goes. */
+/* ❗ FIX 2: Remove all the margins that were fighting ❗ */
 .challenge-target-area {
     background-color: var(--wf-dominant-spring-wood); 
     border: 1px solid #E2E8F0; 
     border-radius: var(--wf-border-radius);
     padding: 15px;
-    margin-top: 10px;
-    margin-bottom: 20px; 
-    width: 100%; /* Make sure it takes the space */
+    /* margin-top: 10px;  <-- REMOVED */
+    /* margin-bottom: 20px; <-- REMOVED */
+    width: 100%; 
     
     height: 230px; 
-    overflow: hidden; /* Cut off content as requested */
+    overflow: hidden; 
     display: flex;
     flex-direction: column; 
     align-items: center;     
     justify-content: center;
 }
 
-/* We DELETED the broken .is-complex rule. It's not needed. */
 
 /* This is our one, simple "pill" style */
 .challenge-target-area p,
@@ -332,7 +331,7 @@ button[onclick*="validateChallenge"]:hover {
     border-radius: 6px !important; 
     font-family: 'Aeonik', sans-serif;
     
-    width: max-content; /* Pills are only as wide as their text */
+    width: max-content;
     max-width: 95%; 
     text-align: left;
 }
@@ -348,7 +347,6 @@ button[onclick*="validateChallenge"]:hover {
     margin: 0 !important;
     width: 100%;
     border-radius: 0 !important;
-    /* Center the content inside (like the buttons in #3) */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -363,10 +361,11 @@ button[onclick*="validateChallenge"]:hover {
 }
 
 
+/* ❗ FIX 3: Remove all the margins that were fighting ❗ */
 .challenge-ui {
     display: flex;
     gap: 10px;
-    margin-top: 10px;
+    /* margin-top: 10px; <-- REMOVED */
     justify-content: center; 
     align-items: center; 
     width: 100%; /* Make UI fill width */
@@ -384,10 +383,12 @@ button[onclick*="validateChallenge"]:hover {
 }
 
 /* --- ACCORDION & FEEDBACK STYLING --- */
+
+/* ❗ FIX 4: Remove all the margins that were fighting ❗ */
 .validation-feedback { 
     display: none; 
     padding: 20px !important;
-    margin-top: 15px !important;
+    /* margin-top: 15px !important; <-- REMOVED */
     border-radius: var(--wf-border-radius);
     font-weight: 400;
     width: 100%; /* Make feedback fill width */
@@ -518,13 +519,13 @@ p {
     margin: 10px !important; 
 }
 
-/* ❗ FIX 2: Removed top margin from the title ❗ */
+/* ❗ FIX 5: Remove all the margins that were fighting ❗ */
 h3[id*="challenge-title-"] {
     font-size: 1.4em;
     font-weight: 700;
-    margin-bottom: 5px;
+    /* margin-bottom: 5px; <-- REMOVED */
     padding-left: 0 !important; 
-    margin-top: 0 !important; /* This removes the "extra padding" */
+    margin-top: 0 !important; 
 }
 span[id*="status-"] {
     color: var(--wf-accent-orange); 
@@ -538,6 +539,7 @@ p[id*="prompt-"] {
     padding: 5px 0 !important;
     margin-left: 0 !important;
     text-align: center; /* Center the prompt text */
+    margin-bottom: 0 !important; /* Override global 'p' style */
 }
 .validation-feedback p {
     padding: 0 !important; 
