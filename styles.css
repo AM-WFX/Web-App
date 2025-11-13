@@ -284,7 +284,7 @@ button[onclick*="validateChallenge"]:hover {
 
 /* --- THIS IS THE FIX (PART 1) --- */
 
-/* This is the DEFAULT state for SIMPLE challenges. It centers them. */
+/* This is the DEFAULT state for ALL challenges. */
 .challenge-target-area {
     background-color: var(--wf-dominant-spring-wood); 
     border: 1px solid #E2E8F0; 
@@ -293,9 +293,10 @@ button[onclick*="validateChallenge"]:hover {
     margin-top: 10px;
     margin-bottom: 20px; 
     
-    /* ❗ FIX 1: REMOVED min-height. Height is now auto. ❗ */
-    /* This fixes "6 is too short" and "8 is too long" */
-    
+    /* ❗ FIX 1: Fixed height and overflow: hidden ❗ */
+    /* This makes all boxes the same height (uniformity) */
+    /* and cuts off content that is too long (as requested). */
+    height: 250px; 
     overflow: hidden; 
     
     /* Default: Center layout for simple elements */
@@ -308,8 +309,9 @@ button[onclick*="validateChallenge"]:hover {
 /* This is the MODIFIER state for COMPLEX challenges (like 4, 6, 8) */
 .challenge-target-area.is-complex {
     
-    /* ❗ FIX 2: Changed 'stretch' to 'flex-start' ❗ */
-    /* This stops pills from stretching and fixes the "long" look */
+    /* ❗ FIX 2: Changed to 'flex-start' ❗ */
+    /* This aligns content to the top-left */
+    /* and stops pills from stretching to 100% width. */
     align-items: flex-start;
     justify-content: flex-start;
 }
@@ -338,9 +340,9 @@ button[onclick*="validateChallenge"]:hover {
     border-radius: 6px !important; 
     font-family: 'Aeonik', sans-serif;
     
-    /* This is the key: we let 'display' be natural */
-    /* so 'p' and 'h3' are block, and 'button' is inline-block */
-    
+    /* ❗ FIX 3: Let width be 'max-content' ❗ */
+    /* This makes pills only as wide as their text. */
+    width: max-content;
     max-width: 95%; 
     text-align: left;
 }
@@ -355,12 +357,15 @@ button[onclick*="validateChallenge"]:hover {
     padding: 0 !important;
     margin: 0 !important;
     width: 100%;
+    /* We must also remove the 'pill' styles from these wrappers */
+    border-radius: 0 !important;
 }
 
 /* And that list items are still list items */
 .challenge-target-area li {
     display: list-item !important; 
     margin-left: 30px !important; /* Indent */
+    width: auto; /* Let it be natural width */
 }
 
 
