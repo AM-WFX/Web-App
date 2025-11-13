@@ -126,7 +126,6 @@ const challengeDefinitions = [
             { selector: "#settings-modal button.btn-save", explanation: "This is highly specific. It combines the ID of the container, the tag name, and the class name." },
         ],
         trivia: "A single space is the Descendant Combinator. It selects elements nested at *any* depth.",
-        // ❗ FIX: Removed the border and padding style from the div
         html: `
             <div id="settings-modal">
                 <button class="btn-cancel">Cancel</button>
@@ -146,7 +145,6 @@ const challengeDefinitions = [
             { selector: ".card > .card-header > h2", explanation: "This chains multiple Child Combinators, ensuring a rigid structure." }
         ],
         trivia: "The Child Combinator (`>`) ensures the relationship is direct (one level deep).",
-        // ❗ FIX: Removed the border and padding style from the div
         html: `
             <div class="card">
                 <div class="card-header">
@@ -283,16 +281,15 @@ function initializeChallenges() {
             currentHTML: def.html,
             successfulSelectors: [],
             originalPrompt: def.prompt,
-            type: def.type,
-            // ❗ We no longer need the isComplex flag
+            type: def.type
         };
 
+        // ❗ FIX: Removed the .challenge-header div.
+        // The h3 and span are now direct children of .challenge-container
         htmlContent += `
             <div id="challenge-${def.id}" class="challenge-container">
-                <div class="challenge-header">
-                    <h3 id="challenge-title-${def.id}">Challenge ${def.id}</h3>
-                    <span id="status-${def.id}" style="color: grey;">(Unsolved)</span>
-                </div>
+                <h3 id="challenge-title-${def.id}">Challenge ${def.id}</h3>
+                <span id="status-${def.id}" style="color: grey;">(Unsolved)</span>
                 <p id="prompt-${def.id}">${def.prompt}</p>
                 
                 <div id="target-area-${def.id}" class="challenge-target-area">
