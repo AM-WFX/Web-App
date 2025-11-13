@@ -292,8 +292,11 @@ button[onclick*="validateChallenge"]:hover {
     padding: 15px;
     margin-top: 10px;
     margin-bottom: 20px; 
-    min-height: 200px; /* Allows container to grow */
-    overflow: hidden; /* Prevents scrollbars */
+    
+    /* ❗ FIX 1: REMOVED min-height. Height is now auto. ❗ */
+    /* This fixes "6 is too short" and "8 is too long" */
+    
+    overflow: hidden; 
     
     /* Default: Center layout for simple elements */
     display: flex;
@@ -303,17 +306,18 @@ button[onclick*="validateChallenge"]:hover {
 }
 
 /* This is the MODIFIER state for COMPLEX challenges (like 4, 6, 8) */
-/* This class is added by our new JavaScript function. */
 .challenge-target-area.is-complex {
-    /* Override: Align to the top, and stretch children to be full-width */
-    align-items: stretch;
+    
+    /* ❗ FIX 2: Changed 'stretch' to 'flex-start' ❗ */
+    /* This stops pills from stretching and fixes the "long" look */
+    align-items: flex-start;
     justify-content: flex-start;
 }
 
 /* --- THIS IS THE FIX (PART 2) --- */
 
 /* This is our one, perfect "pill" style. */
-/* We select all the targetable elements INSIDE the box */
+/* It styles all elements identically without forcing a display property. */
 .challenge-target-area p,
 .challenge-target-area button,
 .challenge-target-area input,
@@ -334,11 +338,8 @@ button[onclick*="validateChallenge"]:hover {
     border-radius: 6px !important; 
     font-family: 'Aeonik', sans-serif;
     
-    /* We DO NOT set 'display' here. 
-      We let the flex container (.challenge-target-area) decide.
-      - In 'simple' mode (center), elements will be 'auto' width.
-      - In 'complex' mode (stretch), elements will be 'full' width.
-    */
+    /* This is the key: we let 'display' be natural */
+    /* so 'p' and 'h3' are block, and 'button' is inline-block */
     
     max-width: 95%; 
     text-align: left;
