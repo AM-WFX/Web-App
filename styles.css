@@ -272,7 +272,6 @@ button[onclick*="validateChallenge"]:hover {
     justify-content: space-between;
 }
 
-/* ❗ FIX 1: Use 'gap' for consistent spacing ❗ */
 .challenge-container {
     background-color: var(--wf-support-karry); 
     border-radius: var(--wf-border-radius);
@@ -291,13 +290,11 @@ button[onclick*="validateChallenge"]:hover {
     gap: 15px; 
 }
 
-/* This is the box where the content goes. */
 .challenge-target-area {
     background-color: var(--wf-dominant-spring-wood); 
     border: 1px solid #E2E8F0; 
     border-radius: var(--wf-border-radius);
     padding: 15px;
-    /* margin-top/bottom are REMOVED (gap handles it) */
     width: 100%; 
     
     height: 230px; 
@@ -362,7 +359,6 @@ button[onclick*="validateChallenge"]:hover {
 .challenge-ui {
     display: flex;
     gap: 10px;
-    /* margin-top: 10px; <-- REMOVED (gap handles it) */
     justify-content: center; 
     align-items: center; 
     width: 100%; /* Make UI fill width */
@@ -383,7 +379,6 @@ button[onclick*="validateChallenge"]:hover {
 .validation-feedback { 
     display: none; 
     padding: 20px !important;
-    /* margin-top: 15px !important; <-- REMOVED (gap handles it) */
     border-radius: var(--wf-border-radius);
     font-weight: 400;
     width: 100%; /* Make feedback fill width */
@@ -514,13 +509,12 @@ p {
     margin: 10px !important; 
 }
 
-/* ❗ FIX 5: Remove all margins from these elements ❗ */
-/* The parent 'gap' property will handle all spacing */
 h3[id*="challenge-title-"] {
     font-size: 1.4em;
     font-weight: 700;
-    margin: 0 !important; /* REMOVED all margins */
+    margin: 0 !important; 
     padding-left: 0 !important; 
+    text-align: center; /* ❗ ADDED THIS FIX ❗ */
 }
 span[id*="status-"] {
     color: var(--wf-accent-orange); 
@@ -528,12 +522,13 @@ span[id*="status-"] {
     font-size: 0.9em;
     display: block; 
     padding: 2px 0;
-    margin: 0 !important; /* ❗ THIS IS THE FIX ❗ */
+    margin: 0 !important; 
+    text-align: center; /* ❗ ADDED THIS FIX ❗ */
 }
 p[id*="prompt-"] {
     padding: 5px 0 !important;
-    margin: 0 !important; /* REMOVED all margins */
-    text-align: center; /* Center the prompt text */
+    margin: 0 !important; 
+    text-align: center; 
 }
 
 .validation-feedback p {
