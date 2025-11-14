@@ -1,20 +1,107 @@
 // =========================================================================
-// === JAVASCRIPT MASTER LOADER ===
+// === JAVASCRIPT MASTER LOADER & AUTH GATEKEEPER ===
 // This function ensures ALL code runs after the HTML structure is loaded.
 // =========================================================================
 
 document.addEventListener('DOMContentLoaded', function() {
 
-    // --- VANILLA JAVASCRIPT CODE (CSS Selector Lab) ---
-    // This checks if the #all-challenges div exists on the current page.
-    if (document.getElementById('all-challenges')) {
-        initializeChallenges();
+    // --- 1. FIREBASE AUTHENTICATION SETUP ---
+    // Check if firebase is available (it should be, since it's loaded first)
+    if (typeof firebase === 'undefined') {
+        console.error("Firebase is not loaded. Make sure the SDK scripts are in your HTML before script.js.");
+        // Display an error to the user
+        const loginPrompt = document.getElementById('login-prompt');
+        if(loginPrompt) loginPrompt.innerHTML = "<h1>Error: Could not load login services. Please refresh.</h1>";
+        return; // Stop execution
     }
-});
+    
+    const auth = firebase.auth();
+
+    // Get references to our new HTML elements
+    const loginPrompt = document.getElementById('login-prompt');
+    const labContent = document.getElementById('page-content'); // We use 'page-content'
+    const loginButton = document.getElementById('login-button');
+    const logoutButton = document.getElementById('logout-button');
+    const welcomeMessage = document.getElementById('welcome-message');
+
+    // Check if the login elements exist before adding listeners
+    if (!loginPrompt || !labContent || !loginButton || !logoutButton || !welcomeMessage) {
+        console.warn("Auth elements not found. Make sure all HTML pages have the login/logout/page-content structure.");
+    }
+
+    let labInitialized = false; // Flag to prevent re-building the lab
+
+    // --- 2. AUTH FUNCTIONS ---
+
+    // Function to sign in with Google
+    function signIn() {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        auth.signInWithPopup(provider)
+            .catch((error) => {
+                console.error("Sign-in error:", error.message);
+            });
+    }
+
+    // Function to sign out
+    function signOut() {
+        auth.signOut();
+    }
+
+    // Attach click listeners *only if* the buttons exist
+    if(loginButton) {
+        loginButton.addEventListener('click', signIn);
+    }
+    if(logoutButton) {
+        logoutButton.addEventListener('click', signOut);
+    }
+
+    // --- 3. THE "GATEKEEPER" ---
+    // This is the most important part.
+    // It runs on page load and *listens* for login/logout events.
+    auth.onAuthStateChanged((user) => {
+        if (user) {
+            // --- USER IS LOGGED IN ---
+            
+            // 1. Show the lab, hide the login prompt
+            if(loginPrompt) loginPrompt.style.display = 'none';
+            if(labContent) labContent.style.display = 'block';
+
+            // 2. Update the navbar
+            if(logoutButton) logoutButton.style.display = 'inline-flex'; // Use 'inline-flex' to match cta-button
+            if(welcomeMessage) welcomeMessage.textContent = `Hello, ${user.displayName}`;
+            
+            // 3. Save user for analytics
+            localStorage.setItem('css_lab_user', user.displayName);
+
+            // 4. Initialize the CSS lab *only if* we are on the lab page and it's not already built
+            if (document.getElementById('all-challenges') && !labInitialized) {
+                initializeChallenges();
+                labInitialized = true;
+            }
+            
+        } else {
+            // --- USER IS LOGGED OUT ---
+
+            // 1. Show the login prompt, hide the lab
+            if(loginPrompt) loginPrompt.style.display = 'block';
+            if(labContent) labContent.style.display = 'none';
+
+            // 2. Update the navbar
+            if(logoutButton) logoutButton.style.display = 'none';
+            if(welcomeMessage) welcomeMessage.textContent = '';
+            
+            // 3. Clear user from analytics
+            localStorage.removeItem('css_lab_user');
+            labInitialized = false; // Reset the lab flag
+        }
+    });
+
+}); // End of DOMContentLoaded
 
 
 // =========================================================================
 // === VANILLA JS CHALLENGE LOGIC (The bulk of the code) ===
+// (All these functions are now in the global scope, which is correct)
 // =========================================================================
 
 // Store the state of each challenge
@@ -201,7 +288,6 @@ const challengeDefinitions = [
         targetSelector: "input[name*='user']",
         type: "Attribute Selector (Substring Match)",
         isComplex: false,
-        // ❗ FIX: Removed the alternative. We will catch this in the validation logic.
         alternatives: [
         ],
         trivia: "The `*=` operator is the 'contains' attribute selector, which looks for the specified substring anywhere within the attribute's value. This is powerful when dealing with dynamic or auto-generated attributes.",
@@ -354,7 +440,6 @@ function validateChallenge(challengeId) {
     }
 
     // --- 1. STRICT VALIDATION LOGIC ---
-    // (This is no longer needed for Challenge 7)
     let strictCheckPassed = true;
     let strictFailMessage = "";
 
@@ -485,7 +570,6 @@ function handleSuccess(challengeId, correctSelector) {
 
     feedbackElement.classList.add('success');
     
-    // ❗ FIX: Removed the special logic from here. It's now in validateChallenge.
     feedbackElement.innerHTML = `
         🎉 <b>PERFECT!</b> You successfully targeted the element with <code>${correctSelector}</code>.
         <br><br>
@@ -506,8 +590,6 @@ function handleFailure(challengeId, userInput, selectedElements, correctTarget) 
 
     let message = '';
     feedbackElement.classList.add('error');
-    
-    // ❗ FIX: New gradual hint progression
     
     if (state.attempts === 1) {
         // First failure: Just state the problem
@@ -542,7 +624,7 @@ function handleFailure(challengeId, userInput, selectedElements, correctTarget) 
         else if (challengeType.includes('Class Selector')) operatorHint = 'Use the <b>.</b> symbol followed by the class name.';
         else if (challengeType.includes('Descendant')) operatorHint = 'Use a <b>space</b> between selectors.';
         else if (challengeType.includes('Child')) operatorHint = 'Use the <b>&gt;</b> operator.';
-        else if (challengeType.includes('Adjacent')) operatorHint = 'Use the <b>+</b> operator.';
+        else if (challengeType.includes('Adjacent')) operatorHint = 'Use the <b>+</b> symbol.';
         else if (challengeType.includes('General')) operatorHint = 'Use the <b>~</b> operator.';
         else if (challengeType.includes('Substring Match')) operatorHint = 'Use the "contains" operator: <b>*=</b>';
         else if (challengeType.includes('Attribute')) operatorHint = 'Use brackets <b>[ ]</b>.';
