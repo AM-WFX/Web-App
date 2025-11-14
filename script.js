@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const auth = firebase.auth();
 
     // Get references to our new HTML elements
-    const authLoading = document.getElementById('auth-loading'); // 👈 1. GET THE LOADING DIV
+    const authLoading = document.getElementById('auth-loading');
     const loginPrompt = document.getElementById('login-prompt');
     const labContent = document.getElementById('page-content'); // We use 'page-content'
     const loginButton = document.getElementById('login-button');
@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const welcomeMessage = document.getElementById('welcome-message');
 
     // Check if the login elements exist before adding listeners
-    if (!loginPrompt || !labContent || !loginButton || !logoutButton || !welcomeMessage) {
+    if (!authLoading || !loginPrompt || !labContent || !loginButton || !logoutButton || !welcomeMessage) {
         // This is a normal warning for pages that don't have all elements
     }
 
@@ -66,9 +66,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // It runs on page load and *listens* for login/logout events.
     auth.onAuthStateChanged((user) => {
         
-        // ❗ --- THIS IS THE FIX --- ❗
         // First, no matter what, hide the loading message.
-        if (authLoading) authLoading.style.display = 'none'; // 👈 2. HIDE THE LOADING DIV
+        if (authLoading) authLoading.style.display = 'none';
 
         if (user) {
             // --- USER IS LOGGED IN ---
@@ -93,8 +92,9 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             // --- USER IS LOGGED OUT ---
 
-            // 1. Show the login prompt, hide the lab
-            if(loginPrompt) loginPrompt.style.display = 'block';
+            // ❗ --- THIS IS THE FIX --- ❗
+            // We must use 'flex' to match the CSS rule for centering.
+            if(loginPrompt) loginPrompt.style.display = 'flex';
             if(labContent) labContent.style.display = 'none';
 
             // 2. Update the navbar
