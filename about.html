@@ -1,143 +1,107 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>wfx-dojo - About Us</title>
-
-    <!-- Links the jQuery library -->
-
+    
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-WM4S2FQ5');</script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
-
-    <!-- Links to the external stylesheet -->
-
     <link rel="stylesheet" href="styles.css"> 
-
 </head>
-
 <body>
 
-
-
-    <!-- Top Navbar (Styled by styles.css) -->
-
-    <header class="navbar">
-
-        <div class="logo">wfx-dojo</div>
-
-        <nav>
-
-            <ul>
-
-                <li><a href="index.html">Home</a></li>
-
-                <li><a href="about.html" class="active">About Us</a></li>
-
-                <li><a href="css-selector-lab.html">CSS Selector Lab</a></li>
-
-                <!-- ❗ UPDATED "Coming Soon" Links with Tooltip ❗ -->
-
-                <li class="nav-disabled">
-
-                    <a href="#" class="nav-disabled">
-
-                        jQuery Selectors 
-
-                        <span class="coming-soon-tag">Coming Soon</span>
-
-                        <span class="tooltip-text">Exciting new challenges for jQuery are on the way!</span>
-
-                    </a>
-
-                </li>
-
-                <li class="nav-disabled">
-
-                    <a href="#" class="nav-disabled">
-
-                        Shadow DOM 
-
-                        <span class="coming-soon-tag">Coming Soon</span>
-
-                        <span class="tooltip-text">Learn to pierce the Shadow DOM! Coming soon.</span>
-
-                    </a>
-
-                </li>
-
-            </ul>
-
-        </nav>
-
-    </header>
-
-
-
-    <div class="container">
-
-        <!-- The content wrapper (Styled by styles.css) -->
-
-        <div id="content-wrapper">
-
-            
-
-            <main class="content main-content">
-
-                <h1>Our Mission</h1>
-
-                
-
-                <!-- Goal and Mission Statement -->
-
-                <div class="mission-statement">
-
-                    <h2>Our Goal & Mission</h2>
-
-                    
-
-                    <h3>Goal</h3>
-
-                    <p>To demystify <b>CSS Selectors</b> and eliminate the frustration often associated with web styling. We aim to convert complex CSS concepts into clear, actionable, and repeatable knowledge for every user, regardless of their starting skill level.</p>
-
-                    
-
-                    <h3>Mission Statement</h3>
-
-                    <p>wfx-dojo is dedicated to providing <b>free, interactive, and high-quality educational tools</b> that ensure everyone can learn CSS selectors easily and effectively. By focusing on practical application, immediate feedback, and clear explanations, we empower learners to write efficient, robust, and maintainable CSS for modern web development.</p>
-
-                </div>
-
-
-
-            </main>
-
-        </div>
-
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WM4S2FQ5"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <div id="auth-loading">
+      <h2>Loading...</h2>
+      <p>Please wait while we check your login status.</p>
     </div>
 
+    <div id="login-prompt" style="display: none;">
+      <h2>Welcome to wfx-dojo!</h2>
+      <p>Please sign in with Google to continue.</p>
+      <button id="login-button" class="cta-button">Login with Google</button>
+    </div>
 
+    <div id="page-content" style="display: none;">
 
-    <!-- Simplified Footer (Styled by styles.css) -->
+        <header class="navbar">
+            <div class="logo">wfx-dojo</div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html" class="active">About Us</a></li>
+                    <li><a href="css-selector-lab.html">CSS Selector Lab</a></li>
+                    <li class="nav-disabled">
+                        <a href="#" class="nav-disabled">
+                            jQuery Selectors 
+                            <span class="coming-soon-tag">Coming Soon</span>
+                            <span class="tooltip-text">Exciting new challenges for jQuery are on the way!</span>
+                        </a>
+                    </li>
+                    <li class="nav-disabled">
+                        <a href="#" class="nav-disabled">
+                            Shadow DOM 
+                            <span class="coming-soon-tag">Coming Soon</span>
+                            <span class="tooltip-text">Learn to pierce the Shadow DOM! Coming soon.</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <span id="welcome-message" style="margin-left: auto; font-weight: 700; color: var(--wf-secondary-steel-gray);"></span>
+            <button id="logout-button" class="cta-button" style="display: none; background-color: var(--wf-secondary-steel-gray) !important; margin-left: 20px;">Logout</button>
+        </header>
 
-    <footer>
+        <div class="container">
+            <div id="content-wrapper">
+                
+                <main class="content main-content">
+                    <h1>Our Mission</h1>
+                    
+                    <div class="mission-statement">
+                        <h2>Our Goal & Mission</h2>
+                        
+                        <h3>Goal</h3>
+                        <p>To demystify <b>CSS Selectors</b> and eliminate the frustration often associated with web styling. We aim to convert complex CSS concepts into clear, actionable, and repeatable knowledge for every user, regardless of their starting skill level.</p>
+                        
+                        <h3>Mission Statement</h3>
+                        <p>wfx-dojo is dedicated to providing <b>free, interactive, and high-quality educational tools</b> that ensure everyone can learn CSS selectors easily and effectively. By focusing on practical application, immediate feedback, and clear explanations, we empower learners to write efficient, robust, and maintainable CSS for modern web development.</p>
+                    </div>
 
-        <p>&copy; 2025 wfx-dojo</p>
+                </main>
+            </div>
+        </div>
 
-    </footer>
+        <footer>
+            <p>&copy; 2025 wfx-dojo</p>
+        </footer>
 
-
-
-    <!-- Link the external JavaScript file at the end of the <body> for performance -->
-
+    </div> <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    
+    <script>
+      // Your firebaseConfig is now added
+      const firebaseConfig = {
+        apiKey: "AIzaSyBZ_k8grFDno1k0n1RPDwyFwCppRn5mPd0",
+        authDomain: "wfx-dojo.firebaseapp.com",
+        projectId: "wfx-dojo",
+        storageBucket: "wfx-dojo.firebasestorage.app",
+        messagingSenderId: "422026983102",
+        appId: "1:422026983102:web:6fec0d14d2e7b65f6090ef",
+        measurementId: "G-E3ETSG5337"
+      };
+    
+      // 3. Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+    </script>
+    
     <script src="script.js"></script>
 
-
-
 </body>
-
 </html>
