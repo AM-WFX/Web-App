@@ -526,7 +526,7 @@ h3[id*="challenge-title-"] {
     font-weight: 700;
     margin: 0 !important; 
     padding-left: 0 !important; 
-    text-align: center; /* ❗ THIS IS THE FIX ❗ */
+    text-align: center; 
 }
 span[id*="status-"] {
     color: var(--wf-accent-orange); 
@@ -535,7 +535,7 @@ span[id*="status-"] {
     display: block; 
     padding: 2px 0;
     margin: 0 !important; 
-    text-align: center; /* ❗ THIS IS THE FIX ❗ */
+    text-align: center; 
 }
 p[id*="prompt-"] {
     padding: 5px 0 !important;
@@ -599,4 +599,35 @@ p[id*="prompt-"] {
     }
     .challenge-ui input[type="text"] { width: 100%; }
     .challenge-ui button { width: 100%; }
+}
+
+/* ---------------------------------------------------- */
+/* --- ❗ AUTH/LOGIN PAGE CENTERING FIX ❗ --- */
+/* ---------------------------------------------------- */
+
+#auth-loading,
+#login-prompt {
+    /* 1. Make the container fill the entire screen */
+    height: 100vh; 
+    
+    /* 2. Use Flexbox to center the content */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centers vertically */
+    align-items: center;     /* Centers horizontally */
+    
+    /* 3. Set a default text-align for the content inside */
+    text-align: center;
+}
+
+#login-prompt h2,
+#auth-loading h2 {
+    /* Remove extra margin from the header */
+    margin: 0 0 10px 0;
+}
+
+#login-prompt p,
+#auth-loading p {
+    /* Remove extra margin from the paragraph */
+    margin: 0 0 20px 0;
 }
