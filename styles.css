@@ -156,6 +156,10 @@ body {
 h1, h2, h3 {
     color: var(--wf-secondary-steel-gray);
     font-weight: 700; 
+    /* ❗ --- THIS IS THE FIX (PART 1) --- ❗ */
+    /* We are RESTORING the global margins for site typography */
+    margin-top: 1.5em;    
+    margin-bottom: 0.5em; 
 }
 .container {
     max-width: 1400px;
@@ -508,26 +512,19 @@ button[onclick*="validateChallenge"]:hover {
 /* ---------------------------------------------------- */
 
 /* ❗ --- THIS IS THE FIX (PART 1) --- ❗ */
-/* We are DELETING the old, broken global rules. */
-/*
-h1, h2, h3 {
-    margin-top: 1.5em;    
-    margin-bottom: 0.5em; 
-    padding-left: 0;    
-}
+/* We RESTORE the global <p> tag margins for site typography */
 p {
     padding: 5px 0; 
     margin-bottom: 1em; 
 }
-*/
 
-/* This rule is fine, but not needed for the login page */
+/* This rule is not used, but is fine to leave */
 #prompt, #prompt * {
     padding: 20px !important; 
     margin: 10px !important; 
 }
 
-/* These rules are for the challenge cards, not the login page */
+/* These rules correctly override global margins for the challenge cards */
 h3[id*="challenge-title-"] {
     font-size: 1.4em;
     font-weight: 700;
