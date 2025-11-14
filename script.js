@@ -11,13 +11,19 @@ document.addEventListener('DOMContentLoaded', function() {
         console.error("Firebase is not loaded. Make sure the SDK scripts are in your HTML before script.js.");
         // Display an error to the user
         const loginPrompt = document.getElementById('login-prompt');
-        if(loginPrompt) loginPrompt.innerHTML = "<h1>Error: Could not load login services. Please refresh.</h1>";
+        const authLoading = document.getElementById('auth-loading');
+        if(authLoading) authLoading.style.display = 'none';
+        if(loginPrompt) {
+            loginPrompt.style.display = 'block';
+            loginPrompt.innerHTML = "<h1>Error: Could not load login services. Please refresh.</h1>";
+        }
         return; // Stop execution
     }
     
     const auth = firebase.auth();
 
     // Get references to our new HTML elements
+    const authLoading = document.getElementById('auth-loading');
     const loginPrompt = document.getElementById('login-prompt');
     const labContent = document.getElementById('page-content'); // We use 'page-content'
     const loginButton = document.getElementById('login-button');
@@ -25,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const welcomeMessage = document.getElementById('welcome-message');
 
     // Check if the login elements exist before adding listeners
-    if (!loginPrompt || !labContent || !loginButton || !logoutButton || !welcomeMessage) {
+    if (!authLoading || !loginPrompt || !labContent || !loginButton || !logoutButton || !welcomeMessage) {
         console.warn("Auth elements not found. Make sure all HTML pages have the login/logout/page-content structure.");
     }
 
@@ -59,6 +65,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // This is the most important part.
     // It runs on page load and *listens* for login/logout events.
     auth.onAuthStateChanged((user) => {
+        
+        // First, no matter what, hide the loading message.
+        if (authLoading) authLoading.style.display = 'none';
+
         if (user) {
             // --- USER IS LOGGED IN ---
             
