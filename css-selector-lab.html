@@ -1,159 +1,99 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>CSS Selector Lab</title>
-
-    <!-- Links the jQuery library (needed for your existing code) -->
-
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
-
-    <!-- Links to the external stylesheet for core layout -->
-
     <link rel="stylesheet" href="styles.css"> 
-
 </head>
-
 <body>
 
-
-
-    <!-- Top Navbar (Styled by styles.css) --> 
-
-    <header class="navbar">
-
-        <div class="logo">wfx-dojo</div>
-
-        <nav>
-
-            <ul>
-
-                <li><a href="index.html">Home</a></li>
-
-                <li><a href="about.html">About Us</a></li>
-
-                <!-- ❗ RENAMED LINK ❗ -->
-
-                <li><a href="css-selector-lab.html" class="active">CSS Selector Lab</a></li>
-
-                <!-- ❗ UPDATED "Coming Soon" Links with Tooltip ❗ -->
-
-                <li class="nav-disabled">
-
-                    <a href="#" class="nav-disabled">
-
-                        jQuery Selectors 
-
-                        <span class="coming-soon-tag">Coming Soon</span>
-
-                        <span class="tooltip-text">Exciting new challenges for jQuery are on the way!</span>
-
-                    </a>
-
-                </li>
-
-                <li class="nav-disabled">
-
-                    <a href="#" class="nav-disabled">
-
-                        Shadow DOM 
-
-                        <span class="coming-soon-tag">Coming Soon</span>
-
-                        <span class="tooltip-text">Learn to pierce the Shadow DOM! Coming soon.</span>
-
-                    </a>
-
-                </li>
-
-            </ul>
-
-        </nav>
-
-    </header>
-
-
-
-    <div class="container">
-
-        <!-- The content wrapper (Styled by styles.css) -->
-
-        <div id="content-wrapper">
-
-            
-
-            <main class="content main-content">
-
-                <h1>CSS Selector Lab 💻</h1>
-
-                <p>Your task: Find a selector that targets the specified element in each challenge, enter it with the right syntax into the input field, and click the Validate button.</p>
-
-
-
-                <div class="instructions-box">
-
-                    <h2>How to Use This Lab</h2>
-
-                    <p>This lab accepts a wide variety of valid CSS selectors. Your goal is to find a selector that is <b>precise enough to select only the target element</b>. For example, if the target has an ID of <code>#normal-selector</code>, many answers are valid:</p>
-
-                    <ul>
-
-                        <li><b>ID Selector:</b> <code>#normal-selector</code></li>
-
-                        <li><b>Attribute Selector:</b> <code>[id="normal-selector"]</code></li>
-
-                        <li><b>Partial Attribute Selectors:</b> <code>[id*="normal"]</code> (contains), <code>[id^="norm"]</code> (starts with), or <code>[id$="lector"]</code> (ends with)</li>
-
-                    </ul>
-
-                    <p>The key is precision. If your selector (like <code>div</code> or <code>.common-class</code>) matches other elements in the box, it will fail. Good luck!</p>
-
-                </div>
-
-                
-
-                <div id="all-challenges">
-
-                    <!-- Challenges will be inserted here by JavaScript -->
-
-                </div>
-
-
-
-                <!-- ❗ "Future Challenges" section REMOVED ❗ -->
-
-                
-
-            </main>
-
-        </div>
-
+    <div id="login-prompt" style="text-align: center; margin-top: 100px;">
+      <h2>Welcome to wfx-dojo!</h2>
+      <p>Please sign in with Google to continue.</p>
+      <button id="login-button" class="cta-button">Login with Google</button>
     </div>
 
+    <div id="page-content" style="display: none;">
 
+        <header class="navbar">
+            <div class="logo">wfx-dojo</div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="css-selector-lab.html" class="active">CSS Selector Lab</a></li>
+                    <li class="nav-disabled">
+                        <a href="#" class="nav-disabled">
+                            jQuery Selectors 
+                            <span class="coming-soon-tag">Coming Soon</span>
+                            <span class="tooltip-text">Exciting new challenges for jQuery are on the way!</span>
+                        </a>
+                    </li>
+                    <li class="nav-disabled">
+                        <a href="#" class="nav-disabled">
+                            Shadow DOM 
+                            <span class="coming-soon-tag">Coming Soon</span>
+                            <span class="tooltip-text">Learn to pierce the Shadow DOM! Coming soon.</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <span id="welcome-message" style="margin-left: auto; font-weight: 700; color: var(--wf-secondary-steel-gray);"></span>
+            <button id="logout-button" class="cta-button" style="display: none; background-color: var(--wf-secondary-steel-gray) !important; margin-left: 20px;">Logout</button>
+        </header>
 
-    <!-- Simplified Footer (Styled by styles.css) -->
+        <div class="container">
+            <div id="content-wrapper">
+                
+                <main class="content main-content">
+                    <h1>CSS Selector Lab 💻</h1>
+                    <p>Your task: Find a selector that targets the specified element in each challenge, enter it with the right syntax into the input field, and click the Validate button.</p>
 
-    <footer>
+                    <div class="instructions-box">
+                        <h2>How to Use This Lab</h2>
+                        <p>This lab accepts a wide variety of valid CSS selectors. Your goal is to find a selector that is <b>precise enough to select only the target element</b>. For example, if the target has an ID of <code>#normal-selector</code>, many answers are valid:</p>
+                        <ul>
+                            <li><b>ID Selector:</b> <code>#normal-selector</code></li>
+                            <li><b>Attribute Selector:</b> <code>[id="normal-selector"]</code></li>
+                            <li><b>Partial Attribute Selectors:</b> <code>[id*="normal"]</code> (contains), <code>[id^="norm"]</code> (starts with), or <code>[id$="lector"]</code> (ends with)</li>
+                        </ul>
+                        <p>The key is precision. If your selector (like <code>div</code> or <code>.common-class</code>) matches other elements in the box, it will fail. Good luck!</p>
+                    </div>
+                    
+                    <div id="all-challenges">
+                        </div>
 
-        <p>&copy; 2025 wfx-dojo</p>
+                    </main>
+            </div>
+        </div>
 
-    </footer>
-
-
-
-    <!-- Link the external JavaScript file at the end of the <body> for performance -->
-
+        <footer>
+            <p>&copy; 2025 wfx-dojo</p>
+        </footer>
+    
+    </div> <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    
+    <script>
+      // ⬇️ Your firebaseConfig is now added ⬇️
+      const firebaseConfig = {
+        apiKey: "AIzaSyBZ_k8grFDno1k0n1RPDwyFwCppRn5mPd0",
+        authDomain: "wfx-dojo.firebaseapp.com",
+        projectId: "wfx-dojo",
+        storageBucket: "wfx-dojo.firebasestorage.app",
+        messagingSenderId: "422026983102",
+        appId: "1:422026983102:web:6fec0d14d2e7b65f6090ef",
+        measurementId: "G-E3ETSG5337"
+      };
+    
+      // 3. Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+    </script>
+    
     <script src="script.js"></script>
 
-
-
 </body>
-
 </html>
