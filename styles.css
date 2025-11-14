@@ -156,7 +156,8 @@ body {
 h1, h2, h3 {
     color: var(--wf-secondary-steel-gray);
     font-weight: 700; 
-    /* ❗ FIX: Removed all margins from the global rule ❗ */
+    /* ❗ --- THIS IS THE FIX (PART 1) --- ❗ */
+    /* Removed all global margins that were causing the error */
 }
 .container {
     max-width: 1400px;
