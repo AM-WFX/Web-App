@@ -211,7 +211,6 @@ button[onclick*="validateChallenge"],
     
     font-family: 'Aeonik', sans-serif !important;
     
-    /* ❗ FIX 1: Font size increased to 12px ❗ */
     font-size: 12px !important; 
     
     box-sizing: border-box;
@@ -620,14 +619,26 @@ p[id*="prompt-"] {
     text-align: center;
 }
 
+/* ❗ --- THIS IS THE FIX --- ❗ */
+/* This rule is more specific and overrides the global h2 rule */
 #login-prompt h2,
 #auth-loading h2 {
-    /* Remove extra margin from the header */
-    margin: 0 0 10px 0;
+    /* Reset all margins and padding */
+    margin: 0 !important;
+    padding: 0 !important;
+    
+    /* Add back only the spacing we want */
+    margin-bottom: 10px !important;
 }
 
+/* ❗ --- THIS IS THE FIX --- ❗ */
+/* This rule is more specific and overrides the global p rule */
 #login-prompt p,
 #auth-loading p {
-    /* Remove extra margin from the paragraph */
-    margin: 0 0 20px 0;
+    /* Reset all margins and padding */
+    margin: 0 !important;
+    padding: 0 !important;
+
+    /* Add back only the spacing we want */
+    margin-bottom: 20px !important;
 }
