@@ -1,644 +1,710 @@
-/* ---------------------------------------------------- */
-/* --- 🧱 WHATFIX BRANDING & CORE LAYOUT STYLES --- */
-/* ---------------------------------------------------- */
+// =========================================================================
+// === JAVASCRIPT MASTER LOADER & AUTH GATEKEEPER ===
+// This function ensures ALL code runs after the HTML structure is loaded.
+// =========================================================================
 
-/* ❗ FONT: Import local Aeonik font files (.ttf format) ❗ */
-@font-face {
-    font-family: 'Aeonik';
-    src: url('fonts/Aeonik-Regular.ttf') format('truetype');
-    font-weight: 400; /* 400 is 'normal' */
-    font-style: normal;
-}
+document.addEventListener('DOMContentLoaded', function() {
 
-@font-face {
-    font-family: 'Aeonik';
-    src: url('fonts/Aeonik-Bold.ttf') format('truetype');
-    font-weight: 700; /* 700 is 'bold' */
-    font-style: normal;
-}
-
-/* CSS Variables for Brand Colors */
-:root {
-    --wf-dominant-spring-wood: #F9F9F2;
-    --wf-secondary-steel-gray: #25223B;
-    --wf-accent-orange: #FF6B18;
-    --wf-support-karry: #FFE9DC;
-    
-    /* General UI Colors */
-    --wf-success: #E6F7E1; 
-    --wf-error: #FFF0F0;
-    --wf-text-success: #155724;
-    --wf-text-error: #721c24;
-    
-    /* Aesthetics */
-    --wf-border-radius: 10px;
-    --wf-shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.05);
-    --wf-shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
-    
-    /* ❗ Set button height to 40px ❗ */
-    --wf-button-height: 40px; 
-}
-
-/* --- GLOBAL RESET & FONT --- */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Aeonik', sans-serif;
-    font-weight: 400;
-    background-color: var(--wf-dominant-spring-wood); 
-    color: var(--wf-secondary-steel-gray); 
-    overflow-x: hidden;
-}
-
-/* --- ❗ NAVBAR STYLING (WHATFIX REPLICATION) ❗ --- */
-.navbar {
-    background-color: white; 
-    color: var(--wf-secondary-steel-gray);
-    padding: 20px 30px; 
-    border-bottom: none;
-    box-shadow: var(--wf-shadow-subtle);
-    display: flex; 
-    justify-content: flex-start;
-    align-items: center;
-    position: sticky; 
-    top: 0;
-    z-index: 100;
-    flex-wrap: wrap;
-}
-.navbar .logo { 
-    font-size: 1.5em; 
-    font-weight: 700; 
-    color: var(--wf-secondary-steel-gray); 
-    margin-right: 40px; 
-}
-.navbar ul { 
-    list-style: none; 
-    margin: 0; 
-    padding: 0; 
-    display: flex; 
-    align-items: center; 
-}
-.navbar li { 
-    margin-right: 25px; 
-    position: relative; 
-}
-.navbar a { 
-    color: var(--wf-secondary-steel-gray); 
-    text-decoration: none; 
-    font-size: 1em; 
-    font-weight: 400; 
-    padding: 5px 0;
-    transition: color 0.3s, border-bottom 0.3s;
-}
-.navbar a.active { 
-    color: var(--wf-accent-orange); 
-    border-bottom: 2px solid var(--wf-accent-orange);
-}
-.navbar a.nav-disabled {
-    color: #94A3B8; 
-    cursor: not-allowed;
-    display: flex; 
-    align-items: center;
-}
-.navbar a.nav-disabled:hover {
-    border-bottom: none;
-    color: #94A3B8; 
-}
-.coming-soon-tag {
-    background-color: #E2E8F0;
-    color: #64748B;
-    font-size: 0.65em;
-    font-weight: 700;
-    padding: 3px 6px; 
-    border-radius: 4px;
-    margin-left: 8px; 
-    vertical-align: middle;
-}
-.nav-disabled .tooltip-text {
-    visibility: hidden;
-    width: 200px;
-    background-color: var(--wf-secondary-steel-gray);
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 8px;
-    position: absolute;
-    z-index: 1;
-    top: 150%; 
-    left: 50%;
-    margin-left: -100px; 
-    opacity: 0;
-    transition: opacity 0.3s;
-    font-size: 0.85em;
-    font-weight: 400;
-}
-.nav-disabled .tooltip-text::after {
-    content: "";
-    position: absolute;
-    bottom: 100%; 
-    left: 50%;
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: transparent transparent var(--wf-secondary-steel-gray) transparent;
-}
-.nav-disabled:hover .tooltip-text {
-    visibility: visible;
-    opacity: 1;
-}
-
-
-/* --- CORE LAYOUT & CARDS --- */
-h1, h2, h3 {
-    color: var(--wf-secondary-steel-gray);
-    font-weight: 700; 
-}
-.container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 20px;
-    margin-top: 20px; 
-}
-#content-wrapper {
-    display: block; 
-    padding: 20px 0;
-}
-.main-content {
-    padding: 30px;
-    background-color: white;
-    border-radius: var(--wf-border-radius);
-    box-shadow: var(--wf-shadow-card); 
-}
-
-/* --- FOOTER STYLING --- */
-footer {
-    text-align: center;
-    padding: 15px;
-    background-color: var(--wf-secondary-steel-gray); 
-    color: white;
-    margin-top: 40px;
-}
-
-/* --- CTA & BUTTON STYLING --- */
-
-button[onclick*="validateChallenge"], 
-.cta-button {
-    appearance: none !important;
-    -webkit-appearance: none !important;
-    border: none !important;
-    border-style: none !important; 
-    
-    background-color: var(--wf-accent-orange) !important; 
-    color: white !important;
-    font-weight: 400 !important;
-    
-    padding-left: 25px !important;
-    padding-right: 25px !important;
-    
-    border-radius: 96px !important; 
-    cursor: pointer !important;
-    transition: background-color 0.2s, box-shadow 0.2s;
-    text-decoration: none !important;
-    
-    height: var(--wf-button-height) !important; /* 40px */
-    display: inline-flex !important; 
-    align-items: center; 
-    justify-content: center;
-    
-    font-family: 'Aeonik', sans-serif !important;
-    
-    font-size: 12px !important; 
-    
-    box-sizing: border-box;
-}
-
-.cta-button:hover,
-button[onclick*="validateChallenge"]:hover {
-    background-color: #E55C00 !important; 
-    box-shadow: 0 4px 8px -2px rgba(255, 107, 24, 0.5);
-}
-
-/* --- HOME & ABOUT PAGE SPECIFICS --- */
-.promo-box {
-    background-color: var(--wf-support-karry); 
-    border-radius: var(--wf-border-radius);
-    padding: 30px;
-    text-align: center;
-    border: none; 
-    box-shadow: none;
-}
-.promo-box h3 { margin-top: 0; }
-.promo-box code {
-    background-color: #F9F9F2;
-    padding: 2px 5px;
-    border-radius: 4px;
-    font-family: monospace;
-}
-.mission-statement {
-    border-left: 5px solid var(--wf-accent-orange); 
-    padding: 20px; 
-    background-color: var(--wf-dominant-spring-wood);
-    border-radius: var(--wf-border-radius);
-    margin-bottom: 20px;
-}
-
-/* ---------------------------------------------------- */
-/* --- ❗ CSS SELECTORS LAB STYLES ❗ --- */
-/* ---------------------------------------------------- */
-
-.instructions-box {
-    background-color: var(--wf-dominant-spring-wood);
-    border: 1px solid #E2E8F0;
-    border-radius: var(--wf-border-radius);
-    padding: 25px;
-    margin-bottom: 30px;
-    font-size: 1.05em;
-    line-height: 1.6;
-}
-.instructions-box h2 {
-    margin-top: 0;
-    color: var(--wf-accent-orange);
-}
-.instructions-box code {
-    background-color: #E2E8F0;
-    padding: 3px 6px;
-    border-radius: 4px;
-    font-family: monospace;
-    font-size: 0.95em;
-}
-.instructions-box ul {
-    margin-top: 10px;
-    padding-left: 20px;
-}
-#all-challenges {
-    display: flex;
-    flex-wrap: wrap; 
-    gap: 20px; 
-    justify-content: space-between;
-}
-
-/* This is the main container for each challenge */
-.challenge-container {
-    background-color: var(--wf-support-karry); 
-    border-radius: var(--wf-border-radius);
-    padding: 20px;
-    flex: 1 1 45%; 
-    max-width: calc(50% - 10px); 
-    min-width: 380px; 
-    margin-top: 10px; 
-    box-shadow: none;
-    
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Center horizontally */
-    
-    /* This adds a consistent 15px space between all children */
-    gap: 15px; 
-}
-
-/* This is the box where the content goes. */
-.challenge-target-area {
-    background-color: var(--wf-dominant-spring-wood); 
-    border: 1px solid #E2E8F0; 
-    border-radius: var(--wf-border-radius);
-    padding: 15px;
-    width: 100%; 
-    
-    height: 230px; 
-    overflow: hidden; 
-    display: flex;
-    flex-direction: column; 
-    align-items: center;     
-    justify-content: center;
-}
-
-/* This is our one, simple "pill" style */
-.challenge-target-area p,
-.challenge-target-area button,
-.challenge-target-area input,
-.challenge-target-area li,
-.challenge-target-area h2,
-.challenge-target-area h3,
-.challenge-target-area span,
-.challenge-target-area a,
-.challenge-target-area label {
-    box-sizing: border-box;
-    border: none; 
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05); 
-    background-color: white !important; 
-    color: var(--wf-secondary-steel-gray) !important;
-    padding: 10px 14px !important;
-    margin: 6px !important;
-    font-size: 1em !important; 
-    border-radius: 6px !important; 
-    font-family: 'Aeonik', sans-serif;
-    
-    width: max-content;
-    max-width: 95%; 
-    text-align: left;
-}
-
-
-/* We just need to make sure lists/divs are invisible containers */
-.challenge-target-area div,
-.challenge-target-area ul,
-.challenge-target-area ol {
-    background-color: transparent !important;
-    box-shadow: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    width: 100%;
-    border-radius: 0 !important;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-/* And that list items are still list items */
-.challenge-target-area li {
-    display: list-item !important; 
-    margin-left: 30px !important; /* Indent */
-    width: auto; /* Let it be natural width */
-}
-
-
-.challenge-ui {
-    display: flex;
-    gap: 10px;
-    justify-content: center; 
-    align-items: center; 
-    width: 100%; /* Make UI fill width */
-}
-
-.challenge-ui input[type="text"] {
-    flex-grow: 1; 
-    padding: 0 20px;
-    border: 1px solid #ccc;
-    border-radius: 96px; 
-    font-family: monospace;
-    font-size: 1em;
-    height: var(--wf-button-height); 
-    box-sizing: border-box; 
-}
-
-/* --- ACCORDION & FEEDBACK STYLING --- */
-.validation-feedback { 
-    display: none; 
-    padding: 20px !important;
-    border-radius: var(--wf-border-radius);
-    font-weight: 400;
-    width: 100%; /* Make feedback fill width */
-}
-.validation-feedback.success,
-.validation-feedback.error,
-.validation-feedback.info {
-    display: block; 
-    border: 1px solid;
-}
-.validation-feedback.success {
-    background-color: var(--wf-support-karry);
-    color: var(--wf-secondary-steel-gray);
-    border-color: var(--wf-accent-orange);
-}
-.validation-feedback.error {
-    background-color: var(--wf-error);
-    color: var(--wf-text-error);
-    border-color: #F5C6CB;
-}
-.validation-feedback.info {
-    background-color: #EBF8FF;
-    color: #2A4365;
-    border-color: #BEE3F8;
-}
-.validation-feedback p {
-    margin-bottom: 10px;
-}
-.accordion {
-    appearance: none !important;
-    -webkit-appearance: none !important;
-    border: none !important;
-    background-color: white !important; 
-    box-shadow: none !important;
-    padding: 12px 15px; 
-    margin-top: 5px;
-    margin-bottom: 0; 
-    border-bottom: 1px solid #E2E8F0; 
-    border-radius: var(--wf-border-radius); 
-    display: flex !important;
-    justify-content: space-between !important;
-    align-items: center !important;
-    width: 100%;
-    text-align: left;
-    font-family: 'Aeonik', sans-serif !important;
-    font-size: 0.9em !important;
-    font-weight: 400 !important;
-    color: var(--wf-secondary-steel-gray) !important;
-    cursor: pointer !important;
-    transition: color 0.3s;
-}
-.accordion:hover {
-    color: var(--wf-accent-orange) !important;
-}
-.active-accordion {
-    border-radius: var(--wf-border-radius) var(--wf-border-radius) 0 0 !important;
-    border-bottom: 1px solid transparent !important;
-    margin-bottom: 0 !important;
-}
-.accordion::after {
-    content: '\002B'; 
-    font-size: 1.5em;
-    font-weight: 400;
-    color: var(--wf-accent-orange);
-    transition: transform 0.3s ease-in-out;
-    transform: rotate(0deg);
-}
-.active-accordion::after {
-    content: '\2212'; 
-    transform: rotate(180deg);
-}
-.panel {
-    max-height: 0; 
-    overflow: hidden; 
-    transition: max-height 0.3s ease-in-out;
-    padding: 0; 
-    background-color: white;
-    border-radius: 0 0 var(--wf-border-radius) var(--wf-border-radius); 
-    margin-bottom: 5px;
-}
-.panel-content {
-    padding: 15px 18px; 
-    background-color: white; 
-    margin-bottom: 5px;
-    margin-top: 5px;
-}
-.panel-content p {
-    margin: 0 !important; 
-    border: none !important;
-    background-color: transparent !important;
-    box-shadow: none !important; 
-}
-.reveal-button {
-    appearance: none !important;
-    -webkit-appearance: none !important;
-    border: 1px solid var(--wf-text-error) !important;
-    background-color: var(--wf-error) !important;
-    color: var(--wf-text-error) !important;
-    border-radius: 96px !important;
-    padding: 8px 15px !important;
-    margin-top: 10px !important;
-    cursor: pointer !important;
-    font-family: 'Aeonik', sans-serif !important;
-    font-weight: 700 !important;
-    font-size: 0.9em !important;
-    transition: background-color 0.2s, color 0.2s;
-}
-.reveal-button:hover {
-    background-color: var(--wf-text-error) !important;
-    color: white !important;
-}
-
-
-/* ---------------------------------------------------- */
-/* --- ➕ PADDING/ALIGNMENT FIXES (USER REQUEST) --- */
-/* ---------------------------------------------------- */
-h1, h2, h3 {
-    margin-top: 1.5em;    
-    margin-bottom: 0.5em; 
-    padding-left: 0;    
-}
-p {
-    padding: 5px 0; 
-    margin-bottom: 1em; 
-}
-#prompt, #prompt * {
-    padding: 20px !important; 
-    margin: 10px !important; 
-}
-
-h3[id*="challenge-title-"] {
-    font-size: 1.4em;
-    font-weight: 700;
-    margin: 0 !important; 
-    padding-left: 0 !important; 
-    text-align: center; 
-}
-span[id*="status-"] {
-    color: var(--wf-accent-orange); 
-    font-weight: 700;
-    font-size: 0.9em;
-    display: block; 
-    padding: 2px 0;
-    margin: 0 !important; 
-    text-align: center; 
-}
-p[id*="prompt-"] {
-    padding: 5px 0 !important;
-    margin: 0 !important; 
-    text-align: center; 
-}
-
-.validation-feedback p {
-    padding: 0 !important; 
-    margin-bottom: 10px !important; 
-    width: 100%; 
-    text-align: left;
-    background-color: transparent !important;
-    box-shadow: none !important;
-}
-
-
-/* ---------------------------------------------------- */
-/* --- 📱 MOBILE RESPONSIVE FIXES --- */
-/* ---------------------------------------------------- */
-@media (max-width: 768px) {
-    .navbar {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 15px 20px;
+    // --- 1. FIREBASE AUTHENTICATION SETUP ---
+    // Check if firebase is available (it should be, since it's loaded first)
+    if (typeof firebase === 'undefined') {
+        console.error("Firebase is not loaded. Make sure the SDK scripts are in your HTML before script.js.");
+        // Display an error to the user
+        const authLoading = document.getElementById('auth-loading');
+        const loginPrompt = document.getElementById('login-prompt');
+        if(authLoading) authLoading.style.display = 'none';
+        if(loginPrompt) {
+            loginPrompt.style.display = 'block';
+            loginPrompt.innerHTML = "<h1>Error: Could not load login services. Please refresh.</h1>";
+        }
+        return; // Stop execution
     }
-    .navbar .logo { margin-bottom: 15px; }
-    .navbar nav { width: 100%; }
-    .navbar ul {
-        flex-direction: column;
-        align-items: flex-start;
-        width: 100%;
+    
+    const auth = firebase.auth();
+
+    // Get references to our new HTML elements
+    const authLoading = document.getElementById('auth-loading'); // 👈 1. GET THE LOADING DIV
+    const loginPrompt = document.getElementById('login-prompt');
+    const labContent = document.getElementById('page-content'); // We use 'page-content'
+    const loginButton = document.getElementById('login-button');
+    const logoutButton = document.getElementById('logout-button');
+    const welcomeMessage = document.getElementById('welcome-message');
+
+    // Check if the login elements exist before adding listeners
+    if (!loginPrompt || !labContent || !loginButton || !logoutButton || !welcomeMessage) {
+        // This is a normal warning for pages that don't have all elements
     }
-    .navbar li {
-        margin-right: 0;
-        margin-bottom: 10px;
-        width: 100%;
+
+    let labInitialized = false; // Flag to prevent re-building the lab
+
+    // --- 2. AUTH FUNCTIONS ---
+
+    // Function to sign in with Google
+    function signIn() {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        auth.signInWithPopup(provider)
+            .catch((error) => {
+                console.error("Sign-in error:", error.message);
+            });
     }
-    .navbar a {
-        padding: 8px 0;
-        width: 100%;
-        display: block; 
+
+    // Function to sign out
+    function signOut() {
+        auth.signOut();
     }
-    .navbar a.active {
-        border-bottom: 2px solid var(--wf-accent-orange);
+
+    // Attach click listeners *only if* the buttons exist
+    if(loginButton) {
+        loginButton.addEventListener('click', signIn);
     }
-    .nav-disabled:hover .tooltip-text {
-        visibility: hidden; 
-        opacity: 0;
-        display: none;
+    if(logoutButton) {
+        logoutButton.addEventListener('click', signOut);
     }
-    .main-content { padding: 20px; }
-    .challenge-container {
-        flex-basis: 100%;
-        max-width: 100%;
-        min-width: 0; 
+
+    // --- 3. THE "GATEKEEPER" ---
+    // This is the most important part.
+    // It runs on page load and *listens* for login/logout events.
+    auth.onAuthStateChanged((user) => {
+        
+        // ❗ --- THIS IS THE FIX --- ❗
+        // First, no matter what, hide the loading message.
+        if (authLoading) authLoading.style.display = 'none'; // 👈 2. HIDE THE LOADING DIV
+
+        if (user) {
+            // --- USER IS LOGGED IN ---
+            
+            // 1. Show the lab, hide the login prompt
+            if(loginPrompt) loginPrompt.style.display = 'none';
+            if(labContent) labContent.style.display = 'block';
+
+            // 2. Update the navbar
+            if(logoutButton) logoutButton.style.display = 'inline-flex'; // Use 'inline-flex' to match cta-button
+            if(welcomeMessage) welcomeMessage.textContent = `Hello, ${user.displayName}`;
+            
+            // 3. Save user for analytics
+            localStorage.setItem('css_lab_user', user.displayName);
+
+            // 4. Initialize the CSS lab *only if* we are on the lab page and it's not already built
+            if (document.getElementById('all-challenges') && !labInitialized) {
+                initializeChallenges();
+                labInitialized = true;
+            }
+            
+        } else {
+            // --- USER IS LOGGED OUT ---
+
+            // 1. Show the login prompt, hide the lab
+            if(loginPrompt) loginPrompt.style.display = 'block';
+            if(labContent) labContent.style.display = 'none';
+
+            // 2. Update the navbar
+            if(logoutButton) logoutButton.style.display = 'none';
+            if(welcomeMessage) welcomeMessage.textContent = '';
+            
+            // 3. Clear user from analytics
+            localStorage.removeItem('css_lab_user');
+            labInitialized = false; // Reset the lab flag
+        }
+    });
+
+}); // End of DOMContentLoaded
+
+
+// =========================================================================
+// === VANILLA JS CHALLENGE LOGIC (The bulk of the code) ===
+// (All these functions are now in the global scope, which is correct)
+// =========================================================================
+
+// Store the state of each challenge
+const challengeStates = {};
+        
+// Helper function to create a new challenge structure (used after reveal)
+function generateNewChallengeHTML(def) {
+    let html;
+    let newTargetSelector;
+    let newPrompt; 
+    
+    // Simple structure changes for different types
+    if (def.type.includes('ID Selector')) {
+        html = `
+            <button id="try-one" class="btn-group">Button One</button>
+            <button id="try-two" class="btn-group new-target">Target Again</button>
+            <button id="try-three" class="btn-group">Button Three</button>
+        `;
+        newTargetSelector = "#try-two";
+        newPrompt = "Target the 'Target Again' button using its unique ID (`#try-two`).";
+    } else if (def.type.includes('Class Selector')) {
+        html = `
+            <div class="data-item">Item A</div>
+            <div class="data-item new-target">Item B</div>
+            <div class="data-item">Item C</div>
+        `;
+        newTargetSelector = ".new-target";
+        newPrompt = "Target the element labeled 'Item B' using its class selector.";
+    } else if (def.type.includes('Descendant Combinator')) {
+        html = `
+            <div id="project-list">
+                <p>File A</p>
+                <div class="folder">
+                    <p class="new-target">File B</p>
+                </div>
+            </div>
+        `;
+        newTargetSelector = "#project-list p.new-target";
+        newPrompt = "Target the element with the class `.new-target` that is a descendant of the `#project-list` div.";
+    } else if (def.type.includes('Child Combinator')) {
+        html = `
+            <ul class="nav-menu">
+                <li>Link 1</li>
+                <li><span>Link 2</span></li>
+                <li class="new-target">Link 3</li>
+            </ul>
+        `;
+        newTargetSelector = "ul.nav-menu > li.new-target";
+        newPrompt = "Target the list item with the class `.new-target` that is a direct child of the unordered list (`ul.nav-menu`).";
+    } else if (def.type.includes('Adjacent Sibling Combinator')) {
+        html = `
+            <button id="prev-sibling">Previous</button>
+            <p class="new-target">Target Paragraph</p>
+            <p>Next Paragraph</p>
+        `;
+        newTargetSelector = "#prev-sibling + p";
+        newPrompt = "Target the paragraph that immediately follows the `#prev-sibling` button.";
     }
-    .challenge-ui {
-        flex-direction: column;
-        align-items: stretch; 
+     else {
+        // Fallback for others - simple structure swap
+        html = def.baseHTML.replace(def.targetSelector.replace(/[#\.\s>+~:]/g, ''), 'new-target');
+        newTargetSelector = def.correctTarget.replace(def.correctTarget.replace(/[#\.\s>+~:]/g, ''), 'new-target');
+        newPrompt = `Apply the ${def.type} logic to this new structure. The target element now has the class .new-target.`;
     }
-    .challenge-ui input[type="text"] { width: 100%; }
-    .challenge-ui button { width: 100%; }
+    
+    return { html: html, newTargetSelector: newTargetSelector, newPrompt: newPrompt };
 }
 
-/* ---------------------------------------------------- */
-/* --- ❗ AUTH/LOGIN PAGE CENTERING FIX ❗ --- */
-/* ---------------------------------------------------- */
+// Definition of all challenges
+const challengeDefinitions = [
+    {
+        id: 1,
+        prompt: "Target the Primary Login Button using its unique ID.",
+        targetSelector: "#login-primary",
+        type: "ID Selector",
+        isComplex: false, 
+        alternatives: [
+            { selector: "button#login-primary", explanation: "This uses the tag name and the ID. Since IDs are already unique, adding the tag name is redundant but valid." }
+        ],
+        trivia: "The ID selector is the most powerful in terms of specificity (100 points).",
+        html: `
+            <button id="login-primary" class="btn btn-primary">Primary Login Button</button>
+            <button id="login-secondary" class="btn btn-secondary">Secondary Button</button>
+        `
+    },
+    {
+        id: 2,
+        prompt: "Target the item marked Urgent using its class.",
+        targetSelector: ".task-urgent",
+        type: "Class Selector",
+        isComplex: true,
+        alternatives: [
+            { selector: "li.task-urgent", explanation: "This is a great technique: combining the tag name (li) with the class." },
+            { selector: ".task-urgent.list-item", explanation: "This chains two class selectors together, ensuring an element has *both* classes." }
+        ],
+        trivia: "Class selectors contribute 10 points to specificity. You can chain multiple classes, like `.classA.classB`.",
+        html: `
+            <ul>
+                <li class="list-item task-default">Normal Item</li>
+                <li class="list-item task-urgent">Urgent Item</li>
+                <li class="list-item task-default">Another Normal Item</li>
+            </ul>
+        `
+    },
+    {
+        id: 3,
+        prompt: "Target the Save button that is contained *anywhere* inside the #settings-modal.",
+        targetSelector: "#settings-modal .btn-save",
+        type: "Descendant Combinator",
+        isComplex: true,
+        alternatives: [
+            { selector: "#settings-modal button.btn-save", explanation: "This is highly specific. It combines the ID of the container, the tag name, and the class name." },
+        ],
+        trivia: "A single space is the Descendant Combinator. It selects elements nested at *any* depth.",
+        html: `
+            <div id="settings-modal">
+                <button class="btn-cancel">Cancel</button>
+                <div class="footer">
+                    <button class="btn-save">Save</button>
+                </div>
+            </div>
+        `
+    },
+    {
+        id: 4,
+        prompt: "Target the Title text that is a direct child of the .card-header.",
+        targetSelector: ".card-header > h2:first-child",
+        type: "Child Combinator",
+        isComplex: true,
+        alternatives: [
+            { selector: "[class=\"card-header\"] > h2:first-child", explanation: "This works perfectly! It uses the attribute selector to find the parent and `:first-child` to select the specific target." },
+            { selector: ".card > .card-header > h2:first-child", explanation: "This chains multiple Child Combinators, ensuring a rigid structure." }
+        ],
+        trivia: "The Child Combinator (`>`) ensures the relationship is direct (one level deep). You often need pseudo-classes like `:first-child` to pick one specific element from a group.",
+        html: `
+            <div class="card">
+                <div class="card-header">
+                    <h2>Card Title</h2>
+                    <h2>Subtitle</h2>
+                </div>
+                <p>Card Body</p>
+            </div>
+        `
+    },
+    {
+        id: 5,
+        prompt: "Target the Second Item that immediately follows the element with the class .first-element.",
+        targetSelector: ".first-element + li",
+        type: "Adjacent Sibling Combinator",
+        isComplex: true,
+        alternatives: [
+            { selector: "li.first-element + li.list-item", explanation: "A highly specific version that ensures both elements are list items." }
+        ],
+        trivia: "The Adjacent Sibling Combinator (`+`) only selects the *one* element that immediately follows.",
+        html: `
+            <ul>
+                <li class="list-item">Zero Item</li>
+                <li class="list-item first-element">First Item</li>
+                <li class="list-item second-element">Second Item</li>
+                <li class="list-item">Third Item</li>
+            </ul>
+        `
+    },
+    {
+        id: 6,
+        prompt: "Target the Comments button given in the area below, which appears somewhere after the h3 element.",
+        targetSelector: "h3 ~ .comments",
+        type: "General Sibling Combinator",
+        isComplex: true,
+        alternatives: [
+            { selector: "p ~ .comments", explanation: "This is also correct! It targets the .comments button as a sibling of the 'p' tag." },
+            { selector: "h3 ~ button", explanation: "This is a valid, though less specific, selector that also works." }
+        ],
+        trivia: "The General Sibling Combinator (`~`) selects all siblings that follow, not just the immediate one.",
+        html: `
+            <h3>Post Title</h3>
+            <p>Post content...</p>
+            <button class="comments">Comments</button>
+        `
+    },
+    {
+        id: 7,
+        prompt: "Target the input field whose name attribute contains the word 'user'.",
+        targetSelector: "input[name*='user']",
+        type: "Attribute Selector (Substring Match)",
+        isComplex: false,
+        alternatives: [
+        ],
+        trivia: "The `*=` operator is the 'contains' attribute selector, which looks for the specified substring anywhere within the attribute's value. This is powerful when dealing with dynamic or auto-generated attributes.",
+        html: `
+            <input type="text" name="data-email" placeholder="Email">
+            <input type="text" name="data-username" placeholder="Username">
+            <input type="text" name="data-pass" placeholder="Password">
+        `
+    },
+    {
+        id: 8,
+        prompt: "Target the third item in the list, regardless of its tag name, using :nth-child.",
+        targetSelector: "li:nth-child(3)",
+        type: "Structural Pseudo-class (:nth-child)",
+        isComplex: true,
+        alternatives: [
+            { selector: "ol li:nth-child(3)", explanation: "More specific by scoping the selection to `li` elements inside an ordered list (`ol`)." },
+            { selector: "li:nth-of-type(3)", explanation: "This selects the third `li` element. It works here, but is a different selector." }
+        ],
+        trivia: "`:nth-child(n)` counts elements based on their position among *all* siblings, regardless of tag name.",
+        html: `
+            <ol>
+                <li>First Item</li>
+                <li>Second Item</li>
+                <li>Third Item</li>
+                <li>Fourth Item</li>
+            </ol>
+        `
+    },
+    {
+        id: 9,
+        prompt: "Target the Save button which does not have the class .disabled.",
+        targetSelector: "button:not(.disabled)",
+        type: "Negation Pseudo-class (:not)",
+        isComplex: false,
+        alternatives: [
+            { selector: ".btn-save:not(.disabled)", explanation: "This targets any element with the class `.btn-save` that is not disabled." },
+            { selector: "button.btn-save:not(.disabled)", explanation: "The most specific option. Combines tag name, class name, and the negation." }
+        ],
+        trivia: "The Negation Pseudo-class (`:not`) is often called the 'structural pseudo-class.'",
+        html: `
+            <button class="btn-save disabled">Save (Disabled)</button>
+            <button class="btn-save">Save (Enabled)</button>
+            <button class="btn-cancel">Cancel</button>
+        `
+    },
+    {
+        id: 10,
+        prompt: "Target the checkbox that is currently checked.",
+        targetSelector: "input:checked",
+        type: "UI State Pseudo-class (:checked)",
+        isComplex: false,
+        alternatives: [
+            { selector: "input[type='checkbox']:checked", explanation: "This adds the attribute selector for `type='checkbox'`, ensuring the selector only applies to checkbox inputs." }
+        ],
+        trivia: "The UI State Pseudo-class (`:checked`) selects radio buttons or checkboxes that are currently selected.",
+        html: `
+            <label>
+                <input type="checkbox"> Unchecked
+            </label>
+            <label>
+                <input type="checkbox" checked> Checked
+            </label>
+        `
+    },
+];
 
-#auth-loading,
-#login-prompt {
-    /* 1. Make the container fill the entire screen */
-    height: 100vh; 
-    
-    /* 2. Use Flexbox to center the content */
-    display: flex;
-    flex-direction: column;
-    justify-content: center; /* Centers vertically */
-    align-items: center;     /* Centers horizontally */
-    
-    /* 3. Set a default text-align for the content inside */
-    text-align: center;
+// --- CORE STATE MANAGEMENT & INITIALIZATION (All functions follow) ---
+
+function initializeChallenges() {
+    const container = document.getElementById('all-challenges');
+    if (!container) return;
+
+    let htmlContent = '';
+
+    challengeDefinitions.forEach(def => {
+        challengeStates[def.id] = {
+            id: def.id,
+            attempts: 0,
+            isSolved: false,
+            isRevealed: false,
+            correctTarget: def.targetSelector,
+            baseHTML: def.html,
+            currentHTML: def.html,
+            successfulSelectors: [],
+            originalPrompt: def.prompt,
+            type: def.type,
+            isComplex: def.isComplex // <-- Store the flag
+        };
+
+        // This is the key: add the .is-complex class to the container
+        const complexClass = def.isComplex ? 'is-complex' : '';
+
+        htmlContent += `
+            <div id="challenge-${def.id}" class="challenge-container">
+                <h3 id="challenge-title-${def.id}">Challenge ${def.id}</h3>
+                <span id="status-${def.id}" style="color: grey;">(Unsolved)</span>
+                <p id="prompt-${def.id}">${def.prompt}</p>
+                
+                <div id="target-area-${def.id}" class="challenge-target-area ${complexClass}">
+                    ${def.html}
+                </div>
+                
+                <div class="challenge-ui">
+                    <input type="text" id="selector-input-${def.id}" placeholder="Enter your selector here..." data-id="${def.id}">
+                    <button class="cta-button" onclick="validateChallenge(${def.id})">Validate</button>
+                </div>
+                <div id="feedback-${def.id}" class="validation-feedback"></div>
+            </div>
+        `;
+    });
+
+    container.innerHTML = htmlContent;
 }
 
-/* ❗ --- THIS IS THE FIX --- ❗ */
-/* This rule is more specific and overrides the global h2 rule */
-#login-prompt h2,
-#auth-loading h2 {
-    /* Reset all margins and padding */
-    margin: 0 !important;
-    padding: 0 !important;
-    
-    /* Add back only the spacing we want */
-    margin-bottom: 10px !important;
+
+function applyHighlighting(challengeId) {
+    const targetArea = document.getElementById(`target-area-${challengeId}`);
+    if (!targetArea) return;
+    try {
+        targetArea.querySelectorAll('.target-highlight').forEach(el => el.classList.remove('target-highlight'));
+    } catch (e) {
+        console.error(`Error cleaning up highlights for challenge ${challengeId}: ${e.message}`);
+    }
 }
 
-/* ❗ --- THIS IS THE FIX --- ❗ */
-/* This rule is more specific and overrides the global p rule */
-#login-prompt p,
-#auth-loading p {
-    /* Reset all margins and padding */
-    margin: 0 !important;
-    padding: 0 !important;
+function toggleAccordion(button) {
+    button.classList.toggle("active-accordion");
+    let panel = button.nextElementSibling;
+    if (panel.style.maxHeight) {
+        panel.style.maxHeight = null;
+    } else {
+        panel.style.maxHeight = panel.scrollHeight + 100 + "px";
+    } 
+}
 
-    /* Add back only the spacing we want */
-    margin-bottom: 20px !important;
+function validateChallenge(challengeId) {
+    const state = challengeStates[challengeId];
+    const inputField = document.getElementById(`selector-input-${challengeId}`);
+    const feedbackElement = document.getElementById(`feedback-${challengeId}`);
+    const userInput = inputField.value.trim();
+    const challengeType = state.type; 
+
+    feedbackElement.className = 'validation-feedback';
+
+    if (userInput === '') {
+        feedbackElement.textContent = 'Please enter a selector to validate.';
+        feedbackElement.classList.add('error');
+        return;
+    }
+
+    // --- 1. STRICT VALIDATION LOGIC ---
+    let strictCheckPassed = true;
+    let strictFailMessage = "";
+
+    if (challengeType === "ID Selector" && !userInput.includes('#') && !userInput.includes('[id')) {
+        strictCheckPassed = false;
+        strictFailMessage = "Incorrect. For this challenge, you must use an <b>ID selector</b> (which starts with a <b>#</b>).";
+    } else if (challengeType === "Class Selector" && !userInput.includes('.') && !userInput.includes('[class')) {
+        strictCheckPassed = false;
+        strictFailMessage = "Incorrect. For this challenge, you must use a <b>Class selector</b> (which starts with a <b>.</b>).";
+    } else if (challengeType === "Descendant Combinator" && !userInput.includes(' ')) {
+        strictCheckPassed = false;
+        strictFailMessage = "Incorrect. This challenge requires a <b>Descendant Combinator</b> (a <b>space</b>).";
+    } else if (challengeType === "Child Combinator" && !userInput.includes('>')) {
+        strictCheckPassed = false;
+        strictFailMessage = "Incorrect. This challenge requires a <b>Child Combinator</b> (the <b>&gt;</b> symbol).";
+    } else if (challengeType === "Adjacent Sibling Combinator" && !userInput.includes('+')) {
+        strictCheckPassed = false;
+        strictFailMessage = "Incorrect. This challenge requires an <b>Adjacent Sibling Combinator</b> (the <b>+</b> symbol).";
+    } else if (challengeType === "General Sibling Combinator" && !userInput.includes('~')) {
+        strictCheckPassed = false;
+        strictFailMessage = "Incorrect. This challenge requires a <b>General Sibling Combinator</b> (the <b>~</b> symbol).";
+    } else if (challengeType.includes("Attribute") && !challengeType.includes("Substring Match") && !userInput.includes('[')) {
+        strictCheckPassed = false;
+        strictFailMessage = "Incorrect. This challenge requires an <b>Attribute selector</b> (e.g., <b>[attribute=value]</b>).";
+    } else if (challengeType.includes("Pseudo") && !userInput.includes(':')) {
+        strictCheckPassed = false;
+        strictFailMessage = "Incorrect. This challenge requires a <b>Pseudo-class selector</b> (e.g., <b>:checked</b>).";
+    }
+
+    if (!strictCheckPassed) {
+        feedbackElement.innerHTML = strictFailMessage;
+        feedbackElement.classList.add('error');
+        return; 
+    }
+    // --- END OF STRICT VALIDATION ---
+
+    try {
+        const targetArea = document.getElementById(`target-area-${challengeId}`);
+        const correctTarget = targetArea.querySelector(state.correctTarget);
+
+        if (!correctTarget) {
+            feedbackElement.textContent = 'Internal Error: Target element missing.';
+            feedbackElement.classList.add('error');
+            return;
+        }
+        
+        const selectedElements = targetArea.querySelectorAll(userInput);
+        const isCorrect = selectedElements.length === 1 && selectedElements[0] === correctTarget;
+
+        // ❗ --- THIS IS THE NEW LOGIC FIX --- ❗
+        // Check for the special case in Challenge 7
+        if (challengeId === 7 && isCorrect && !userInput.includes('*=')) {
+            // The answer is technically right, but not the lesson.
+            // Block them, but don't count it as a failure.
+            feedbackElement.innerHTML = `
+                That's a valid selector and it works! 
+                <br><br>
+                However, this challenge is about the <b>Substring Match ("contains")</b> operator. 
+                <br>
+                Try again using the <code>*=</code> symbol to match the prompt's hint.
+            `;
+            feedbackElement.className = 'validation-feedback info'; // Use 'info' blue
+            return; // Exit without failing or succeeding
+        }
+        // --- END OF NEW LOGIC FIX ---
+
+        if (isCorrect) {
+            handleSuccess(challengeId, userInput);
+        } else {
+            handleFailure(challengeId, userInput, selectedElements, correctTarget);
+        }
+
+    } catch (e) {
+        const isAttributeEqualsClass = userInput.includes('[class=');
+        if (isAttributeEqualsClass) {
+            feedbackElement.innerHTML = `
+                ❌ Syntax Error (Specific): Your selector <code>${userInput}</code> is failing. 
+                <br><strong>The Attribute Equals Selector ([attr="value"]) requires an EXACT match.</strong> 
+                <br>Try the <b>Class Selector (.)</b> or the <b>Attribute Contains Selector ([attr~="value"])</b> instead.
+            `;
+            feedbackElement.classList.add('error');
+        } else {
+             feedbackElement.textContent = `🚫 Syntax Error: "${userInput}" is not a valid CSS selector.`;
+             feedbackElement.classList.add('error');
+        }
+    }
+}
+
+function handleSuccess(challengeId, correctSelector) {
+    const state = challengeStates[challengeId];
+    const feedbackElement = document.getElementById(`feedback-${challengeId}`);
+    const statusElement = document.getElementById(`status-${challengeId}`);
+    const challengeDef = challengeDefinitions.find(d => d.id === challengeId);
+    
+    const normalizedSelector = correctSelector.toLowerCase().trim().replace(/\s+/g, ' ');
+    const isNewSuccess = !state.successfulSelectors.includes(normalizedSelector);
+
+    if (isNewSuccess) {
+        state.successfulSelectors.push(normalizedSelector);
+    }
+    
+    if (!state.isSolved) {
+        statusElement.textContent = "(SOLVED!)";
+        statusElement.style.color = 'var(--wf-text-success)'; 
+    }
+
+    state.isSolved = true;
+    let allAlternatives = [...challengeDef.alternatives];
+    
+    state.successfulSelectors.forEach(sel => {
+        if (!allAlternatives.some(alt => alt.selector.toLowerCase().trim() === sel) && sel !== normalizedSelector) {
+            allAlternatives.push({ selector: sel, explanation: "You found this alternative! It works because it selects the specific target element with precision." });
+        }
+    });
+
+    const alternativesHtml = allAlternatives
+        .filter(alt => alt.selector.toLowerCase().trim() !== normalizedSelector)
+        .map((alt, index) => `
+            <button class="accordion" onclick="toggleAccordion(this)">
+                Alternative ${index + 1}: <code>${alt.selector}</code>
+            </button>
+            <div class="panel">
+                <div class="panel-content">
+                    <p><strong>How it works:</strong> ${alt.explanation}</p>
+                </div>
+            </div>
+        `).join('');
+
+    feedbackElement.classList.add('success');
+    
+    feedbackElement.innerHTML = `
+        🎉 <b>PERFECT!</b> You successfully targeted the element with <code>${correctSelector}</code>.
+        <br><br>
+        <strong>Lesson Learned: ${challengeDef.type}</strong> 💡
+        <div class="hint-message">${challengeDef.trivia}</div>
+        <p>Explore other ways to solve this challenge:</p>
+        ${alternativesHtml}
+    `;
+    
+    state.attempts = 0;
+}
+
+function handleFailure(challengeId, userInput, selectedElements, correctTarget) {
+    const state = challengeStates[challengeId];
+    const feedbackElement = document.getElementById(`feedback-${challengeId}`);
+    const challengeType = state.type; 
+    state.attempts++;
+
+    let message = '';
+    feedbackElement.classList.add('error');
+    
+    if (state.attempts === 1) {
+        // First failure: Just state the problem
+        let nudge;
+        if (selectedElements.length === 0) {
+            nudge = `Incorrect. Your selector selected <b>no elements</b>. Check for typos.`;
+        } else if (Array.from(selectedElements).includes(correctTarget)) {
+            nudge = `Close! Your selector selected <b>${selectedElements.length} elements</b>, including the target. Try to be more specific.`;
+        } else {
+            nudge = `Incorrect. Your selector selected <b>${selectedElements.length} element(s)</b>, but the target was not among them.`;
+        }
+        message = `${nudge}`;
+    } 
+    else if (state.attempts === 2) {
+        // Second failure: Simple, non-specific hint
+        message = `Still incorrect. 
+            <br><div class="hint-message info">💡 <b>Hint:</b> Check your spelling and syntax carefully. Remember, <code>#</code> is for IDs and <code>.</code> is for classes.</div>`;
+        feedbackElement.classList.remove('error');
+        feedbackElement.classList.add('info');
+    } 
+    else if (state.attempts === 3) {
+        // Third failure: Now we give the challenge type
+        message = `Still incorrect. 
+            <br><div class="hint-message info">🚨 <b>Hint:</b> This challenge requires a <b>${challengeType}</b>.</div>`;
+        feedbackElement.classList.remove('error');
+        feedbackElement.classList.add('info');
+    } 
+    else if (state.attempts === 4) {
+        // Fourth failure: Deep dive hint (the operator)
+        let operatorHint = '';
+        if (challengeType.includes('ID Selector')) operatorHint = 'Use the <b>#</b> symbol followed by the ID name.';
+        else if (challengeType.includes('Class Selector')) operatorHint = 'Use the <b>.</b> symbol followed by the class name.';
+        else if (challengeType.includes('Descendant')) operatorHint = 'Use a <b>space</b> between selectors.';
+        else if (challengeType.includes('Child')) operatorHint = 'Use the <b>&gt;</b> operator.';
+        else if (challengeType.includes('Adjacent')) operatorHint = 'Use the <b>+</b> symbol.';
+        else if (challengeType.includes('General')) operatorHint = 'Use the <b>~</b> operator.';
+        else if (challengeType.includes('Substring Match')) operatorHint = 'Use the "contains" operator: <b>*=</b>';
+        else if (challengeType.includes('Attribute')) operatorHint = 'Use brackets <b>[ ]</b>.';
+        else if (challengeType.includes('Pseudo')) operatorHint = 'Use the colon <b>:</b> followed by the selector name.';
+        
+        message = `Still incorrect. 
+            <br><div class="hint-message info">🧠 <b>Deep Dive Hint:</b> ${operatorHint}</div>`;
+        feedbackElement.classList.remove('error');
+        feedbackElement.classList.add('info');
+    }
+    else if (state.attempts >= 5 && !state.isRevealed) {
+        // Fifth failure: Offer the reveal button
+        message = `🛑 <b>5 Failed Attempts.</b> Would you like to reveal the solution and try a new, related challenge?
+            <br><button class="reveal-button" onclick="revealSolution(${challengeId})">Yes, Reveal Solution & Try New Challenge</button>`;
+        feedbackElement.classList.remove('info');
+        feedbackElement.classList.add('error');
+    }
+    
+    feedbackElement.innerHTML = message;
+}
+
+function revealSolution(challengeId) {
+    const state = challengeStates[challengeId];
+    const feedbackElement = document.getElementById(`feedback-${challengeId}`);
+    const inputField = document.getElementById(`selector-input-${challengeId}`);
+    const challengeDef = challengeDefinitions.find(d => d.id === challengeId);
+    const statusElement = document.getElementById(`status-${challengeId}`);
+
+    state.isRevealed = true;
+    statusElement.textContent = "(Solution Revealed)";
+    inputField.value = state.correctTarget;
+    
+    feedbackElement.classList.remove('error', 'info');
+    feedbackElement.classList.add('success');
+    feedbackElement.innerHTML = `
+        ✅ <b>Solution Revealed:</b> The correct selector was <code>${state.correctTarget}</code>.
+        <br>
+        <p style="margin-top: 10px;">Please study the solution, then click the button below to try a new challenge of the same type.</p>
+        <button class="accordion" style="background-color: #007bff; color: white; margin-right: 5px;" onclick="resetChallenge(${challengeId})">🔄 Try New ${challengeDef.type} Challenge</button>
+    `;
+}
+
+function resetChallenge(challengeId) {
+    const state = challengeStates[challengeId];
+    const challengeDef = challengeDefinitions.find(d => d.id === challengeId);
+    const targetArea = document.getElementById(`target-area-${challengeId}`);
+    const inputField = document.getElementById(`selector-input-${challengeId}`);
+    const feedbackElement = document.getElementById(`feedback-${challengeId}`);
+    const statusElement = document.getElementById(`status-${challengeId}`);
+    const promptElement = document.getElementById(`prompt-${challengeId}`);
+    
+    const { html: newHtml, newTargetSelector: newTarget, newPrompt: updatedPrompt } = generateNewChallengeHTML(challengeDef);
+    
+    state.correctTarget = newTarget;
+    state.attempts = 0;
+    state.isRevealed = false;
+    state.isSolved = false;
+    state.successfulSelectors = [];
+    
+    targetArea.innerHTML = newHtml;
+    inputField.value = '';
+    inputField.disabled = false;
+    inputField.nextElementSibling.disabled = false;
+    feedbackElement.className = 'validation-feedback';
+    
+    promptElement.textContent = updatedPrompt; 
+    feedbackElement.innerHTML = `🌟 <b>New Challenge!</b> Apply the <b>${challengeDef.type}</b> logic to this new structure.`;
+    feedbackElement.classList.add('info'); 
+    
+    statusElement.textContent = "(Unsolved)";
+    statusElement.style.color = 'grey';
 }
