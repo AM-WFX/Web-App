@@ -156,6 +156,7 @@ body {
 h1, h2, h3 {
     color: var(--wf-secondary-steel-gray);
     font-weight: 700; 
+    /* ❗ FIX: Removed all margins from the global rule ❗ */
 }
 .container {
     max-width: 1400px;
@@ -211,7 +212,6 @@ button[onclick*="validateChallenge"],
     
     font-family: 'Aeonik', sans-serif !important;
     
-    /* ❗ FIX 1: Font size increased to 12px ❗ */
     font-size: 12px !important; 
     
     box-sizing: border-box;
@@ -507,6 +507,10 @@ button[onclick*="validateChallenge"]:hover {
 /* ---------------------------------------------------- */
 /* --- ➕ PADDING/ALIGNMENT FIXES (USER REQUEST) --- */
 /* ---------------------------------------------------- */
+
+/* ❗ --- THIS IS THE FIX (PART 1) --- ❗ */
+/* We are REMOVING these two problematic global rules */
+/*
 h1, h2, h3 {
     margin-top: 1.5em;    
     margin-bottom: 0.5em; 
@@ -516,6 +520,9 @@ p {
     padding: 5px 0; 
     margin-bottom: 1em; 
 }
+*/
+
+/* This rule is fine */
 #prompt, #prompt * {
     padding: 20px !important; 
     margin: 10px !important; 
@@ -620,8 +627,8 @@ p[id*="prompt-"] {
     text-align: center;
 }
 
-/* ❗ --- THIS IS THE FIX --- ❗ */
-/* This rule is more specific and overrides the global h2 rule */
+/* ❗ --- THIS IS THE FIX (PART 2) --- ❗ */
+/* This rule is more specific and overrides ALL global h2 rules */
 #login-prompt h2,
 #auth-loading h2 {
     /* Reset all margins and padding */
@@ -632,8 +639,8 @@ p[id*="prompt-"] {
     margin-bottom: 10px !important;
 }
 
-/* ❗ --- THIS IS THE FIX --- ❗ */
-/* This rule is more specific and overrides the global p rule */
+/* ❗ --- THIS IS THE FIX (PART 2) --- ❗ */
+/* This rule is more specific and overrides ALL global p rules */
 #login-prompt p,
 #auth-loading p {
     /* Reset all margins and padding */
