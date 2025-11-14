@@ -211,6 +211,7 @@ button[onclick*="validateChallenge"],
     
     font-family: 'Aeonik', sans-serif !important;
     
+    /* ❗ FIX 1: Font size increased to 12px ❗ */
     font-size: 12px !important; 
     
     box-sizing: border-box;
