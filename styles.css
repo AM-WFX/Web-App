@@ -46,6 +46,11 @@
     box-sizing: border-box;
 }
 
+/* ❗ --- THIS IS PART OF THE FIX --- ❗ */
+html, body {
+    height: 100%; /* Ensures the body can be a reference for full-height elements */
+}
+
 body {
     font-family: 'Aeonik', sans-serif;
     font-weight: 400;
@@ -156,8 +161,6 @@ body {
 h1, h2, h3 {
     color: var(--wf-secondary-steel-gray);
     font-weight: 700; 
-    /* ❗ --- THIS IS THE FIX (PART 1) --- ❗ */
-    /* Removed all global margins that were causing the error */
 }
 .container {
     max-width: 1400px;
@@ -508,22 +511,14 @@ button[onclick*="validateChallenge"]:hover {
 /* ---------------------------------------------------- */
 /* --- ➕ PADDING/ALIGNMENT FIXES (USER REQUEST) --- */
 /* ---------------------------------------------------- */
-
-/* ❗ --- THIS IS THE FIX (PART 1) --- ❗ */
-/* We are REMOVING these two problematic global rules */
-/*
 h1, h2, h3 {
-    margin-top: 1.5em;    
-    margin-bottom: 0.5em; 
+    /* ❗ FIX: Removed global margins ❗ */
     padding-left: 0;    
 }
 p {
+    /* ❗ FIX: Removed global margins ❗ */
     padding: 5px 0; 
-    margin-bottom: 1em; 
 }
-*/
-
-/* This rule is fine */
 #prompt, #prompt * {
     padding: 20px !important; 
     margin: 10px !important; 
@@ -615,21 +610,26 @@ p[id*="prompt-"] {
 
 #auth-loading,
 #login-prompt {
-    /* 1. Make the container fill the entire screen */
-    height: 100vh; 
+    /* ❗ --- THIS IS THE FIX --- ❗ */
+    /* This forces the div to cover the screen and be on top */
+    position: fixed;
+    inset: 0; /* (Same as top: 0; left: 0; right: 0; bottom: 0;) */
+    width: 100%;
+    height: 100%;
+    z-index: 1000; /* High z-index to be on top of all content */
     
-    /* 2. Use Flexbox to center the content */
+    /* Use the page background color to hide content flashing */
+    background-color: var(--wf-dominant-spring-wood); 
+    
+    /* Use Flexbox to center the content */
     display: flex;
     flex-direction: column;
     justify-content: center; /* Centers vertically */
     align-items: center;     /* Centers horizontally */
     
-    /* 3. Set a default text-align for the content inside */
     text-align: center;
 }
 
-/* ❗ --- THIS IS THE FIX (PART 2) --- ❗ */
-/* This rule is more specific and overrides ALL global h2 rules */
 #login-prompt h2,
 #auth-loading h2 {
     /* Reset all margins and padding */
@@ -640,8 +640,6 @@ p[id*="prompt-"] {
     margin-bottom: 10px !important;
 }
 
-/* ❗ --- THIS IS THE FIX (PART 2) --- ❗ */
-/* This rule is more specific and overrides ALL global p rules */
 #login-prompt p,
 #auth-loading p {
     /* Reset all margins and padding */
