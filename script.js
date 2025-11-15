@@ -221,7 +221,6 @@ function validateTutorial() {
 // 💡 --- SPOTLIGHT TOUR FUNCTIONS (ALL NEW) --- 💡
 // -------------------------------------------------
 let currentTourStep = 0;
-// ❗ FIX: Removed <br> tags. Using <p> tags for semantic structure.
 const tourSteps = [
     {
         element: '#prompt-0',
@@ -256,13 +255,16 @@ const tourSteps = [
 ];
 
 function startSpotlightTour() {
+    // Create the overlay
     const overlay = document.createElement('div');
     overlay.id = 'tour-overlay';
     document.body.appendChild(overlay);
 
-    const popup = document.createElement('div');
-    popup.id = 'tour-popup';
-    popup.innerHTML = `
+    // Create the popup (now a fixed panel)
+    const panel = document.createElement('div');
+    panel.id = 'tour-popup';
+    
+    panel.innerHTML = `
         <button id="tour-skip" class="tour-skip-x">&times;</button>
         <div id="tour-content">
             <h3 id="tour-title"></h3>
@@ -273,7 +275,7 @@ function startSpotlightTour() {
             </div>
         </div>
     `;
-    document.body.appendChild(popup);
+    document.body.appendChild(panel);
 
     document.getElementById('tour-next').addEventListener('click', nextTourStep);
     document.getElementById('tour-back').addEventListener('click', prevTourStep);
@@ -304,7 +306,6 @@ function showTourStep(stepIndex) {
         // Add new spotlight
         targetElement.classList.add('spotlight');
         
-        // ❗ --- THIS IS THE NEW POSITIONING LOGIC --- ❗
         const rect = targetElement.getBoundingClientRect(); // Get element's position
         const panelRect = popup.getBoundingClientRect(); // Get popup's dimensions
         
@@ -635,6 +636,7 @@ function initializeChallenges() {
             type: def.type
         };
 
+        // ❗ FIX: Removed the broken 'complexClass' variable
         htmlContent += `
             <div id="challenge-${def.id}" class="challenge-container">
                 <h3 id="challenge-title-${def.id}">Challenge ${def.id}</h3>
