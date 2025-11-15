@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const loginPrompt = document.getElementById('login-prompt');
         if(authLoading) authLoading.style.display = 'none';
         if(loginPrompt) {
-            loginPrompt.style.display = 'block';
+            loginPrompt.style.display = 'flex'; // Use flex for centering
             loginPrompt.innerHTML = "<h1>Error: Could not load login services. Please refresh.</h1>";
         }
         return; // Stop execution
@@ -74,7 +74,10 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // 1. Show the lab, hide the login prompt
             if(loginPrompt) loginPrompt.style.display = 'none';
-            if(labContent) labContent.style.display = 'block';
+            
+            // ❗ --- THIS IS THE FIX --- ❗
+            // We must use 'flex' to match the CSS rule for the sticky footer.
+            if(labContent) labContent.style.display = 'flex';
 
             // 2. Update the navbar
             if(logoutButton) logoutButton.style.display = 'inline-flex'; // Use 'inline-flex' to match cta-button
@@ -92,9 +95,8 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             // --- USER IS LOGGED OUT ---
 
-            // ❗ --- THIS IS THE FIX --- ❗
-            // We must use 'flex' to match the CSS rule for centering.
-            if(loginPrompt) loginPrompt.style.display = 'flex';
+            // 1. Show the login prompt, hide the lab
+            if(loginPrompt) loginPrompt.style.display = 'flex'; // Use flex for centering
             if(labContent) labContent.style.display = 'none';
 
             // 2. Update the navbar

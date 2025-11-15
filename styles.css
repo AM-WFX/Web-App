@@ -54,6 +54,16 @@ body {
     overflow-x: hidden;
 }
 
+/* ❗ --- THIS IS THE STICKY FOOTER FIX (PART 1) --- ❗ */
+/* This makes your #page-content wrapper a flex container */
+/* that is at least as tall as the screen. */
+#page-content {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+
 /* --- ❗ NAVBAR STYLING (WHATFIX REPLICATION) ❗ --- */
 .navbar {
     background-color: white; 
@@ -156,21 +166,29 @@ body {
 h1, h2, h3 {
     color: var(--wf-secondary-steel-gray);
     font-weight: 700; 
-    /* ❗ --- THIS IS THE FIX (PART 1) --- ❗ */
-    /* We are RESTORING the global margins for site typography */
-    margin-top: 1.5em;    
-    margin-bottom: 0.5em; 
 }
+
+/* ❗ --- THIS IS THE STICKY FOOTER FIX (PART 2) --- ❗ */
 .container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 20px;
-    margin-top: 20px; 
+    /* flex-grow: 1 tells it to "grow" and fill all empty space */
+    flex-grow: 1; 
+
+    /* margin: 0 auto; centers it horizontally */
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%; 
+
+    /* padding: 30px; gives equal 30px spacing on all 4 sides */
+    padding: 30px;
 }
+
+/* We remove all spacing from the wrapper div */
 #content-wrapper {
     display: block; 
-    padding: 20px 0;
+    padding: 0; 
 }
+
+/* This is the white box */
 .main-content {
     padding: 30px;
     background-color: white;
@@ -184,7 +202,9 @@ footer {
     padding: 15px;
     background-color: var(--wf-secondary-steel-gray); 
     color: white;
-    margin-top: 40px;
+    /* ❗ --- THIS IS THE STICKY FOOTER FIX (PART 3) --- ❗ */
+    /* No margin-top is needed, flexbox handles it */
+    margin-top: 0; 
 }
 
 /* --- CTA & BUTTON STYLING --- */
@@ -234,6 +254,7 @@ button[onclick*="validateChallenge"]:hover {
     text-align: center;
     border: none; 
     box-shadow: none;
+    margin-bottom: 20px; /* Added for spacing between boxes */
 }
 .promo-box h3 { margin-top: 0; }
 .promo-box code {
@@ -511,20 +532,44 @@ button[onclick*="validateChallenge"]:hover {
 /* --- ➕ PADDING/ALIGNMENT FIXES (USER REQUEST) --- */
 /* ---------------------------------------------------- */
 
-/* ❗ --- THIS IS THE FIX (PART 1) --- ❗ */
-/* We RESTORE the global <p> tag margins for site typography */
+/* ❗ --- THIS IS THE FIX (PART 5) --- ❗ */
+/* These rules are now RESTORED and UPDATED */
+h1 {
+    margin-top: 1em; /* <-- CHANGED */
+    margin-bottom: 0.5em; 
+}
+h2 {
+    margin-top: 0.5em; /* <-- CHANGED */
+    margin-bottom: 0.5em; 
+}
+h3 {
+    margin-top: 1.5em;    
+    margin-bottom: 0.5em; 
+}
 p {
     padding: 5px 0; 
     margin-bottom: 1em; 
 }
 
-/* This rule is not used, but is fine to leave */
+/* These new rules override the global 'p' margin */
+/* in the specific places you mentioned. */
+.promo-box p {
+    margin-bottom: 0;
+}
+/* This targets the p inside the FIRST promo-box */
+.main-content > .promo-box:first-of-type p {
+    margin-bottom: 1em !important; /* Restore margin for first box */
+}
+footer p {
+    margin-bottom: 0;
+}
+
+
 #prompt, #prompt * {
     padding: 20px !important; 
     margin: 10px !important; 
 }
 
-/* These rules correctly override global margins for the challenge cards */
 h3[id*="challenge-title-"] {
     font-size: 1.4em;
     font-weight: 700;
@@ -611,39 +656,24 @@ p[id*="prompt-"] {
 
 #auth-loading,
 #login-prompt {
-    /* 1. Make the container fill the entire screen */
     height: 100vh; 
-    
-    /* 2. Use Flexbox to center the content */
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Centers vertically */
-    align-items: center;     /* Centers horizontally */
-    
-    /* 3. Set a default text-align for the content inside */
+    justify-content: center; 
+    align-items: center;     
     text-align: center;
 }
 
-/* ❗ --- THIS IS THE FIX (PART 2) --- ❗ */
-/* This rule is more specific and overrides ALL global h2 rules */
 #login-prompt h2,
 #auth-loading h2 {
-    /* Reset all margins and padding */
     margin: 0 !important;
     padding: 0 !important;
-    
-    /* Add back only the spacing we want */
     margin-bottom: 10px !important;
 }
 
-/* ❗ --- THIS IS THE FIX (PART 2) --- ❗ */
-/* This rule is more specific and overrides ALL global p rules */
 #login-prompt p,
 #auth-loading p {
-    /* Reset all margins and padding */
     margin: 0 !important;
     padding: 0 !important;
-
-    /* Add back only the spacing we want */
     margin-bottom: 20px !important;
 }
