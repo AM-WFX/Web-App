@@ -54,16 +54,14 @@ body {
     overflow-x: hidden;
 }
 
-/* ---------------------------------------------------- */
-/* --- ❗ NEW RULE FOR PAGE LAYOUT ❗ --- */
-/* ---------------------------------------------------- */
-/* This makes the main content wrapper a flex container */
+/* ❗ --- THIS IS THE FIX (PART 1) --- ❗ */
+/* This turns your page wrapper into a flex container */
+/* that is at least as tall as the screen. */
 #page-content {
     display: flex;
     flex-direction: column;
-    min-height: 100vh; /* Ensures footer can stick to bottom */
+    min-height: 100vh;
 }
-
 
 /* --- ❗ NAVBAR STYLING (WHATFIX REPLICATION) ❗ --- */
 .navbar {
@@ -168,17 +166,25 @@ h1, h2, h3 {
     color: var(--wf-secondary-steel-gray);
     font-weight: 700; 
 }
+
+/* ❗ --- THIS IS THE FIX (PART 2) --- ❗ */
+/* This section now controls all page spacing */
 .container {
     max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 20px;
-    margin-top: 30px; /* ❗ FIX 1: Replaced 20px with 30px for consistent gap */
-    margin-bottom: 30px; /* ❗ NEW: Added margin-bottom for gap */
+    /* This rule sets 30px top/bottom margin, and centers left/right */
+    margin: 30px auto; 
+    /* This rule sets 30px padding on all 4 *inside* edges */
+    padding: 30px; 
+    
+    /* This tells the container to grow and push the footer down */
+    flex-grow: 1; 
 }
+
+/* ❗ --- THIS IS THE FIX (PART 3) --- ❗ */
+/* We no longer need this div to control spacing */
 #content-wrapper {
     display: block; 
-    /* ❗ FIX 2: Changed padding to be symmetrical ❗ */
-    padding: 20px; 
+    padding: 0; /* <-- REMOVED padding: 20px 0 */
 }
 .main-content {
     padding: 30px;
@@ -193,10 +199,9 @@ footer {
     padding: 15px;
     background-color: var(--wf-secondary-steel-gray); 
     color: white;
-    
-    /* ❗ FIX 3: Replaced margin-top: 40px with auto ❗ */
-    /* This sticks the footer to the bottom of the page */
-    margin-top: auto; 
+    /* ❗ --- THIS IS THE FIX (PART 4) --- ❗ */
+    /* This is no longer needed, flexbox handles it */
+    margin-top: 0; 
 }
 
 /* --- CTA & BUTTON STYLING --- */
@@ -523,13 +528,14 @@ button[onclick*="validateChallenge"]:hover {
 /* --- ➕ PADDING/ALIGNMENT FIXES (USER REQUEST) --- */
 /* ---------------------------------------------------- */
 
-/* ❗ FIX 4: Set the new global margins as requested ❗ */
+/* ❗ --- THIS IS THE FIX (PART 5) --- ❗ */
+/* These rules are now RESTORED and UPDATED */
 h1 {
-    margin-top: 1em;
+    margin-top: 1em; /* <-- CHANGED */
     margin-bottom: 0.5em; 
 }
 h2 {
-    margin-top: 0.5em;
+    margin-top: 0.5em; /* <-- CHANGED */
     margin-bottom: 0.5em; 
 }
 h3 {
@@ -541,7 +547,8 @@ p {
     margin-bottom: 1em; 
 }
 
-/* ❗ FIX 5: Added new rules to fix specific p margins ❗ */
+/* These new rules override the global 'p' margin */
+/* in the specific places you mentioned. */
 .promo-box p {
     margin-bottom: 0;
 }
@@ -641,35 +648,24 @@ p[id*="prompt-"] {
 
 #auth-loading,
 #login-prompt {
-    /* 1. Make the container fill the entire screen */
     height: 100vh; 
-    
-    /* 2. Use Flexbox to center the content */
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Centers vertically */
-    align-items: center;     /* Centers horizontally */
-    
-    /* 3. Set a default text-align for the content inside */
+    justify-content: center; 
+    align-items: center;     
     text-align: center;
 }
 
 #login-prompt h2,
 #auth-loading h2 {
-    /* Reset all margins and padding */
     margin: 0 !important;
     padding: 0 !important;
-    
-    /* Add back only the spacing we want */
     margin-bottom: 10px !important;
 }
 
 #login-prompt p,
 #auth-loading p {
-    /* Reset all margins and padding */
     margin: 0 !important;
     padding: 0 !important;
-
-    /* Add back only the spacing we want */
     margin-bottom: 20px !important;
 }
