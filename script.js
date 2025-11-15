@@ -6,40 +6,30 @@
 document.addEventListener('DOMContentLoaded', function() {
 
     // --- 1. FIREBASE AUTHENTICATION SETUP ---
-    // Check if firebase is available (it should be, since it's loaded first)
     if (typeof firebase === 'undefined') {
         console.error("Firebase is not loaded. Make sure the SDK scripts are in your HTML before script.js.");
-        // Display an error to the user
         const authLoading = document.getElementById('auth-loading');
         const loginPrompt = document.getElementById('login-prompt');
         if(authLoading) authLoading.style.display = 'none';
         if(loginPrompt) {
-            loginPrompt.style.display = 'flex'; // Use flex for centering
+            loginPrompt.style.display = 'flex';
             loginPrompt.innerHTML = "<h1>Error: Could not load login services. Please refresh.</h1>";
         }
-        return; // Stop execution
+        return; 
     }
     
     const auth = firebase.auth();
 
-    // Get references to our new HTML elements
     const authLoading = document.getElementById('auth-loading');
     const loginPrompt = document.getElementById('login-prompt');
-    const labContent = document.getElementById('page-content'); // We use 'page-content'
+    const labContent = document.getElementById('page-content'); 
     const loginButton = document.getElementById('login-button');
     const logoutButton = document.getElementById('logout-button');
     const welcomeMessage = document.getElementById('welcome-message');
 
-    // Check if the login elements exist before adding listeners
-    if (!authLoading || !loginPrompt || !labContent || !loginButton || !logoutButton || !welcomeMessage) {
-        // This is a normal warning for pages that don't have all elements
-    }
-
-    let labInitialized = false; // Flag to prevent re-building the lab
+    let labInitialized = false; 
 
     // --- 2. AUTH FUNCTIONS ---
-
-    // Function to sign in with Google
     function signIn() {
         const provider = new firebase.auth.GoogleAuthProvider();
         auth.signInWithPopup(provider)
@@ -48,73 +38,137 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     }
 
-    // Function to sign out
     function signOut() {
         auth.signOut();
     }
 
-    // Attach click listeners *only if* the buttons exist
-    if(loginButton) {
-        loginButton.addEventListener('click', signIn);
-    }
-    if(logoutButton) {
-        logoutButton.addEventListener('click', signOut);
-    }
+    if(loginButton) loginButton.addEventListener('click', signIn);
+    if(logoutButton) logoutButton.addEventListener('click', signOut);
 
     // --- 3. THE "GATEKEEPER" ---
-    // This is the most important part.
-    // It runs on page load and *listens* for login/logout events.
     auth.onAuthStateChanged((user) => {
         
-        // First, no matter what, hide the loading message.
         if (authLoading) authLoading.style.display = 'none';
 
         if (user) {
             // --- USER IS LOGGED IN ---
-            
-            // 1. Show the lab, hide the login prompt
             if(loginPrompt) loginPrompt.style.display = 'none';
-            
-            // ❗ --- THIS IS THE FIX --- ❗
-            // We must use 'flex' to match the CSS rule for the sticky footer.
-            if(labContent) labContent.style.display = 'flex';
+            if(labContent) labContent.style.display = 'flex'; // Use 'flex' for sticky footer
 
-            // 2. Update the navbar
-            if(logoutButton) logoutButton.style.display = 'inline-flex'; // Use 'inline-flex' to match cta-button
+            if(logoutButton) logoutButton.style.display = 'inline-flex';
             if(welcomeMessage) welcomeMessage.textContent = `Hello, ${user.displayName}`;
             
-            // 3. Save user for analytics
             localStorage.setItem('css_lab_user', user.displayName);
 
-            // 4. Initialize the CSS lab *only if* we are on the lab page and it's not already built
+            // ❗ --- THIS IS THE NEW LOGIC --- ❗
+            // Check if we are on the lab page
             if (document.getElementById('all-challenges') && !labInitialized) {
-                initializeChallenges();
-                labInitialized = true;
+                // Don't initialize yet. Show the choice first.
+                showExperienceLevelChoice(); 
+                labInitialized = true; // Set flag so it only runs once
             }
             
         } else {
             // --- USER IS LOGGED OUT ---
-
-            // 1. Show the login prompt, hide the lab
-            if(loginPrompt) loginPrompt.style.display = 'flex'; // Use flex for centering
+            if(loginPrompt) loginPrompt.style.display = 'flex';
             if(labContent) labContent.style.display = 'none';
 
-            // 2. Update the navbar
             if(logoutButton) logoutButton.style.display = 'none';
             if(welcomeMessage) welcomeMessage.textContent = '';
             
-            // 3. Clear user from analytics
             localStorage.removeItem('css_lab_user');
-            labInitialized = false; // Reset the lab flag
+            labInitialized = false; 
         }
     });
 
 }); // End of DOMContentLoaded
 
+// -------------------------------------------------
+// 💡 --- NEW GAMIFIED INTRO FUNCTIONS --- 💡
+// -------------------------------------------------
+
+/**
+ * Injects the "Beginner" or "Expert" choice box into the page.
+ */
+function showExperienceLevelChoice() {
+    const container = document.getElementById('all-challenges');
+    if (!container) return;
+    
+    // We use a challenge-container to keep the styling consistent
+    container.innerHTML = `
+        <div class="challenge-container" style="max-width: 600px; margin: 20px auto; gap: 5px;">
+            <h3 id="challenge-title-0" style="margin: 0; text-align: center;">Welcome to the CSS Lab!</h3>
+            <p id="prompt-0" style="margin: 0; text-align: center;">How would you like to start?</p>
+            
+            <div class="challenge-target-area" style="height: auto; justify-content: center; align-items: center;">
+                <button id="start-guided" class="cta-button" style="background-color: var(--wf-secondary-steel-gray) !important; margin: 10px !important; width: 80%;">
+                    "I'm new to this. Guide me!"
+                </button>
+                <button id="start-expert" class="cta-button" style="margin: 10px !important; width: 80%;">
+                    "I know CSS. Let's go!"
+                </button>
+            </div>
+        </div>
+    `;
+    
+    // Add click listeners to the new buttons
+    document.getElementById('start-guided').addEventListener('click', startGuidedTour);
+    document.getElementById('start-expert').addEventListener('click', startExpertTest);
+}
+
+/**
+ * (Beginner Path) Loads all challenges and makes Challenge 1 an easy tutorial.
+ */
+function startGuidedTour() {
+    // 1. Load all the challenges
+    initializeChallenges(); 
+    
+    // 2. Overwrite the first prompt to be the "Guided First Win"
+    const prompt1 = document.getElementById('prompt-1');
+    if (prompt1) {
+        prompt1.innerHTML = `
+            <strong>Welcome! Let's start easy.</strong>
+            <br><br>
+            Your goal is to select the 'Primary Login Button'.
+            <br>
+            1. Look in the box below.
+            <br>
+            2. Type <code>#login-primary</code> in the input field.
+            <br>
+            3. Hit 'Validate' to get your first win!
+        `;
+    }
+}
+
+/**
+ * (Expert Path) Loads all challenges and makes Challenge 1 a "meta-challenge".
+ */
+function startExpertTest() {
+    // 1. Load all the challenges
+    initializeChallenges(); 
+    
+    // 2. Overwrite Challenge 1 to be the "Meta-Challenge"
+    const prompt1 = document.getElementById('prompt-1');
+    const target1 = document.getElementById('target-area-1');
+    
+    if (prompt1 && target1) {
+        prompt1.innerHTML = `
+            <strong>Alright, pro. Prove it.</strong> 
+            <br><br>
+            Let's get meta. Your first task: write a selector that targets <strong>only the 'Validate' button</strong> for *this* challenge.
+        `;
+        
+        target1.innerHTML = `<p style="margin: 6px !important;">(The Target Area is empty... the target is part of the UI!)</p>`;
+        
+        // 3. Update the "correct" answer in the state for Challenge 1
+        challengeStates[1].correctTarget = '#selector-input-1 + button';
+        challengeStates[1].type = "Adjacent Sibling Combinator"; // Update type for validation
+    }
+}
+
 
 // =========================================================================
 // === VANILLA JS CHALLENGE LOGIC (The bulk of the code) ===
-// (All these functions are now in the global scope, which is correct)
 // =========================================================================
 
 // Store the state of each challenge
@@ -502,7 +556,6 @@ function validateChallenge(challengeId) {
         const selectedElements = targetArea.querySelectorAll(userInput);
         const isCorrect = selectedElements.length === 1 && selectedElements[0] === correctTarget;
 
-        // ❗ --- THIS IS THE NEW LOGIC FIX --- ❗
         // Check for the special case in Challenge 7
         if (challengeId === 7 && isCorrect && !userInput.includes('*=')) {
             // The answer is technically right, but not the lesson.
@@ -517,7 +570,6 @@ function validateChallenge(challengeId) {
             feedbackElement.className = 'validation-feedback info'; // Use 'info' blue
             return; // Exit without failing or succeeding
         }
-        // --- END OF NEW LOGIC FIX ---
 
         if (isCorrect) {
             handleSuccess(challengeId, userInput);
