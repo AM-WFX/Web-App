@@ -582,23 +582,21 @@ span[id*="status-"] {
     text-align: center; 
 }
 
-/* This is the general rule for challenge prompts (like 1-10) */
+/* ❗ --- THIS IS THE FIX --- ❗ */
+/* This is the general rule for ALL challenge prompts (0, 1, 2...10) */
+/* It has no box, no height, and is just centered text. */
 p[id*="prompt-"] {
     padding: 5px 0 !important;
     margin: 0 !important; 
     text-align: center; 
-    width: 100%; /* Ensure it's full width */
-}
-
-/* This specific rule overrides the one above ONLY for prompt-0 */
-/* This creates the fixed-height, scrollable prompt box for the tour */
-p[id="prompt-0"] {
-    height: 110px; 
-    overflow-y: auto; 
-    padding: 10px !important; /* Add back padding */
-    background-color: rgba(0, 0, 0, 0.02);
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    border-radius: var(--wf-border-radius);
+    width: 100%;
+    
+    /* These are the defaults we are resetting */
+    height: auto;
+    overflow-y: visible;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
 }
 
 
@@ -692,13 +690,12 @@ p[id="prompt-0"] {
 /* --- 💡 SPOTLIGHT TOUR STYLES 💡 --- */
 /* ---------------------------------------------------- */
 
-/* The dark overlay that covers the page */
+/* ❗ FIX: Opacity reduced to 15% ❗ */
 #tour-overlay {
     position: fixed;
     inset: 0;
     width: 100%;
     height: 100%;
-    /* ❗ FIX: Opacity reduced to 15% ❗ */
     background-color: rgba(0, 0, 0, 0.15);
     z-index: 2000;
 }
@@ -708,34 +705,25 @@ p[id="prompt-0"] {
     position: relative;
     z-index: 2001; /* Above the overlay */
     
-    /* ❗ FIX: This punches a "hole" in the overlay ❗ */
+    /* ❗ FIX: Shadow opacity reduced to 15% ❗ */
     box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.15);
     
-    /* ❗ FIX: Added a pulsing border line ❗ */
+    /* ❗ FIX: Replaced pulse with a simple border ❗ */
     border-radius: var(--wf-border-radius);
-    animation: pulse 1.5s infinite;
     border: 2px solid var(--wf-accent-orange);
 }
 
-/* This is the animation for the pulsing border */
-@keyframes pulse {
-    0% { border-color: var(--wf-accent-orange); }
-    50% { border-color: white; }
-    100% { border-color: var(--wf-accent-orange); }
-}
-
-/* ❗ FIX: The tour pop-up is now a fixed side panel ❗ */
-#tour-panel {
-    position: fixed;
+/* ❗ FIX: The tour pop-up is now a floating tooltip ❗ */
+#tour-popup {
+    position: absolute; /* Positioned by JavaScript */
     z-index: 2002; /* On top of everything */
-    right: 30px;
-    top: 100px; /* Positioned below the navbar */
     width: 350px;
     max-width: 90%;
     background-color: white;
     border-radius: var(--wf-border-radius);
     box-shadow: var(--wf-shadow-card);
     padding: 25px;
+    transition: top 0.3s ease, left 0.3s ease; /* Smooth movement */
 }
 
 /* ❗ FIX: New "X" (Skip) button ❗ */
@@ -755,20 +743,46 @@ p[id="prompt-0"] {
     color: var(--wf-secondary-steel-gray);
 }
 
+/* ❗ FIX: New "beak" or "connector line" ❗ */
+#tour-popup::before,
+#tour-popup::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-style: solid;
+}
 
-#tour-panel h3 {
+/* This is the "beak" that points DOWN */
+#tour-popup.tour-panel-top::after {
+    top: 100%;
+    border-width: 10px 10px 0 10px;
+    border-color: white transparent transparent transparent;
+}
+
+/* This is the "beak" that points UP */
+#tour-popup.tour-panel-bottom::before {
+    bottom: 100%;
+    border-width: 0 10px 10px 10px;
+    border-color: transparent transparent white transparent;
+}
+
+
+#tour-popup h3 {
     margin-top: 0;
     margin-bottom: 15px;
     color: var(--wf-accent-orange);
 }
 
-#tour-panel p {
-    margin-bottom: 25px;
+#tour-popup #tour-text p {
+    margin-bottom: 10px !important; /* Override global p */
     line-height: 1.6;
     text-align: left;
 }
 
-#tour-panel p code {
+#tour-popup #tour-text p code {
     background-color: #E2E8F0;
     padding: 2px 5px;
     border-radius: 4px;
@@ -780,20 +794,20 @@ p[id="prompt-0"] {
     display: flex;
     justify-content: space-between; /* This creates the gap */
     align-items: center;
-    border-top: 1px solid #E2E8F0;
-    padding-top: 15px;
+    margin-top: 20px;
+    /* border-top: none; <-- Removed */
 }
 
-/* Style for the "Back" button */
-.cta-skip { /* This is now used for "Back" */
+/* ❗ FIX: "Back" button styling ❗ */
+.cta-skip { 
     background: none;
     border: none;
     color: #94A3B8;
     cursor: pointer;
     font-size: 0.9em;
-    text-decoration: underline;
     font-family: 'Aeonik', sans-serif;
-    font-weight: 700;
+    font-weight: 400; /* <-- Changed from 700 */
+    text-decoration: none; /* <-- Removed underline */
 }
 .cta-skip:hover {
     color: var(--wf-secondary-steel-gray);
