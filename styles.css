@@ -558,13 +558,11 @@ footer p {
     margin-bottom: 0;
 }
 
-/* This was for a test and is not needed */
-/*
+
 #prompt, #prompt * {
-    padding: 20px !important; 
-    margin: 10px !important; 
+    padding: 0 !important; 
+    margin: 0 !important; 
 }
-*/
 
 /* --- Challenge Card Specifics --- */
 h3[id*="challenge-title-"] {
@@ -584,7 +582,6 @@ span[id*="status-"] {
     text-align: center; 
 }
 
-/* ❗ --- THIS IS THE FIX --- ❗ */
 /* This is the general rule for challenge prompts (like 1-10) */
 p[id*="prompt-"] {
     padding: 5px 0 !important;
@@ -594,6 +591,7 @@ p[id*="prompt-"] {
 }
 
 /* This specific rule overrides the one above ONLY for prompt-0 */
+/* This creates the fixed-height, scrollable prompt box for the tour */
 p[id="prompt-0"] {
     height: 110px; 
     overflow-y: auto; 
@@ -602,7 +600,6 @@ p[id="prompt-0"] {
     border: 1px solid rgba(0, 0, 0, 0.05);
     border-radius: var(--wf-border-radius);
 }
-/* --- END OF FIX --- */
 
 
 .validation-feedback p {
@@ -701,7 +698,8 @@ p[id="prompt-0"] {
     inset: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
+    /* ❗ FIX: Opacity reduced to 15% ❗ */
+    background-color: rgba(0, 0, 0, 0.15);
     z-index: 2000;
 }
 
@@ -709,59 +707,97 @@ p[id="prompt-0"] {
 .spotlight {
     position: relative;
     z-index: 2001; /* Above the overlay */
-    background-color: var(--wf-dominant-spring-wood);
     
-    /* This punches a "hole" in the overlay */
-    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7);
+    /* ❗ FIX: This punches a "hole" in the overlay ❗ */
+    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.15);
     
-    /* Optional: add a nice pulse animation */
+    /* ❗ FIX: Added a pulsing border line ❗ */
     border-radius: var(--wf-border-radius);
     animation: pulse 1.5s infinite;
+    border: 2px solid var(--wf-accent-orange);
 }
 
+/* This is the animation for the pulsing border */
 @keyframes pulse {
-    0% { box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7); }
-    50% { box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7), 0 0 10px 10px var(--wf-accent-orange); }
-    100% { box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7); }
+    0% { border-color: var(--wf-accent-orange); }
+    50% { border-color: white; }
+    100% { border-color: var(--wf-accent-orange); }
 }
 
-/* The tour pop-up box */
-#tour-popup {
+/* ❗ FIX: The tour pop-up is now a fixed side panel ❗ */
+#tour-panel {
     position: fixed;
     z-index: 2002; /* On top of everything */
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 90%;
-    max-width: 450px;
+    right: 30px;
+    top: 100px; /* Positioned below the navbar */
+    width: 350px;
+    max-width: 90%;
     background-color: white;
     border-radius: var(--wf-border-radius);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    box-shadow: var(--wf-shadow-card);
     padding: 25px;
-    text-align: center;
 }
 
-#tour-popup h3 {
+/* ❗ FIX: New "X" (Skip) button ❗ */
+.tour-skip-x {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    color: #94A3B8;
+    cursor: pointer;
+    padding: 5px;
+    line-height: 1;
+}
+.tour-skip-x:hover {
+    color: var(--wf-secondary-steel-gray);
+}
+
+
+#tour-panel h3 {
     margin-top: 0;
     margin-bottom: 15px;
     color: var(--wf-accent-orange);
 }
 
-#tour-popup p {
+#tour-panel p {
     margin-bottom: 25px;
     line-height: 1.6;
+    text-align: left;
 }
 
-/* Style for the "Skip Tour" link */
-.cta-skip {
+#tour-panel p code {
+    background-color: #E2E8F0;
+    padding: 2px 5px;
+    border-radius: 4px;
+    font-family: monospace;
+}
+
+/* ❗ FIX: New button layout ❗ */
+#tour-buttons {
+    display: flex;
+    justify-content: space-between; /* This creates the gap */
+    align-items: center;
+    border-top: 1px solid #E2E8F0;
+    padding-top: 15px;
+}
+
+/* Style for the "Back" button */
+.cta-skip { /* This is now used for "Back" */
     background: none;
     border: none;
     color: #94A3B8;
     cursor: pointer;
     font-size: 0.9em;
-    margin-top: 15px;
     text-decoration: underline;
+    font-family: 'Aeonik', sans-serif;
+    font-weight: 700;
 }
 .cta-skip:hover {
     color: var(--wf-secondary-steel-gray);
+}
+#tour-back[style*="visibility: hidden"] { /* Hides it on step 1 */
+    visibility: hidden;
 }
