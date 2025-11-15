@@ -169,28 +169,26 @@ h1, h2, h3 {
 }
 
 /* ❗ --- THIS IS THE FIX (PART 2) --- ❗ */
-/* This is the main content block that grows to push the footer down */
+/* This section now controls all page spacing */
 .container {
-    /* flex-grow: 1 tells it to fill all available vertical space */
+    /* This rule centers the container horizontally */
+    margin: 0 auto; 
+    padding: 0; /* Remove old padding */
+    width: 100%; /* Ensures it spans the width */
+    
+    /* This tells the container to grow and push the footer down */
     flex-grow: 1; 
-    
-    /* These rules center the content horizontally */
-    margin-left: auto;
-    margin-right: auto;
-    width: 100%; 
-    
-    /* This adds the 30px "breathing room" on all 4 sides */
-    padding: 30px; 
 }
 
 /* ❗ --- THIS IS THE FIX (PART 3) --- ❗ */
-/* This is now just a simple wrapper, no spacing needed */
+/* This wrapper now provides the 30px of space on all 4 sides */
 #content-wrapper {
     display: block; 
-    padding: 0;
+    padding: 30px; 
 }
 
-/* This is the white box with the shadow */
+/* ❗ --- THIS IS THE FIX (PART 4) --- ❗ */
+/* This is now the white box again */
 .main-content {
     padding: 30px;
     background-color: white;
@@ -204,7 +202,7 @@ footer {
     padding: 15px;
     background-color: var(--wf-secondary-steel-gray); 
     color: white;
-    /* ❗ --- THIS IS THE FIX (PART 4) --- ❗ */
+    /* ❗ --- THIS IS THE FIX (PART 5) --- ❗ */
     /* This is no longer needed, flexbox handles it */
     margin-top: 0; 
 }
