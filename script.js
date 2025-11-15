@@ -66,6 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const instructionsBox = document.querySelector('.instructions-box');
             const challengesGrid = document.getElementById('all-challenges');
             
+            // Check if we are on the lab page
             if (mainPageContainer && instructionsBox && challengesGrid && !labInitialized) {
                 
                 const introCompleted = localStorage.getItem('labIntroCompleted');
@@ -77,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 } else {
                     // NEW USER: Show the "choice" screen
                     mainPageContainer.style.display = 'none';
-                    showExperienceLevelChoice(labContent); 
+                    showExperienceLevelChoice(labContent, mainPageContainer); 
                 }
                 labInitialized = true;
             }
@@ -102,17 +103,18 @@ document.addEventListener('DOMContentLoaded', function() {
 // 💡 --- NEW GAMIFIED INTRO FUNCTIONS --- 💡
 // -------------------------------------------------
 
-function showExperienceLevelChoice(labContent) {
+/**
+ * Creates the "Challenge 0" container and inserts it *after* the navbar.
+ */
+function showExperienceLevelChoice(labContent, mainPageContainer) {
     
     const introChallengeDiv = document.createElement('div');
     introChallengeDiv.id = 'challenge-0-container';
+    introChallengeDiv.classList.add('container'); // Use .container class for layout
+    // Vertically center this one box
+    introChallengeDiv.style = "flex-grow: 1; display: flex; align-items: center; width: 100%;"; 
     
-    // ❗ --- THIS IS THE FIX --- ❗
-    // Added 'flex-grow: 1' to make it push the footer down.
-    // Added 'display: flex' and 'align-items: center' to vertically center the box.
-    introChallengeDiv.style = "flex-grow: 1; display: flex; align-items: center; width: 100%;";
-    
-    // Phase 1 UI: The Choice
+    // Phase 1 UI: The Choice (A simple white box)
     introChallengeDiv.innerHTML = `
         <div class="main-content" style="text-align: center; max-width: 600px; margin: 0 auto;">
             <h2 style="margin-top: 0;">Welcome to the CSS Lab!</h2>
@@ -133,11 +135,16 @@ function showExperienceLevelChoice(labContent) {
     }
     
     document.getElementById('start-guided').addEventListener('click', startGuidedTour);
-    document.getElementById('start-expert').addEventListener('click', startExpertTest);
+    document.getElementById('start-expert').addEventListener('click', () => startExpertTest(mainPageContainer));
 }
 
+/**
+ * (Beginner Path) "Morphs" the intro box into the tutorial.
+ */
 function startGuidedTour() {
     const challengeBox = document.getElementById('challenge-0-container');
+    // Remove the flex-grow styling so it sits at the top
+    challengeBox.style = ""; 
     
     // Phase 2 UI: The Tutorial (Morphs into a challenge container)
     challengeBox.innerHTML = `
@@ -146,9 +153,7 @@ function startGuidedTour() {
             <span id="status-0" style="color: grey;">(Tutorial)</span>
             
             <p id="prompt-0">
-                Your goal is to select the 'Start' button.
-                <br>
-                Type <code>#start-button</code> in the input field and hit 'Validate' to begin!
+                Welcome! Let's learn the UI.
             </p>
             
             <div id="target-area-0" class="challenge-target-area">
@@ -156,27 +161,34 @@ function startGuidedTour() {
             </div>
             
             <div class="challenge-ui">
-                <input type="text" id="selector-input-0" placeholder="Type #start-button here...">
+                <input type="text" id="selector-input-0" placeholder="Type your selector here...">
                 <button class="cta-button" onclick="validateTutorial()">Validate</button>
             </div>
             <div id="feedback-0" class="validation-feedback"></div>
         </div>
     `;
+    
+    // Start the spotlight tour
+    startSpotlightTour();
 }
 
-function startExpertTest() {
+/**
+ * (Expert Path) Hides the intro and shows the real lab.
+ */
+function startExpertTest(mainPageContainer) {
     localStorage.setItem('labIntroCompleted', 'true');
 
     const introBox = document.getElementById('challenge-0-container');
     if (introBox) introBox.remove(); 
     
-    const labContent = document.getElementById('page-content');
-    const container = labContent.querySelector('.container');
-    if (container) container.style.display = 'block';
+    if (mainPageContainer) mainPageContainer.style.display = 'block';
     
     initializeChallenges(); 
 }
 
+/**
+ * Special validation function just for the "Challenge 0" tutorial.
+ */
 function validateTutorial() {
     const inputField = document.getElementById('selector-input-0');
     const feedbackElement = document.getElementById('feedback-0');
@@ -196,9 +208,8 @@ function validateTutorial() {
             const introBox = document.getElementById('challenge-0-container');
             if (introBox) introBox.remove();
 
-            const labContent = document.getElementById('page-content');
-            const container = labContent.querySelector('.container');
-            if (container) container.style.display = 'block';
+            const mainPageContainer = document.querySelector('.container');
+            if (mainPageContainer) mainPageContainer.style.display = 'block';
             
             initializeChallenges();
         }, 1500); 
@@ -207,6 +218,115 @@ function validateTutorial() {
         feedbackElement.className = 'validation-feedback error';
         feedbackElement.innerHTML = `Not quite! Try typing the exact selector <code>#start-button</code> into the input box.`;
     }
+}
+
+// -------------------------------------------------
+// 💡 --- SPOTLIGHT TOUR FUNCTIONS --- 💡
+// -------------------------------------------------
+let currentTourStep = 0;
+const tourSteps = [
+    {
+        element: '#prompt-0',
+        title: "Step 1: The Prompt",
+        text: "This is the **Prompt**. It tells you *what* element to find. In this case, it's the 'Start' button."
+    },
+    {
+        element: '#target-area-0',
+        title: "Step 2: The Target Area",
+        text: "This is the **Target Area**. The HTML elements you need to select are inside this box."
+    },
+    {
+        element: '#target-area-0',
+        title: "Step 3: How to Find the Selector",
+        text: "To find a selector, **right-click** the 'Click me to start!' button and choose **'Inspect'**.<br><br>"
+    },
+    {
+        element: '#target-area-0',
+        title: "Step 4: Using the Console",
+        text: "The **Developer Console** will open, showing you the HTML. Notice the button has an `id`? That's your answer!<br><br>"
+    },
+    {
+        element: '#selector-input-0',
+        title: "Step 5: The Input Field",
+        text: "Now, type your selector (<code>#start-button</code>) into the **Input Field**."
+    },
+    {
+        element: 'button[onclick="validateTutorial()"]',
+        title: "Step 6: The Validate Button",
+        text: "Finally, click the **Validate** button to check your answer. Your turn!"
+    }
+];
+
+function startSpotlightTour() {
+    // Create the overlay
+    const overlay = document.createElement('div');
+    overlay.id = 'tour-overlay';
+    document.body.appendChild(overlay);
+
+    // Create the popup
+    const popup = document.createElement('div');
+    popup.id = 'tour-popup';
+    popup.innerHTML = `
+        <div id="tour-content">
+            <h3 id="tour-title"></h3>
+            <p id="tour-text"></p>
+            <button id="tour-next" class="cta-button">Next</button>
+            <button id="tour-skip" class="cta-skip">Skip Tour</button>
+        </div>
+    `;
+    document.body.appendChild(popup);
+
+    document.getElementById('tour-next').addEventListener('click', nextTourStep);
+    document.getElementById('tour-skip').addEventListener('click', endSpotlightTour);
+
+    currentTourStep = 0;
+    showTourStep(currentTourStep);
+}
+
+function showTourStep(stepIndex) {
+    const step = tourSteps[stepIndex];
+    if (!step) {
+        endSpotlightTour();
+        return;
+    }
+
+    // Update popup content
+    document.getElementById('tour-title').textContent = step.title;
+    document.getElementById('tour-text').innerHTML = step.text;
+
+    // Highlight the target element
+    const targetElement = document.querySelector(step.element);
+    if (targetElement) {
+        // Remove previous spotlight
+        const oldSpotlight = document.querySelector('.spotlight');
+        if (oldSpotlight) oldSpotlight.classList.remove('spotlight');
+        
+        // Add new spotlight
+        targetElement.classList.add('spotlight');
+    }
+
+    // Change button text on last step
+    if (stepIndex === tourSteps.length - 1) {
+        document.getElementById('tour-next').textContent = "Done!";
+    }
+}
+
+function nextTourStep() {
+    currentTourStep++;
+    showTourStep(currentTourStep);
+}
+
+function endSpotlightTour() {
+    // Remove overlay and popup
+    document.getElementById('tour-overlay')?.remove();
+    document.getElementById('tour-popup')?.remove();
+    
+    // Remove spotlight class
+    const oldSpotlight = document.querySelector('.spotlight');
+    if (oldSpotlight) oldSpotlight.classList.remove('spotlight');
+    
+    // Make the tutorial prompt clear
+    document.getElementById('prompt-0').innerHTML = "Your turn! Select the 'Start' button. <br> Type <code>#start-button</code> and hit 'Validate'.";
 }
 
 
