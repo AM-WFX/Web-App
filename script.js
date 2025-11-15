@@ -221,6 +221,7 @@ function validateTutorial() {
 // 💡 --- SPOTLIGHT TOUR FUNCTIONS (ALL NEW) --- 💡
 // -------------------------------------------------
 let currentTourStep = 0;
+// ❗ FIX: Changed all ** to <strong> tags
 const tourSteps = [
     {
         element: '#prompt-0',
@@ -303,12 +304,15 @@ function showTourStep(stepIndex) {
     // Remove previous spotlight
     document.querySelector('.spotlight')?.classList.remove('spotlight');
     
+    // ❗ --- THIS IS THE FIX --- ❗
+    // This block was the cause of the error. It is now removed.
+    // The CSS file handles all positioning.
     if (targetElement) {
         // Add new spotlight
         targetElement.classList.add('spotlight');
     }
 
-    // ❗ FIX: New Button Logic
+    // Update Button Logic
     const backButton = document.getElementById('tour-back');
     const nextButton = document.getElementById('tour-next');
 
