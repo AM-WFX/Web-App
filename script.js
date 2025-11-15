@@ -221,63 +221,59 @@ function validateTutorial() {
 // 💡 --- SPOTLIGHT TOUR FUNCTIONS (ALL NEW) --- 💡
 // -------------------------------------------------
 let currentTourStep = 0;
-// ❗ FIX: Changed all ** to <strong> tags
+// ❗ FIX: Removed <br> tags. Using <p> tags for semantic structure.
 const tourSteps = [
     {
         element: '#prompt-0',
         title: "Step 1: The Prompt",
-        text: "This is the <strong>Prompt</strong>. It tells you *what* element to find. In this case, it's the 'Start' button."
+        text: "<p>This is the <strong>Prompt</strong>. It tells you *what* element to find. In this case, it's the 'Start' button.</p>"
     },
     {
         element: '#target-area-0',
         title: "Step 2: The Target Area",
-        text: "This is the <strong>Target Area</strong>. The HTML elements you need to select are inside this box."
+        text: "<p>This is the <strong>Target Area</strong>. The HTML elements you need to select are inside this box.</p>"
     },
     {
         element: '#target-area-0',
         title: "Step 3: How to Find the Selector",
-        text: "To find a selector, <strong>right-click</strong> the 'Click me to start!' button and choose <strong>'Inspect'</strong>.<br><br>"
+        text: "<p>To find a selector, <strong>right-click</strong> the 'Click me to start!' button and choose <strong>'Inspect'</strong>.</p><p></p>"
     },
     {
         element: '#target-area-0',
         title: "Step 4: Using the Console",
-        text: "The <strong>Developer Console</strong> will open, showing you the HTML. Notice the button has an `id`? That's your answer!<br><br>"
+        text: "<p>The <strong>Developer Console</strong> will open, showing you the HTML. Notice the button has an `id`? That's your answer!</p><p></p>"
     },
     {
         element: '#selector-input-0',
         title: "Step 5: The Input Field",
-        text: "Now, type your selector (<code>#start-button</code>) into the <strong>Input Field</strong>."
+        text: "<p>Now, type your selector (<code>#start-button</code>) into the <strong>Input Field</strong>.</p>"
     },
     {
         element: 'button[onclick="validateTutorial()"]',
         title: "Step 6: The Validate Button",
-        text: "Finally, click the <strong>Validate</strong> button to check your answer. Your turn!"
+        text: "<p>Finally, click the <strong>Validate</strong> button to check your answer. Your turn!</p>"
     }
 ];
 
 function startSpotlightTour() {
-    // Create the overlay
     const overlay = document.createElement('div');
     overlay.id = 'tour-overlay';
     document.body.appendChild(overlay);
 
-    // Create the popup (now a fixed panel)
-    const panel = document.createElement('div');
-    panel.id = 'tour-panel';
-    
-    // ❗ FIX: New HTML with "X" (Skip) and "Back" buttons
-    panel.innerHTML = `
+    const popup = document.createElement('div');
+    popup.id = 'tour-popup';
+    popup.innerHTML = `
         <button id="tour-skip" class="tour-skip-x">&times;</button>
         <div id="tour-content">
             <h3 id="tour-title"></h3>
-            <p id="tour-text"></p>
+            <div id="tour-text"></div>
             <div id="tour-buttons">
                 <button id="tour-back" class="cta-skip">Back</button>
                 <button id="tour-next" class="cta-button">Next</button>
             </div>
         </div>
     `;
-    document.body.appendChild(panel);
+    document.body.appendChild(popup);
 
     document.getElementById('tour-next').addEventListener('click', nextTourStep);
     document.getElementById('tour-back').addEventListener('click', prevTourStep);
@@ -294,32 +290,57 @@ function showTourStep(stepIndex) {
         return;
     }
 
+    const popup = document.getElementById('tour-popup');
+    const targetElement = document.querySelector(step.element);
+    
     // Update popup content
     document.getElementById('tour-title').textContent = step.title;
     document.getElementById('tour-text').innerHTML = step.text;
 
-    // Highlight the target element
-    const targetElement = document.querySelector(step.element);
-    
     // Remove previous spotlight
     document.querySelector('.spotlight')?.classList.remove('spotlight');
     
-    // ❗ --- THIS IS THE FIX --- ❗
-    // This block was the cause of the error. It is now removed.
-    // The CSS file handles all positioning.
     if (targetElement) {
         // Add new spotlight
         targetElement.classList.add('spotlight');
+        
+        // ❗ --- THIS IS THE NEW POSITIONING LOGIC --- ❗
+        const rect = targetElement.getBoundingClientRect(); // Get element's position
+        const panelRect = popup.getBoundingClientRect(); // Get popup's dimensions
+        
+        popup.classList.remove('tour-panel-top', 'tour-panel-bottom');
+
+        let top;
+        // Check if popup fits below element, otherwise place above
+        if (rect.bottom + panelRect.height + 20 > window.innerHeight) {
+            // Place above
+            top = rect.top - panelRect.height - 15 + window.scrollY;
+            popup.classList.add('tour-panel-top');
+        } else {
+            // Place below
+            top = rect.bottom + 15 + window.scrollY;
+            popup.classList.add('tour-panel-bottom');
+        }
+        
+        // Center horizontally
+        let left = rect.left + (rect.width / 2) - (panelRect.width / 2);
+        
+        // Constrain to viewport
+        if (left < 10) left = 10;
+        if (left + panelRect.width > window.innerWidth - 10) {
+            left = window.innerWidth - panelRect.width - 10;
+        }
+        
+        popup.style.top = `${top}px`;
+        popup.style.left = `${left}px`;
     }
 
     // Update Button Logic
     const backButton = document.getElementById('tour-back');
     const nextButton = document.getElementById('tour-next');
 
-    // Show/Hide Back button
     backButton.style.visibility = (stepIndex === 0) ? 'hidden' : 'visible';
 
-    // Change Next button text on last step
     if (stepIndex === tourSteps.length - 1) {
         nextButton.textContent = "Done!";
     } else {
@@ -338,14 +359,10 @@ function nextTourStep() {
 }
 
 function endSpotlightTour() {
-    // Remove overlay and popup
     document.getElementById('tour-overlay')?.remove();
-    document.getElementById('tour-panel')?.remove();
-    
-    // Remove spotlight class
+    document.getElementById('tour-popup')?.remove();
     document.querySelector('.spotlight')?.classList.remove('spotlight');
     
-    // Make the tutorial prompt clear
     const prompt = document.getElementById('prompt-0');
     if (prompt) {
         prompt.innerHTML = "Your turn! Select the 'Start' button. <br> Type <code>#start-button</code> and hit 'Validate'.";
