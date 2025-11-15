@@ -54,7 +54,7 @@ body {
     overflow-x: hidden;
 }
 
-/* ❗ --- THIS IS THE FIX (PART 1) --- ❗ */
+/* ❗ --- THIS IS THE STICKY FOOTER FIX (PART 1) --- ❗ */
 /* This makes your #page-content wrapper a flex container */
 /* that is at least as tall as the screen. */
 #page-content {
@@ -168,27 +168,27 @@ h1, h2, h3 {
     font-weight: 700; 
 }
 
-/* ❗ --- THIS IS THE FIX (PART 2) --- ❗ */
-/* This section now controls all page spacing */
+/* ❗ --- THIS IS THE STICKY FOOTER FIX (PART 2) --- ❗ */
 .container {
-    /* This rule centers the container horizontally */
-    margin: 0 auto; 
-    padding: 0; /* Remove old padding */
-    width: 100%; /* Ensures it spans the width */
-    
-    /* This tells the container to grow and push the footer down */
+    /* flex-grow: 1 tells it to "grow" and fill all empty space */
     flex-grow: 1; 
+
+    /* margin: 0 auto; centers it horizontally */
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%; 
+
+    /* padding: 30px; gives equal 30px spacing on all 4 sides */
+    padding: 30px;
 }
 
-/* ❗ --- THIS IS THE FIX (PART 3) --- ❗ */
-/* This wrapper now provides the 30px of space on all 4 sides */
+/* We remove all spacing from the wrapper div */
 #content-wrapper {
     display: block; 
-    padding: 30px; 
+    padding: 0; 
 }
 
-/* ❗ --- THIS IS THE FIX (PART 4) --- ❗ */
-/* This is now the white box again */
+/* This is the white box */
 .main-content {
     padding: 30px;
     background-color: white;
@@ -202,8 +202,8 @@ footer {
     padding: 15px;
     background-color: var(--wf-secondary-steel-gray); 
     color: white;
-    /* ❗ --- THIS IS THE FIX (PART 5) --- ❗ */
-    /* This is no longer needed, flexbox handles it */
+    /* ❗ --- THIS IS THE STICKY FOOTER FIX (PART 3) --- ❗ */
+    /* No margin-top is needed, flexbox handles it */
     margin-top: 0; 
 }
 
