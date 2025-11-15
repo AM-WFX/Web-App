@@ -60,9 +60,17 @@ document.addEventListener('DOMContentLoaded', function() {
             
             localStorage.setItem('css_lab_user', user.displayName);
 
-            if (document.getElementById('all-challenges') && !labInitialized) {
-                showExperienceLevelChoice(); 
-                labInitialized = true; 
+            // ❗ --- THIS IS THE NEW LOGIC --- ❗
+            // Check if we are on the lab page
+            const instructionsBox = document.querySelector('.instructions-box');
+            const challengesGrid = document.getElementById('all-challenges');
+            
+            if (instructionsBox && challengesGrid && !labInitialized) {
+                // 1. Hide the challenge grid by default
+                challengesGrid.style.display = 'none';
+                // 2. Show the experience choice in the instructions box
+                showExperienceLevelChoice(instructionsBox, challengesGrid); 
+                labInitialized = true; // Set flag so it only runs once
             }
             
         } else {
@@ -85,46 +93,51 @@ document.addEventListener('DOMContentLoaded', function() {
 // -------------------------------------------------
 
 /**
- * Injects the "Beginner" or "Expert" choice box into the page.
+ * Injects the "Beginner" or "Expert" choice box into the instructions div.
  */
-function showExperienceLevelChoice() {
-    const container = document.getElementById('all-challenges');
-    if (!container) return;
+function showExperienceLevelChoice(instructionsBox, challengesGrid) {
     
-    container.innerHTML = `
-        <div class="challenge-container" style="max-width: 600px; margin: 20px auto; gap: 5px;">
-            <h3 id="challenge-title-0" style="margin: 0; text-align: center;">Welcome to the CSS Lab!</h3>
-            <p id="prompt-0" style="margin: 0; text-align: center;">How would you like to start?</p>
+    // 1. Overwrite the instructions box with our Welcome/Choice UI
+    instructionsBox.innerHTML = `
+        <h2 style="margin-top: 0;">Welcome to the CSS Lab!</h2>
+        <p>How would you like to start?</p>
             
-            <div class="challenge-target-area" style="height: auto; justify-content: center; align-items: center;">
-                
-                <button id="start-guided" class="cta-button" style="margin: 10px !important; width: 80%;">
-                    "I'm new to this. Guide me!"
-                </button>
-                
-                <button id="start-expert" class="cta-button" style="margin: 10px !important; width: 80%;">
-                    "I know CSS. Let's go!"
-                </button>
-            </div>
-        </div>
+        <button id="start-guided" class="cta-button" style="margin: 10px 5px !important;">
+            "I'm new to this. Guide me!"
+        </button>
+        <button id="start-expert" class="cta-button" style="margin: 10px 5px !important;">
+            "I know CSS. Let's go!"
+        </button>
     `;
     
-    // Add click listeners to the new buttons
-    document.getElementById('start-guided').addEventListener('click', startGuidedTour);
-    document.getElementById('start-expert').addEventListener('click', startExpertTest);
+    // 2. Add click listeners to the new buttons
+    document.getElementById('start-guided').addEventListener('click', () => {
+        startGuidedTour(instructionsBox, challengesGrid);
+    });
+    document.getElementById('start-expert').addEventListener('click', () => {
+        startExpertTest(instructionsBox, challengesGrid);
+    });
 }
 
 /**
- * (Beginner Path) Loads all challenges and makes Challenge 1 an easy tutorial.
+ * (Beginner Path) Hides the intro, shows the lab, and makes Challenge 1 a tutorial.
  */
-function startGuidedTour() {
+function startGuidedTour(instructionsBox, challengesGrid) {
+    // 1. Hide the instructions box
+    instructionsBox.style.display = 'none';
+    
+    // 2. Show the challenges grid
+    challengesGrid.style.display = 'flex';
+    
+    // 3. Load all the challenges
     initializeChallenges(); 
     
+    // 4. Overwrite the first prompt to be the "Guided First Win"
     const prompt1 = document.getElementById('prompt-1');
     if (prompt1) {
         prompt1.innerHTML = `
             <strong>Welcome! Let's start easy.</strong>
-            <br><br>
+            <br>
             Your goal is to select the 'Primary Login Button'.
             <br>
             1. Look in the box below.
@@ -137,25 +150,34 @@ function startGuidedTour() {
 }
 
 /**
- * (Expert Path) Loads all challenges and makes Challenge 1 a "meta-challenge".
+ * (Expert Path) Hides the intro, shows the lab, and makes Challenge 1 a "meta-challenge".
  */
-function startExpertTest() {
+function startExpertTest(instructionsBox, challengesGrid) {
+    // 1. Hide the instructions box
+    instructionsBox.style.display = 'none';
+
+    // 2. Show the challenges grid
+    challengesGrid.style.display = 'flex';
+    
+    // 3. Load all the challenges
     initializeChallenges(); 
     
+    // 4. Overwrite Challenge 1 to be the "Meta-Challenge"
     const prompt1 = document.getElementById('prompt-1');
     const target1 = document.getElementById('target-area-1');
     
     if (prompt1 && target1) {
         prompt1.innerHTML = `
             <strong>Alright, pro. Prove it.</strong> 
-            <br><br>
+            <br>
             Let's get meta. Your first task: write a selector that targets <strong>only the 'Validate' button</strong> for *this* challenge.
         `;
         
         target1.innerHTML = `<p style="margin: 6px !important;">(The Target Area is empty... the target is part of the UI!)</p>`;
         
+        // 5. Update the "correct" answer in the state for Challenge 1
         challengeStates[1].correctTarget = '#selector-input-1 + button';
-        challengeStates[1].type = "Adjacent Sibling Combinator"; 
+        challengeStates[1].type = "Adjacent Sibling Combinator"; // Update type for validation
     }
 }
 
@@ -230,7 +252,7 @@ function generateNewChallengeHTML(def) {
     return { html: html, newTargetSelector: newTargetSelector, newPrompt: newPrompt };
 }
 
-// ❗ FIX 2: Removed all 'isComplex' flags
+// Definition of all challenges
 const challengeDefinitions = [
     {
         id: 1,
@@ -424,11 +446,10 @@ function initializeChallenges() {
             currentHTML: def.html,
             successfulSelectors: [],
             originalPrompt: def.prompt,
-            type: def.type
-            // ❗ FIX 3: Removed 'isComplex'
+            type: def.type,
+            // 'isComplex' flag is no longer needed
         };
 
-        // ❗ FIX 3: Removed 'complexClass'
         htmlContent += `
             <div id="challenge-${def.id}" class="challenge-container">
                 <h3 id="challenge-title-${def.id}">Challenge ${def.id}</h3>
