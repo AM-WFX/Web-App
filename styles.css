@@ -171,7 +171,6 @@ h1, h2, h3 {
 /* ❗ --- THIS IS THE FIX (PART 2) --- ❗ */
 /* This section now controls all page spacing */
 .container {
-    max-width: 1400px;
     /* This rule centers the container horizontally */
     margin: 0 auto; 
     padding: 0; /* Remove old padding */
@@ -185,7 +184,7 @@ h1, h2, h3 {
 /* This wrapper now provides the 30px of space on all 4 sides */
 #content-wrapper {
     display: block; 
-    padding: 30px; /* Provides 30px top/bottom/left/right */
+    padding: 30px; 
 }
 
 /* ❗ --- THIS IS THE FIX (PART 4) --- ❗ */
