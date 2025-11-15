@@ -62,27 +62,31 @@ document.addEventListener('DOMContentLoaded', function() {
             
             localStorage.setItem('css_lab_user', user.displayName);
 
-            // ❗ --- THIS IS THE NEW LOGIC --- ❗
-            const container = document.querySelector('.container'); // Get the main page container
-            const contentWrapper = document.getElementById('content-wrapper'); // Get the real lab wrapper
+            // ❗ --- THIS IS THE FIX --- ❗
+            // We now find ALL 3 components. This check will *only* pass on css-selector-lab.html
+            const mainContent = document.querySelector('.main-content');
+            const instructionsBox = document.querySelector('.instructions-box');
+            const challengesGrid = document.getElementById('all-challenges');
             
-            // Check if we are on the lab page
-            if (container && contentWrapper && !labInitialized) {
+            // This 'if' statement will now be FALSE on index.html and about.html, fixing the bug.
+            if (mainContent && instructionsBox && challengesGrid && !labInitialized) {
                 
                 const introCompleted = localStorage.getItem('labIntroCompleted');
 
                 if (introCompleted) {
                     // USER HAS ALREADY DONE THE INTRO
-                    // Show the real lab
-                    contentWrapper.style.display = 'block';
+                    // Show the instructions and the 10 challenges
+                    instructionsBox.style.display = 'block';
+                    challengesGrid.style.display = 'flex';
                     initializeChallenges();
                 } else {
                     // NEW USER: Show the "choice" screen
                     // Hide the real lab components
-                    contentWrapper.style.display = 'none';
+                    instructionsBox.style.display = 'none';
+                    challengesGrid.style.display = 'none';
                     
                     // Show the intro choice "layer"
-                    showExperienceLevelChoice(container, contentWrapper); 
+                    showExperienceLevelChoice(mainContent); 
                 }
                 labInitialized = true;
             }
@@ -108,9 +112,10 @@ document.addEventListener('DOMContentLoaded', function() {
 // -------------------------------------------------
 
 /**
- * Creates the "Challenge 0" container and inserts it *before* the main content.
+ * Creates the "Challenge 0" container and inserts it into the main content.
+ * This is the new "layer" you asked for.
  */
-function showExperienceLevelChoice(container, contentWrapper) {
+function showExperienceLevelChoice(mainContent) {
     
     // 1. Create the new "Challenge 0" container
     const introChallengeDiv = document.createElement('div');
@@ -118,7 +123,6 @@ function showExperienceLevelChoice(container, contentWrapper) {
     
     // 2. This is the "Phase 1" UI (The Choice)
     // It uses .main-content to get the white box, but NOT .challenge-container
-    // This makes its UI different, as you requested.
     introChallengeDiv.innerHTML = `
         <div class="main-content" style="text-align: center;">
             <h2 style="margin-top: 0;">Welcome to the CSS Lab!</h2>
@@ -134,11 +138,15 @@ function showExperienceLevelChoice(container, contentWrapper) {
     `;
     
     // 3. Add this new challenge *before* the hidden content wrapper
-    container.prepend(introChallengeDiv);
+    // We prepend it to the .container so it's outside the real .main-content
+    const container = document.querySelector('.container');
+    if (container) {
+        container.prepend(introChallengeDiv);
+    }
     
     // 4. Add click listeners
     document.getElementById('start-guided').addEventListener('click', startGuidedTour);
-    document.getElementById('start-expert').addEventListener('click', () => startExpertTest(contentWrapper));
+    document.getElementById('start-expert').addEventListener('click', startExpertTest);
 }
 
 /**
@@ -176,7 +184,7 @@ function startGuidedTour() {
 /**
  * (Expert Path) Hides the intro and shows the real lab.
  */
-function startExpertTest(contentWrapper) {
+function startExpertTest() {
     // 1. Set the flag so they don't see the intro again
     localStorage.setItem('labIntroCompleted', 'true');
 
@@ -185,7 +193,8 @@ function startExpertTest(contentWrapper) {
     if (introBox) introBox.style.display = 'none';
     
     // 3. Show the *real* instructions box and challenge grid
-    contentWrapper.style.display = 'block';
+    const contentWrapper = document.getElementById('content-wrapper');
+    if (contentWrapper) contentWrapper.style.display = 'block';
     
     // 4. Load all 10 real challenges
     initializeChallenges(); 
