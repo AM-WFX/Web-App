@@ -39,9 +39,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function signOut() {
-        // ❗ FIX: Clear localStorage on logout ❗
         localStorage.removeItem('labIntroCompleted');
-        localStorage.removeItem('css_lab_user'); // Also clear the user name
+        localStorage.removeItem('css_lab_user'); 
         auth.signOut();
     }
 
@@ -64,7 +63,6 @@ document.addEventListener('DOMContentLoaded', function() {
             localStorage.setItem('css_lab_user', user.displayName);
 
             // ❗ --- THIS IS THE NEW LOGIC --- ❗
-            // Find the three main components of the lab page
             const mainContent = document.querySelector('.main-content');
             const instructionsBox = document.querySelector('.instructions-box');
             const challengesGrid = document.getElementById('all-challenges');
@@ -100,7 +98,6 @@ document.addEventListener('DOMContentLoaded', function() {
             if(logoutButton) logoutButton.style.display = 'none';
             if(welcomeMessage) welcomeMessage.textContent = '';
             
-            // Clear all storage on logout
             localStorage.removeItem('css_lab_user');
             localStorage.removeItem('labIntroCompleted');
             labInitialized = false; 
@@ -114,35 +111,35 @@ document.addEventListener('DOMContentLoaded', function() {
 // -------------------------------------------------
 
 /**
- * Creates the "Challenge 0" container and inserts it into the main content.
- * This is the new "layer" you asked for.
+ * Creates the "Challenge 0" container and inserts it *after* the main content.
  */
 function showExperienceLevelChoice(mainContent) {
     
     // 1. Create the new "Challenge 0" container
     const introChallengeDiv = document.createElement('div');
     introChallengeDiv.id = 'challenge-0-container';
+    // This div will sit *outside* the white .main-content box
     
-    // 2. We use your existing CSS classes to keep the style consistent
-    // This is the "Choice" UI
+    // 2. This is the "Phase 1" UI (The Choice)
+    // It uses .main-content to get the white box, but NOT .challenge-container
     introChallengeDiv.innerHTML = `
-        <div class="challenge-container" style="max-width: 600px; margin: 20px auto; gap: 5px;">
-            <h3 id="challenge-title-0" style="margin: 0; text-align: center;">Welcome to the CSS Lab!</h3>
-            <p id="prompt-0" style="margin: 0; text-align: center;">How would you like to start?</p>
-            
-            <div class="challenge-target-area" style="height: auto; justify-content: center; align-items: center;">
-                <button id="start-guided" class="cta-button" style="margin: 10px !important; width: 80%;">
+        <div class="container" style="padding-top: 0; margin-top: -30px;">
+            <div class="main-content" style="text-align: center;">
+                <h2 style="margin-top: 0;">Welcome to the CSS Lab!</h2>
+                <p>How would you like to start?</p>
+                
+                <button id="start-guided" class="cta-button" style="margin: 10px 5px !important;">
                     "I'm new to this. Guide me!"
                 </button>
-                <button id="start-expert" class="cta-button" style="margin: 10px !important; width: 80%;">
+                <button id="start-expert" class="cta-button" style="margin: 10px 5px !important;">
                     "I know CSS. Let's go!"
                 </button>
             </div>
         </div>
     `;
     
-    // 3. Add this new challenge to the page
-    mainContent.prepend(introChallengeDiv); // Add it to the top of the main-content white box
+    // 3. Add this new challenge *after* the main-content's wrapper
+    mainContent.after(introChallengeDiv); 
     
     // 4. Add click listeners
     document.getElementById('start-guided').addEventListener('click', startGuidedTour);
@@ -150,15 +147,15 @@ function showExperienceLevelChoice(mainContent) {
 }
 
 /**
- * (Beginner Path) Changes "Challenge 0" into the tutorial.
+ * (Beginner Path) "Morphs" the intro box into the tutorial.
  */
 function startGuidedTour() {
     const challengeBox = document.getElementById('challenge-0-container');
     
     // 1. Rewrite the "Challenge 0" box to be the tutorial
-    // The instructions are NOW INSIDE the challenge box
+    // ❗ NOW it uses .challenge-container to look like a real challenge
     challengeBox.innerHTML = `
-        <div class="challenge-container" style="max-width: 600px; margin: 20px auto;">
+        <div class="challenge-container" style="max-width: 600px; margin: -30px auto 0 auto;">
             <h3 id="challenge-title-0" style="margin:0; text-align: center;">Guided Tour: Learn the UI</h3>
             <span id="status-0" style="color: grey;">(Tutorial)</span>
             
