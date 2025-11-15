@@ -39,8 +39,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function signOut() {
+        // ❗ FIX: Clear localStorage on logout ❗
         localStorage.removeItem('labIntroCompleted');
-        localStorage.removeItem('css_lab_user'); 
+        localStorage.removeItem('css_lab_user'); // Also clear the user name
         auth.signOut();
     }
 
@@ -64,27 +65,27 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // ❗ --- THIS IS THE NEW LOGIC --- ❗
             // Find all the key layout components
-            const mainPageContainer = document.querySelector('.container');
+            const mainContent = document.querySelector('.main-content'); // The real lab's white box
             const instructionsBox = document.querySelector('.instructions-box');
             const challengesGrid = document.getElementById('all-challenges');
             
-            // Check if we are on the lab page (by checking if its specific components exist)
-            if (mainPageContainer && instructionsBox && challengesGrid && !labInitialized) {
+            // Check if we are on the lab page
+            if (mainContent && instructionsBox && challengesGrid && !labInitialized) {
                 
                 const introCompleted = localStorage.getItem('labIntroCompleted');
 
                 if (introCompleted) {
                     // USER HAS ALREADY DONE THE INTRO
                     // Show the real lab content
-                    mainPageContainer.style.display = 'block';
+                    mainContent.style.display = 'block';
                     initializeChallenges();
                 } else {
                     // NEW USER: Show the "choice" screen
                     // Hide the real lab components
-                    mainPageContainer.style.display = 'none';
+                    mainContent.style.display = 'none';
                     
                     // Show the intro choice "layer"
-                    showExperienceLevelChoice(labContent, mainPageContainer); 
+                    showExperienceLevelChoice(mainContent.parentElement); // Pass the parent, #content-wrapper
                 }
                 labInitialized = true;
             }
@@ -97,6 +98,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if(logoutButton) logoutButton.style.display = 'none';
             if(welcomeMessage) welcomeMessage.textContent = '';
             
+            // Clear all storage on logout
             localStorage.removeItem('css_lab_user');
             localStorage.removeItem('labIntroCompleted');
             labInitialized = false; 
@@ -110,18 +112,17 @@ document.addEventListener('DOMContentLoaded', function() {
 // -------------------------------------------------
 
 /**
- * Creates the "Challenge 0" container and inserts it *after* the navbar.
+ * Creates the "Challenge 0" container and inserts it *after* the main content.
  */
-function showExperienceLevelChoice(labContent, mainPageContainer) {
+function showExperienceLevelChoice(contentWrapper) {
     
     // 1. Create the new "Challenge 0" container
     const introChallengeDiv = document.createElement('div');
     introChallengeDiv.id = 'challenge-0-container';
-    // We add the 'container' class to it so it has the same horizontal centering and spacing
-    introChallengeDiv.classList.add('container'); 
     
     // 2. This is the "Phase 1" UI (The Choice)
     // It uses .main-content to get the white box, but NOT .challenge-container
+    // This makes its UI different, as you requested.
     introChallengeDiv.innerHTML = `
         <div class="main-content" style="text-align: center;">
             <h2 style="margin-top: 0;">Welcome to the CSS Lab!</h2>
@@ -136,11 +137,8 @@ function showExperienceLevelChoice(labContent, mainPageContainer) {
         </div>
     `;
     
-    // 3. Add this new challenge *after* the navbar
-    const navbar = labContent.querySelector('.navbar');
-    if (navbar) {
-        navbar.after(introChallengeDiv);
-    }
+    // 3. Add this new challenge *after* the (hidden) real .main-content div
+    contentWrapper.appendChild(introChallengeDiv);
     
     // 4. Add click listeners
     document.getElementById('start-guided').addEventListener('click', startGuidedTour);
@@ -192,9 +190,8 @@ function startExpertTest() {
     if (introBox) introBox.remove(); // Use remove() to delete it
     
     // 3. Show the *real* lab container
-    const labContent = document.getElementById('page-content');
-    const container = labContent.querySelector('.container');
-    if (container) container.style.display = 'block';
+    const mainContent = document.querySelector('.main-content');
+    if (mainContent) mainContent.style.display = 'block';
     
     // 4. Load all 10 real challenges
     initializeChallenges(); 
@@ -226,9 +223,8 @@ function validateTutorial() {
             if (introBox) introBox.remove();
 
             // 2. Show the *real* lab container
-            const labContent = document.getElementById('page-content');
-            const container = labContent.querySelector('.container');
-            if (container) container.style.display = 'block';
+            const mainContent = document.querySelector('.main-content');
+            if (mainContent) mainContent.style.display = 'block';
             
             // 3. Initialize all 10 real challenges
             initializeChallenges();
