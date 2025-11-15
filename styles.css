@@ -55,7 +55,7 @@ body {
 }
 
 /* ❗ --- THIS IS THE FIX (PART 1) --- ❗ */
-/* This turns your page wrapper into a flex container */
+/* This makes your #page-content wrapper a flex container */
 /* that is at least as tall as the screen. */
 #page-content {
     display: flex;
@@ -171,27 +171,28 @@ h1, h2, h3 {
 /* This section now controls all page spacing */
 .container {
     max-width: 1400px;
-    /* This rule centers the container horizontally */
-    margin: 0 auto; 
-    padding: 0; /* Remove old padding */
-    width: 100%; /* Ensures it spans the width */
+    /* This rule sets 30px top/bottom margin, and centers left/right */
+    margin: 30px auto; 
+    /* This rule sets 30px padding on all 4 *inside* edges */
+    padding: 30px; 
     
     /* This tells the container to grow and push the footer down */
     flex-grow: 1; 
+    width: 100%;       /* Ensures it spans the width */
 }
 
 /* ❗ --- THIS IS THE FIX (PART 3) --- ❗ */
-/* This wrapper now provides the 30px of space on all 4 sides */
+/* We no longer need this div to control spacing */
 #content-wrapper {
     display: block; 
-    padding: 30px; 
+    padding: 0; /* <-- REMOVED padding: 20px 0 */
 }
-
 .main-content {
-    padding: 30px;
-    background-color: white;
-    border-radius: var(--wf-border-radius);
-    box-shadow: var(--wf-shadow-card); 
+    /* ❗ We remove padding here because the parent .container now handles it */
+    padding: 0; 
+    background-color: transparent; /* Make it invisible */
+    border-radius: 0;
+    box-shadow: none; 
 }
 
 /* --- FOOTER STYLING --- */
@@ -252,6 +253,7 @@ button[onclick*="validateChallenge"]:hover {
     text-align: center;
     border: none; 
     box-shadow: none;
+    margin-bottom: 20px; /* Added for spacing between boxes */
 }
 .promo-box h3 { margin-top: 0; }
 .promo-box code {
@@ -552,6 +554,10 @@ p {
 /* in the specific places you mentioned. */
 .promo-box p {
     margin-bottom: 0;
+}
+/* This targets the p inside the FIRST promo-box */
+.main-content > .promo-box:first-of-type p {
+    margin-bottom: 1em !important; /* Restore margin for first box */
 }
 footer p {
     margin-bottom: 0;
