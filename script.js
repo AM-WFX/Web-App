@@ -62,8 +62,6 @@ document.addEventListener('DOMContentLoaded', function() {
             
             localStorage.setItem('css_lab_user', user.displayName);
 
-            // ❗ --- THIS IS THE FIX (PART 1) --- ❗
-            // We get the main page .container, not .main-content
             const mainPageContainer = document.querySelector('.container');
             const instructionsBox = document.querySelector('.instructions-box');
             const challengesGrid = document.getElementById('all-challenges');
@@ -74,14 +72,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 if (introCompleted) {
                     // USER HAS ALREADY DONE THE INTRO
-                    mainPageContainer.style.display = 'block'; // Show the real lab
+                    mainPageContainer.style.display = 'block';
                     initializeChallenges();
                 } else {
                     // NEW USER: Show the "choice" screen
-                    mainPageContainer.style.display = 'none'; // Hide the real lab
-                    
-                    // Pass the labContent (the page wrapper) to inject the intro *outside*
-                    showExperienceLevelChoice(labContent, mainPageContainer); 
+                    mainPageContainer.style.display = 'none';
+                    showExperienceLevelChoice(labContent); 
                 }
                 labInitialized = true;
             }
@@ -106,21 +102,19 @@ document.addEventListener('DOMContentLoaded', function() {
 // 💡 --- NEW GAMIFIED INTRO FUNCTIONS --- 💡
 // -------------------------------------------------
 
-/**
- * Creates the "Challenge 0" container and inserts it *after* the navbar.
- */
-function showExperienceLevelChoice(labContent, mainPageContainer) {
+function showExperienceLevelChoice(labContent) {
     
-    // 1. Create the new "Challenge 0" container
     const introChallengeDiv = document.createElement('div');
     introChallengeDiv.id = 'challenge-0-container';
-    // This div will sit *outside* the .container, directly in #page-content
     
-    // 2. This is the "Phase 1" UI (The Choice)
-    // It uses .main-content to get the white box, but NOT .challenge-container
-    // This makes its UI different, as you requested.
+    // ❗ --- THIS IS THE FIX --- ❗
+    // Added 'flex-grow: 1' to make it push the footer down.
+    // Added 'display: flex' and 'align-items: center' to vertically center the box.
+    introChallengeDiv.style = "flex-grow: 1; display: flex; align-items: center; width: 100%;";
+    
+    // Phase 1 UI: The Choice
     introChallengeDiv.innerHTML = `
-        <div class.="main-content" style="text-align: center; max-width: 600px; margin: 30px auto; padding: 30px; background: white; border-radius: var(--wf-border-radius); box-shadow: var(--wf-shadow-card);">
+        <div class="main-content" style="text-align: center; max-width: 600px; margin: 0 auto;">
             <h2 style="margin-top: 0;">Welcome to the CSS Lab!</h2>
             <p>How would you like to start?</p>
             
@@ -133,31 +127,25 @@ function showExperienceLevelChoice(labContent, mainPageContainer) {
         </div>
     `;
     
-    // 3. Add this new challenge *after* the navbar
     const navbar = labContent.querySelector('.navbar');
     if (navbar) {
         navbar.after(introChallengeDiv);
     }
     
-    // 4. Add click listeners
     document.getElementById('start-guided').addEventListener('click', startGuidedTour);
-    document.getElementById('start-expert').addEventListener('click', () => startExpertTest(mainPageContainer));
+    document.getElementById('start-expert').addEventListener('click', startExpertTest);
 }
 
-/**
- * (Beginner Path) "Morphs" the intro box into the tutorial.
- */
 function startGuidedTour() {
     const challengeBox = document.getElementById('challenge-0-container');
     
-    // 1. Rewrite the "Challenge 0" box to be the tutorial
-    // ❗ NOW it uses .challenge-container to look like a real challenge
+    // Phase 2 UI: The Tutorial (Morphs into a challenge container)
     challengeBox.innerHTML = `
-        <div class="challenge-container" style="max-width: 600px; margin: 30px auto;">
+        <div class="challenge-container" style="max-width: 600px; margin: 0 auto;">
             <h3 id="challenge-title-0" style="margin:0; text-align: center;">Guided Tour: Learn the UI</h3>
             <span id="status-0" style="color: grey;">(Tutorial)</span>
             
-            <p id="prompt-0" style="margin:0; text-align: center;">
+            <p id="prompt-0">
                 Your goal is to select the 'Start' button.
                 <br>
                 Type <code>#start-button</code> in the input field and hit 'Validate' to begin!
@@ -176,34 +164,25 @@ function startGuidedTour() {
     `;
 }
 
-/**
- * (Expert Path) Hides the intro and shows the real lab.
- */
-function startExpertTest(mainPageContainer) {
-    // 1. Set the flag so they don't see the intro again
+function startExpertTest() {
     localStorage.setItem('labIntroCompleted', 'true');
 
-    // 2. Hide the "Challenge 0" intro box
     const introBox = document.getElementById('challenge-0-container');
-    if (introBox) introBox.remove(); // Use remove() to delete it
+    if (introBox) introBox.remove(); 
     
-    // 3. Show the *real* lab container
-    if (mainPageContainer) mainPageContainer.style.display = 'block';
+    const labContent = document.getElementById('page-content');
+    const container = labContent.querySelector('.container');
+    if (container) container.style.display = 'block';
     
-    // 4. Load all 10 real challenges
     initializeChallenges(); 
 }
 
-/**
- * Special validation function just for the "Challenge 0" tutorial.
- */
 function validateTutorial() {
     const inputField = document.getElementById('selector-input-0');
     const feedbackElement = document.getElementById('feedback-0');
     const userInput = inputField.value.trim();
 
     if (userInput === '#start-button') {
-        // SUCCESS!
         localStorage.setItem('labIntroCompleted', 'true');
         
         feedbackElement.className = 'validation-feedback success';
@@ -213,23 +192,18 @@ function validateTutorial() {
             Loading the real challenges now...
         `;
 
-        // After a short delay, hide the tour and show the real lab.
         setTimeout(() => {
-            // 1. Hide the "Challenge 0" intro box
             const introBox = document.getElementById('challenge-0-container');
             if (introBox) introBox.remove();
 
-            // 2. Show the *real* lab container
-            // ❗ --- THIS IS THE FIX (PART 2) --- ❗
-            const mainPageContainer = document.querySelector('.container');
-            if (mainPageContainer) mainPageContainer.style.display = 'block';
+            const labContent = document.getElementById('page-content');
+            const container = labContent.querySelector('.container');
+            if (container) container.style.display = 'block';
             
-            // 3. Initialize all 10 real challenges
             initializeChallenges();
-        }, 1500); // 1.5-second delay
+        }, 1500); 
 
     } else {
-        // FAILURE
         feedbackElement.className = 'validation-feedback error';
         feedbackElement.innerHTML = `Not quite! Try typing the exact selector <code>#start-button</code> into the input box.`;
     }
@@ -311,7 +285,6 @@ const challengeDefinitions = [
         prompt: "Target the Primary Login Button using its unique ID.",
         targetSelector: "#login-primary",
         type: "ID Selector",
-        isComplex: false, 
         alternatives: [
             { selector: "button#login-primary", explanation: "This uses the tag name and the ID. Since IDs are already unique, adding the tag name is redundant but valid." }
         ],
@@ -326,7 +299,6 @@ const challengeDefinitions = [
         prompt: "Target the item marked Urgent using its class.",
         targetSelector: ".task-urgent",
         type: "Class Selector",
-        isComplex: true,
         alternatives: [
             { selector: "li.task-urgent", explanation: "This is a great technique: combining the tag name (li) with the class." },
             { selector: ".task-urgent.list-item", explanation: "This chains two class selectors together, ensuring an element has *both* classes." }
@@ -345,7 +317,6 @@ const challengeDefinitions = [
         prompt: "Target the Save button that is contained *anywhere* inside the #settings-modal.",
         targetSelector: "#settings-modal .btn-save",
         type: "Descendant Combinator",
-        isComplex: true,
         alternatives: [
             { selector: "#settings-modal button.btn-save", explanation: "This is highly specific. It combines the ID of the container, the tag name, and the class name." },
         ],
@@ -364,7 +335,6 @@ const challengeDefinitions = [
         prompt: "Target the Title text that is a direct child of the .card-header.",
         targetSelector: ".card-header > h2:first-child",
         type: "Child Combinator",
-        isComplex: true,
         alternatives: [
             { selector: "[class=\"card-header\"] > h2:first-child", explanation: "This works perfectly! It uses the attribute selector to find the parent and `:first-child` to select the specific target." },
             { selector: ".card > .card-header > h2:first-child", explanation: "This chains multiple Child Combinators, ensuring a rigid structure." }
@@ -385,7 +355,6 @@ const challengeDefinitions = [
         prompt: "Target the Second Item that immediately follows the element with the class .first-element.",
         targetSelector: ".first-element + li",
         type: "Adjacent Sibling Combinator",
-        isComplex: true,
         alternatives: [
             { selector: "li.first-element + li.list-item", explanation: "A highly specific version that ensures both elements are list items." }
         ],
@@ -404,7 +373,6 @@ const challengeDefinitions = [
         prompt: "Target the Comments button given in the area below, which appears somewhere after the h3 element.",
         targetSelector: "h3 ~ .comments",
         type: "General Sibling Combinator",
-        isComplex: true,
         alternatives: [
             { selector: "p ~ .comments", explanation: "This is also correct! It targets the .comments button as a sibling of the 'p' tag." },
             { selector: "h3 ~ button", explanation: "This is a valid, though less specific, selector that also works." }
@@ -421,7 +389,6 @@ const challengeDefinitions = [
         prompt: "Target the input field whose name attribute contains the word 'user'.",
         targetSelector: "input[name*='user']",
         type: "Attribute Selector (Substring Match)",
-        isComplex: false,
         alternatives: [
         ],
         trivia: "The `*=` operator is the 'contains' attribute selector, which looks for the specified substring anywhere within the attribute's value. This is powerful when dealing with dynamic or auto-generated attributes.",
@@ -436,7 +403,6 @@ const challengeDefinitions = [
         prompt: "Target the third item in the list, regardless of its tag name, using :nth-child.",
         targetSelector: "li:nth-child(3)",
         type: "Structural Pseudo-class (:nth-child)",
-        isComplex: true,
         alternatives: [
             { selector: "ol li:nth-child(3)", explanation: "More specific by scoping the selection to `li` elements inside an ordered list (`ol`)." },
             { selector: "li:nth-of-type(3)", explanation: "This selects the third `li` element. It works here, but is a different selector." }
@@ -456,7 +422,6 @@ const challengeDefinitions = [
         prompt: "Target the Save button which does not have the class .disabled.",
         targetSelector: "button:not(.disabled)",
         type: "Negation Pseudo-class (:not)",
-        isComplex: false,
         alternatives: [
             { selector: ".btn-save:not(.disabled)", explanation: "This targets any element with the class `.btn-save` that is not disabled." },
             { selector: "button.btn-save:not(.disabled)", explanation: "The most specific option. Combines tag name, class name, and the negation." }
@@ -473,7 +438,6 @@ const challengeDefinitions = [
         prompt: "Target the checkbox that is currently checked.",
         targetSelector: "input:checked",
         type: "UI State Pseudo-class (:checked)",
-        isComplex: false,
         alternatives: [
             { selector: "input[type='checkbox']:checked", explanation: "This adds the attribute selector for `type='checkbox'`, ensuring the selector only applies to checkbox inputs." }
         ],
@@ -508,12 +472,8 @@ function initializeChallenges() {
             currentHTML: def.html,
             successfulSelectors: [],
             originalPrompt: def.prompt,
-            type: def.type,
-            isComplex: def.isComplex // <-- Store the flag
+            type: def.type
         };
-
-        // This is the key: add the .is-complex class to the container
-        const complexClass = def.isComplex ? 'is-complex' : '';
 
         htmlContent += `
             <div id="challenge-${def.id}" class="challenge-container">
@@ -521,7 +481,7 @@ function initializeChallenges() {
                 <span id="status-${def.id}" style="color: grey;">(Unsolved)</span>
                 <p id="prompt-${def.id}">${def.prompt}</p>
                 
-                <div id="target-area-${def.id}" class="challenge-target-area ${complexClass}">
+                <div id="target-area-${def.id}" class="challenge-target-area">
                     ${def.html}
                 </div>
                 
