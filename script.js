@@ -39,9 +39,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function signOut() {
-        // ❗ FIX: Clear localStorage on logout ❗
         localStorage.removeItem('labIntroCompleted');
-        localStorage.removeItem('css_lab_user'); // Also clear the user name
+        localStorage.removeItem('css_lab_user'); 
         auth.signOut();
     }
 
@@ -63,29 +62,26 @@ document.addEventListener('DOMContentLoaded', function() {
             
             localStorage.setItem('css_lab_user', user.displayName);
 
-            // ❗ --- THIS IS THE NEW LOGIC --- ❗
-            // Find all the key layout components
-            const mainContent = document.querySelector('.main-content'); // The real lab's white box
+            // ❗ --- THIS IS THE FIX (PART 1) --- ❗
+            // We get the main page .container, not .main-content
+            const mainPageContainer = document.querySelector('.container');
             const instructionsBox = document.querySelector('.instructions-box');
             const challengesGrid = document.getElementById('all-challenges');
             
-            // Check if we are on the lab page
-            if (mainContent && instructionsBox && challengesGrid && !labInitialized) {
+            if (mainPageContainer && instructionsBox && challengesGrid && !labInitialized) {
                 
                 const introCompleted = localStorage.getItem('labIntroCompleted');
 
                 if (introCompleted) {
                     // USER HAS ALREADY DONE THE INTRO
-                    // Show the real lab content
-                    mainContent.style.display = 'block';
+                    mainPageContainer.style.display = 'block'; // Show the real lab
                     initializeChallenges();
                 } else {
                     // NEW USER: Show the "choice" screen
-                    // Hide the real lab components
-                    mainContent.style.display = 'none';
+                    mainPageContainer.style.display = 'none'; // Hide the real lab
                     
-                    // Show the intro choice "layer"
-                    showExperienceLevelChoice(mainContent.parentElement); // Pass the parent, #content-wrapper
+                    // Pass the labContent (the page wrapper) to inject the intro *outside*
+                    showExperienceLevelChoice(labContent, mainPageContainer); 
                 }
                 labInitialized = true;
             }
@@ -98,7 +94,6 @@ document.addEventListener('DOMContentLoaded', function() {
             if(logoutButton) logoutButton.style.display = 'none';
             if(welcomeMessage) welcomeMessage.textContent = '';
             
-            // Clear all storage on logout
             localStorage.removeItem('css_lab_user');
             localStorage.removeItem('labIntroCompleted');
             labInitialized = false; 
@@ -112,19 +107,20 @@ document.addEventListener('DOMContentLoaded', function() {
 // -------------------------------------------------
 
 /**
- * Creates the "Challenge 0" container and inserts it *before* the main content.
+ * Creates the "Challenge 0" container and inserts it *after* the navbar.
  */
-function showExperienceLevelChoice(contentWrapper) {
+function showExperienceLevelChoice(labContent, mainPageContainer) {
     
     // 1. Create the new "Challenge 0" container
     const introChallengeDiv = document.createElement('div');
     introChallengeDiv.id = 'challenge-0-container';
+    // This div will sit *outside* the .container, directly in #page-content
     
     // 2. This is the "Phase 1" UI (The Choice)
     // It uses .main-content to get the white box, but NOT .challenge-container
     // This makes its UI different, as you requested.
     introChallengeDiv.innerHTML = `
-        <div class="main-content" style="text-align: center; max-width: 600px; margin: 0 auto;">
+        <div class.="main-content" style="text-align: center; max-width: 600px; margin: 30px auto; padding: 30px; background: white; border-radius: var(--wf-border-radius); box-shadow: var(--wf-shadow-card);">
             <h2 style="margin-top: 0;">Welcome to the CSS Lab!</h2>
             <p>How would you like to start?</p>
             
@@ -137,12 +133,15 @@ function showExperienceLevelChoice(contentWrapper) {
         </div>
     `;
     
-    // 3. Add this new challenge *before* the hidden content wrapper
-    contentWrapper.prepend(introChallengeDiv);
+    // 3. Add this new challenge *after* the navbar
+    const navbar = labContent.querySelector('.navbar');
+    if (navbar) {
+        navbar.after(introChallengeDiv);
+    }
     
     // 4. Add click listeners
     document.getElementById('start-guided').addEventListener('click', startGuidedTour);
-    document.getElementById('start-expert').addEventListener('click', startExpertTest);
+    document.getElementById('start-expert').addEventListener('click', () => startExpertTest(mainPageContainer));
 }
 
 /**
@@ -153,9 +152,8 @@ function startGuidedTour() {
     
     // 1. Rewrite the "Challenge 0" box to be the tutorial
     // ❗ NOW it uses .challenge-container to look like a real challenge
-    // We remove the .main-content wrapper
     challengeBox.innerHTML = `
-        <div class="challenge-container" style="max-width: 600px; margin: 0 auto;">
+        <div class="challenge-container" style="max-width: 600px; margin: 30px auto;">
             <h3 id="challenge-title-0" style="margin:0; text-align: center;">Guided Tour: Learn the UI</h3>
             <span id="status-0" style="color: grey;">(Tutorial)</span>
             
@@ -181,7 +179,7 @@ function startGuidedTour() {
 /**
  * (Expert Path) Hides the intro and shows the real lab.
  */
-function startExpertTest() {
+function startExpertTest(mainPageContainer) {
     // 1. Set the flag so they don't see the intro again
     localStorage.setItem('labIntroCompleted', 'true');
 
@@ -190,8 +188,7 @@ function startExpertTest() {
     if (introBox) introBox.remove(); // Use remove() to delete it
     
     // 3. Show the *real* lab container
-    const mainContent = document.querySelector('.main-content');
-    if (mainContent) mainContent.style.display = 'block';
+    if (mainPageContainer) mainPageContainer.style.display = 'block';
     
     // 4. Load all 10 real challenges
     initializeChallenges(); 
@@ -223,8 +220,9 @@ function validateTutorial() {
             if (introBox) introBox.remove();
 
             // 2. Show the *real* lab container
-            const mainContent = document.querySelector('.main-content');
-            if (mainContent) mainContent.style.display = 'block';
+            // ❗ --- THIS IS THE FIX (PART 2) --- ❗
+            const mainPageContainer = document.querySelector('.container');
+            if (mainPageContainer) mainPageContainer.style.display = 'block';
             
             // 3. Initialize all 10 real challenges
             initializeChallenges();
@@ -313,6 +311,7 @@ const challengeDefinitions = [
         prompt: "Target the Primary Login Button using its unique ID.",
         targetSelector: "#login-primary",
         type: "ID Selector",
+        isComplex: false, 
         alternatives: [
             { selector: "button#login-primary", explanation: "This uses the tag name and the ID. Since IDs are already unique, adding the tag name is redundant but valid." }
         ],
@@ -327,6 +326,7 @@ const challengeDefinitions = [
         prompt: "Target the item marked Urgent using its class.",
         targetSelector: ".task-urgent",
         type: "Class Selector",
+        isComplex: true,
         alternatives: [
             { selector: "li.task-urgent", explanation: "This is a great technique: combining the tag name (li) with the class." },
             { selector: ".task-urgent.list-item", explanation: "This chains two class selectors together, ensuring an element has *both* classes." }
@@ -345,6 +345,7 @@ const challengeDefinitions = [
         prompt: "Target the Save button that is contained *anywhere* inside the #settings-modal.",
         targetSelector: "#settings-modal .btn-save",
         type: "Descendant Combinator",
+        isComplex: true,
         alternatives: [
             { selector: "#settings-modal button.btn-save", explanation: "This is highly specific. It combines the ID of the container, the tag name, and the class name." },
         ],
@@ -363,6 +364,7 @@ const challengeDefinitions = [
         prompt: "Target the Title text that is a direct child of the .card-header.",
         targetSelector: ".card-header > h2:first-child",
         type: "Child Combinator",
+        isComplex: true,
         alternatives: [
             { selector: "[class=\"card-header\"] > h2:first-child", explanation: "This works perfectly! It uses the attribute selector to find the parent and `:first-child` to select the specific target." },
             { selector: ".card > .card-header > h2:first-child", explanation: "This chains multiple Child Combinators, ensuring a rigid structure." }
@@ -383,6 +385,7 @@ const challengeDefinitions = [
         prompt: "Target the Second Item that immediately follows the element with the class .first-element.",
         targetSelector: ".first-element + li",
         type: "Adjacent Sibling Combinator",
+        isComplex: true,
         alternatives: [
             { selector: "li.first-element + li.list-item", explanation: "A highly specific version that ensures both elements are list items." }
         ],
@@ -401,6 +404,7 @@ const challengeDefinitions = [
         prompt: "Target the Comments button given in the area below, which appears somewhere after the h3 element.",
         targetSelector: "h3 ~ .comments",
         type: "General Sibling Combinator",
+        isComplex: true,
         alternatives: [
             { selector: "p ~ .comments", explanation: "This is also correct! It targets the .comments button as a sibling of the 'p' tag." },
             { selector: "h3 ~ button", explanation: "This is a valid, though less specific, selector that also works." }
@@ -417,6 +421,7 @@ const challengeDefinitions = [
         prompt: "Target the input field whose name attribute contains the word 'user'.",
         targetSelector: "input[name*='user']",
         type: "Attribute Selector (Substring Match)",
+        isComplex: false,
         alternatives: [
         ],
         trivia: "The `*=` operator is the 'contains' attribute selector, which looks for the specified substring anywhere within the attribute's value. This is powerful when dealing with dynamic or auto-generated attributes.",
@@ -431,6 +436,7 @@ const challengeDefinitions = [
         prompt: "Target the third item in the list, regardless of its tag name, using :nth-child.",
         targetSelector: "li:nth-child(3)",
         type: "Structural Pseudo-class (:nth-child)",
+        isComplex: true,
         alternatives: [
             { selector: "ol li:nth-child(3)", explanation: "More specific by scoping the selection to `li` elements inside an ordered list (`ol`)." },
             { selector: "li:nth-of-type(3)", explanation: "This selects the third `li` element. It works here, but is a different selector." }
@@ -450,6 +456,7 @@ const challengeDefinitions = [
         prompt: "Target the Save button which does not have the class .disabled.",
         targetSelector: "button:not(.disabled)",
         type: "Negation Pseudo-class (:not)",
+        isComplex: false,
         alternatives: [
             { selector: ".btn-save:not(.disabled)", explanation: "This targets any element with the class `.btn-save` that is not disabled." },
             { selector: "button.btn-save:not(.disabled)", explanation: "The most specific option. Combines tag name, class name, and the negation." }
@@ -466,6 +473,7 @@ const challengeDefinitions = [
         prompt: "Target the checkbox that is currently checked.",
         targetSelector: "input:checked",
         type: "UI State Pseudo-class (:checked)",
+        isComplex: false,
         alternatives: [
             { selector: "input[type='checkbox']:checked", explanation: "This adds the attribute selector for `type='checkbox'`, ensuring the selector only applies to checkbox inputs." }
         ],
@@ -500,8 +508,12 @@ function initializeChallenges() {
             currentHTML: def.html,
             successfulSelectors: [],
             originalPrompt: def.prompt,
-            type: def.type
+            type: def.type,
+            isComplex: def.isComplex // <-- Store the flag
         };
+
+        // This is the key: add the .is-complex class to the container
+        const complexClass = def.isComplex ? 'is-complex' : '';
 
         htmlContent += `
             <div id="challenge-${def.id}" class="challenge-container">
@@ -509,7 +521,7 @@ function initializeChallenges() {
                 <span id="status-${def.id}" style="color: grey;">(Unsolved)</span>
                 <p id="prompt-${def.id}">${def.prompt}</p>
                 
-                <div id="target-area-${def.id}" class="challenge-target-area">
+                <div id="target-area-${def.id}" class="challenge-target-area ${complexClass}">
                     ${def.html}
                 </div>
                 
