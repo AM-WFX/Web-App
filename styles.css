@@ -55,14 +55,13 @@ body {
 }
 
 /* ❗ --- THIS IS THE FIX (PART 1) --- ❗ */
-/* This makes your #page-content wrapper a flex container */
+/* This turns your page wrapper into a flex container */
 /* that is at least as tall as the screen. */
 #page-content {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
 }
-
 
 /* --- ❗ NAVBAR STYLING (WHATFIX REPLICATION) ❗ --- */
 .navbar {
@@ -172,22 +171,22 @@ h1, h2, h3 {
 /* This section now controls all page spacing */
 .container {
     max-width: 1400px;
-    /* This rule sets 30px top/bottom margin, and centers left/right */
-    margin: 30px auto; 
-    /* This rule sets 30px padding on all 4 *inside* edges */
-    padding: 30px; 
+    /* This rule centers the container horizontally */
+    margin: 0 auto; 
+    padding: 0; /* Remove old padding */
+    width: 100%; /* Ensures it spans the width */
     
     /* This tells the container to grow and push the footer down */
     flex-grow: 1; 
-    width: 100%; /* Ensures it spans the width */
 }
 
 /* ❗ --- THIS IS THE FIX (PART 3) --- ❗ */
-/* We no longer need this div to control spacing */
+/* This wrapper now provides the 30px of space on all 4 sides */
 #content-wrapper {
     display: block; 
-    padding: 0; /* <-- REMOVED padding: 20px 0 */
+    padding: 30px; 
 }
+
 .main-content {
     padding: 30px;
     background-color: white;
