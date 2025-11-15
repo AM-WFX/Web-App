@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 // 1. Hide the challenge grid by default
                 challengesGrid.style.display = 'none';
                 
-                // 2. Inject the "choice" UI into the instructions box
+                // 2. Add the "choice" UI to the instructions box
                 setupGamifiedIntro(instructionsBox, challengesGrid); 
                 
                 // 3. Mark as initialized
@@ -97,15 +97,19 @@ document.addEventListener('DOMContentLoaded', function() {
 // -------------------------------------------------
 
 /**
- * Injects the "Beginner" or "Expert" choice box into the instructions div.
+ * Appends the "Beginner" or "Expert" choice box to the instructions div.
  */
 function setupGamifiedIntro(instructionsBox, challengesGrid) {
     
-    // 1. Overwrite the instructions box with our Welcome/Choice UI
-    instructionsBox.innerHTML = `
-        <h2 style="margin-top: 0;">Welcome to the CSS Lab!</h2>
-        <p style="margin-bottom: 1em;">How would you like to start?</p>
-            
+    // 1. Create a new div for the buttons
+    const choiceDiv = document.createElement('div');
+    choiceDiv.style.textAlign = 'center'; // Center the buttons
+    choiceDiv.style.marginTop = '20px'; // Add space
+    
+    // 2. Create the HTML for the buttons
+    choiceDiv.innerHTML = `
+        <hr style="margin: 30px 0; border: none; border-top: 1px solid #E2E8F0;">
+        <h3 style="margin-top: 0;">Ready to start?</h3>
         <button id="start-guided" class="cta-button" style="margin: 10px 5px !important;">
             "I'm new to this. Guide me!"
         </button>
@@ -114,7 +118,10 @@ function setupGamifiedIntro(instructionsBox, challengesGrid) {
         </button>
     `;
     
-    // 2. Add click listeners to the new buttons
+    // 3. Append the new div to the *end* of the instructions box
+    instructionsBox.appendChild(choiceDiv);
+    
+    // 4. Add click listeners to the new buttons
     document.getElementById('start-guided').addEventListener('click', () => {
         startGuidedTour(instructionsBox, challengesGrid);
     });
@@ -128,17 +135,16 @@ function setupGamifiedIntro(instructionsBox, challengesGrid) {
  */
 function startGuidedTour(instructionsBox, challengesGrid) {
     // 1. Rewrite the instructions box with the tutorial text
+    // This keeps the original "How to Use" text and adds the guide.
     instructionsBox.innerHTML = `
         <h2 style="margin-top: 0;">Guided Tour: Your First Challenge</h2>
-        <p style="margin-bottom: 1em;">
-            Your goal is to select the 'Primary Login Button' in <strong>Challenge 1</strong> below.
-            <br><br>
-            1. Look in the Challenge 1 box.
-            <br>
-            2. Type <code>#login-primary</code> in its input field.
-            <br>
-            3. Hit 'Validate' to get your first win!
-        </p>
+        <p>Your goal is to select the 'Primary Login Button' in <strong>Challenge 1</strong> below.</p>
+        <ul style="margin-top: 10px;">
+            <li>Look in the Challenge 1 box.</li>
+            <li>Type <code>#login-primary</code> in its input field.</li>
+            <li>Hit 'Validate' to get your first win!</li>
+        </ul>
+        <p style="margin-top: 15px;">All challenges will keep their normal, short prompts. Good luck!</p>
     `;
     
     // 2. Show the challenges grid
@@ -153,6 +159,7 @@ function startGuidedTour(instructionsBox, challengesGrid) {
  */
 function startExpertTest(instructionsBox, challengesGrid) {
     // 1. Rewrite the instructions box with a simple message
+    // This keeps the original "How to Use" text and adds the new message.
     instructionsBox.innerHTML = `
         <h2 style="margin-top: 0;">Alright, Pro!</h2>
         <p style="margin-bottom: 0;">The challenges are loaded below. Good luck!</p>
@@ -161,7 +168,7 @@ function startExpertTest(instructionsBox, challengesGrid) {
     // 2. Show the challenges grid
     challengesGrid.style.display = 'flex';
     
-    // 3. Load all the challenges
+    // 3. Load all the challenges (with their original, short prompts)
     initializeChallenges(); 
 }
 
@@ -433,8 +440,6 @@ function initializeChallenges() {
             type: def.type
         };
 
-        // All challenges are built with their original, short prompts.
-        // The .is-complex class is no longer needed.
         htmlContent += `
             <div id="challenge-${def.id}" class="challenge-container">
                 <h3 id="challenge-title-${def.id}">Challenge ${def.id}</h3>
