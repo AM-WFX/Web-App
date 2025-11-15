@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // -------------------------------------------------
 
 /**
- * Creates the "Challenge 0" container and inserts it *after* the main content.
+ * Creates the "Challenge 0" container and inserts it *before* the main content.
  */
 function showExperienceLevelChoice(contentWrapper) {
     
@@ -124,7 +124,7 @@ function showExperienceLevelChoice(contentWrapper) {
     // It uses .main-content to get the white box, but NOT .challenge-container
     // This makes its UI different, as you requested.
     introChallengeDiv.innerHTML = `
-        <div class="main-content" style="text-align: center;">
+        <div class="main-content" style="text-align: center; max-width: 600px; margin: 0 auto;">
             <h2 style="margin-top: 0;">Welcome to the CSS Lab!</h2>
             <p>How would you like to start?</p>
             
@@ -137,8 +137,8 @@ function showExperienceLevelChoice(contentWrapper) {
         </div>
     `;
     
-    // 3. Add this new challenge *after* the (hidden) real .main-content div
-    contentWrapper.appendChild(introChallengeDiv);
+    // 3. Add this new challenge *before* the hidden content wrapper
+    contentWrapper.prepend(introChallengeDiv);
     
     // 4. Add click listeners
     document.getElementById('start-guided').addEventListener('click', startGuidedTour);
