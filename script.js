@@ -27,8 +27,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const logoutButton = document.getElementById('logout-button');
     const welcomeMessage = document.getElementById('welcome-message');
 
-    let labInitialized = false; 
-
     // --- 2. AUTH FUNCTIONS ---
     function signIn() {
         const provider = new firebase.auth.GoogleAuthProvider();
@@ -39,9 +37,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function signOut() {
-        // ❗ FIX: Clear localStorage on logout ❗
         localStorage.removeItem('labIntroCompleted');
-        localStorage.removeItem('css_lab_user'); // Also clear the user name
+        localStorage.removeItem('css_lab_user'); 
         auth.signOut();
     }
 
@@ -56,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (user) {
             // --- USER IS LOGGED IN ---
             if(loginPrompt) loginPrompt.style.display = 'none';
-            if(labContent) labContent.style.display = 'flex'; // Use 'flex' for sticky footer
+            if(labContent) labContent.style.display = 'flex'; 
 
             if(logoutButton) logoutButton.style.display = 'inline-flex';
             if(welcomeMessage) welcomeMessage.textContent = `Hello, ${user.displayName}`;
@@ -67,21 +64,25 @@ document.addEventListener('DOMContentLoaded', function() {
             const instructionsBox = document.querySelector('.instructions-box');
             const challengesGrid = document.getElementById('all-challenges');
             
-            if (instructionsBox && challengesGrid && !labInitialized) {
+            if (instructionsBox && challengesGrid) {
                 
-                // ❗ Check localStorage, not sessionStorage ❗
                 const introCompleted = localStorage.getItem('labIntroCompleted');
 
                 if (introCompleted) {
-                    // They have! Just show the challenges.
+                    // USER HAS ALREADY DONE THE INTRO
+                    // Show the instructions and the 10 challenges
+                    instructionsBox.style.display = 'block';
                     challengesGrid.style.display = 'flex';
                     initializeChallenges();
                 } else {
-                    // This is their first visit. Show the choice.
+                    // NEW USER: Show the "choice" screen
+                    // Hide the real lab components
+                    instructionsBox.style.display = 'none';
                     challengesGrid.style.display = 'none';
-                    setupGamifiedIntro(instructionsBox, challengesGrid); 
+                    
+                    // Show the intro choice
+                    showExperienceLevelChoice(); 
                 }
-                labInitialized = true;
             }
             
         } else {
@@ -92,10 +93,8 @@ document.addEventListener('DOMContentLoaded', function() {
             if(logoutButton) logoutButton.style.display = 'none';
             if(welcomeMessage) welcomeMessage.textContent = '';
             
-            // Clear all storage on logout
             localStorage.removeItem('css_lab_user');
             localStorage.removeItem('labIntroCompleted');
-            labInitialized = false; 
         }
     });
 
@@ -106,103 +105,59 @@ document.addEventListener('DOMContentLoaded', function() {
 // -------------------------------------------------
 
 /**
- * Appends the "Beginner" or "Expert" choice box to the instructions div.
+ * Creates the "Challenge 0" container and inserts it into the main content.
+ * This is the new "layer" you asked for.
  */
-function setupGamifiedIntro(instructionsBox, challengesGrid) {
+function showExperienceLevelChoice() {
+    const container = document.getElementById('content-wrapper'); // We inject into the main content area
+    if (!container) return;
     
-    // 1. Create a new div for the buttons
-    const choiceDiv = document.createElement('div');
-    choiceDiv.id = 'gamified-intro-choice'; // Give it an ID
-    choiceDiv.style.textAlign = 'center'; // Center the buttons
-    choiceDiv.style.marginTop = '20px'; // Add space
+    // 1. Create the new "Challenge 0" container
+    const introChallengeDiv = document.createElement('div');
+    introChallengeDiv.id = 'challenge-0-container';
     
-    // 2. Create the HTML for the buttons
-    choiceDiv.innerHTML = `
-        <hr style="margin: 30px 0; border: none; border-top: 1px solid #E2E8F0;">
-        <h3 style="margin-top: 0;">Ready to start?</h3>
-        <button id="start-guided" class="cta-button" style="margin: 10px 5px !important;">
-            "I'm new to this. Guide me!"
-        </button>
-        <button id="start-expert" class="cta-button" style="margin: 10px 5px !important;">
-            "I know CSS. Let's go!"
-        </button>
+    // 2. We use your existing CSS classes to keep the style consistent
+    introChallengeDiv.innerHTML = `
+        <div class="challenge-container" style="max-width: 600px; margin: 20px auto; gap: 5px;">
+            <h3 id="challenge-title-0" style="margin: 0; text-align: center;">Welcome to the CSS Lab!</h3>
+            <p id="prompt-0" style="margin: 0; text-align: center;">How would you like to start?</p>
+            
+            <div class="challenge-target-area" style="height: auto; justify-content: center; align-items: center;">
+                <button id="start-guided" class="cta-button" style="margin: 10px !important; width: 80%;">
+                    "I'm new to this. Guide me!"
+                </button>
+                <button id="start-expert" class="cta-button" style="margin: 10px !important; width: 80%;">
+                    "I know CSS. Let's go!"
+                </button>
+            </div>
+        </div>
     `;
     
-    // 3. Append the new div to the *end* of the instructions box
-    instructionsBox.appendChild(choiceDiv);
+    // 3. Add this new challenge to the page
+    container.prepend(introChallengeDiv); // Add it to the top of the content wrapper
     
-    // 4. Add click listeners to the new buttons
-    document.getElementById('start-guided').addEventListener('click', () => {
-        startGuidedTour(instructionsBox, challengesGrid);
-    });
-    document.getElementById('start-expert').addEventListener('click', () => {
-        startExpertTest(instructionsBox, challengesGrid);
-    });
+    // 4. Add click listeners
+    document.getElementById('start-guided').addEventListener('click', startGuidedTour);
+    document.getElementById('start-expert').addEventListener('click', startExpertTest);
 }
 
 /**
- * (Beginner Path) Rewrites the intro box with a guide and shows "Challenge 0".
+ * (Beginner Path) Changes "Challenge 0" into the tutorial.
  */
-function startGuidedTour(instructionsBox, challengesGrid) {
-    // 1. Remove the choice buttons
-    const choiceDiv = document.getElementById('gamified-intro-choice');
-    if (choiceDiv) choiceDiv.remove();
-
-    // 2. Append the tutorial text to the instructions box
-    const tutorialDiv = document.createElement('div');
-    tutorialDiv.id = 'gamified-intro-guide';
-    tutorialDiv.innerHTML = `
-        <hr style="margin: 30px 0; border: none; border-top: 1px solid #E2E8F0;">
-        <h2 style="margin-top: 0; color: var(--wf-accent-orange);">Guided Tour: Your First Challenge</h2>
-        <p>Your goal is to select the 'Start' button in <strong>Challenge 0</strong> below.</p>
-        <ul style="margin-top: 10px; text-align: left;">
-            <li>Look in the Challenge 0 box.</li>
-            <li>Type <code>#start-button</code> in its input field.</li>
-            <li>Hit 'Validate' to begin!</li>
-        </ul>
-    `;
-    instructionsBox.appendChild(tutorialDiv);
+function startGuidedTour() {
+    const challengeBox = document.getElementById('challenge-0-container');
     
-    // 3. Show the challenges grid (which is empty)
-    challengesGrid.style.display = 'flex';
-    
-    // 4. Load *only* Challenge 0
-    initializeChallengeZero(instructionsBox, challengesGrid); 
-}
-
-/**
- * (Expert Path) Hides the intro choice and shows all 10 challenges.
- */
-function startExpertTest(instructionsBox, challengesGrid) {
-    // 1. Set the flag so they don't see the intro again
-    localStorage.setItem('labIntroCompleted', 'true');
-
-    // 2. Remove the choice buttons
-    const choiceDiv = document.getElementById('gamified-intro-choice');
-    if (choiceDiv) choiceDiv.remove();
-    
-    // 3. You could add a small "Good luck!" message
-    const expertMessage = document.createElement('p');
-    expertMessage.innerHTML = `<hr style="margin: 30px 0; border: none; border-top: 1px solid #E2E8F0;"><p>Alright, pro. The challenges are below. Good luck!</p>`;
-    expertMessage.style.textAlign = 'center';
-    instructionsBox.appendChild(expertMessage);
-
-    // 4. Show the challenges grid
-    challengesGrid.style.display = 'flex';
-    
-    // 5. Load all 10 challenges
-    initializeChallenges(); 
-}
-
-/**
- * Creates the "Challenge 0" tutorial.
- */
-function initializeChallengeZero(instructionsBox, challengesGrid) {
-    challengesGrid.innerHTML = `
-        <div id="challenge-0" class="challenge-container" style="max-width: 600px; margin: 20px auto;">
-            <h3 id="challenge-title-0">Challenge 0: The Tour</h3>
+    // 1. Rewrite the "Challenge 0" box to be the tutorial
+    challengeBox.innerHTML = `
+        <div class="challenge-container" style="max-width: 600px; margin: 20px auto;">
+            <h3 id="challenge-title-0" style="margin:0; text-align: center;">Guided Tour: Learn the UI</h3>
             <span id="status-0" style="color: grey;">(Tutorial)</span>
-            <p id="prompt-0">Follow the instructions in the "How to Use This Lab" box above!</p>
+            
+            <p id="prompt-0" style="margin:0; text-align: center;">
+                Your goal is to select the 'Start' button.
+                <br>
+                Type <code>#start-button</code> in the input field and hit 'Validate' to begin!
+            </p>
             
             <div id="target-area-0" class="challenge-target-area">
                 <button id="start-button">Click me to start!</button>
@@ -210,7 +165,7 @@ function initializeChallengeZero(instructionsBox, challengesGrid) {
             
             <div class="challenge-ui">
                 <input type="text" id="selector-input-0" placeholder="Type #start-button here...">
-                <button class="cta-button" onclick="validateChallengeZero()">Validate</button>
+                <button class="cta-button" onclick="validateTutorial()">Validate</button>
             </div>
             <div id="feedback-0" class="validation-feedback"></div>
         </div>
@@ -218,9 +173,30 @@ function initializeChallengeZero(instructionsBox, challengesGrid) {
 }
 
 /**
- * Special validation function just for Challenge 0.
+ * (Expert Path) Hides the intro and shows the real lab.
  */
-function validateChallengeZero() {
+function startExpertTest() {
+    // 1. Set the flag so they don't see the intro again
+    localStorage.setItem('labIntroCompleted', 'true');
+
+    // 2. Hide the "Challenge 0" intro box
+    const introBox = document.getElementById('challenge-0-container');
+    if (introBox) introBox.style.display = 'none';
+    
+    // 3. Show the *real* instructions box and challenge grid
+    const instructionsBox = document.querySelector('.instructions-box');
+    const challengesGrid = document.getElementById('all-challenges');
+    if (instructionsBox) instructionsBox.style.display = 'block';
+    if (challengesGrid) challengesGrid.style.display = 'flex';
+    
+    // 4. Load all 10 real challenges
+    initializeChallenges(); 
+}
+
+/**
+ * Special validation function just for the "Challenge 0" tutorial.
+ */
+function validateTutorial() {
     const inputField = document.getElementById('selector-input-0');
     const feedbackElement = document.getElementById('feedback-0');
     const userInput = inputField.value.trim();
@@ -238,26 +214,19 @@ function validateChallengeZero() {
 
         // After a short delay, hide the tour and show the real lab.
         setTimeout(() => {
-            // 1. Restore the instructions box to its original text
+            // 1. Hide the "Challenge 0" intro box
+            const introBox = document.getElementById('challenge-0-container');
+            if (introBox) introBox.style.display = 'none';
+
+            // 2. Show the *real* instructions box and challenge grid
             const instructionsBox = document.querySelector('.instructions-box');
-            instructionsBox.innerHTML = `
-                <h2>How to Use This Lab</h2>
-                <p>This lab accepts a wide variety of valid CSS selectors. Your goal is to find a selector that is <b>precise enough to select only the target element</b>. For example, if the target has an ID of <code>#normal-selector</code>, many answers are valid:</p>
-                <ul>
-                    <li><b>ID Selector:</b> <code>#normal-selector</code></li>
-                    <li><b>Attribute Selector:</b> <code>[id="normal-selector"]</code></li>
-                    <li><b>Partial Attribute Selectors:</b> <code>[id*="normal"]</code> (contains), <code>[id^="norm"]</code> (starts with), or <code>[id$="lector"]</code> (ends with)</li>
-                </ul>
-                <p>The key is precision. If your selector (like <code>div</code> or <code>.common-class</code>) matches other elements in the box, it will fail. Good luck!</p>
-            `;
-            
-            // 2. Clear out Challenge 0
             const challengesGrid = document.getElementById('all-challenges');
-            challengesGrid.innerHTML = '';
+            if (instructionsBox) instructionsBox.style.display = 'block';
+            if (challengesGrid) challengesGrid.style.display = 'flex';
             
             // 3. Initialize all 10 real challenges
             initializeChallenges();
-        }, 2000); // 2-second delay
+        }, 1500); // 1.5-second delay
 
     } else {
         // FAILURE
@@ -280,7 +249,6 @@ function generateNewChallengeHTML(def) {
     let newTargetSelector;
     let newPrompt; 
     
-    // Simple structure changes for different types
     if (def.type.includes('ID Selector')) {
         html = `
             <button id="try-one" class="btn-group">Button One</button>
@@ -328,7 +296,6 @@ function generateNewChallengeHTML(def) {
         newPrompt = "Target the paragraph that immediately follows the `#prev-sibling` button.";
     }
      else {
-        // Fallback for others - simple structure swap
         html = def.baseHTML.replace(def.targetSelector.replace(/[#\.\s>+~:]/g, ''), 'new-target');
         newTargetSelector = def.correctTarget.replace(def.correctTarget.replace(/[#\.\s>+~:]/g, ''), 'new-target');
         newPrompt = `Apply the ${def.type} logic to this new structure. The target element now has the class .new-target.`;
