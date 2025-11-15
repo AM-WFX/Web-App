@@ -60,12 +60,9 @@ document.addEventListener('DOMContentLoaded', function() {
             
             localStorage.setItem('css_lab_user', user.displayName);
 
-            // ❗ --- THIS IS THE NEW LOGIC --- ❗
-            // Check if we are on the lab page
             if (document.getElementById('all-challenges') && !labInitialized) {
-                // Don't initialize yet. Show the choice first.
                 showExperienceLevelChoice(); 
-                labInitialized = true; // Set flag so it only runs once
+                labInitialized = true; 
             }
             
         } else {
@@ -94,16 +91,17 @@ function showExperienceLevelChoice() {
     const container = document.getElementById('all-challenges');
     if (!container) return;
     
-    // We use a challenge-container to keep the styling consistent
     container.innerHTML = `
         <div class="challenge-container" style="max-width: 600px; margin: 20px auto; gap: 5px;">
             <h3 id="challenge-title-0" style="margin: 0; text-align: center;">Welcome to the CSS Lab!</h3>
             <p id="prompt-0" style="margin: 0; text-align: center;">How would you like to start?</p>
             
             <div class="challenge-target-area" style="height: auto; justify-content: center; align-items: center;">
-                <button id="start-guided" class="cta-button" style="background-color: var(--wf-secondary-steel-gray) !important; margin: 10px !important; width: 80%;">
+                
+                <button id="start-guided" class="cta-button" style="margin: 10px !important; width: 80%;">
                     "I'm new to this. Guide me!"
                 </button>
+                
                 <button id="start-expert" class="cta-button" style="margin: 10px !important; width: 80%;">
                     "I know CSS. Let's go!"
                 </button>
@@ -120,10 +118,8 @@ function showExperienceLevelChoice() {
  * (Beginner Path) Loads all challenges and makes Challenge 1 an easy tutorial.
  */
 function startGuidedTour() {
-    // 1. Load all the challenges
     initializeChallenges(); 
     
-    // 2. Overwrite the first prompt to be the "Guided First Win"
     const prompt1 = document.getElementById('prompt-1');
     if (prompt1) {
         prompt1.innerHTML = `
@@ -144,10 +140,8 @@ function startGuidedTour() {
  * (Expert Path) Loads all challenges and makes Challenge 1 a "meta-challenge".
  */
 function startExpertTest() {
-    // 1. Load all the challenges
     initializeChallenges(); 
     
-    // 2. Overwrite Challenge 1 to be the "Meta-Challenge"
     const prompt1 = document.getElementById('prompt-1');
     const target1 = document.getElementById('target-area-1');
     
@@ -160,9 +154,8 @@ function startExpertTest() {
         
         target1.innerHTML = `<p style="margin: 6px !important;">(The Target Area is empty... the target is part of the UI!)</p>`;
         
-        // 3. Update the "correct" answer in the state for Challenge 1
         challengeStates[1].correctTarget = '#selector-input-1 + button';
-        challengeStates[1].type = "Adjacent Sibling Combinator"; // Update type for validation
+        challengeStates[1].type = "Adjacent Sibling Combinator"; 
     }
 }
 
@@ -237,14 +230,13 @@ function generateNewChallengeHTML(def) {
     return { html: html, newTargetSelector: newTargetSelector, newPrompt: newPrompt };
 }
 
-// Definition of all challenges
+// ❗ FIX 2: Removed all 'isComplex' flags
 const challengeDefinitions = [
     {
         id: 1,
         prompt: "Target the Primary Login Button using its unique ID.",
         targetSelector: "#login-primary",
         type: "ID Selector",
-        isComplex: false, 
         alternatives: [
             { selector: "button#login-primary", explanation: "This uses the tag name and the ID. Since IDs are already unique, adding the tag name is redundant but valid." }
         ],
@@ -259,7 +251,6 @@ const challengeDefinitions = [
         prompt: "Target the item marked Urgent using its class.",
         targetSelector: ".task-urgent",
         type: "Class Selector",
-        isComplex: true,
         alternatives: [
             { selector: "li.task-urgent", explanation: "This is a great technique: combining the tag name (li) with the class." },
             { selector: ".task-urgent.list-item", explanation: "This chains two class selectors together, ensuring an element has *both* classes." }
@@ -278,7 +269,6 @@ const challengeDefinitions = [
         prompt: "Target the Save button that is contained *anywhere* inside the #settings-modal.",
         targetSelector: "#settings-modal .btn-save",
         type: "Descendant Combinator",
-        isComplex: true,
         alternatives: [
             { selector: "#settings-modal button.btn-save", explanation: "This is highly specific. It combines the ID of the container, the tag name, and the class name." },
         ],
@@ -297,7 +287,6 @@ const challengeDefinitions = [
         prompt: "Target the Title text that is a direct child of the .card-header.",
         targetSelector: ".card-header > h2:first-child",
         type: "Child Combinator",
-        isComplex: true,
         alternatives: [
             { selector: "[class=\"card-header\"] > h2:first-child", explanation: "This works perfectly! It uses the attribute selector to find the parent and `:first-child` to select the specific target." },
             { selector: ".card > .card-header > h2:first-child", explanation: "This chains multiple Child Combinators, ensuring a rigid structure." }
@@ -318,7 +307,6 @@ const challengeDefinitions = [
         prompt: "Target the Second Item that immediately follows the element with the class .first-element.",
         targetSelector: ".first-element + li",
         type: "Adjacent Sibling Combinator",
-        isComplex: true,
         alternatives: [
             { selector: "li.first-element + li.list-item", explanation: "A highly specific version that ensures both elements are list items." }
         ],
@@ -337,7 +325,6 @@ const challengeDefinitions = [
         prompt: "Target the Comments button given in the area below, which appears somewhere after the h3 element.",
         targetSelector: "h3 ~ .comments",
         type: "General Sibling Combinator",
-        isComplex: true,
         alternatives: [
             { selector: "p ~ .comments", explanation: "This is also correct! It targets the .comments button as a sibling of the 'p' tag." },
             { selector: "h3 ~ button", explanation: "This is a valid, though less specific, selector that also works." }
@@ -354,7 +341,6 @@ const challengeDefinitions = [
         prompt: "Target the input field whose name attribute contains the word 'user'.",
         targetSelector: "input[name*='user']",
         type: "Attribute Selector (Substring Match)",
-        isComplex: false,
         alternatives: [
         ],
         trivia: "The `*=` operator is the 'contains' attribute selector, which looks for the specified substring anywhere within the attribute's value. This is powerful when dealing with dynamic or auto-generated attributes.",
@@ -369,7 +355,6 @@ const challengeDefinitions = [
         prompt: "Target the third item in the list, regardless of its tag name, using :nth-child.",
         targetSelector: "li:nth-child(3)",
         type: "Structural Pseudo-class (:nth-child)",
-        isComplex: true,
         alternatives: [
             { selector: "ol li:nth-child(3)", explanation: "More specific by scoping the selection to `li` elements inside an ordered list (`ol`)." },
             { selector: "li:nth-of-type(3)", explanation: "This selects the third `li` element. It works here, but is a different selector." }
@@ -389,7 +374,6 @@ const challengeDefinitions = [
         prompt: "Target the Save button which does not have the class .disabled.",
         targetSelector: "button:not(.disabled)",
         type: "Negation Pseudo-class (:not)",
-        isComplex: false,
         alternatives: [
             { selector: ".btn-save:not(.disabled)", explanation: "This targets any element with the class `.btn-save` that is not disabled." },
             { selector: "button.btn-save:not(.disabled)", explanation: "The most specific option. Combines tag name, class name, and the negation." }
@@ -406,7 +390,6 @@ const challengeDefinitions = [
         prompt: "Target the checkbox that is currently checked.",
         targetSelector: "input:checked",
         type: "UI State Pseudo-class (:checked)",
-        isComplex: false,
         alternatives: [
             { selector: "input[type='checkbox']:checked", explanation: "This adds the attribute selector for `type='checkbox'`, ensuring the selector only applies to checkbox inputs." }
         ],
@@ -441,20 +424,18 @@ function initializeChallenges() {
             currentHTML: def.html,
             successfulSelectors: [],
             originalPrompt: def.prompt,
-            type: def.type,
-            isComplex: def.isComplex // <-- Store the flag
+            type: def.type
+            // ❗ FIX 3: Removed 'isComplex'
         };
 
-        // This is the key: add the .is-complex class to the container
-        const complexClass = def.isComplex ? 'is-complex' : '';
-
+        // ❗ FIX 3: Removed 'complexClass'
         htmlContent += `
             <div id="challenge-${def.id}" class="challenge-container">
                 <h3 id="challenge-title-${def.id}">Challenge ${def.id}</h3>
                 <span id="status-${def.id}" style="color: grey;">(Unsolved)</span>
                 <p id="prompt-${def.id}">${def.prompt}</p>
                 
-                <div id="target-area-${def.id}" class="challenge-target-area ${complexClass}">
+                <div id="target-area-${def.id}" class="challenge-target-area">
                     ${def.html}
                 </div>
                 
