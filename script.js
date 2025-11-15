@@ -39,6 +39,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function signOut() {
+        // ❗ FIX: Clear localStorage on logout ❗
+        localStorage.removeItem('labIntroCompleted');
+        localStorage.removeItem('css_lab_user'); // Also clear the user name
         auth.signOut();
     }
 
@@ -61,20 +64,24 @@ document.addEventListener('DOMContentLoaded', function() {
             localStorage.setItem('css_lab_user', user.displayName);
 
             // ❗ --- THIS IS THE NEW LOGIC --- ❗
-            // Find the two main components of the lab page
             const instructionsBox = document.querySelector('.instructions-box');
             const challengesGrid = document.getElementById('all-challenges');
             
-            // Check if we are on the lab page and it hasn't been set up
             if (instructionsBox && challengesGrid && !labInitialized) {
-                // 1. Hide the challenge grid by default
-                challengesGrid.style.display = 'none';
                 
-                // 2. Add the "choice" UI to the instructions box
-                setupGamifiedIntro(instructionsBox, challengesGrid); 
-                
-                // 3. Mark as initialized
-                labInitialized = true; 
+                // ❗ Check localStorage, not sessionStorage ❗
+                const introCompleted = localStorage.getItem('labIntroCompleted');
+
+                if (introCompleted) {
+                    // They have! Just show the challenges.
+                    challengesGrid.style.display = 'flex';
+                    initializeChallenges();
+                } else {
+                    // This is their first visit. Show the choice.
+                    challengesGrid.style.display = 'none';
+                    setupGamifiedIntro(instructionsBox, challengesGrid); 
+                }
+                labInitialized = true;
             }
             
         } else {
@@ -85,7 +92,9 @@ document.addEventListener('DOMContentLoaded', function() {
             if(logoutButton) logoutButton.style.display = 'none';
             if(welcomeMessage) welcomeMessage.textContent = '';
             
+            // Clear all storage on logout
             localStorage.removeItem('css_lab_user');
+            localStorage.removeItem('labIntroCompleted');
             labInitialized = false; 
         }
     });
@@ -103,6 +112,7 @@ function setupGamifiedIntro(instructionsBox, challengesGrid) {
     
     // 1. Create a new div for the buttons
     const choiceDiv = document.createElement('div');
+    choiceDiv.id = 'gamified-intro-choice'; // Give it an ID
     choiceDiv.style.textAlign = 'center'; // Center the buttons
     choiceDiv.style.marginTop = '20px'; // Add space
     
@@ -131,45 +141,129 @@ function setupGamifiedIntro(instructionsBox, challengesGrid) {
 }
 
 /**
- * (Beginner Path) Rewrites the intro box with a guide and shows the challenges.
+ * (Beginner Path) Rewrites the intro box with a guide and shows "Challenge 0".
  */
 function startGuidedTour(instructionsBox, challengesGrid) {
-    // 1. Rewrite the instructions box with the tutorial text
-    // This keeps the original "How to Use" text and adds the guide.
-    instructionsBox.innerHTML = `
-        <h2 style="margin-top: 0;">Guided Tour: Your First Challenge</h2>
-        <p>Your goal is to select the 'Primary Login Button' in <strong>Challenge 1</strong> below.</p>
-        <ul style="margin-top: 10px;">
-            <li>Look in the Challenge 1 box.</li>
-            <li>Type <code>#login-primary</code> in its input field.</li>
-            <li>Hit 'Validate' to get your first win!</li>
+    // 1. Remove the choice buttons
+    const choiceDiv = document.getElementById('gamified-intro-choice');
+    if (choiceDiv) choiceDiv.remove();
+
+    // 2. Append the tutorial text to the instructions box
+    const tutorialDiv = document.createElement('div');
+    tutorialDiv.id = 'gamified-intro-guide';
+    tutorialDiv.innerHTML = `
+        <hr style="margin: 30px 0; border: none; border-top: 1px solid #E2E8F0;">
+        <h2 style="margin-top: 0; color: var(--wf-accent-orange);">Guided Tour: Your First Challenge</h2>
+        <p>Your goal is to select the 'Start' button in <strong>Challenge 0</strong> below.</p>
+        <ul style="margin-top: 10px; text-align: left;">
+            <li>Look in the Challenge 0 box.</li>
+            <li>Type <code>#start-button</code> in its input field.</li>
+            <li>Hit 'Validate' to begin!</li>
         </ul>
-        <p style="margin-top: 15px;">All challenges will keep their normal, short prompts. Good luck!</p>
     `;
+    instructionsBox.appendChild(tutorialDiv);
     
-    // 2. Show the challenges grid
+    // 3. Show the challenges grid (which is empty)
     challengesGrid.style.display = 'flex';
     
-    // 3. Load all the challenges (with their original, short prompts)
+    // 4. Load *only* Challenge 0
+    initializeChallengeZero(instructionsBox, challengesGrid); 
+}
+
+/**
+ * (Expert Path) Hides the intro choice and shows all 10 challenges.
+ */
+function startExpertTest(instructionsBox, challengesGrid) {
+    // 1. Set the flag so they don't see the intro again
+    localStorage.setItem('labIntroCompleted', 'true');
+
+    // 2. Remove the choice buttons
+    const choiceDiv = document.getElementById('gamified-intro-choice');
+    if (choiceDiv) choiceDiv.remove();
+    
+    // 3. You could add a small "Good luck!" message
+    const expertMessage = document.createElement('p');
+    expertMessage.innerHTML = `<hr style="margin: 30px 0; border: none; border-top: 1px solid #E2E8F0;"><p>Alright, pro. The challenges are below. Good luck!</p>`;
+    expertMessage.style.textAlign = 'center';
+    instructionsBox.appendChild(expertMessage);
+
+    // 4. Show the challenges grid
+    challengesGrid.style.display = 'flex';
+    
+    // 5. Load all 10 challenges
     initializeChallenges(); 
 }
 
 /**
- * (Expert Path) Rewrites the intro box with a simple message and shows the challenges.
+ * Creates the "Challenge 0" tutorial.
  */
-function startExpertTest(instructionsBox, challengesGrid) {
-    // 1. Rewrite the instructions box with a simple message
-    // This keeps the original "How to Use" text and adds the new message.
-    instructionsBox.innerHTML = `
-        <h2 style="margin-top: 0;">Alright, Pro!</h2>
-        <p style="margin-bottom: 0;">The challenges are loaded below. Good luck!</p>
+function initializeChallengeZero(instructionsBox, challengesGrid) {
+    challengesGrid.innerHTML = `
+        <div id="challenge-0" class="challenge-container" style="max-width: 600px; margin: 20px auto;">
+            <h3 id="challenge-title-0">Challenge 0: The Tour</h3>
+            <span id="status-0" style="color: grey;">(Tutorial)</span>
+            <p id="prompt-0">Follow the instructions in the "How to Use This Lab" box above!</p>
+            
+            <div id="target-area-0" class="challenge-target-area">
+                <button id="start-button">Click me to start!</button>
+            </div>
+            
+            <div class="challenge-ui">
+                <input type="text" id="selector-input-0" placeholder="Type #start-button here...">
+                <button class="cta-button" onclick="validateChallengeZero()">Validate</button>
+            </div>
+            <div id="feedback-0" class="validation-feedback"></div>
+        </div>
     `;
+}
 
-    // 2. Show the challenges grid
-    challengesGrid.style.display = 'flex';
-    
-    // 3. Load all the challenges (with their original, short prompts)
-    initializeChallenges(); 
+/**
+ * Special validation function just for Challenge 0.
+ */
+function validateChallengeZero() {
+    const inputField = document.getElementById('selector-input-0');
+    const feedbackElement = document.getElementById('feedback-0');
+    const userInput = inputField.value.trim();
+
+    if (userInput === '#start-button') {
+        // SUCCESS!
+        localStorage.setItem('labIntroCompleted', 'true');
+        
+        feedbackElement.className = 'validation-feedback success';
+        feedbackElement.innerHTML = `
+            🎉 <b>PERFECT!</b> You got it.
+            <br><br>
+            Loading the real challenges now...
+        `;
+
+        // After a short delay, hide the tour and show the real lab.
+        setTimeout(() => {
+            // 1. Restore the instructions box to its original text
+            const instructionsBox = document.querySelector('.instructions-box');
+            instructionsBox.innerHTML = `
+                <h2>How to Use This Lab</h2>
+                <p>This lab accepts a wide variety of valid CSS selectors. Your goal is to find a selector that is <b>precise enough to select only the target element</b>. For example, if the target has an ID of <code>#normal-selector</code>, many answers are valid:</p>
+                <ul>
+                    <li><b>ID Selector:</b> <code>#normal-selector</code></li>
+                    <li><b>Attribute Selector:</b> <code>[id="normal-selector"]</code></li>
+                    <li><b>Partial Attribute Selectors:</b> <code>[id*="normal"]</code> (contains), <code>[id^="norm"]</code> (starts with), or <code>[id$="lector"]</code> (ends with)</li>
+                </ul>
+                <p>The key is precision. If your selector (like <code>div</code> or <code>.common-class</code>) matches other elements in the box, it will fail. Good luck!</p>
+            `;
+            
+            // 2. Clear out Challenge 0
+            const challengesGrid = document.getElementById('all-challenges');
+            challengesGrid.innerHTML = '';
+            
+            // 3. Initialize all 10 real challenges
+            initializeChallenges();
+        }, 2000); // 2-second delay
+
+    } else {
+        // FAILURE
+        feedbackElement.className = 'validation-feedback error';
+        feedbackElement.innerHTML = `Not quite! Try typing the exact selector <code>#start-button</code> into the input box.`;
+    }
 }
 
 
