@@ -27,6 +27,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const logoutButton = document.getElementById('logout-button');
     const welcomeMessage = document.getElementById('welcome-message');
 
+    let labInitialized = false; 
+
     // --- 2. AUTH FUNCTIONS ---
     function signIn() {
         const provider = new firebase.auth.GoogleAuthProvider();
@@ -53,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (user) {
             // --- USER IS LOGGED IN ---
             if(loginPrompt) loginPrompt.style.display = 'none';
-            if(labContent) labContent.style.display = 'flex'; 
+            if(labContent) labContent.style.display = 'flex'; // Use 'flex' for sticky footer
 
             if(logoutButton) logoutButton.style.display = 'inline-flex';
             if(welcomeMessage) welcomeMessage.textContent = `Hello, ${user.displayName}`;
@@ -61,10 +63,12 @@ document.addEventListener('DOMContentLoaded', function() {
             localStorage.setItem('css_lab_user', user.displayName);
 
             // ❗ --- THIS IS THE NEW LOGIC --- ❗
+            const mainContent = document.querySelector('.main-content');
             const instructionsBox = document.querySelector('.instructions-box');
             const challengesGrid = document.getElementById('all-challenges');
             
-            if (instructionsBox && challengesGrid) {
+            // Check if we are on the lab page
+            if (mainContent && instructionsBox && challengesGrid && !labInitialized) {
                 
                 const introCompleted = localStorage.getItem('labIntroCompleted');
 
@@ -80,9 +84,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     instructionsBox.style.display = 'none';
                     challengesGrid.style.display = 'none';
                     
-                    // Show the intro choice
-                    showExperienceLevelChoice(); 
+                    // Show the intro choice "layer"
+                    showExperienceLevelChoice(mainContent); 
                 }
+                labInitialized = true;
             }
             
         } else {
@@ -95,6 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             localStorage.removeItem('css_lab_user');
             localStorage.removeItem('labIntroCompleted');
+            labInitialized = false; 
         }
     });
 
@@ -108,15 +114,14 @@ document.addEventListener('DOMContentLoaded', function() {
  * Creates the "Challenge 0" container and inserts it into the main content.
  * This is the new "layer" you asked for.
  */
-function showExperienceLevelChoice() {
-    const container = document.getElementById('content-wrapper'); // We inject into the main content area
-    if (!container) return;
+function showExperienceLevelChoice(mainContent) {
     
     // 1. Create the new "Challenge 0" container
     const introChallengeDiv = document.createElement('div');
     introChallengeDiv.id = 'challenge-0-container';
     
     // 2. We use your existing CSS classes to keep the style consistent
+    // This is the "Choice" UI
     introChallengeDiv.innerHTML = `
         <div class="challenge-container" style="max-width: 600px; margin: 20px auto; gap: 5px;">
             <h3 id="challenge-title-0" style="margin: 0; text-align: center;">Welcome to the CSS Lab!</h3>
@@ -134,7 +139,7 @@ function showExperienceLevelChoice() {
     `;
     
     // 3. Add this new challenge to the page
-    container.prepend(introChallengeDiv); // Add it to the top of the content wrapper
+    mainContent.prepend(introChallengeDiv); // Add it to the top of the main-content white box
     
     // 4. Add click listeners
     document.getElementById('start-guided').addEventListener('click', startGuidedTour);
@@ -148,6 +153,7 @@ function startGuidedTour() {
     const challengeBox = document.getElementById('challenge-0-container');
     
     // 1. Rewrite the "Challenge 0" box to be the tutorial
+    // The instructions are NOW INSIDE the challenge box
     challengeBox.innerHTML = `
         <div class="challenge-container" style="max-width: 600px; margin: 20px auto;">
             <h3 id="challenge-title-0" style="margin:0; text-align: center;">Guided Tour: Learn the UI</h3>
