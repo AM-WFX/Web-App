@@ -172,12 +172,10 @@ h1, h2, h3 {
 .container {
     /* flex-grow: 1 tells it to "grow" and fill all empty space */
     flex-grow: 1; 
-
     /* margin: 0 auto; centers it horizontally */
     margin-left: auto;
     margin-right: auto;
     width: 100%; 
-
     /* padding: 30px; gives equal 30px spacing on all 4 sides */
     padding: 30px;
 }
@@ -534,11 +532,11 @@ button[onclick*="validateChallenge"]:hover {
 /* ❗ --- THIS IS THE FIX (PART 5) --- ❗ */
 /* These rules are now RESTORED and UPDATED */
 h1 {
-    margin-top: 1em; /* <-- CHANGED */
+    margin-top: 1em; 
     margin-bottom: 0.5em; 
 }
 h2 {
-    margin-top: 0.5em; /* <-- CHANGED */
+    margin-top: 0.5em; 
     margin-bottom: 0.5em; 
 }
 h3 {
@@ -546,7 +544,7 @@ h3 {
     margin-bottom: 0.5em; 
 }
 p {
-    padding: 0; /* Removed padding */
+    padding: 0; 
     margin-bottom: 1em; 
 }
 
@@ -585,16 +583,17 @@ span[id*="status-"] {
     margin: 0 !important; 
     text-align: center; 
 }
+
+/* ❗ --- THIS IS THE FIX (PART 6) --- ❗ */
+/* This rule now targets ALL prompt boxes, including prompt-0 */
 p[id*="prompt-"] {
-    padding: 10px !important; /* Added padding */
-    margin: 0 !important; 
-    text-align: center; 
-    /* ❗ --- THIS IS THE FIX (PART 6) --- ❗ */
-    /* This creates the fixed-height, scrollable prompt box */
     height: 110px; /* Fixed height to maintain grid */
     overflow-y: auto; /* Add scrollbar if text is long */
+    text-align: center; 
+    margin: 0 !important; 
     
     /* Add some internal padding and a subtle background */
+    padding: 10px !important;
     background-color: rgba(0, 0, 0, 0.02);
     border: 1px solid rgba(0, 0, 0, 0.05);
     border-radius: var(--wf-border-radius);
@@ -630,4 +629,59 @@ p[id*="prompt-"] {
     .navbar li {
         margin-right: 0;
         margin-bottom: 10px;
-        width: 1I
+        width: 100%;
+    }
+    .navbar a {
+        padding: 8px 0;
+        width: 100%;
+        display: block; 
+    }
+    .navbar a.active {
+        border-bottom: 2px solid var(--wf-accent-orange);
+    }
+    .nav-disabled:hover .tooltip-text {
+        visibility: hidden; 
+        opacity: 0;
+        display: none;
+    }
+    .main-content { padding: 20px; }
+    .challenge-container {
+        flex-basis: 100%;
+        max-width: 100%;
+        min-width: 0; 
+    }
+    .challenge-ui {
+        flex-direction: column;
+        align-items: stretch; 
+    }
+    .challenge-ui input[type="text"] { width: 100%; }
+    .challenge-ui button { width: 100%; }
+}
+
+/* ---------------------------------------------------- */
+/* --- ❗ AUTH/LOGIN PAGE CENTERING FIX ❗ --- */
+/* ---------------------------------------------------- */
+
+#auth-loading,
+#login-prompt {
+    height: 100vh; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center;     
+    text-align: center;
+}
+
+#login-prompt h2,
+#auth-loading h2 {
+    margin: 0 !important;
+    padding: 0 !important;
+    margin-bottom: 10px !important;
+}
+
+#login-prompt p,
+#auth-loading p {
+    margin: 0 !important;
+    padding: 0 !important;
+    margin-bottom: 20px !important;
+}
