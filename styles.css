@@ -169,21 +169,24 @@ h1, h2, h3 {
 }
 
 /* ❗ --- THIS IS THE FIX (PART 2) --- ❗ */
-/* We set equal 30px margin on top/bottom, and auto on left/right. */
-/* We also tell it to "grow" to push the footer down. */
+/* This section now controls all page spacing */
 .container {
     max-width: 1400px;
-    margin: 30px auto; /* 30px top/bottom, auto left/right */
-    padding: 0;        /* No padding, let main-content handle it */
-    width: 100%;       /* Ensures it spans the width */
-    flex-grow: 1;      /* This makes the container expand to fill space */
+    /* This rule sets 30px top/bottom margin, and centers left/right */
+    margin: 30px auto; 
+    /* This rule sets 30px padding on all 4 *inside* edges */
+    padding: 30px; 
+    
+    /* This tells the container to grow and push the footer down */
+    flex-grow: 1; 
+    width: 100%; /* Ensures it spans the width */
 }
 
 /* ❗ --- THIS IS THE FIX (PART 3) --- ❗ */
-/* We remove the conflicting padding from this wrapper. */
+/* We no longer need this div to control spacing */
 #content-wrapper {
     display: block; 
-    padding: 0; 
+    padding: 0; /* <-- REMOVED padding: 20px 0 */
 }
 .main-content {
     padding: 30px;
@@ -199,7 +202,7 @@ footer {
     background-color: var(--wf-secondary-steel-gray); 
     color: white;
     /* ❗ --- THIS IS THE FIX (PART 4) --- ❗ */
-    /* This is no longer needed, flex-grow on .container handles it. */
+    /* This is no longer needed, flexbox handles it */
     margin-top: 0; 
 }
 
