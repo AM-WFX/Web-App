@@ -221,7 +221,6 @@ function validateTutorial() {
 // 💡 --- SPOTLIGHT TOUR FUNCTIONS (ALL NEW) --- 💡
 // -------------------------------------------------
 let currentTourStep = 0;
-// ❗ FIX: Changed all ** to <strong> tags
 const tourSteps = [
     {
         element: '#prompt-0',
@@ -261,23 +260,26 @@ function startSpotlightTour() {
     overlay.id = 'tour-overlay';
     document.body.appendChild(overlay);
 
-    // Create the popup
-    const popup = document.createElement('div');
-    popup.id = 'tour-popup';
-    // ❗ FIX: Added id="tour-buttons" for flexbox layout
-    popup.innerHTML = `
+    // Create the popup (now a fixed panel)
+    const panel = document.createElement('div');
+    panel.id = 'tour-panel';
+    
+    // ❗ FIX: New HTML with "X" (Skip) and "Back" buttons
+    panel.innerHTML = `
+        <button id="tour-skip" class="tour-skip-x">&times;</button>
         <div id="tour-content">
             <h3 id="tour-title"></h3>
             <p id="tour-text"></p>
             <div id="tour-buttons">
-                <button id="tour-skip" class="cta-skip">Skip Tour</button>
+                <button id="tour-back" class="cta-skip">Back</button>
                 <button id="tour-next" class="cta-button">Next</button>
             </div>
         </div>
     `;
-    document.body.appendChild(popup);
+    document.body.appendChild(panel);
 
     document.getElementById('tour-next').addEventListener('click', nextTourStep);
+    document.getElementById('tour-back').addEventListener('click', prevTourStep);
     document.getElementById('tour-skip').addEventListener('click', endSpotlightTour);
 
     currentTourStep = 0;
@@ -304,35 +306,26 @@ function showTourStep(stepIndex) {
     if (targetElement) {
         // Add new spotlight
         targetElement.classList.add('spotlight');
-        
-        // ❗ FIX: New positioning logic
-        const popup = document.getElementById('tour-popup');
-        const rect = targetElement.getBoundingClientRect(); // Get element's position
-        
-        // Check if popup fits below element, otherwise place above
-        if (rect.bottom + popup.offsetHeight + 20 > window.innerHeight) {
-            // Place above
-            popup.style.top = `${rect.top - popup.offsetHeight - 10}px`;
-        } else {
-            // Place below
-            popup.style.top = `${rect.bottom + 10}px`;
-        }
-        
-        // Center horizontally
-        let popupLeft = rect.left + (rect.width / 2) - (popup.offsetWidth / 2);
-        // Constrain to viewport
-        if (popupLeft < 10) popupLeft = 10;
-        if (popupLeft + popup.offsetWidth > window.innerWidth - 10) {
-            popupLeft = window.innerWidth - popup.offsetWidth - 10;
-        }
-        
-        popup.style.left = `${popupLeft}px`;
     }
 
-    // Change button text on last step
+    // ❗ FIX: New Button Logic
+    const backButton = document.getElementById('tour-back');
+    const nextButton = document.getElementById('tour-next');
+
+    // Show/Hide Back button
+    backButton.style.visibility = (stepIndex === 0) ? 'hidden' : 'visible';
+
+    // Change Next button text on last step
     if (stepIndex === tourSteps.length - 1) {
-        document.getElementById('tour-next').textContent = "Done!";
+        nextButton.textContent = "Done!";
+    } else {
+        nextButton.textContent = "Next";
     }
+}
+
+function prevTourStep() {
+    currentTourStep--;
+    showTourStep(currentTourStep);
 }
 
 function nextTourStep() {
@@ -343,7 +336,7 @@ function nextTourStep() {
 function endSpotlightTour() {
     // Remove overlay and popup
     document.getElementById('tour-overlay')?.remove();
-    document.getElementById('tour-popup')?.remove();
+    document.getElementById('tour-panel')?.remove();
     
     // Remove spotlight class
     document.querySelector('.spotlight')?.classList.remove('spotlight');
