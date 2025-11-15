@@ -39,8 +39,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function signOut() {
+        // ❗ FIX: Clear localStorage on logout ❗
         localStorage.removeItem('labIntroCompleted');
-        localStorage.removeItem('css_lab_user'); 
+        localStorage.removeItem('css_lab_user'); // Also clear the user name
         auth.signOut();
     }
 
@@ -63,6 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
             localStorage.setItem('css_lab_user', user.displayName);
 
             // ❗ --- THIS IS THE NEW LOGIC --- ❗
+            // Find the three main components of the lab page
             const mainContent = document.querySelector('.main-content');
             const instructionsBox = document.querySelector('.instructions-box');
             const challengesGrid = document.getElementById('all-challenges');
@@ -98,6 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if(logoutButton) logoutButton.style.display = 'none';
             if(welcomeMessage) welcomeMessage.textContent = '';
             
+            // Clear all storage on logout
             localStorage.removeItem('css_lab_user');
             localStorage.removeItem('labIntroCompleted');
             labInitialized = false; 
