@@ -110,6 +110,7 @@ function showExperienceLevelChoice(labContent, mainPageContainer) {
     const introChallengeDiv = document.createElement('div');
     introChallengeDiv.id = 'challenge-0-container';
     introChallengeDiv.classList.add('container'); 
+    // This style forces the container to fill the screen and center its content
     introChallengeDiv.style = "flex-grow: 1; display: flex; align-items: center; width: 100%; padding: 30px;"; 
     
     // Phase 1 UI: The Choice (A simple white box)
@@ -226,49 +227,55 @@ function validateTutorial() {
 let currentTourStep = 0;
 
 // ❗ --- THIS IS THE FIX (Part 1) --- ❗
-// Added your coordinates for Step 1
+// Added your coordinates for all steps
 const tourSteps = [
     {
         element: '#prompt-0',
         title: "Step 1: The Prompt",
         text: "<p>This is the <strong>Prompt</strong>. It tells you *what* element to find. In this case, it's the 'Start' button.</p>",
         top: "250px", 
+        left: "1090px",
         beakTop: "111.5px"
     },
     {
         element: '#target-area-0',
         title: "Step 2: The Target Area",
         text: "<p>This is the <strong>Target Area</strong>. The HTML elements you need to select are inside this box.</p>",
-        top: "250px", // Placeholder - You will give me this
-        beakTop: "111.5px" // Placeholder - You will give me this
+        top: "255px", 
+        left: "1090px",
+        beakTop: "111.5px"
     },
     {
         element: '#target-area-0',
         title: "Step 3: How to Find the Selector",
         text: "<p>To find a selector, <strong>right-click</strong> the 'Click me to start!' button and choose <strong>'Inspect'</strong>.</p><p></p>",
-        top: "250px", // Placeholder
-        beakTop: "111.5px" // Placeholder
+        top: "269px", 
+        left: "1090px",
+        beakTop: "102px"
     },
     {
         element: '#target-area-0',
         title: "Step 4: Using the Console",
         text: "<p>The <strong>Developer Console</strong> will open, showing you the HTML. Notice the button has an `id`? That's your answer!</p><p></p>",
-        top: "250px", // Placeholder
-        beakTop: "111.5px" // Placeholder
+        top: "255px", 
+        left: "1090px",
+        beakTop: "111.5px"
     },
     {
         element: '#selector-input-0',
         title: "Step 5: The Input Field",
         text: "<p>Now, type your selector (<code>#start-button</code>) into the <strong>Input Field</strong>.</p>",
-        top: "250px", // Placeholder
-        beakTop: "111.5px" // Placeholder
+        top: "350px", 
+        left: "90px",
+        beakTop: "167px"
     },
     {
         element: 'button[onclick="validateTutorial()"]',
         title: "Step 6: The Validate Button",
         text: "<p>Finally, click the <strong>Validate</strong> button to check your answer. Your turn!</p>",
-        top: "250px", // Placeholder
-        beakTop: "111.5px" // Placeholder
+        top: "340px", 
+        left: "1070px",
+        beakTop: "171.5px"
     }
 ];
 
@@ -278,7 +285,7 @@ function startSpotlightTour() {
     document.body.appendChild(overlay);
 
     const panel = document.createElement('div');
-    panel.id = 'tour-panel'; 
+    panel.id = 'tour-panel'; // Changed from 'tour-popup'
     
     panel.innerHTML = `
         <button id="tour-skip" class="tour-skip-x">&times;</button>
@@ -326,6 +333,7 @@ function showTourStep(stepIndex) {
         // Removed all dynamic calculations.
         // We now read your exact values from the tourSteps array.
         popup.style.top = step.top;
+        popup.style.left = step.left;
         popup.style.setProperty('--beak-top', step.beakTop);
     }
 
@@ -762,7 +770,7 @@ function validateChallenge(challengeId) {
         const isAttributeEqualsClass = userInput.includes('[class=');
         if (isAttributeEqualsClass) {
             feedbackElement.innerHTML = `
-                ❌ Syntax Error (Specific): Your selector <code>${userInput}</code> is failing. 
+                ❌ Syntax Error (Specific): Your selector code>{userInput}</code> is failing. 
                 <br><strong>The Attribute Equals Selector ([attr="value"]) requires an EXACT match.</strong> 
                 <br>Try the <b>Class Selector (.)</b> or the <b>Attribute Contains Selector ([attr~="value"])</b> instead.
             `;
@@ -817,7 +825,7 @@ function handleSuccess(challengeId, correctSelector) {
     feedbackElement.classList.add('success');
     
     feedbackElement.innerHTML = `
-        🎉 <b>PERFECT!</b> You successfully targeted the element with <code>${correctSelector}</code>.
+        🎉 <b>PERFECT!</b> You successfully targeted the element with code>${correctSelector}</code>.
         <br><br>
         <strong>Lesson Learned: ${challengeDef.type}</strong> 💡
         <div class="hint-message">${challengeDef.trivia}</div>
