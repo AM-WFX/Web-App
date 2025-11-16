@@ -713,6 +713,7 @@ p[id*="prompt-"] {
     border: 2px solid var(--wf-accent-orange);
 }
 
+
 /* ❗ FIX: The tour pop-up is now a floating tooltip ❗ */
 #tour-popup {
     position: absolute; /* Positioned by JavaScript */
