@@ -142,11 +142,12 @@ function showExperienceLevelChoice(labContent, mainPageContainer) {
 function startGuidedTour() {
     const challengeBox = document.getElementById('challenge-0-container');
     // We set align-items to flex-start (top) so the challenge box sits at the top.
-    challengeBox.style.alignItems = 'flex-start';
+    // ❗ FIX: We must keep flex-grow and display:flex!
+    challengeBox.style.cssText = "flex-grow: 1; display: flex; align-items: flex-start; width: 100%; padding: 30px;";
     
     // Phase 2 UI: The Tutorial (Morphs into a challenge container)
     challengeBox.innerHTML = `
-        <div class="challenge-container" style="max-width: 600px; margin: 30px auto;">
+        <div class="challenge-container" style="max-width: 600px; margin: 0 auto;">
             <h3 id="challenge-title-0" style="margin:0; text-align: center;">Guided Tour: Learn the UI</h3>
             <span id="status-0" style="color: grey;">(Tutorial)</span>
             
@@ -256,16 +257,16 @@ const tourSteps = [
 ];
 
 function startSpotlightTour() {
+    // Create the overlay
     const overlay = document.createElement('div');
     overlay.id = 'tour-overlay';
     document.body.appendChild(overlay);
 
-    // ❗ --- THIS IS THE FIX --- ❗
-    // The ID is now 'tour-panel' to match the CSS
-    const panel = document.createElement('div');
-    panel.id = 'tour-panel'; 
+    // Create the popup
+    const popup = document.createElement('div');
+    popup.id = 'tour-popup'; // ❗ This is the correct ID
     
-    panel.innerHTML = `
+    popup.innerHTML = `
         <button id="tour-skip" class="tour-skip-x">&times;</button>
         <div id="tour-content">
             <h3 id="tour-title"></h3>
@@ -276,7 +277,7 @@ function startSpotlightTour() {
             </div>
         </div>
     `;
-    document.body.appendChild(panel);
+    document.body.appendChild(popup);
 
     document.getElementById('tour-next').addEventListener('click', nextTourStep);
     document.getElementById('tour-back').addEventListener('click', prevTourStep);
@@ -293,9 +294,7 @@ function showTourStep(stepIndex) {
         return;
     }
 
-    // ❗ --- THIS IS THE FIX --- ❗
-    // We now find the 'tour-panel'
-    const popup = document.getElementById('tour-panel');
+    const popup = document.getElementById('tour-popup');
     const targetElement = document.querySelector(step.element);
     
     // Update popup content
@@ -309,22 +308,37 @@ function showTourStep(stepIndex) {
         // Add new spotlight
         targetElement.classList.add('spotlight');
         
-        // This is the new logic to position the "beak"
-        // We get the vertical center of the highlighted element
-        const rect = targetElement.getBoundingClientRect();
-        // We add window.scrollY to account for page scrolling
-        const elementCenter = rect.top + (rect.height / 2) + window.scrollY; 
+        // ❗ --- THIS IS THE FIX --- ❗
+        // This is the JavaScript positioning logic that makes the tooltip float.
+        // It correctly uses getBoundingClientRect() and window.scrollY.
+        const rect = targetElement.getBoundingClientRect(); 
+        const panelRect = popup.getBoundingClientRect(); 
         
-        // We get the panel's top position (which is 100px from the viewport top)
-        const panelTop = popup.getBoundingClientRect().top + window.scrollY;
-        
-        // Calculate the beak's position *relative to the panel*
-        // (elementCenter - panelTop) gives us the correct offset
-        const beakTop = elementCenter - panelTop;
+        popup.classList.remove('tour-popup-top', 'tour-popup-bottom');
 
-        // Set a CSS variable that the stylesheet can use
-        // This sets the beak's 'top' position to match the element's center
-        popup.style.setProperty('--beak-top', `${beakTop}px`);
+        let top;
+        // Check if popup fits below element, otherwise place above
+        if (rect.bottom + panelRect.height + 20 > window.innerHeight) {
+            // Place above
+            top = rect.top - panelRect.height - 15 + window.scrollY;
+            popup.classList.add('tour-popup-top');
+        } else {
+            // Place below
+            top = rect.bottom + 15 + window.scrollY;
+            popup.classList.add('tour-popup-bottom');
+        }
+        
+        // Center horizontally
+        let left = rect.left + (rect.width / 2) - (panelRect.width / 2);
+        
+        // Constrain to viewport
+        if (left < 10) left = 10;
+        if (left + panelRect.width > window.innerWidth - 10) {
+            left = window.innerWidth - panelRect.width - 10;
+        }
+        
+        popup.style.top = `${top}px`;
+        popup.style.left = `${left}px`;
     }
 
     // Update Button Logic
@@ -352,7 +366,7 @@ function nextTourStep() {
 
 function endSpotlightTour() {
     document.getElementById('tour-overlay')?.remove();
-    document.getElementById('tour-panel')?.remove();
+    document.getElementById('tour-popup')?.remove();
     document.querySelector('.spotlight')?.classList.remove('spotlight');
     
     const prompt = document.getElementById('prompt-0');
@@ -626,7 +640,8 @@ function initializeChallenges() {
             originalPrompt: def.prompt,
             type: def.type
         };
-
+        
+        // ❗ FIX 2: Removed the broken 'complexClass' variable
         htmlContent += `
             <div id="challenge-${def.id}" class="challenge-container">
                 <h3 id="challenge-title-${def.id}">Challenge ${def.id}</h3>
@@ -815,7 +830,7 @@ function handleSuccess(challengeId, correctSelector) {
     feedbackElement.classList.add('success');
     
     feedbackElement.innerHTML = `
-        🎉 <b>PERFECT!</b> You successfully targeted the element with code>${correctSelector}</code>.
+        🎉 <b>PERFECT!</b> You successfully targeted the element with <code>${correctSelector}</code>.
         <br><br>
         <strong>Lesson Learned: ${challengeDef.type}</strong> 💡
         <div class="hint-message">${challengeDef.trivia}</div>
