@@ -338,6 +338,18 @@ button[onclick*="validateChallenge"]:hover {
     justify-content: center;
 }
 
+/* ❗ --- THIS IS THE FIX --- ❗ */
+/* These rules are GONE. They were causing the 'display: block' clash. */
+/*
+.challenge-target-area.is-complex {
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+.challenge-target-area.is-complex > .target-element {
+    display: block !important;
+}
+*/
+
 /* This is our one, simple "pill" style */
 .challenge-target-area p,
 .challenge-target-area button,
