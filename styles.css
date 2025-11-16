@@ -172,7 +172,7 @@ h1, h2, h3 {
 .container {
     /* flex-grow: 1 tells it to "grow" and fill all empty space */
     flex-grow: 1; 
-    
+
     /* margin: 0 auto; centers it horizontally (NO top/bottom margin) */
     margin: 0 auto;
     
@@ -661,15 +661,17 @@ p[id*="prompt-"] {
     .challenge-ui button { width: 100%; }
 
     /* Make tour panel full-width on mobile */
-    #tour-panel {
+    #tour-popup {
         right: 15px;
         left: 15px;
-        top: 80px;
+        top: 80px !important; /* Override JS positioning */
         width: auto;
         max-width: 90%;
+        transform: none !important;
     }
     /* Hide the beak on mobile */
-    #tour-panel::before {
+    #tour-popup::before,
+    #tour-popup::after {
         display: none;
     }
 }
@@ -724,18 +726,17 @@ p[id*="prompt-"] {
 }
 
 
-/* ❗ FIX: The tour pop-up is now a fixed side panel on the right ❗ */
-#tour-panel {
-    position: fixed;
+/* ❗ FIX: The tour pop-up is now a floating tooltip ❗ */
+#tour-popup {
+    position: absolute; /* Positioned by JavaScript */
     z-index: 2002; /* On top of everything */
-    right: 30px;
-    top: 100px; /* Positioned below the navbar */
     width: 350px;
     max-width: 90%;
     background-color: white;
     border-radius: var(--wf-border-radius);
     box-shadow: var(--wf-shadow-card);
     padding: 25px;
+    transition: top 0.3s ease, left 0.3s ease; /* Smooth movement */
 }
 
 /* ❗ FIX: New "X" (Skip) button ❗ */
@@ -755,41 +756,46 @@ p[id*="prompt-"] {
     color: var(--wf-secondary-steel-gray);
 }
 
-/* ❗ FIX: New "beak" or "connector line" that points LEFT ❗ */
-#tour-panel::before {
+/* ❗ FIX: New "beak" or "connector line" ❗ */
+#tour-popup::before,
+#tour-popup::after {
     content: '';
     position: absolute;
-    
-    /* Position the beak on the left edge of the panel */
-    right: 100%; 
-    
-    /* This 'top' is set by JavaScript (var(--beak-top)) 
-      to match the vertical center of the highlighted element.
-    */
-    top: var(--beak-top, 50%);
-    transform: translateY(-50%); /* Centers the beak vertically */
-    
+    left: 50%;
+    transform: translateX(-50%);
     width: 0;
     height: 0;
     border-style: solid;
-    border-width: 10px 10px 10px 0;
-    border-color: transparent white transparent transparent;
+}
+
+/* This is the "beak" that points DOWN */
+#tour-popup.tour-panel-top::after {
+    top: 100%;
+    border-width: 10px 10px 0 10px;
+    border-color: white transparent transparent transparent;
+}
+
+/* This is the "beak" that points UP */
+#tour-popup.tour-panel-bottom::before {
+    bottom: 100%;
+    border-width: 0 10px 10px 10px;
+    border-color: transparent transparent white transparent;
 }
 
 
-#tour-panel h3 {
+#tour-popup h3 {
     margin-top: 0;
     margin-bottom: 15px;
     color: var(--wf-accent-orange);
 }
 
-#tour-panel #tour-text p {
+#tour-popup #tour-text p {
     margin-bottom: 10px !important; /* Override global p */
     line-height: 1.6;
     text-align: left;
 }
 
-#tour-panel #tour-text p code {
+#tour-popup #tour-text p code {
     background-color: #E2E8F0;
     padding: 2px 5px;
     border-radius: 4px;
@@ -802,7 +808,6 @@ p[id*="prompt-"] {
     justify-content: space-between; /* This creates the gap */
     align-items: center;
     margin-top: 20px;
-    /* border-top: none; <-- Removed */
 }
 
 /* ❗ FIX: "Back" button styling ❗ */
@@ -813,8 +818,8 @@ p[id*="prompt-"] {
     cursor: pointer;
     font-size: 0.9em;
     font-family: 'Aeonik', sans-serif;
-    font-weight: 400; /* <-- Changed from 700 */
-    text-decoration: none; /* <-- Removed underline */
+    font-weight: 400; 
+    text-decoration: none; 
 }
 .cta-skip:hover {
     color: var(--wf-secondary-steel-gray);
