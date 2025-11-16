@@ -438,7 +438,7 @@ function generateNewChallengeHTML(def) {
     return { html: html, newTargetSelector: newTargetSelector, newPrompt: newPrompt };
 }
 
-// Definition of all challenges
+// ❗ FIX 1: Removed 'isComplex' from all definitions
 const challengeDefinitions = [
     {
         id: 1,
@@ -634,7 +634,7 @@ function initializeChallenges() {
             originalPrompt: def.prompt,
             type: def.type
         };
-
+        
         // ❗ FIX 2: Removed the broken 'complexClass' variable
         htmlContent += `
             <div id="challenge-${def.id}" class="challenge-container">
