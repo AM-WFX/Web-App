@@ -62,22 +62,31 @@ document.addEventListener('DOMContentLoaded', function() {
             
             localStorage.setItem('css_lab_user', user.displayName);
 
-            const mainPageContainer = document.querySelector('.container');
+            // ❗ --- THIS IS THE FIX --- ❗
+            // We now find ALL 3 components. This check will *only* pass on css-selector-lab.html
+            const mainContent = document.querySelector('.main-content');
             const instructionsBox = document.querySelector('.instructions-box');
             const challengesGrid = document.getElementById('all-challenges');
             
-            if (mainPageContainer && instructionsBox && challengesGrid && !labInitialized) {
+            // This 'if' statement will now be FALSE on index.html and about.html, fixing the bug.
+            if (mainContent && instructionsBox && challengesGrid && !labInitialized) {
                 
                 const introCompleted = localStorage.getItem('labIntroCompleted');
 
                 if (introCompleted) {
                     // USER HAS ALREADY DONE THE INTRO
-                    mainPageContainer.style.display = 'block';
+                    // Show the instructions and the 10 challenges
+                    instructionsBox.style.display = 'block';
+                    challengesGrid.style.display = 'flex';
                     initializeChallenges();
                 } else {
                     // NEW USER: Show the "choice" screen
-                    mainPageContainer.style.display = 'none';
-                    showExperienceLevelChoice(labContent, mainPageContainer); 
+                    // Hide the real lab components
+                    instructionsBox.style.display = 'none';
+                    challengesGrid.style.display = 'none';
+                    
+                    // Show the intro choice "layer"
+                    showExperienceLevelChoice(mainContent); 
                 }
                 labInitialized = true;
             }
@@ -103,16 +112,17 @@ document.addEventListener('DOMContentLoaded', function() {
 // -------------------------------------------------
 
 /**
- * Creates the "Challenge 0" container and inserts it *after* the navbar.
+ * Creates the "Challenge 0" container and inserts it into the main content.
+ * This is the new "layer" you asked for.
  */
-function showExperienceLevelChoice(labContent, mainPageContainer) {
+function showExperienceLevelChoice(mainContent) {
     
+    // 1. Create the new "Challenge 0" container
     const introChallengeDiv = document.createElement('div');
     introChallengeDiv.id = 'challenge-0-container';
-    introChallengeDiv.classList.add('container'); 
-    introChallengeDiv.style = "flex-grow: 1; display: flex; align-items: center; width: 100%;"; 
     
-    // Phase 1 UI: The Choice (A simple white box)
+    // 2. This is the "Phase 1" UI (The Choice)
+    // It uses .main-content to get the white box, but NOT .challenge-container
     introChallengeDiv.innerHTML = `
         <div class="main-content" style="text-align: center; max-width: 600px; margin: auto;">
             <h2 style="margin-top: 0;">Welcome to the CSS Lab!</h2>
@@ -127,26 +137,24 @@ function showExperienceLevelChoice(labContent, mainPageContainer) {
         </div>
     `;
     
-    const navbar = labContent.querySelector('.navbar');
-    if (navbar) {
-        navbar.after(introChallengeDiv);
-    }
+    // 3. Add this new challenge to the page
+    mainContent.prepend(introChallengeDiv); // Add it to the top of the main-content white box
     
+    // 4. Add click listeners
     document.getElementById('start-guided').addEventListener('click', startGuidedTour);
-    document.getElementById('start-expert').addEventListener('click', () => startExpertTest(mainPageContainer));
+    document.getElementById('start-expert').addEventListener('click', startExpertTest);
 }
 
 /**
- * (Beginner Path) "Morphs" the intro box into the tutorial.
+ * (Beginner Path) Changes "Challenge 0" into the tutorial.
  */
 function startGuidedTour() {
     const challengeBox = document.getElementById('challenge-0-container');
-    // We set align-items to flex-start (top) so the challenge box sits at the top.
-    challengeBox.style.alignItems = 'flex-start';
     
-    // Phase 2 UI: The Tutorial (Morphs into a challenge container)
+    // 1. Rewrite the "Challenge 0" box to be the tutorial
+    // The instructions are NOW INSIDE the challenge box
     challengeBox.innerHTML = `
-        <div class="challenge-container" style="max-width: 600px; margin: 30px auto;">
+        <div class="challenge-container" style="max-width: 600px; margin: auto;">
             <h3 id="challenge-title-0" style="margin:0; text-align: center;">Guided Tour: Learn the UI</h3>
             <span id="status-0" style="color: grey;">(Tutorial)</span>
             
@@ -159,7 +167,7 @@ function startGuidedTour() {
             </div>
             
             <div class="challenge-ui">
-                <input type="text" id="selector-input-0" placeholder="Type your selector here...">
+                <input type="text" id="selector-input-0" placeholder="Type #start-button here...">
                 <button class="cta-button" onclick="validateTutorial()">Validate</button>
             </div>
             <div id="feedback-0" class="validation-feedback"></div>
@@ -173,14 +181,19 @@ function startGuidedTour() {
 /**
  * (Expert Path) Hides the intro and shows the real lab.
  */
-function startExpertTest(mainPageContainer) {
+function startExpertTest() {
+    // 1. Set the flag so they don't see the intro again
     localStorage.setItem('labIntroCompleted', 'true');
 
+    // 2. Hide the "Challenge 0" intro box
     const introBox = document.getElementById('challenge-0-container');
-    if (introBox) introBox.remove(); 
+    if (introBox) introBox.remove(); // Use remove() to delete it
     
-    if (mainPageContainer) mainPageContainer.style.display = 'block';
+    // 3. Show the *real* lab container
+    const mainContent = document.querySelector('.main-content');
+    if (mainContent) mainContent.style.display = 'block';
     
+    // 4. Load all 10 real challenges
     initializeChallenges(); 
 }
 
@@ -193,6 +206,7 @@ function validateTutorial() {
     const userInput = inputField.value.trim();
 
     if (userInput === '#start-button') {
+        // SUCCESS!
         localStorage.setItem('labIntroCompleted', 'true');
         
         feedbackElement.className = 'validation-feedback success';
@@ -202,24 +216,30 @@ function validateTutorial() {
             Loading the real challenges now...
         `;
 
+        // After a short delay, hide the tour and show the real lab.
         setTimeout(() => {
+            // 1. Hide the "Challenge 0" intro box
             const introBox = document.getElementById('challenge-0-container');
             if (introBox) introBox.remove();
 
-            const mainPageContainer = document.querySelector('.container');
-            if (mainPageContainer) mainPageContainer.style.display = 'block';
+            // 2. Show the *real* lab container
+            const mainContent = document.querySelector('.main-content');
+            if (mainContent) mainContent.style.display = 'block';
             
+            // 3. Initialize all 10 real challenges
             initializeChallenges();
-        }, 1500); 
+        }, 1500); // 1.5-second delay
 
     } else {
+        // FAILURE
         feedbackElement.className = 'validation-feedback error';
         feedbackElement.innerHTML = `Not quite! Try typing the exact selector <code>#start-button</code> into the input box.`;
     }
 }
 
+
 // -------------------------------------------------
-// 💡 --- SPOTLIGHT TOUR FUNCTIONS (ALL NEW) --- 💡
+// 💡 --- SPOTLIGHT TOUR FUNCTIONS --- 💡
 // -------------------------------------------------
 let currentTourStep = 0;
 const tourSteps = [
@@ -256,16 +276,14 @@ const tourSteps = [
 ];
 
 function startSpotlightTour() {
-    // Create the overlay
     const overlay = document.createElement('div');
     overlay.id = 'tour-overlay';
     document.body.appendChild(overlay);
 
-    // Create the popup
-    const popup = document.createElement('div');
-    popup.id = 'tour-popup'; // ❗ This is the correct ID
+    const panel = document.createElement('div');
+    panel.id = 'tour-panel'; 
     
-    popup.innerHTML = `
+    panel.innerHTML = `
         <button id="tour-skip" class="tour-skip-x">&times;</button>
         <div id="tour-content">
             <h3 id="tour-title"></h3>
@@ -276,7 +294,7 @@ function startSpotlightTour() {
             </div>
         </div>
     `;
-    document.body.appendChild(popup);
+    document.body.appendChild(panel);
 
     document.getElementById('tour-next').addEventListener('click', nextTourStep);
     document.getElementById('tour-back').addEventListener('click', prevTourStep);
@@ -293,7 +311,7 @@ function showTourStep(stepIndex) {
         return;
     }
 
-    const popup = document.getElementById('tour-popup');
+    const popup = document.getElementById('tour-panel');
     const targetElement = document.querySelector(step.element);
     
     // Update popup content
@@ -307,37 +325,14 @@ function showTourStep(stepIndex) {
         // Add new spotlight
         targetElement.classList.add('spotlight');
         
-        // ❗ --- THIS IS THE FIX --- ❗
-        // This is the JavaScript positioning logic that makes the tooltip float.
-        // It correctly uses getBoundingClientRect() WITHOUT window.scrollY.
-        const rect = targetElement.getBoundingClientRect(); 
-        const panelRect = popup.getBoundingClientRect(); 
+        // This is the new logic to position the "beak"
+        // We get the vertical center of the highlighted element
+        const rect = targetElement.getBoundingClientRect();
+        const elementCenter = rect.top + (rect.height / 2);
         
-        popup.classList.remove('tour-popup-top', 'tour-popup-bottom');
-
-        let top;
-        // Check if popup fits below element, otherwise place above
-        if (rect.bottom + panelRect.height + 20 > window.innerHeight) {
-            // Place above
-            top = rect.top - panelRect.height - 15 + window.scrollY;
-            popup.classList.add('tour-popup-top');
-        } else {
-            // Place below
-            top = rect.bottom + 15 + window.scrollY;
-            popup.classList.add('tour-popup-bottom');
-        }
-        
-        // Center horizontally
-        let left = rect.left + (rect.width / 2) - (panelRect.width / 2);
-        
-        // Constrain to viewport
-        if (left < 10) left = 10;
-        if (left + panelRect.width > window.innerWidth - 10) {
-            left = window.innerWidth - panelRect.width - 10;
-        }
-        
-        popup.style.top = `${top}px`;
-        popup.style.left = `${left}px`;
+        // Set a CSS variable that the stylesheet can use
+        // This sets the beak's 'top' position to match the element's center
+        popup.style.setProperty('--beak-top', `${elementCenter}px`);
     }
 
     // Update Button Logic
@@ -365,7 +360,7 @@ function nextTourStep() {
 
 function endSpotlightTour() {
     document.getElementById('tour-overlay')?.remove();
-    document.getElementById('tour-popup')?.remove();
+    document.getElementById('tour-panel')?.remove();
     document.querySelector('.spotlight')?.classList.remove('spotlight');
     
     const prompt = document.getElementById('prompt-0');
@@ -640,6 +635,7 @@ function initializeChallenges() {
             type: def.type
         };
 
+        // ❗ FIX 2: Removed the broken 'complexClass' variable
         htmlContent += `
             <div id="challenge-${def.id}" class="challenge-container">
                 <h3 id="challenge-title-${def.id}">Challenge ${def.id}</h3>
