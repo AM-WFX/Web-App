@@ -256,14 +256,12 @@ const tourSteps = [
 ];
 
 function startSpotlightTour() {
-    // Create the overlay
     const overlay = document.createElement('div');
     overlay.id = 'tour-overlay';
     document.body.appendChild(overlay);
 
-    // Create the popup (now a fixed panel)
     const panel = document.createElement('div');
-    panel.id = 'tour-panel'; 
+    panel.id = 'tour-panel'; // Changed from 'tour-popup'
     
     panel.innerHTML = `
         <button id="tour-skip" class="tour-skip-x">&times;</button>
@@ -293,6 +291,8 @@ function showTourStep(stepIndex) {
         return;
     }
 
+    // ❗ --- THIS IS THE FIX --- ❗
+    // We now find the 'tour-panel' instead of 'tour-popup'
     const popup = document.getElementById('tour-panel');
     const targetElement = document.querySelector(step.element);
     
@@ -310,11 +310,19 @@ function showTourStep(stepIndex) {
         // This is the new logic to position the "beak"
         // We get the vertical center of the highlighted element
         const rect = targetElement.getBoundingClientRect();
-        const elementCenter = rect.top + (rect.height / 2);
+        // Calculate the center, relative to the viewport
+        const elementCenterY = rect.top + (rect.height / 2); 
         
+        // We get the panel's top position (which is 100px)
+        const panelTop = popup.offsetTop;
+        
+        // Calculate the beak's position *relative to the panel*
+        // (elementCenter - panelTop) gives us the correct offset
+        const beakTop = elementCenter - panelTop;
+
         // Set a CSS variable that the stylesheet can use
         // This sets the beak's 'top' position to match the element's center
-        popup.style.setProperty('--beak-top', `${elementCenter}px`);
+        popup.style.setProperty('--beak-top', `${beakTop}px`);
     }
 
     // Update Button Logic
@@ -617,8 +625,6 @@ function initializeChallenges() {
             type: def.type
         };
 
-        // ❗ --- THIS IS THE FIX --- ❗
-        // Removed the broken 'complexClass' variable
         htmlContent += `
             <div id="challenge-${def.id}" class="challenge-container">
                 <h3 id="challenge-title-${def.id}">Challenge ${def.id}</h3>
@@ -752,7 +758,7 @@ function validateChallenge(challengeId) {
         const isAttributeEqualsClass = userInput.includes('[class=');
         if (isAttributeEqualsClass) {
             feedbackElement.innerHTML = `
-                ❌ Syntax Error (Specific): Your selector code>{userInput}</code> is failing. 
+                ❌ Syntax Error (Specific): Your selector <code>${userInput}</code> is failing. 
                 <br><strong>The Attribute Equals Selector ([attr="value"]) requires an EXACT match.</strong> 
                 <br>Try the <b>Class Selector (.)</b> or the <b>Attribute Contains Selector ([attr~="value"])</b> instead.
             `;
@@ -807,7 +813,7 @@ function handleSuccess(challengeId, correctSelector) {
     feedbackElement.classList.add('success');
     
     feedbackElement.innerHTML = `
-        🎉 <b>PERFECT!</b> You successfully targeted the element with code>${correctSelector}</code>.
+        🎉 <b>PERFECT!</b> You successfully targeted the element with <code>${correctSelector}</code>.
         <br><br>
         <strong>Lesson Learned: ${challengeDef.type}</strong> 💡
         <div class="hint-message">${challengeDef.trivia}</div>
