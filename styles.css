@@ -172,7 +172,7 @@ h1, h2, h3 {
 .container {
     /* flex-grow: 1 tells it to "grow" and fill all empty space */
     flex-grow: 1; 
-
+    
     /* margin: 0 auto; centers it horizontally (NO top/bottom margin) */
     margin: 0 auto;
     
