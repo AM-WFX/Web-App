@@ -110,7 +110,8 @@ function showExperienceLevelChoice(labContent, mainPageContainer) {
     const introChallengeDiv = document.createElement('div');
     introChallengeDiv.id = 'challenge-0-container';
     introChallengeDiv.classList.add('container'); 
-    introChallengeDiv.style = "flex-grow: 1; display: flex; align-items: center; width: 100%;"; 
+    // This style forces the container to fill the screen and center its content
+    introChallengeDiv.style = "flex-grow: 1; display: flex; align-items: center; width: 100%; padding: 30px;"; 
     
     // Phase 1 UI: The Choice (A simple white box)
     introChallengeDiv.innerHTML = `
@@ -141,7 +142,10 @@ function showExperienceLevelChoice(labContent, mainPageContainer) {
  */
 function startGuidedTour() {
     const challengeBox = document.getElementById('challenge-0-container');
-    // We set align-items to flex-start (top) and add padding
+    
+    // ❗ --- THIS IS THE FIX --- ❗
+    // We must *preserve* flex-grow and display:flex
+    // We only change align-items to 'flex-start' (top).
     challengeBox.style.cssText = "flex-grow: 1; display: flex; align-items: flex-start; width: 100%; padding: 30px 0;";
     
     // Phase 2 UI: The Tutorial (Morphs into a challenge container)
