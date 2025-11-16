@@ -227,15 +227,16 @@ function validateTutorial() {
 let currentTourStep = 0;
 
 // ❗ --- THIS IS THE FIX (Part 1) --- ❗
-// Added your coordinates for Step 1
+// Updated coordinates for Step 1
+// Updated beakDirection for Step 5
 const tourSteps = [
     {
         element: '#prompt-0',
         title: "Step 1: The Prompt",
         text: "<p>This is the <strong>Prompt</strong>. It tells you *what* element to find. In this case, it's the 'Start' button.</p>",
-        top: "250px", 
-        left: "1090px", // Assumed from previous request
-        beakTop: "111.5px",
+        top: "190px", 
+        left: "1090px",
+        beakTop: "35px",
         beakDirection: "left"
     },
     {
@@ -272,7 +273,7 @@ const tourSteps = [
         top: "350px", 
         left: "90px",
         beakTop: "167px",
-        beakDirection: "right"
+        beakDirection: "right" // ❗ YOUR CHANGE
     },
     {
         element: 'button[onclick="validateTutorial()"]',
@@ -281,7 +282,7 @@ const tourSteps = [
         top: "340px", 
         left: "1070px",
         beakTop: "171.5px",
-        beakDirection: "left"
+        beakDirection: "left" // ❗ YOUR CHANGE (Reverted to left)
     }
 ];
 
@@ -291,8 +292,6 @@ function startSpotlightTour() {
     overlay.id = 'tour-overlay';
     document.body.appendChild(overlay);
 
-    // ❗ --- THIS IS THE FIX (Part 2) --- ❗
-    // The ID is now 'tour-panel' to match the CSS
     const panel = document.createElement('div');
     panel.id = 'tour-panel'; 
     
@@ -338,10 +337,10 @@ function showTourStep(stepIndex) {
         // Add new spotlight
         targetElement.classList.add('spotlight');
         
-        // ❗ --- THIS IS THE FIX (Part 3) --- ❗
+        // ❗ --- THIS IS THE FIX (Part 2) --- ❗
         // Removed all dynamic calculations.
         // We now read your exact values from the tourSteps array.
-        // We use window.scrollY to ensure the 'top' position is correct even if the page is scrolled.
+        // We add window.scrollY to ensure 'top' is correct if the page is scrolled.
         popup.style.top = `calc(${step.top} + ${window.scrollY}px)`;
         popup.style.left = step.left;
         popup.style.setProperty('--beak-top', step.beakTop);
