@@ -227,15 +227,16 @@ function validateTutorial() {
 let currentTourStep = 0;
 
 // ❗ --- THIS IS THE FIX (Part 1) --- ❗
-// Added your coordinates for all steps
+// Added your coordinates
 const tourSteps = [
     {
         element: '#prompt-0',
         title: "Step 1: The Prompt",
         text: "<p>This is the <strong>Prompt</strong>. It tells you *what* element to find. In this case, it's the 'Start' button.</p>",
-        top: "250px", 
+        top: "190px", 
         left: "1090px",
-        beakTop: "111.5px"
+        beakTop: "35px",
+        beakDirection: "left"
     },
     {
         element: '#target-area-0',
@@ -243,7 +244,8 @@ const tourSteps = [
         text: "<p>This is the <strong>Target Area</strong>. The HTML elements you need to select are inside this box.</p>",
         top: "255px", 
         left: "1090px",
-        beakTop: "111.5px"
+        beakTop: "111.5px",
+        beakDirection: "left"
     },
     {
         element: '#target-area-0',
@@ -251,7 +253,8 @@ const tourSteps = [
         text: "<p>To find a selector, <strong>right-click</strong> the 'Click me to start!' button and choose <strong>'Inspect'</strong>.</p><p></p>",
         top: "269px", 
         left: "1090px",
-        beakTop: "102px"
+        beakTop: "102px",
+        beakDirection: "left"
     },
     {
         element: '#target-area-0',
@@ -259,7 +262,8 @@ const tourSteps = [
         text: "<p>The <strong>Developer Console</strong> will open, showing you the HTML. Notice the button has an `id`? That's your answer!</p><p></p>",
         top: "255px", 
         left: "1090px",
-        beakTop: "111.5px"
+        beakTop: "111.5px",
+        beakDirection: "left"
     },
     {
         element: '#selector-input-0',
@@ -267,7 +271,8 @@ const tourSteps = [
         text: "<p>Now, type your selector (<code>#start-button</code>) into the <strong>Input Field</strong>.</p>",
         top: "350px", 
         left: "90px",
-        beakTop: "167px"
+        beakTop: "167px",
+        beakDirection: "right"
     },
     {
         element: 'button[onclick="validateTutorial()"]',
@@ -275,17 +280,21 @@ const tourSteps = [
         text: "<p>Finally, click the <strong>Validate</strong> button to check your answer. Your turn!</p>",
         top: "340px", 
         left: "1070px",
-        beakTop: "171.5px"
+        beakTop: "171.5px",
+        beakDirection: "left" // ❗ Changed this back to 'left' as you only specified 'right' for step 6 beak *style*, not position.
     }
 ];
 
 function startSpotlightTour() {
+    // Create the overlay
     const overlay = document.createElement('div');
     overlay.id = 'tour-overlay';
     document.body.appendChild(overlay);
 
+    // ❗ --- THIS IS THE FIX (Part 2) --- ❗
+    // The ID is now 'tour-panel' to match the CSS
     const panel = document.createElement('div');
-    panel.id = 'tour-panel'; // Changed from 'tour-popup'
+    panel.id = 'tour-panel'; 
     
     panel.innerHTML = `
         <button id="tour-skip" class="tour-skip-x">&times;</button>
@@ -329,12 +338,20 @@ function showTourStep(stepIndex) {
         // Add new spotlight
         targetElement.classList.add('spotlight');
         
-        // ❗ --- THIS IS THE FIX (Part 2) --- ❗
+        // ❗ --- THIS IS THE FIX (Part 3) --- ❗
         // Removed all dynamic calculations.
         // We now read your exact values from the tourSteps array.
         popup.style.top = step.top;
         popup.style.left = step.left;
         popup.style.setProperty('--beak-top', step.beakTop);
+
+        // This controls the beak direction
+        popup.classList.remove('tour-beak-left', 'tour-beak-right');
+        if (step.beakDirection === 'right') {
+             popup.classList.add('tour-beak-right');
+        } else {
+             popup.classList.add('tour-beak-left');
+        }
     }
 
     // Update Button Logic
@@ -770,7 +787,7 @@ function validateChallenge(challengeId) {
         const isAttributeEqualsClass = userInput.includes('[class=');
         if (isAttributeEqualsClass) {
             feedbackElement.innerHTML = `
-                ❌ Syntax Error (Specific): Your selector code>{userInput}</code> is failing. 
+                ❌ Syntax Error (Specific): Your selector <code>${userInput}</code> is failing. 
                 <br><strong>The Attribute Equals Selector ([attr="value"]) requires an EXACT match.</strong> 
                 <br>Try the <b>Class Selector (.)</b> or the <b>Attribute Contains Selector ([attr~="value"])</b> instead.
             `;
@@ -825,7 +842,7 @@ function handleSuccess(challengeId, correctSelector) {
     feedbackElement.classList.add('success');
     
     feedbackElement.innerHTML = `
-        🎉 <b>PERFECT!</b> You successfully targeted the element with code>${correctSelector}</code>.
+        🎉 <b>PERFECT!</b> You successfully targeted the element with <code>${correctSelector}</code>.
         <br><br>
         <strong>Lesson Learned: ${challengeDef.type}</strong> 💡
         <div class="hint-message">${challengeDef.trivia}</div>
