@@ -113,7 +113,6 @@ function showExperienceLevelChoice(labContent, mainPageContainer) {
     introChallengeDiv.style = "flex-grow: 1; display: flex; align-items: center; width: 100%;"; 
     
     // Phase 1 UI: The Choice (A simple white box)
-    // This 'margin: auto' is correct.
     introChallengeDiv.innerHTML = `
         <div class="main-content" style="text-align: center; max-width: 600px; margin: auto;">
             <h2 style="margin-top: 0;">Welcome to the CSS Lab!</h2>
@@ -146,10 +145,8 @@ function startGuidedTour() {
     challengeBox.style.alignItems = 'flex-start';
     
     // Phase 2 UI: The Tutorial (Morphs into a challenge container)
-    // ❗ --- THIS IS THE FIX --- ❗
-    // Changed 'margin: 30px auto 0 auto' to 'margin: auto'
     challengeBox.innerHTML = `
-        <div class="challenge-container" style="max-width: 600px; margin: auto;">
+        <div class="challenge-container" style="max-width: 600px; margin: 30px auto;">
             <h3 id="challenge-title-0" style="margin:0; text-align: center;">Guided Tour: Learn the UI</h3>
             <span id="status-0" style="color: grey;">(Tutorial)</span>
             
@@ -259,14 +256,12 @@ const tourSteps = [
 ];
 
 function startSpotlightTour() {
-    // Create the overlay
     const overlay = document.createElement('div');
     overlay.id = 'tour-overlay';
     document.body.appendChild(overlay);
 
-    // Create the popup (now a fixed panel)
     const panel = document.createElement('div');
-    panel.id = 'tour-popup';
+    panel.id = 'tour-panel'; // Changed from 'tour-popup'
     
     panel.innerHTML = `
         <button id="tour-skip" class="tour-skip-x">&times;</button>
@@ -296,9 +291,6 @@ function showTourStep(stepIndex) {
         return;
     }
 
-    const popup = document.getElementById('tour-popup');
-    const targetElement = document.querySelector(step.element);
-    
     // Update popup content
     document.getElementById('tour-title').textContent = step.title;
     document.getElementById('tour-text').innerHTML = step.text;
@@ -306,38 +298,24 @@ function showTourStep(stepIndex) {
     // Remove previous spotlight
     document.querySelector('.spotlight')?.classList.remove('spotlight');
     
+    // Add new spotlight
+    const targetElement = document.querySelector(step.element);
     if (targetElement) {
-        // Add new spotlight
         targetElement.classList.add('spotlight');
         
-        const rect = targetElement.getBoundingClientRect(); // Get element's position
-        const panelRect = popup.getBoundingClientRect(); // Get popup's dimensions
+        // ❗ --- THIS IS THE FIX --- ❗
+        // New logic to position the "beak"
+        // We get the vertical center of the highlighted element
+        const rect = targetElement.getBoundingClientRect();
+        const elementCenter = rect.top + (rect.height / 2);
         
-        popup.classList.remove('tour-panel-top', 'tour-panel-bottom');
-
-        let top;
-        // Check if popup fits below element, otherwise place above
-        if (rect.bottom + panelRect.height + 20 > window.innerHeight) {
-            // Place above
-            top = rect.top - panelRect.height - 15 + window.scrollY;
-            popup.classList.add('tour-panel-top');
-        } else {
-            // Place below
-            top = rect.bottom + 15 + window.scrollY;
-            popup.classList.add('tour-panel-bottom');
-        }
+        // Find the panel and its beak
+        const panel = document.getElementById('tour-panel');
+        const beak = panel.querySelector('::before'); // Get the pseudo-element
         
-        // Center horizontally
-        let left = rect.left + (rect.width / 2) - (panelRect.width / 2);
-        
-        // Constrain to viewport
-        if (left < 10) left = 10;
-        if (left + panelRect.width > window.innerWidth - 10) {
-            left = window.innerWidth - panelRect.width - 10;
-        }
-        
-        popup.style.top = `${top}px`;
-        popup.style.left = `${left}px`;
+        // Set a CSS variable that the stylesheet can use
+        // This sets the beak's 'top' position to match the element's center
+        panel.style.setProperty('--beak-top', `${elementCenter}px`);
     }
 
     // Update Button Logic
@@ -365,7 +343,7 @@ function nextTourStep() {
 
 function endSpotlightTour() {
     document.getElementById('tour-overlay')?.remove();
-    document.getElementById('tour-popup')?.remove();
+    document.getElementById('tour-panel')?.remove();
     document.querySelector('.spotlight')?.classList.remove('spotlight');
     
     const prompt = document.getElementById('prompt-0');
