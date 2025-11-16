@@ -690,7 +690,6 @@ p[id*="prompt-"] {
 /* --- 💡 SPOTLIGHT TOUR STYLES 💡 --- */
 /* ---------------------------------------------------- */
 
-/* ❗ FIX: Opacity reduced to 15% ❗ */
 #tour-overlay {
     position: fixed;
     inset: 0;
@@ -700,21 +699,15 @@ p[id*="prompt-"] {
     z-index: 2000;
 }
 
-/* The element being highlighted */
 .spotlight {
     position: relative;
     z-index: 2001; /* Above the overlay */
-    
-    /* ❗ FIX: Shadow opacity reduced to 15% ❗ */
     box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.15);
-    
-    /* ❗ FIX: Replaced pulse with a simple border ❗ */
     border-radius: var(--wf-border-radius);
     border: 2px solid var(--wf-accent-orange);
 }
 
 
-/* ❗ FIX: The tour pop-up is now a floating tooltip ❗ */
 #tour-popup {
     position: absolute; /* Positioned by JavaScript */
     z-index: 2002; /* On top of everything */
@@ -727,7 +720,6 @@ p[id*="prompt-"] {
     transition: top 0.3s ease, left 0.3s ease; /* Smooth movement */
 }
 
-/* ❗ FIX: New "X" (Skip) button ❗ */
 .tour-skip-x {
     position: absolute;
     top: 10px;
@@ -744,7 +736,6 @@ p[id*="prompt-"] {
     color: var(--wf-secondary-steel-gray);
 }
 
-/* ❗ FIX: New "beak" or "connector line" ❗ */
 #tour-popup::before,
 #tour-popup::after {
     content: '';
@@ -790,16 +781,13 @@ p[id*="prompt-"] {
     font-family: monospace;
 }
 
-/* ❗ FIX: New button layout ❗ */
 #tour-buttons {
     display: flex;
     justify-content: space-between; /* This creates the gap */
     align-items: center;
     margin-top: 20px;
-    /* border-top: none; <-- Removed */
 }
 
-/* ❗ FIX: "Back" button styling ❗ */
 .cta-skip { 
     background: none;
     border: none;
@@ -807,8 +795,8 @@ p[id*="prompt-"] {
     cursor: pointer;
     font-size: 0.9em;
     font-family: 'Aeonik', sans-serif;
-    font-weight: 400; /* <-- Changed from 700 */
-    text-decoration: none; /* <-- Removed underline */
+    font-weight: 400; 
+    text-decoration: none; 
 }
 .cta-skip:hover {
     color: var(--wf-secondary-steel-gray);
