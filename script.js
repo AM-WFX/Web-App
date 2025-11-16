@@ -109,14 +109,11 @@ function showExperienceLevelChoice(labContent, mainPageContainer) {
     
     const introChallengeDiv = document.createElement('div');
     introChallengeDiv.id = 'challenge-0-container';
-    
-    // ❗ --- THIS IS THE FIX --- ❗
-    // We add 'flex-grow: 1' to this new container so it pushes the footer down.
-    // We also add 'padding: 30px' to match the real container's spacing.
-    introChallengeDiv.style = "flex-grow: 1; display: flex; align-items: center; width: 100%; padding: 30px;"; 
+    introChallengeDiv.classList.add('container'); 
+    // This style forces the container to fill the screen and center its content
+    introChallengeDiv.style = "flex-grow: 1; display: flex; align-items: center; width: 100%;"; 
     
     // Phase 1 UI: The Choice (A simple white box)
-    // It now uses 'margin: auto' to center perfectly inside the flex container.
     introChallengeDiv.innerHTML = `
         <div class="main-content" style="text-align: center; max-width: 600px; margin: auto;">
             <h2 style="margin-top: 0;">Welcome to the CSS Lab!</h2>
@@ -145,12 +142,15 @@ function showExperienceLevelChoice(labContent, mainPageContainer) {
  */
 function startGuidedTour() {
     const challengeBox = document.getElementById('challenge-0-container');
-    // We set align-items to flex-start (top) so the challenge box sits at the top.
-    challengeBox.style.alignItems = 'flex-start';
+    
+    // ❗ --- THIS IS THE FIX --- ❗
+    // We must *preserve* flex-grow and display:flex
+    // We only change align-items to 'flex-start' (top).
+    challengeBox.style.cssText = "flex-grow: 1; display: flex; align-items: flex-start; width: 100%;";
     
     // Phase 2 UI: The Tutorial (Morphs into a challenge container)
     challengeBox.innerHTML = `
-        <div class="challenge-container" style="max-width: 600px; margin: 0 auto;">
+        <div class="challenge-container" style="max-width: 600px; margin: 30px auto;">
             <h3 id="challenge-title-0" style="margin:0; text-align: center;">Guided Tour: Learn the UI</h3>
             <span id="status-0" style="color: grey;">(Tutorial)</span>
             
@@ -311,6 +311,7 @@ function showTourStep(stepIndex) {
         // Add new spotlight
         targetElement.classList.add('spotlight');
         
+        // This is the JavaScript positioning logic that makes the tooltip float.
         const rect = targetElement.getBoundingClientRect(); 
         const panelRect = popup.getBoundingClientRect(); 
         
