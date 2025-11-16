@@ -260,8 +260,10 @@ function startSpotlightTour() {
     overlay.id = 'tour-overlay';
     document.body.appendChild(overlay);
 
+    // ❗ --- THIS IS THE FIX --- ❗
+    // The ID is now 'tour-panel' to match the CSS
     const panel = document.createElement('div');
-    panel.id = 'tour-panel'; // Changed from 'tour-popup'
+    panel.id = 'tour-panel'; 
     
     panel.innerHTML = `
         <button id="tour-skip" class="tour-skip-x">&times;</button>
@@ -292,7 +294,7 @@ function showTourStep(stepIndex) {
     }
 
     // ❗ --- THIS IS THE FIX --- ❗
-    // We now find the 'tour-panel' instead of 'tour-popup'
+    // We now find the 'tour-panel'
     const popup = document.getElementById('tour-panel');
     const targetElement = document.querySelector(step.element);
     
@@ -312,7 +314,7 @@ function showTourStep(stepIndex) {
         const rect = targetElement.getBoundingClientRect();
         const elementCenter = rect.top + (rect.height / 2);
         
-        // We get the panel's top position (which is 100px)
+        // We get the panel's top position (which is 100px from the viewport top)
         const panelTop = popup.getBoundingClientRect().top;
         
         // Calculate the beak's position *relative to the panel*
@@ -812,7 +814,7 @@ function handleSuccess(challengeId, correctSelector) {
     feedbackElement.classList.add('success');
     
     feedbackElement.innerHTML = `
-        🎉 <b>PERFECT!</b> You successfully targeted the element with <code>${correctSelector}</code>.
+        🎉 <b>PERFECT!</b> You successfully targeted the element with code>${correctSelector}</code>.
         <br><br>
         <strong>Lesson Learned: ${challengeDef.type}</strong> 💡
         <div class="hint-message">${challengeDef.trivia}</div>
