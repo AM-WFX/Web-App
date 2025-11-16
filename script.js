@@ -39,8 +39,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function signOut() {
+        // ❗ FIX: Clear localStorage on logout ❗
         localStorage.removeItem('labIntroCompleted');
-        localStorage.removeItem('css_lab_user'); 
+        localStorage.removeItem('css_lab_user'); // Also clear the user name
         auth.signOut();
     }
 
@@ -62,22 +63,29 @@ document.addEventListener('DOMContentLoaded', function() {
             
             localStorage.setItem('css_lab_user', user.displayName);
 
-            const mainPageContainer = document.querySelector('.container');
+            // ❗ --- THIS IS THE NEW LOGIC --- ❗
+            // Find all the key layout components
+            const mainContent = document.querySelector('.main-content'); // The real lab's white box
             const instructionsBox = document.querySelector('.instructions-box');
             const challengesGrid = document.getElementById('all-challenges');
             
-            if (mainPageContainer && instructionsBox && challengesGrid && !labInitialized) {
+            // Check if we are on the lab page
+            if (mainContent && instructionsBox && challengesGrid && !labInitialized) {
                 
                 const introCompleted = localStorage.getItem('labIntroCompleted');
 
                 if (introCompleted) {
                     // USER HAS ALREADY DONE THE INTRO
-                    mainPageContainer.style.display = 'block';
+                    // Show the real lab content
+                    mainContent.style.display = 'block';
                     initializeChallenges();
                 } else {
                     // NEW USER: Show the "choice" screen
-                    mainPageContainer.style.display = 'none';
-                    showExperienceLevelChoice(labContent, mainPageContainer); 
+                    // Hide the real lab components
+                    mainContent.style.display = 'none';
+                    
+                    // Show the intro choice "layer"
+                    showExperienceLevelChoice(mainContent.parentElement); // Pass the parent, #content-wrapper
                 }
                 labInitialized = true;
             }
@@ -90,6 +98,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if(logoutButton) logoutButton.style.display = 'none';
             if(welcomeMessage) welcomeMessage.textContent = '';
             
+            // Clear all storage on logout
             localStorage.removeItem('css_lab_user');
             localStorage.removeItem('labIntroCompleted');
             labInitialized = false; 
@@ -103,18 +112,20 @@ document.addEventListener('DOMContentLoaded', function() {
 // -------------------------------------------------
 
 /**
- * Creates the "Challenge 0" container and inserts it *after* the navbar.
+ * Creates the "Challenge 0" container and inserts it into the main content.
+ * This is the new "layer" you asked for.
  */
-function showExperienceLevelChoice(labContent, mainPageContainer) {
+function showExperienceLevelChoice(contentWrapper) {
     
+    // 1. Create the new "Challenge 0" container
     const introChallengeDiv = document.createElement('div');
     introChallengeDiv.id = 'challenge-0-container';
-    introChallengeDiv.classList.add('container'); 
-    introChallengeDiv.style = "flex-grow: 1; display: flex; align-items: center; width: 100%;"; 
     
-    // Phase 1 UI: The Choice (A simple white box)
+    // 2. This is the "Phase 1" UI (The Choice)
+    // It uses .main-content to get the white box, but NOT .challenge-container
+    // This makes its UI different, as you requested.
     introChallengeDiv.innerHTML = `
-        <div class="main-content" style="text-align: center; max-width: 600px; margin: 0 auto;">
+        <div class="main-content" style="text-align: center; max-width: 600px; margin: 30px auto 0 auto;">
             <h2 style="margin-top: 0;">Welcome to the CSS Lab!</h2>
             <p>How would you like to start?</p>
             
@@ -127,13 +138,12 @@ function showExperienceLevelChoice(labContent, mainPageContainer) {
         </div>
     `;
     
-    const navbar = labContent.querySelector('.navbar');
-    if (navbar) {
-        navbar.after(introChallengeDiv);
-    }
+    // 3. Add this new challenge *before* the hidden content wrapper
+    contentWrapper.prepend(introChallengeDiv);
     
+    // 4. Add click listeners
     document.getElementById('start-guided').addEventListener('click', startGuidedTour);
-    document.getElementById('start-expert').addEventListener('click', () => startExpertTest(mainPageContainer));
+    document.getElementById('start-expert').addEventListener('click', startExpertTest);
 }
 
 /**
@@ -141,16 +151,19 @@ function showExperienceLevelChoice(labContent, mainPageContainer) {
  */
 function startGuidedTour() {
     const challengeBox = document.getElementById('challenge-0-container');
-    challengeBox.style = ""; // Remove the centering styles
     
-    // Phase 2 UI: The Tutorial (Morphs into a challenge container)
+    // 1. Rewrite the "Challenge 0" box to be the tutorial
+    // ❗ NOW it uses .challenge-container to look like a real challenge
+    // We remove the .main-content wrapper
     challengeBox.innerHTML = `
-        <div class="challenge-container" style="max-width: 600px; margin: 0 auto;">
+        <div class="challenge-container" style="max-width: 600px; margin: 30px auto 0 auto;">
             <h3 id="challenge-title-0" style="margin:0; text-align: center;">Guided Tour: Learn the UI</h3>
             <span id="status-0" style="color: grey;">(Tutorial)</span>
             
-            <p id="prompt-0">
-                Welcome! Let's learn the UI.
+            <p id="prompt-0" style="margin:0; text-align: center;">
+                Your goal is to select the 'Start' button.
+                <br>
+                Type <code>#start-button</code> in the input field and hit 'Validate' to begin!
             </p>
             
             <div id="target-area-0" class="challenge-target-area">
@@ -158,28 +171,30 @@ function startGuidedTour() {
             </div>
             
             <div class="challenge-ui">
-                <input type="text" id="selector-input-0" placeholder="Type your selector here...">
+                <input type="text" id="selector-input-0" placeholder="Type #start-button here...">
                 <button class="cta-button" onclick="validateTutorial()">Validate</button>
             </div>
             <div id="feedback-0" class="validation-feedback"></div>
         </div>
     `;
-    
-    // Start the spotlight tour
-    startSpotlightTour();
 }
 
 /**
  * (Expert Path) Hides the intro and shows the real lab.
  */
-function startExpertTest(mainPageContainer) {
+function startExpertTest() {
+    // 1. Set the flag so they don't see the intro again
     localStorage.setItem('labIntroCompleted', 'true');
 
+    // 2. Hide the "Challenge 0" intro box
     const introBox = document.getElementById('challenge-0-container');
-    if (introBox) introBox.remove(); 
+    if (introBox) introBox.remove(); // Use remove() to delete it
     
-    if (mainPageContainer) mainPageContainer.style.display = 'block';
+    // 3. Show the *real* lab container
+    const mainContent = document.querySelector('.main-content');
+    if (mainContent) mainContent.style.display = 'block';
     
+    // 4. Load all 10 real challenges
     initializeChallenges(); 
 }
 
@@ -192,6 +207,7 @@ function validateTutorial() {
     const userInput = inputField.value.trim();
 
     if (userInput === '#start-button') {
+        // SUCCESS!
         localStorage.setItem('labIntroCompleted', 'true');
         
         feedbackElement.className = 'validation-feedback success';
@@ -201,172 +217,24 @@ function validateTutorial() {
             Loading the real challenges now...
         `;
 
+        // After a short delay, hide the tour and show the real lab.
         setTimeout(() => {
+            // 1. Hide the "Challenge 0" intro box
             const introBox = document.getElementById('challenge-0-container');
             if (introBox) introBox.remove();
 
-            const mainPageContainer = document.querySelector('.container');
-            if (mainPageContainer) mainPageContainer.style.display = 'block';
+            // 2. Show the *real* lab container
+            const mainContent = document.querySelector('.main-content');
+            if (mainContent) mainContent.style.display = 'block';
             
+            // 3. Initialize all 10 real challenges
             initializeChallenges();
-        }, 1500); 
+        }, 1500); // 1.5-second delay
 
     } else {
+        // FAILURE
         feedbackElement.className = 'validation-feedback error';
         feedbackElement.innerHTML = `Not quite! Try typing the exact selector <code>#start-button</code> into the input box.`;
-    }
-}
-
-// -------------------------------------------------
-// 💡 --- SPOTLIGHT TOUR FUNCTIONS (ALL NEW) --- 💡
-// -------------------------------------------------
-let currentTourStep = 0;
-const tourSteps = [
-    {
-        element: '#prompt-0',
-        title: "Step 1: The Prompt",
-        text: "<p>This is the <strong>Prompt</strong>. It tells you *what* element to find. In this case, it's the 'Start' button.</p>"
-    },
-    {
-        element: '#target-area-0',
-        title: "Step 2: The Target Area",
-        text: "<p>This is the <strong>Target Area</strong>. The HTML elements you need to select are inside this box.</p>"
-    },
-    {
-        element: '#target-area-0',
-        title: "Step 3: How to Find the Selector",
-        text: "<p>To find a selector, <strong>right-click</strong> the 'Click me to start!' button and choose <strong>'Inspect'</strong>.</p><p></p>"
-    },
-    {
-        element: '#target-area-0',
-        title: "Step 4: Using the Console",
-        text: "<p>The <strong>Developer Console</strong> will open, showing you the HTML. Notice the button has an `id`? That's your answer!</p><p></p>"
-    },
-    {
-        element: '#selector-input-0',
-        title: "Step 5: The Input Field",
-        text: "<p>Now, type your selector (<code>#start-button</code>) into the <strong>Input Field</strong>.</p>"
-    },
-    {
-        element: 'button[onclick="validateTutorial()"]',
-        title: "Step 6: The Validate Button",
-        text: "<p>Finally, click the <strong>Validate</strong> button to check your answer. Your turn!</p>"
-    }
-];
-
-function startSpotlightTour() {
-    // Create the overlay
-    const overlay = document.createElement('div');
-    overlay.id = 'tour-overlay';
-    document.body.appendChild(overlay);
-
-    // Create the popup (now a fixed panel)
-    const panel = document.createElement('div');
-    panel.id = 'tour-popup';
-    
-    panel.innerHTML = `
-        <button id="tour-skip" class="tour-skip-x">&times;</button>
-        <div id="tour-content">
-            <h3 id="tour-title"></h3>
-            <div id="tour-text"></div>
-            <div id="tour-buttons">
-                <button id="tour-back" class="cta-skip">Back</button>
-                <button id="tour-next" class="cta-button">Next</button>
-            </div>
-        </div>
-    `;
-    document.body.appendChild(panel);
-
-    document.getElementById('tour-next').addEventListener('click', nextTourStep);
-    document.getElementById('tour-back').addEventListener('click', prevTourStep);
-    document.getElementById('tour-skip').addEventListener('click', endSpotlightTour);
-
-    currentTourStep = 0;
-    showTourStep(currentTourStep);
-}
-
-function showTourStep(stepIndex) {
-    const step = tourSteps[stepIndex];
-    if (!step) {
-        endSpotlightTour();
-        return;
-    }
-
-    const popup = document.getElementById('tour-popup');
-    const targetElement = document.querySelector(step.element);
-    
-    // Update popup content
-    document.getElementById('tour-title').textContent = step.title;
-    document.getElementById('tour-text').innerHTML = step.text;
-
-    // Remove previous spotlight
-    document.querySelector('.spotlight')?.classList.remove('spotlight');
-    
-    if (targetElement) {
-        // Add new spotlight
-        targetElement.classList.add('spotlight');
-        
-        const rect = targetElement.getBoundingClientRect(); // Get element's position
-        const panelRect = popup.getBoundingClientRect(); // Get popup's dimensions
-        
-        popup.classList.remove('tour-panel-top', 'tour-panel-bottom');
-
-        let top;
-        // Check if popup fits below element, otherwise place above
-        if (rect.bottom + panelRect.height + 20 > window.innerHeight) {
-            // Place above
-            top = rect.top - panelRect.height - 15 + window.scrollY;
-            popup.classList.add('tour-panel-top');
-        } else {
-            // Place below
-            top = rect.bottom + 15 + window.scrollY;
-            popup.classList.add('tour-panel-bottom');
-        }
-        
-        // Center horizontally
-        let left = rect.left + (rect.width / 2) - (panelRect.width / 2);
-        
-        // Constrain to viewport
-        if (left < 10) left = 10;
-        if (left + panelRect.width > window.innerWidth - 10) {
-            left = window.innerWidth - panelRect.width - 10;
-        }
-        
-        popup.style.top = `${top}px`;
-        popup.style.left = `${left}px`;
-    }
-
-    // Update Button Logic
-    const backButton = document.getElementById('tour-back');
-    const nextButton = document.getElementById('tour-next');
-
-    backButton.style.visibility = (stepIndex === 0) ? 'hidden' : 'visible';
-
-    if (stepIndex === tourSteps.length - 1) {
-        nextButton.textContent = "Done!";
-    } else {
-        nextButton.textContent = "Next";
-    }
-}
-
-function prevTourStep() {
-    currentTourStep--;
-    showTourStep(currentTourStep);
-}
-
-function nextTourStep() {
-    currentTourStep++;
-    showTourStep(currentTourStep);
-}
-
-function endSpotlightTour() {
-    document.getElementById('tour-overlay')?.remove();
-    document.getElementById('tour-popup')?.remove();
-    document.querySelector('.spotlight')?.classList.remove('spotlight');
-    
-    const prompt = document.getElementById('prompt-0');
-    if (prompt) {
-        prompt.innerHTML = "Your turn! Select the 'Start' button. <br> Type <code>#start-button</code> and hit 'Validate'.";
     }
 }
 
@@ -440,7 +308,6 @@ function generateNewChallengeHTML(def) {
 }
 
 // Definition of all challenges
-// ❗ FIX: Removed 'isComplex' from all definitions
 const challengeDefinitions = [
     {
         id: 1,
@@ -637,7 +504,6 @@ function initializeChallenges() {
             type: def.type
         };
 
-        // ❗ FIX: Removed the broken 'complexClass' variable
         htmlContent += `
             <div id="challenge-${def.id}" class="challenge-container">
                 <h3 id="challenge-title-${def.id}">Challenge ${def.id}</h3>
