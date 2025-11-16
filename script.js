@@ -310,11 +310,10 @@ function showTourStep(stepIndex) {
         // This is the new logic to position the "beak"
         // We get the vertical center of the highlighted element
         const rect = targetElement.getBoundingClientRect();
-        // We add window.scrollY to account for page scrolling
-        const elementCenter = rect.top + (rect.height / 2) + window.scrollY; 
+        const elementCenter = rect.top + (rect.height / 2); // No window.scrollY needed for fixed panel
         
-        // We get the panel's top position (which is 100px from the viewport top)
-        const panelTop = popup.getBoundingClientRect().top + window.scrollY;
+        // We get the panel's top position (which is 100px)
+        const panelTop = popup.getBoundingClientRect().top;
         
         // Calculate the beak's position *relative to the panel*
         // (elementCenter - panelTop) gives us the correct offset
@@ -625,6 +624,7 @@ function initializeChallenges() {
             type: def.type
         };
 
+        // ❗ FIX 2: Removed the broken 'complexClass' variable
         htmlContent += `
             <div id="challenge-${def.id}" class="challenge-container">
                 <h3 id="challenge-title-${def.id}">Challenge ${def.id}</h3>
