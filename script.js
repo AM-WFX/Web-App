@@ -109,10 +109,14 @@ function showExperienceLevelChoice(labContent, mainPageContainer) {
     
     const introChallengeDiv = document.createElement('div');
     introChallengeDiv.id = 'challenge-0-container';
-    introChallengeDiv.classList.add('container'); 
-    introChallengeDiv.style = "flex-grow: 1; display: flex; align-items: center; width: 100%;"; 
+    
+    // ❗ --- THIS IS THE FIX --- ❗
+    // We add 'flex-grow: 1' to this new container so it pushes the footer down.
+    // We also add 'padding: 30px' to match the real container's spacing.
+    introChallengeDiv.style = "flex-grow: 1; display: flex; align-items: center; width: 100%; padding: 30px;"; 
     
     // Phase 1 UI: The Choice (A simple white box)
+    // It now uses 'margin: auto' to center perfectly inside the flex container.
     introChallengeDiv.innerHTML = `
         <div class="main-content" style="text-align: center; max-width: 600px; margin: auto;">
             <h2 style="margin-top: 0;">Welcome to the CSS Lab!</h2>
@@ -146,7 +150,7 @@ function startGuidedTour() {
     
     // Phase 2 UI: The Tutorial (Morphs into a challenge container)
     challengeBox.innerHTML = `
-        <div class="challenge-container" style="max-width: 600px; margin: 30px auto;">
+        <div class="challenge-container" style="max-width: 600px; margin: 0 auto;">
             <h3 id="challenge-title-0" style="margin:0; text-align: center;">Guided Tour: Learn the UI</h3>
             <span id="status-0" style="color: grey;">(Tutorial)</span>
             
@@ -263,7 +267,7 @@ function startSpotlightTour() {
 
     // Create the popup
     const popup = document.createElement('div');
-    popup.id = 'tour-popup'; // We are using 'tour-popup'
+    popup.id = 'tour-popup'; 
     
     popup.innerHTML = `
         <button id="tour-skip" class="tour-skip-x">&times;</button>
@@ -307,9 +311,6 @@ function showTourStep(stepIndex) {
         // Add new spotlight
         targetElement.classList.add('spotlight');
         
-        // ❗ --- THIS IS THE FIX --- ❗
-        // This is the JavaScript positioning logic that was missing.
-        // It makes the tooltip float above or below the element.
         const rect = targetElement.getBoundingClientRect(); 
         const panelRect = popup.getBoundingClientRect(); 
         
