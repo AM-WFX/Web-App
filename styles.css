@@ -54,6 +54,7 @@ body {
     overflow-x: hidden;
 }
 
+/* ❗ --- THIS IS THE STICKY FOOTER FIX (PART 1) --- ❗ */
 /* This makes your #page-content wrapper a flex container */
 /* that is at least as tall as the screen. */
 #page-content {
@@ -167,25 +168,22 @@ h1, h2, h3 {
     font-weight: 700; 
 }
 
-/* ❗ --- THIS IS THE FIX --- ❗ */
+/* ❗ --- THIS IS THE STICKY FOOTER FIX (PART 2) --- ❗ */
 .container {
     /* flex-grow: 1 tells it to "grow" and fill all empty space */
     flex-grow: 1; 
-    
-    /* margin: 0 auto; centers it horizontally (NO top/bottom margin) */
+    /* margin: 0 auto; centers it horizontally */
     margin: 0 auto;
-    
     /* padding: 30px; gives equal 30px spacing on all 4 sides */
     padding: 30px;
-    
     width: 100%; 
     /* max-width has been removed as requested */
 }
 
-/* This wrapper is now just a simple block */
+/* This wrapper now provides the 30px of space on all 4 sides */
 #content-wrapper {
     display: block; 
-    padding: 0; 
+    padding: 0; /* No padding needed here */
 }
 
 /* This is the white box */
@@ -202,6 +200,7 @@ footer {
     padding: 15px;
     background-color: var(--wf-secondary-steel-gray); 
     color: white;
+    /* ❗ --- THIS IS THE STICKY FOOTER FIX (PART 3) --- ❗ */
     margin-top: 0; /* No margin needed, flex-grow handles it */
 }
 
@@ -559,6 +558,12 @@ footer p {
     margin-bottom: 0;
 }
 
+
+#prompt, #prompt * {
+    padding: 0 !important; 
+    margin: 0 !important; 
+}
+
 /* --- Challenge Card Specifics --- */
 h3[id*="challenge-title-"] {
     font-size: 1.4em;
@@ -577,7 +582,9 @@ span[id*="status-"] {
     text-align: center; 
 }
 
-/* This is the general rule for ALL challenge prompts */
+/* ❗ --- THIS IS THE FIX --- ❗ */
+/* This is the general rule for ALL challenge prompts (0, 1, 2...10) */
+/* It has no box, no height, and is just centered text. */
 p[id*="prompt-"] {
     padding: 5px 0 !important;
     margin: 0 !important; 
@@ -683,6 +690,7 @@ p[id*="prompt-"] {
 /* --- 💡 SPOTLIGHT TOUR STYLES 💡 --- */
 /* ---------------------------------------------------- */
 
+/* ❗ FIX: Opacity reduced to 15% ❗ */
 #tour-overlay {
     position: fixed;
     inset: 0;
@@ -692,15 +700,21 @@ p[id*="prompt-"] {
     z-index: 2000;
 }
 
+/* The element being highlighted */
 .spotlight {
     position: relative;
     z-index: 2001; /* Above the overlay */
+    
+    /* ❗ FIX: Shadow opacity reduced to 15% ❗ */
     box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.15);
+    
+    /* ❗ FIX: Replaced pulse with a simple border ❗ */
     border-radius: var(--wf-border-radius);
     border: 2px solid var(--wf-accent-orange);
 }
 
 
+/* ❗ FIX: The tour pop-up is now a floating tooltip ❗ */
 #tour-popup {
     position: absolute; /* Positioned by JavaScript */
     z-index: 2002; /* On top of everything */
@@ -713,6 +727,7 @@ p[id*="prompt-"] {
     transition: top 0.3s ease, left 0.3s ease; /* Smooth movement */
 }
 
+/* ❗ FIX: New "X" (Skip) button ❗ */
 .tour-skip-x {
     position: absolute;
     top: 10px;
@@ -729,6 +744,7 @@ p[id*="prompt-"] {
     color: var(--wf-secondary-steel-gray);
 }
 
+/* ❗ FIX: New "beak" or "connector line" ❗ */
 #tour-popup::before,
 #tour-popup::after {
     content: '';
@@ -774,13 +790,16 @@ p[id*="prompt-"] {
     font-family: monospace;
 }
 
+/* ❗ FIX: New button layout ❗ */
 #tour-buttons {
     display: flex;
     justify-content: space-between; /* This creates the gap */
     align-items: center;
     margin-top: 20px;
+    /* border-top: none; <-- Removed */
 }
 
+/* ❗ FIX: "Back" button styling ❗ */
 .cta-skip { 
     background: none;
     border: none;
@@ -788,8 +807,8 @@ p[id*="prompt-"] {
     cursor: pointer;
     font-size: 0.9em;
     font-family: 'Aeonik', sans-serif;
-    font-weight: 400; 
-    text-decoration: none; 
+    font-weight: 400; /* <-- Changed from 700 */
+    text-decoration: none; /* <-- Removed underline */
 }
 .cta-skip:hover {
     color: var(--wf-secondary-steel-gray);
