@@ -256,12 +256,14 @@ const tourSteps = [
 ];
 
 function startSpotlightTour() {
+    // Create the overlay
     const overlay = document.createElement('div');
     overlay.id = 'tour-overlay';
     document.body.appendChild(overlay);
 
+    // Create the popup (now a fixed panel)
     const panel = document.createElement('div');
-    panel.id = 'tour-panel'; // Changed from 'tour-popup'
+    panel.id = 'tour-panel'; 
     
     panel.innerHTML = `
         <button id="tour-skip" class="tour-skip-x">&times;</button>
@@ -305,8 +307,7 @@ function showTourStep(stepIndex) {
         // Add new spotlight
         targetElement.classList.add('spotlight');
         
-        // ❗ --- THIS IS THE FIX --- ❗
-        // New logic to position the "beak"
+        // This is the new logic to position the "beak"
         // We get the vertical center of the highlighted element
         const rect = targetElement.getBoundingClientRect();
         const elementCenter = rect.top + (rect.height / 2);
@@ -616,6 +617,8 @@ function initializeChallenges() {
             type: def.type
         };
 
+        // ❗ --- THIS IS THE FIX --- ❗
+        // Removed the broken 'complexClass' variable
         htmlContent += `
             <div id="challenge-${def.id}" class="challenge-container">
                 <h3 id="challenge-title-${def.id}">Challenge ${def.id}</h3>
@@ -749,7 +752,7 @@ function validateChallenge(challengeId) {
         const isAttributeEqualsClass = userInput.includes('[class=');
         if (isAttributeEqualsClass) {
             feedbackElement.innerHTML = `
-                ❌ Syntax Error (Specific): Your selector <code>${userInput}</code> is failing. 
+                ❌ Syntax Error (Specific): Your selector code>{userInput}</code> is failing. 
                 <br><strong>The Attribute Equals Selector ([attr="value"]) requires an EXACT match.</strong> 
                 <br>Try the <b>Class Selector (.)</b> or the <b>Attribute Contains Selector ([attr~="value"])</b> instead.
             `;
@@ -783,7 +786,7 @@ function handleSuccess(challengeId, correctSelector) {
     let allAlternatives = [...challengeDef.alternatives];
     
     state.successfulSelectors.forEach(sel => {
-        if (!allAlternatives.some(alt => alt.selector.toLowerCase().trim() === sel) && sel !== normalizedSelector)) {
+        if (!allAlternatives.some(alt => alt.selector.toLowerCase().trim() === sel) && sel !== normalizedSelector) {
             allAlternatives.push({ selector: sel, explanation: "You found this alternative! It works because it selects the specific target element with precision." });
         }
     });
@@ -804,7 +807,7 @@ function handleSuccess(challengeId, correctSelector) {
     feedbackElement.classList.add('success');
     
     feedbackElement.innerHTML = `
-        🎉 <b>PERFECT!</b> You successfully targeted the element with <code>${correctSelector}</code>.
+        🎉 <b>PERFECT!</b> You successfully targeted the element with code>${correctSelector}</code>.
         <br><br>
         <strong>Lesson Learned: ${challengeDef.type}</strong> 💡
         <div class="hint-message">${challengeDef.trivia}</div>
