@@ -110,7 +110,6 @@ function showExperienceLevelChoice(labContent, mainPageContainer) {
     const introChallengeDiv = document.createElement('div');
     introChallengeDiv.id = 'challenge-0-container';
     introChallengeDiv.classList.add('container'); 
-    // This style forces the container to fill the screen and center its content
     introChallengeDiv.style = "flex-grow: 1; display: flex; align-items: center; width: 100%; padding: 30px;"; 
     
     // Phase 1 UI: The Choice (A simple white box)
@@ -143,7 +142,6 @@ function showExperienceLevelChoice(labContent, mainPageContainer) {
 function startGuidedTour() {
     const challengeBox = document.getElementById('challenge-0-container');
     
-    // ❗ --- THIS IS THE FIX --- ❗
     // We must *preserve* flex-grow and display:flex
     // We only change align-items to 'flex-start' (top).
     challengeBox.style.cssText = "flex-grow: 1; display: flex; align-items: flex-start; width: 100%; padding: 30px 0;";
@@ -226,36 +224,51 @@ function validateTutorial() {
 // 💡 --- SPOTLIGHT TOUR FUNCTIONS (ALL NEW) --- 💡
 // -------------------------------------------------
 let currentTourStep = 0;
+
+// ❗ --- THIS IS THE FIX (Part 1) --- ❗
+// Added your coordinates for Step 1
 const tourSteps = [
     {
         element: '#prompt-0',
         title: "Step 1: The Prompt",
-        text: "<p>This is the <strong>Prompt</strong>. It tells you *what* element to find. In this case, it's the 'Start' button.</p>"
+        text: "<p>This is the <strong>Prompt</strong>. It tells you *what* element to find. In this case, it's the 'Start' button.</p>",
+        top: "250px", 
+        beakTop: "111.5px"
     },
     {
         element: '#target-area-0',
         title: "Step 2: The Target Area",
-        text: "<p>This is the <strong>Target Area</strong>. The HTML elements you need to select are inside this box.</p>"
+        text: "<p>This is the <strong>Target Area</strong>. The HTML elements you need to select are inside this box.</p>",
+        top: "250px", // Placeholder - You will give me this
+        beakTop: "111.5px" // Placeholder - You will give me this
     },
     {
         element: '#target-area-0',
         title: "Step 3: How to Find the Selector",
-        text: "<p>To find a selector, <strong>right-click</strong> the 'Click me to start!' button and choose <strong>'Inspect'</strong>.</p><p></p>"
+        text: "<p>To find a selector, <strong>right-click</strong> the 'Click me to start!' button and choose <strong>'Inspect'</strong>.</p><p></p>",
+        top: "250px", // Placeholder
+        beakTop: "111.5px" // Placeholder
     },
     {
         element: '#target-area-0',
         title: "Step 4: Using the Console",
-        text: "<p>The <strong>Developer Console</strong> will open, showing you the HTML. Notice the button has an `id`? That's your answer!</p><p></p>"
+        text: "<p>The <strong>Developer Console</strong> will open, showing you the HTML. Notice the button has an `id`? That's your answer!</p><p></p>",
+        top: "250px", // Placeholder
+        beakTop: "111.5px" // Placeholder
     },
     {
         element: '#selector-input-0',
         title: "Step 5: The Input Field",
-        text: "<p>Now, type your selector (<code>#start-button</code>) into the <strong>Input Field</strong>.</p>"
+        text: "<p>Now, type your selector (<code>#start-button</code>) into the <strong>Input Field</strong>.</p>",
+        top: "250px", // Placeholder
+        beakTop: "111.5px" // Placeholder
     },
     {
         element: 'button[onclick="validateTutorial()"]',
         title: "Step 6: The Validate Button",
-        text: "<p>Finally, click the <strong>Validate</strong> button to check your answer. Your turn!</p>"
+        text: "<p>Finally, click the <strong>Validate</strong> button to check your answer. Your turn!</p>",
+        top: "250px", // Placeholder
+        beakTop: "111.5px" // Placeholder
     }
 ];
 
@@ -264,8 +277,6 @@ function startSpotlightTour() {
     overlay.id = 'tour-overlay';
     document.body.appendChild(overlay);
 
-    // ❗ --- THIS IS THE FIX --- ❗
-    // The ID is now 'tour-panel' to match the CSS
     const panel = document.createElement('div');
     panel.id = 'tour-panel'; 
     
@@ -297,8 +308,6 @@ function showTourStep(stepIndex) {
         return;
     }
 
-    // ❗ --- THIS IS THE FIX --- ❗
-    // We now find the 'tour-panel'
     const popup = document.getElementById('tour-panel');
     const targetElement = document.querySelector(step.element);
     
@@ -313,21 +322,11 @@ function showTourStep(stepIndex) {
         // Add new spotlight
         targetElement.classList.add('spotlight');
         
-        // This is the new logic to position the "beak"
-        // We get the vertical center of the highlighted element
-        const rect = targetElement.getBoundingClientRect();
-        const elementCenter = rect.top + (rect.height / 2);
-        
-        // We get the panel's top position (which is 100px from the viewport top)
-        const panelTop = popup.getBoundingClientRect().top;
-        
-        // Calculate the beak's position *relative to the panel*
-        // (elementCenter - panelTop) gives us the correct offset
-        const beakTop = elementCenter - panelTop;
-
-        // Set a CSS variable that the stylesheet can use
-        // This sets the beak's 'top' position to match the element's center
-        popup.style.setProperty('--beak-top', `${beakTop}px`);
+        // ❗ --- THIS IS THE FIX (Part 2) --- ❗
+        // Removed all dynamic calculations.
+        // We now read your exact values from the tourSteps array.
+        popup.style.top = step.top;
+        popup.style.setProperty('--beak-top', step.beakTop);
     }
 
     // Update Button Logic
