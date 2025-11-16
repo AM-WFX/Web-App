@@ -172,10 +172,13 @@ h1, h2, h3 {
 .container {
     /* flex-grow: 1 tells it to "grow" and fill all empty space */
     flex-grow: 1; 
-    /* margin: 0 auto; centers it horizontally */
+    
+    /* margin: 0 auto; centers it horizontally (NO top/bottom margin) */
     margin: 0 auto;
+    
     /* padding: 30px; gives equal 30px spacing on all 4 sides */
     padding: 30px;
+    
     width: 100%; 
     /* max-width has been removed as requested */
 }
@@ -337,18 +340,6 @@ button[onclick*="validateChallenge"]:hover {
     align-items: center;     
     justify-content: center;
 }
-
-/* ❗ --- THIS IS THE FIX --- ❗ */
-/* These rules are GONE. They were causing the 'display: block' clash. */
-/*
-.challenge-target-area.is-complex {
-    align-items: flex-start;
-    justify-content: flex-start;
-}
-.challenge-target-area.is-complex > .target-element {
-    display: block !important;
-}
-*/
 
 /* This is our one, simple "pill" style */
 .challenge-target-area p,
@@ -594,9 +585,7 @@ span[id*="status-"] {
     text-align: center; 
 }
 
-/* ❗ --- THIS IS THE FIX --- ❗ */
 /* This is the general rule for ALL challenge prompts (0, 1, 2...10) */
-/* It has no box, no height, and is just centered text. */
 p[id*="prompt-"] {
     padding: 5px 0 !important;
     margin: 0 !important; 
