@@ -769,14 +769,14 @@ p[id*="prompt-"] {
 }
 
 /* This is the "beak" that points DOWN */
-#tour-popup.tour-panel-top::after {
+#tour-popup.tour-popup-top::after {
     top: 100%;
     border-width: 10px 10px 0 10px;
     border-color: white transparent transparent transparent;
 }
 
 /* This is the "beak" that points UP */
-#tour-popup.tour-panel-bottom::before {
+#tour-popup.tour-popup-bottom::before {
     bottom: 100%;
     border-width: 0 10px 10px 10px;
     border-color: transparent transparent white transparent;
