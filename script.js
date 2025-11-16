@@ -261,7 +261,7 @@ function startSpotlightTour() {
     document.body.appendChild(overlay);
 
     const panel = document.createElement('div');
-    panel.id = 'tour-panel'; 
+    panel.id = 'tour-panel'; // Changed from 'tour-popup'
     
     panel.innerHTML = `
         <button id="tour-skip" class="tour-skip-x">&times;</button>
@@ -291,8 +291,6 @@ function showTourStep(stepIndex) {
         return;
     }
 
-    // ❗ --- THIS IS THE FIX --- ❗
-    // We now find the 'tour-panel' instead of 'tour-popup'
     const popup = document.getElementById('tour-panel');
     const targetElement = document.querySelector(step.element);
     
@@ -307,7 +305,8 @@ function showTourStep(stepIndex) {
         // Add new spotlight
         targetElement.classList.add('spotlight');
         
-        // This is the new logic to position the "beak"
+        // ❗ --- THIS IS THE FIX --- ❗
+        // New logic to position the "beak"
         // We get the vertical center of the highlighted element
         const rect = targetElement.getBoundingClientRect();
         const elementCenter = rect.top + (rect.height / 2);
@@ -784,7 +783,7 @@ function handleSuccess(challengeId, correctSelector) {
     let allAlternatives = [...challengeDef.alternatives];
     
     state.successfulSelectors.forEach(sel => {
-        if (!allAlternatives.some(alt => alt.selector.toLowerCase().trim() === sel) && sel !== normalizedSelector) {
+        if (!allAlternatives.some(alt => alt.selector.toLowerCase().trim() === sel) && sel !== normalizedSelector)) {
             allAlternatives.push({ selector: sel, explanation: "You found this alternative! It works because it selects the specific target element with precision." });
         }
     });
