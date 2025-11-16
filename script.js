@@ -256,14 +256,16 @@ const tourSteps = [
 ];
 
 function startSpotlightTour() {
+    // Create the overlay
     const overlay = document.createElement('div');
     overlay.id = 'tour-overlay';
     document.body.appendChild(overlay);
 
-    const panel = document.createElement('div');
-    panel.id = 'tour-panel'; // Changed from 'tour-popup'
+    // Create the popup
+    const popup = document.createElement('div');
+    popup.id = 'tour-popup'; 
     
-    panel.innerHTML = `
+    popup.innerHTML = `
         <button id="tour-skip" class="tour-skip-x">&times;</button>
         <div id="tour-content">
             <h3 id="tour-title"></h3>
@@ -274,7 +276,7 @@ function startSpotlightTour() {
             </div>
         </div>
     `;
-    document.body.appendChild(panel);
+    document.body.appendChild(popup);
 
     document.getElementById('tour-next').addEventListener('click', nextTourStep);
     document.getElementById('tour-back').addEventListener('click', prevTourStep);
@@ -291,9 +293,7 @@ function showTourStep(stepIndex) {
         return;
     }
 
-    // ❗ --- THIS IS THE FIX --- ❗
-    // We now find the 'tour-panel' instead of 'tour-popup'
-    const popup = document.getElementById('tour-panel');
+    const popup = document.getElementById('tour-popup');
     const targetElement = document.querySelector(step.element);
     
     // Update popup content
@@ -307,21 +307,35 @@ function showTourStep(stepIndex) {
         // Add new spotlight
         targetElement.classList.add('spotlight');
         
-        // This is the new logic to position the "beak"
-        // We get the vertical center of the highlighted element
-        const rect = targetElement.getBoundingClientRect();
-        const elementCenter = rect.top + (rect.height / 2); // No window.scrollY needed for fixed panel
+        // This is the JavaScript positioning logic that makes the tooltip float.
+        const rect = targetElement.getBoundingClientRect(); 
+        const panelRect = popup.getBoundingClientRect(); 
         
-        // We get the panel's top position (which is 100px)
-        const panelTop = popup.getBoundingClientRect().top;
-        
-        // Calculate the beak's position *relative to the panel*
-        // (elementCenter - panelTop) gives us the correct offset
-        const beakTop = elementCenter - panelTop;
+        popup.classList.remove('tour-panel-top', 'tour-panel-bottom');
 
-        // Set a CSS variable that the stylesheet can use
-        // This sets the beak's 'top' position to match the element's center
-        popup.style.setProperty('--beak-top', `${beakTop}px`);
+        let top;
+        // Check if popup fits below element, otherwise place above
+        if (rect.bottom + panelRect.height + 20 > window.innerHeight) {
+            // Place above
+            top = rect.top - panelRect.height - 15 + window.scrollY;
+            popup.classList.add('tour-panel-top');
+        } else {
+            // Place below
+            top = rect.bottom + 15 + window.scrollY;
+            popup.classList.add('tour-panel-bottom');
+        }
+        
+        // Center horizontally
+        let left = rect.left + (rect.width / 2) - (panelRect.width / 2);
+        
+        // Constrain to viewport
+        if (left < 10) left = 10;
+        if (left + panelRect.width > window.innerWidth - 10) {
+            left = window.innerWidth - panelRect.width - 10;
+        }
+        
+        popup.style.top = `${top}px`;
+        popup.style.left = `${left}px`;
     }
 
     // Update Button Logic
@@ -349,7 +363,7 @@ function nextTourStep() {
 
 function endSpotlightTour() {
     document.getElementById('tour-overlay')?.remove();
-    document.getElementById('tour-panel')?.remove();
+    document.getElementById('tour-popup')?.remove();
     document.querySelector('.spotlight')?.classList.remove('spotlight');
     
     const prompt = document.getElementById('prompt-0');
@@ -427,7 +441,7 @@ function generateNewChallengeHTML(def) {
     return { html: html, newTargetSelector: newTargetSelector, newPrompt: newPrompt };
 }
 
-// Definition of all challenges
+// ❗ FIX 1: Removed 'isComplex' from all definitions
 const challengeDefinitions = [
     {
         id: 1,
