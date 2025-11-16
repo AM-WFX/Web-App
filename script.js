@@ -110,12 +110,13 @@ function showExperienceLevelChoice(labContent, mainPageContainer) {
     const introChallengeDiv = document.createElement('div');
     introChallengeDiv.id = 'challenge-0-container';
     introChallengeDiv.classList.add('container'); 
-    // This style forces the container to fill the screen and center its content
     introChallengeDiv.style = "flex-grow: 1; display: flex; align-items: center; width: 100%;"; 
     
     // Phase 1 UI: The Choice (A simple white box)
+    // ❗ --- THIS IS THE FIX --- ❗
+    // Changed 'margin: 0 auto' to 'margin: auto' to center vertically and horizontally
     introChallengeDiv.innerHTML = `
-        <div class="main-content" style="text-align: center; max-width: 600px; margin: 0 auto;">
+        <div class="main-content" style="text-align: center; max-width: 600px; margin: auto;">
             <h2 style="margin-top: 0;">Welcome to the CSS Lab!</h2>
             <p>How would you like to start?</p>
             
@@ -142,15 +143,12 @@ function showExperienceLevelChoice(labContent, mainPageContainer) {
  */
 function startGuidedTour() {
     const challengeBox = document.getElementById('challenge-0-container');
-    
-    // ❗ --- THIS IS THE FIX --- ❗
-    // We only change align-items to 'flex-start' (top),
-    // but we KEEP 'display: flex' and 'flex-grow: 1' to preserve the layout.
+    // We set align-items to flex-start (top) and remove the 0 auto margin from the child
     challengeBox.style.alignItems = 'flex-start';
     
     // Phase 2 UI: The Tutorial (Morphs into a challenge container)
     challengeBox.innerHTML = `
-        <div class="challenge-container" style="max-width: 600px; margin: 0 auto;">
+        <div class="challenge-container" style="max-width: 600px; margin: 30px auto 0 auto;">
             <h3 id="challenge-title-0" style="margin:0; text-align: center;">Guided Tour: Learn the UI</h3>
             <span id="status-0" style="color: grey;">(Tutorial)</span>
             
