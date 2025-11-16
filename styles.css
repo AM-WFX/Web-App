@@ -54,7 +54,6 @@ body {
     overflow-x: hidden;
 }
 
-/* ❗ --- THIS IS THE STICKY FOOTER FIX (PART 1) --- ❗ */
 /* This makes your #page-content wrapper a flex container */
 /* that is at least as tall as the screen. */
 #page-content {
@@ -168,7 +167,8 @@ h1, h2, h3 {
     font-weight: 700; 
 }
 
-/* ❗ --- THIS IS THE STICKY FOOTER FIX (PART 2) --- ❗ */
+/* ❗ --- THIS IS THE FIX --- ❗ */
+/* This section now controls all page spacing */
 .container {
     /* flex-grow: 1 tells it to "grow" and fill all empty space */
     flex-grow: 1; 
@@ -203,7 +203,6 @@ footer {
     padding: 15px;
     background-color: var(--wf-secondary-steel-gray); 
     color: white;
-    /* ❗ --- THIS IS THE STICKY FOOTER FIX (PART 3) --- ❗ */
     margin-top: 0; /* No margin needed, flex-grow handles it */
 }
 
@@ -591,13 +590,6 @@ p[id*="prompt-"] {
     margin: 0 !important; 
     text-align: center; 
     width: 100%;
-    
-    /* These are the defaults we are resetting */
-    height: auto;
-    overflow-y: visible;
-    background-color: transparent;
-    border: none;
-    border-radius: 0;
 }
 
 
@@ -709,18 +701,21 @@ p[id*="prompt-"] {
 }
 
 
-#tour-popup {
-    position: absolute; /* Positioned by JavaScript */
+/* ❗ FIX: The tour pop-up is now a fixed side panel on the right ❗ */
+#tour-panel {
+    position: fixed;
     z-index: 2002; /* On top of everything */
+    right: 30px;
+    top: 100px; /* Positioned below the navbar */
     width: 350px;
     max-width: 90%;
     background-color: white;
     border-radius: var(--wf-border-radius);
     box-shadow: var(--wf-shadow-card);
     padding: 25px;
-    transition: top 0.3s ease, left 0.3s ease; /* Smooth movement */
 }
 
+/* ❗ FIX: New "X" (Skip) button ❗ */
 .tour-skip-x {
     position: absolute;
     top: 10px;
@@ -737,58 +732,57 @@ p[id*="prompt-"] {
     color: var(--wf-secondary-steel-gray);
 }
 
-#tour-popup::before,
-#tour-popup::after {
+/* ❗ FIX: New "beak" or "connector line" that points LEFT ❗ */
+#tour-panel::before {
     content: '';
     position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+    
+    /* Position the beak on the left edge of the panel */
+    right: 100%; 
+    
+    /* This 'top' is set by JavaScript (var(--beak-top)) 
+      to match the vertical center of the highlighted element.
+    */
+    top: var(--beak-top, 50%);
+    transform: translateY(-50%); /* Centers the beak vertically */
+    
     width: 0;
     height: 0;
     border-style: solid;
-}
-
-/* This is the "beak" that points DOWN */
-#tour-popup.tour-panel-top::after {
-    top: 100%;
-    border-width: 10px 10px 0 10px;
-    border-color: white transparent transparent transparent;
-}
-
-/* This is the "beak" that points UP */
-#tour-popup.tour-panel-bottom::before {
-    bottom: 100%;
-    border-width: 0 10px 10px 10px;
-    border-color: transparent transparent white transparent;
+    border-width: 10px 10px 10px 0;
+    border-color: transparent white transparent transparent;
 }
 
 
-#tour-popup h3 {
+#tour-panel h3 {
     margin-top: 0;
     margin-bottom: 15px;
     color: var(--wf-accent-orange);
 }
 
-#tour-popup #tour-text p {
+#tour-panel #tour-text p {
     margin-bottom: 10px !important; /* Override global p */
     line-height: 1.6;
     text-align: left;
 }
 
-#tour-popup #tour-text p code {
+#tour-panel #tour-text p code {
     background-color: #E2E8F0;
     padding: 2px 5px;
     border-radius: 4px;
     font-family: monospace;
 }
 
+/* ❗ FIX: New button layout ❗ */
 #tour-buttons {
     display: flex;
     justify-content: space-between; /* This creates the gap */
     align-items: center;
     margin-top: 20px;
+    border-top: none; /* Removed border */
 }
 
+/* ❗ FIX: "Back" button styling ❗ */
 .cta-skip { 
     background: none;
     border: none;
@@ -796,8 +790,8 @@ p[id*="prompt-"] {
     cursor: pointer;
     font-size: 0.9em;
     font-family: 'Aeonik', sans-serif;
-    font-weight: 400; 
-    text-decoration: none; 
+    font-weight: 400; /* Set to 400 to match 'Next' */
+    text-decoration: none; /* Removed underline */
 }
 .cta-skip:hover {
     color: var(--wf-secondary-steel-gray);
