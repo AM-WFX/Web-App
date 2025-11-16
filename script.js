@@ -147,10 +147,9 @@ function startGuidedTour() {
     
     // Phase 2 UI: The Tutorial (Morphs into a challenge container)
     // ❗ --- THIS IS THE FIX --- ❗
-    // Changed 'margin: 30px auto 0 auto' to 'margin: 30px auto' for cross-browser safety.
-    // The key is that the top margin is NOT auto.
+    // Changed 'margin: 30px auto 0 auto' to 'margin: auto'
     challengeBox.innerHTML = `
-        <div class="challenge-container" style="max-width: 600px; margin: 30px auto;">
+        <div class="challenge-container" style="max-width: 600px; margin: auto;">
             <h3 id="challenge-title-0" style="margin:0; text-align: center;">Guided Tour: Learn the UI</h3>
             <span id="status-0" style="color: grey;">(Tutorial)</span>
             
