@@ -814,7 +814,7 @@ function handleSuccess(challengeId, correctSelector) {
     feedbackElement.classList.add('success');
     
     feedbackElement.innerHTML = `
-        🎉 <b>PERFECT!</b> You successfully targeted the element with code>${correctSelector}</code>.
+        🎉 <b>PERFECT!</b> You successfully targeted the element with <code>${correctSelector}</code>.
         <br><br>
         <strong>Lesson Learned: ${challengeDef.type}</strong> 💡
         <div class="hint-message">${challengeDef.trivia}</div>
