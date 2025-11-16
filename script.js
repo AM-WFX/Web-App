@@ -256,12 +256,10 @@ const tourSteps = [
 ];
 
 function startSpotlightTour() {
-    // Create the overlay
     const overlay = document.createElement('div');
     overlay.id = 'tour-overlay';
     document.body.appendChild(overlay);
 
-    // Create the popup (now a fixed panel)
     const panel = document.createElement('div');
     panel.id = 'tour-panel'; 
     
@@ -293,6 +291,8 @@ function showTourStep(stepIndex) {
         return;
     }
 
+    // ❗ --- THIS IS THE FIX --- ❗
+    // We now find the 'tour-panel' instead of 'tour-popup'
     const popup = document.getElementById('tour-panel');
     const targetElement = document.querySelector(step.element);
     
@@ -307,8 +307,7 @@ function showTourStep(stepIndex) {
         // Add new spotlight
         targetElement.classList.add('spotlight');
         
-        // ❗ --- THIS IS THE FIX --- ❗
-        // New logic to position the "beak"
+        // This is the new logic to position the "beak"
         // We get the vertical center of the highlighted element
         const rect = targetElement.getBoundingClientRect();
         const elementCenter = rect.top + (rect.height / 2);
@@ -421,7 +420,7 @@ function generateNewChallengeHTML(def) {
     return { html: html, newTargetSelector: newTargetSelector, newPrompt: newPrompt };
 }
 
-// ❗ FIX 1: Removed 'isComplex' from all definitions
+// Definition of all challenges
 const challengeDefinitions = [
     {
         id: 1,
@@ -617,8 +616,7 @@ function initializeChallenges() {
             originalPrompt: def.prompt,
             type: def.type
         };
-        
-        // ❗ FIX 2: Removed the broken 'complexClass' variable
+
         htmlContent += `
             <div id="challenge-${def.id}" class="challenge-container">
                 <h3 id="challenge-title-${def.id}">Challenge ${def.id}</h3>
