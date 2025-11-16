@@ -110,6 +110,7 @@ function showExperienceLevelChoice(labContent, mainPageContainer) {
     const introChallengeDiv = document.createElement('div');
     introChallengeDiv.id = 'challenge-0-container';
     introChallengeDiv.classList.add('container'); 
+    // This style forces the container to fill the screen and center its content
     introChallengeDiv.style = "flex-grow: 1; display: flex; align-items: center; width: 100%;"; 
     
     // Phase 1 UI: The Choice (A simple white box)
@@ -141,7 +142,11 @@ function showExperienceLevelChoice(labContent, mainPageContainer) {
  */
 function startGuidedTour() {
     const challengeBox = document.getElementById('challenge-0-container');
-    challengeBox.style = ""; // Remove the centering styles
+    
+    // ❗ --- THIS IS THE FIX --- ❗
+    // We only change align-items to 'flex-start' (top),
+    // but we KEEP 'display: flex' and 'flex-grow: 1' to preserve the layout.
+    challengeBox.style.alignItems = 'flex-start';
     
     // Phase 2 UI: The Tutorial (Morphs into a challenge container)
     challengeBox.innerHTML = `
@@ -636,8 +641,6 @@ function initializeChallenges() {
             type: def.type
         };
 
-        // ❗ --- THIS IS THE FIX --- ❗
-        // Removed the 'complexClass' variable entirely.
         htmlContent += `
             <div id="challenge-${def.id}" class="challenge-container">
                 <h3 id="challenge-title-${def.id}">Challenge ${def.id}</h3>
