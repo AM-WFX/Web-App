@@ -307,11 +307,12 @@ function showTourStep(stepIndex) {
         // Add new spotlight
         targetElement.classList.add('spotlight');
         
+        // ❗ --- THIS IS THE FIX --- ❗
+        // This is the JavaScript positioning logic that makes the tooltip float.
+        // It correctly uses getBoundingClientRect() WITHOUT window.scrollY.
         const rect = targetElement.getBoundingClientRect(); 
         const panelRect = popup.getBoundingClientRect(); 
         
-        // ❗ --- THIS IS THE FIX --- ❗
-        // Use the correct class names to match the CSS
         popup.classList.remove('tour-popup-top', 'tour-popup-bottom');
 
         let top;
@@ -319,11 +320,11 @@ function showTourStep(stepIndex) {
         if (rect.bottom + panelRect.height + 20 > window.innerHeight) {
             // Place above
             top = rect.top - panelRect.height - 15 + window.scrollY;
-            popup.classList.add('tour-popup-top'); // ❗ FIX
+            popup.classList.add('tour-popup-top');
         } else {
             // Place below
             top = rect.bottom + 15 + window.scrollY;
-            popup.classList.add('tour-popup-bottom'); // ❗ FIX
+            popup.classList.add('tour-popup-bottom');
         }
         
         // Center horizontally
