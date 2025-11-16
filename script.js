@@ -227,15 +227,15 @@ function validateTutorial() {
 let currentTourStep = 0;
 
 // ❗ --- THIS IS THE FIX (Part 1) --- ❗
-// Added your coordinates
+// Added your coordinates for Step 1
 const tourSteps = [
     {
         element: '#prompt-0',
         title: "Step 1: The Prompt",
         text: "<p>This is the <strong>Prompt</strong>. It tells you *what* element to find. In this case, it's the 'Start' button.</p>",
-        top: "190px", 
-        left: "1090px",
-        beakTop: "35px",
+        top: "250px", 
+        left: "1090px", // Assumed from previous request
+        beakTop: "111.5px",
         beakDirection: "left"
     },
     {
@@ -281,7 +281,7 @@ const tourSteps = [
         top: "340px", 
         left: "1070px",
         beakTop: "171.5px",
-        beakDirection: "left" // ❗ Changed this back to 'left' as you only specified 'right' for step 6 beak *style*, not position.
+        beakDirection: "left"
     }
 ];
 
@@ -341,7 +341,8 @@ function showTourStep(stepIndex) {
         // ❗ --- THIS IS THE FIX (Part 3) --- ❗
         // Removed all dynamic calculations.
         // We now read your exact values from the tourSteps array.
-        popup.style.top = step.top;
+        // We use window.scrollY to ensure the 'top' position is correct even if the page is scrolled.
+        popup.style.top = `calc(${step.top} + ${window.scrollY}px)`;
         popup.style.left = step.left;
         popup.style.setProperty('--beak-top', step.beakTop);
 
