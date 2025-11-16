@@ -440,6 +440,7 @@ function generateNewChallengeHTML(def) {
 }
 
 // Definition of all challenges
+// ❗ FIX: Removed 'isComplex' from all definitions
 const challengeDefinitions = [
     {
         id: 1,
