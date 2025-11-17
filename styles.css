@@ -776,6 +776,12 @@ p[id*="prompt-"] {
     border-color: transparent white transparent transparent;
 }
 
+#tour-panel.tour-beak-right::before {
+    right: auto; /* Reset the left-pointing rule */
+    left: 100%; /* Attach to the RIGHT side of the panel */
+    border-width: 10px 0 10px 10px; /* Make a 10px LEFT border */
+    border-color: transparent transparent transparent white; /* Make the LEFT border white */
+}
 
 #tour-panel h3 {
     margin-top: 0;
