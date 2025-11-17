@@ -292,7 +292,7 @@ function startGuidedTour() {
 
     // We only change align-items to 'flex-start' (top).
 
-    challengeBox.style.cssText = "flex-grow: 1; display: flex; align-items: flex-start; width: 100%; padding: 30px 0;";
+    challengeBox.style.cssText = "flex-grow: 1; display: flex; align-items: flex-start; justify-content: center; width: 100%; padding: 30px 0;";
 
     
 
@@ -300,7 +300,7 @@ function startGuidedTour() {
 
     challengeBox.innerHTML = `
 
-        <div class="challenge-container" style="max-width: 600px; margin: 0 auto;">
+        <div class="challenge-container" style="flex: 0 1 600px; max-width: 100%; min-width: 380px;">
 
             <h3 id="challenge-title-0" style="margin:0; text-align: center;">Guided Tour: Learn the UI</h3>
 
