@@ -103,8 +103,8 @@ document.addEventListener('DOMContentLoaded', function() {
 // -------------------------------------------------
 
 /**
- * Creates the "Challenge 0" container and inserts it *after* the navbar.
- */
+* Creates the "Challenge 0" container and inserts it *after* the navbar.
+*/
 function showExperienceLevelChoice(labContent, mainPageContainer) {
     
     const introChallengeDiv = document.createElement('div');
@@ -138,8 +138,8 @@ function showExperienceLevelChoice(labContent, mainPageContainer) {
 }
 
 /**
- * (Beginner Path) "Morphs" the intro box into the tutorial.
- */
+* (Beginner Path) "Morphs" the intro box into the tutorial.
+*/
 function startGuidedTour() {
     const challengeBox = document.getElementById('challenge-0-container');
     
@@ -174,8 +174,8 @@ function startGuidedTour() {
 }
 
 /**
- * (Expert Path) Hides the intro and shows the real lab.
- */
+* (Expert Path) Hides the intro and shows the real lab.
+*/
 function startExpertTest(mainPageContainer) {
     localStorage.setItem('labIntroCompleted', 'true');
 
@@ -188,8 +188,8 @@ function startExpertTest(mainPageContainer) {
 }
 
 /**
- * Special validation function just for the "Challenge 0" tutorial.
- */
+* Special validation function just for the "Challenge 0" tutorial.
+*/
 function validateTutorial() {
     const inputField = document.getElementById('selector-input-0');
     const feedbackElement = document.getElementById('feedback-0');
@@ -206,7 +206,7 @@ function validateTutorial() {
         `;
 
         setTimeout(() => {
-  D          const introBox = document.getElementById('challenge-0-container');
+            const introBox = document.getElementById('challenge-0-container');
             if (introBox) introBox.remove();
 
             const mainPageContainer = document.querySelector('.container');
@@ -270,12 +270,12 @@ const tourSteps = [
         element: '#selector-input-0',
         title: "Step 5: The Input Field",
         text: "<p>Now, type your selector (<code>#start-button</code>) into the <strong>Input Field</strong>.</p>",
-        // --- VALUES AS REQUESTED ---
+        // --- THIS IS THE ONLY CHANGE AS REQUESTED ---
         top: "350px", 
         left: "90px",
         beakTop: "167px",
         beakDirection: "right"
-        // --- END OF REQUEST ---
+        // --- END OF CHANGE ---
     },
     {
         element: 'button[onclick="validateTutorial()"]',
@@ -284,7 +284,7 @@ const tourSteps = [
         top: "340px", 
         left: "1070px",
         beakTop: "171.5px",
-        beakDirection: "left"
+        beakDirection: "left" // ❗ Back to 'left' as requested
     }
 ];
 
@@ -417,7 +417,7 @@ function generateNewChallengeHTML(def) {
             <div class="data-item">Item A</div>
             <div class="data-item new-target">Item B</div>
             <div class="data-item">Item C</div>
-        `;
+      . `;
         newTargetSelector = ".new-target";
         newPrompt = "Target the element labeled 'Item B' using its class selector.";
     } else if (def.type.includes('Descendant Combinator')) {
@@ -454,7 +454,7 @@ function generateNewChallengeHTML(def) {
         html = def.baseHTML.replace(def.targetSelector.replace(/[#\.\s>+~:]/g, ''), 'new-target');
         newTargetSelector = def.correctTarget.replace(def.correctTarget.replace(/[#\.\s>+~:]/g, ''), 'new-target');
         newPrompt = `Apply the ${def.type} logic to this new structure. The target element now has the class .new-target.`;
-  NT }
+    }
     
     return { html: html, newTargetSelector: newTargetSelector, newPrompt: newPrompt };
 }
@@ -528,7 +528,7 @@ const challengeDefinitions = [
                     <h2>Subtitle</h2>
                 </div>
                 <p>Card Body</p>
-            </div>
+OS       </div>
         `
     },
     {
@@ -543,7 +543,7 @@ const challengeDefinitions = [
         html: `
             <ul>
                 <li class="list-item">Zero Item</li>
-                <li class="list-item first-element">First Item</li>
+Note           <li class="list-item first-element">First Item</li>
                 <li class="list-item second-element">Second Item</li>
                 <li class="list-item">Third Item</li>
             </ul>
@@ -552,7 +552,7 @@ const challengeDefinitions = [
     {
         id: 6,
         prompt: "Target the Comments button given in the area below, which appears somewhere after the h3 element.",
-        targetSelector: "h3 ~ .comments",
+SESSION       targetSelector: "h3 ~ .comments",
         type: "General Sibling Combinator",
         alternatives: [
             { selector: "p ~ .comments", explanation: "This is also correct! It targets the .comments button as a sibling of the 'p' tag." },
@@ -601,7 +601,7 @@ const challengeDefinitions = [
     {
         id: 9,
         prompt: "Target the Save button which does not have the class .disabled.",
-        targetSelector: "button:not(.disabled)",
+s       targetSelector: "button:not(.disabled)",
         type: "Negation Pseudo-class (:not)",
         alternatives: [
             { selector: ".btn-save:not(.disabled)", explanation: "This targets any element with the class `.btn-save` that is not disabled." },
@@ -617,7 +617,7 @@ const challengeDefinitions = [
     {
         id: 10,
         prompt: "Target the checkbox that is currently checked.",
-        targetSelector: "input:checked",
+s       targetSelector: "input:checked",
         type: "UI State Pseudo-class (:checked)",
         alternatives: [
             { selector: "input[type='checkbox']:checked", explanation: "This adds the attribute selector for `type='checkbox'`, ensuring the selector only applies to checkbox inputs." }
@@ -626,7 +626,7 @@ const challengeDefinitions = [
         html: `
             <label>
                 <input type="checkbox"> Unchecked
-            </label>
+Note         </label>
             <label>
                 <input type="checkbox" checked> Checked
             </label>
@@ -658,20 +658,20 @@ function initializeChallenges() {
 
         htmlContent += `
             <div id="challenge-${def.id}" class="challenge-container">
-D              <h3 id="challenge-title-${def.id}">Challenge ${def.id}</h3>
+                <h3 id="challenge-title-${def.id}">Challenge ${def.id}</h3>
                 <span id="status-${def.id}" style="color: grey;">(Unsolved)</span>
-                <p id="prompt-${def.id}">${def.prompt}</p>
+s             <p id="prompt-${def.id}">${def.prompt}</p>
                 
                 <div id="target-area-${def.id}" class="challenge-target-area">
-                    ${def.html}
+s                 ${def.html}
                 </div>
                 
                 <div class="challenge-ui">
-SESSION                <input type="text" id="selector-input-${def.id}" placeholder="Enter your selector here..." data-id="${def.id}">
+                    <input type="text" id="selector-input-${def.id}" placeholder="Enter your selector here..." data-id="${def.id}">
                     <button class="cta-button" onclick="validateChallenge(${def.id})">Validate</button>
                 </div>
                 <div id="feedback-${def.id}" class="validation-feedback"></div>
-V          </div>
+            </div>
         `;
     });
 
@@ -684,7 +684,7 @@ function applyHighlighting(challengeId) {
     if (!targetArea) return;
     try {
         targetArea.querySelectorAll('.target-highlight').forEach(el => el.classList.remove('target-highlight'));
-    } catch (e) {
+SESSION   } catch (e) {
         console.error(`Error cleaning up highlights for challenge ${challengeId}: ${e.message}`);
     }
 }
@@ -696,7 +696,7 @@ function toggleAccordion(button) {
         panel.style.maxHeight = null;
     } else {
         panel.style.maxHeight = panel.scrollHeight + 100 + "px";
-NT } 
+    } 
 }
 
 function validateChallenge(challengeId) {
@@ -730,10 +730,10 @@ function validateChallenge(challengeId) {
     } else if (challengeType === "Child Combinator" && !userInput.includes('>')) {
         strictCheckPassed = false;
         strictFailMessage = "Incorrect. This challenge requires a <b>Child Combinator</b> (the <b>&gt;</b> symbol).";
-e } else if (challengeType === "Adjacent Sibling Combinator" && !userInput.includes('+')) {
+    } else if (challengeType === "Adjacent Sibling Combinator" && !userInput.includes('+')) {
         strictCheckPassed = false;
         strictFailMessage = "Incorrect. This challenge requires an <b>Adjacent Sibling Combinator</b> (the <b>+</b> symbol).";
-    } else if (challengeType === "General Sibling Combinator" && !userInput.includes('~')) {
+SESSION   } else if (challengeType === "General Sibling Combinator" && !userInput.includes('~')) {
         strictCheckPassed = false;
         strictFailMessage = "Incorrect. This challenge requires a <b>General Sibling Combinator</b> (the <b>~</b> symbol).";
     } else if (challengeType.includes("Attribute") && !challengeType.includes("Substring Match") && !userInput.includes('[')) {
@@ -771,7 +771,7 @@ e } else if (challengeType === "Adjacent Sibling Combinator" && !userInput.inclu
             feedbackElement.innerHTML = `
                 That's a valid selector and it works! 
                 <br><br>
-                However, this challenge is about the <b>Substring Match ("contains")</b> operator. 
+                However, this challenge is about the <b>Substring Match ("contains")</b> operator.nbsp;
                 <br>
                 Try again using the <code>*=</code> symbol to match the prompt's hint.
             `;
@@ -783,7 +783,7 @@ e } else if (challengeType === "Adjacent Sibling Combinator" && !userInput.inclu
             handleSuccess(challengeId, userInput);
         } else {
             handleFailure(challengeId, userInput, selectedElements, correctTarget);
-        }
+      . }
 
     } catch (e) {
         const isAttributeEqualsClass = userInput.includes('[class=');
@@ -815,7 +815,7 @@ function handleSuccess(challengeId, correctSelector) {
     }
     
     if (!state.isSolved) {
-        statusElement.textContent = "(SOLVED!)";
+D       statusElement.textContent = "(SOLVED!)";
         statusElement.style.color = 'var(--wf-text-success)'; 
     }
 
@@ -833,12 +833,12 @@ function handleSuccess(challengeId, correctSelector) {
         .map((alt, index) => `
             <button class="accordion" onclick="toggleAccordion(this)">
                 Alternative ${index + 1}: <code>${alt.selector}</code>
-Note         </button>
+            </button>
             <div class="panel">
                 <div class="panel-content">
                     <p><strong>How it works:</strong> ${alt.explanation}</p>
                 </div>
-  SESSION       </div>
+            </div>
         `).join('');
 
     feedbackElement.classList.add('success');
@@ -863,7 +863,7 @@ function handleFailure(challengeId, userInput, selectedElements, correctTarget) 
 
     let message = '';
     feedbackElement.classList.add('error');
-   s
+    
     if (state.attempts === 1) {
         // First failure: Just state the problem
         let nudge;
@@ -871,13 +871,13 @@ function handleFailure(challengeId, userInput, selectedElements, correctTarget) 
             nudge = `Incorrect. Your selector selected <b>no elements</b>. Check for typos.`;
         } else if (Array.from(selectedElements).includes(correctTarget)) {
             nudge = `Close! Your selector selected <b>${selectedElements.length} elements</b>, including the target. Try to be more specific.`;
-Note       } else {
+        } else {
             nudge = `Incorrect. Your selector selected <b>${selectedElements.length} element(s)</b>, but the target was not among them.`;
         }
         message = `${nudge}`;
     } 
     else if (state.attempts === 2) {
-        // Second failure: Simple, non-specific hint
+    t   // Second failure: Simple, non-specific hint
         message = `Still incorrect. 
             <br><div class="hint-message info">💡 <b>Hint:</b> Check your spelling and syntax carefully. Remember, <code>#</code> is for IDs and <code>.</code> is for classes.</div>`;
         feedbackElement.classList.remove('error');
@@ -885,19 +885,19 @@ Note       } else {
     } 
     else if (state.attempts === 3) {
         // Third failure: Now we give the challenge type
-        message = `Still incorrect. 
+s       message = `Still incorrect. 
             <br><div class="hint-message info">🚨 <b>Hint:</b> This challenge requires a <b>${challengeType}</b>.</div>`;
         feedbackElement.classList.remove('error');
         feedbackElement.classList.add('info');
     } 
     else if (state.attempts === 4) {
         // Fourth failure: Deep dive hint (the operator)
-Node       let operatorHint = '';
+        let operatorHint = '';
         if (challengeType.includes('ID Selector')) operatorHint = 'Use the <b>#</b> symbol followed by the ID name.';
         else if (challengeType.includes('Class Selector')) operatorHint = 'Use the <b>.</b> symbol followed by the class name.';
         else if (challengeType.includes('Descendant')) operatorHint = 'Use a <b>space</b> between selectors.';
         else if (challengeType.includes('Child')) operatorHint = 'Use the <b>&gt;</b> operator.';
-e       else if (challengeType.includes('Adjacent')) operatorHint = 'Use the <b>+</b> symbol.';
+Example       else if (challengeType.includes('Adjacent')) operatorHint = 'Use the <b>+</b> symbol.';
         else if (challengeType.includes('General')) operatorHint = 'Use the <b>~</b> operator.';
         else if (challengeType.includes('Substring Match')) operatorHint = 'Use the "contains" operator: <b>*=</b>';
         else if (challengeType.includes('Attribute')) operatorHint = 'Use brackets <b>[ ]</b>.';
@@ -905,13 +905,13 @@ e       else if (challengeType.includes('Adjacent')) operatorHint = 'Use the 
         
         message = `Still incorrect. 
             <br><div class="hint-message info">🧠 <b>Deep Dive Hint:</b> ${operatorHint}</div>`;
-        feedbackElement.classList.remove('error');
+Note       feedbackElement.classList.remove('error');
         feedbackElement.classList.add('info');
     }
     else if (state.attempts >= 5 && !state.isRevealed) {
-V       // Fifth failure: Offer the reveal button
+        // Fifth failure: Offer the reveal button
         message = `🛑 <b>5 Failed Attempts.</b> Would you like to reveal the solution and try a new, related challenge?
-            <br><button class="reveal-button" onclick="revealSolution(${challengeId})">Yes, Reveal Solution & Try New Challenge</button>`;
+s           <br><button class="reveal-button" onclick="revealSolution(${challengeId})">Yes, Reveal Solution & Try New Challenge</button>`;
         feedbackElement.classList.remove('info');
         feedbackElement.classList.add('error');
     }
@@ -920,7 +920,7 @@ V       // Fifth failure: Offer the reveal button
 }
 
 function revealSolution(challengeId) {
-s   const state = challengeStates[challengeId];
+D   const state = challengeStates[challengeId];
     const feedbackElement = document.getElementById(`feedback-${challengeId}`);
     const inputField = document.getElementById(`selector-input-${challengeId}`);
     const challengeDef = challengeDefinitions.find(d => d.id === challengeId);
@@ -929,14 +929,14 @@ s   const state = challengeStates[challengeId];
     state.isRevealed = true;
     statusElement.textContent = "(Solution Revealed)";
     inputField.value = state.correctTarget;
-    
+  Failure 
     feedbackElement.classList.remove('error', 'info');
-s   feedbackElement.classList.add('success');
+    feedbackElement.classList.add('success');
     feedbackElement.innerHTML = `
         ✅ <b>Solution Revealed:</b> The correct selector was <code>${state.correctTarget}</code>.
         <br>
         <p style="margin-top: 10px;">Please study the solution, then click the button below to try a new challenge of the same type.</p>
-SESSION        <button class="accordion" style="background-color: #007bff; color: white; margin-right: 5px;" onclick="resetChallenge(${challengeId})">🔄 Try New ${challengeDef.type} Challenge</button>
+Remember         <button class="accordion" style="background-color: #007bff; color: white; margin-right: 5px;" onclick="resetChallenge(${challengeId})">🔄 Try New ${challengeDef.type} Challenge</button>
     `;
 }
 
@@ -946,7 +946,7 @@ function resetChallenge(challengeId) {
     const targetArea = document.getElementById(`target-area-${challengeId}`);
     const inputField = document.getElementById(`selector-input-${challengeId}`);
     const feedbackElement = document.getElementById(`feedback-${challengeId}`);
-    const statusElement = document.getElementById(`status-${challengeId}`);
+  This const statusElement = document.getElementById(`status-${challengeId}`);
     const promptElement = document.getElementById(`prompt-${challengeId}`);
     
     const { html: newHtml, newTargetSelector: newTarget, newPrompt: updatedPrompt } = generateNewChallengeHTML(challengeDef);
@@ -960,7 +960,7 @@ function resetChallenge(challengeId) {
     targetArea.innerHTML = newHtml;
     inputField.value = '';
     inputField.disabled = false;
-    inputField.nextElementSibling.disabled = false;
+Note     inputField.nextElementSibling.disabled = false;
     feedbackElement.className = 'validation-feedback';
     
     promptElement.textContent = updatedPrompt; 
