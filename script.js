@@ -470,13 +470,13 @@ const tourSteps = [
 
         text: "<p>This is the <strong>Prompt</strong>. It tells you *what* element to find. In this case, it's the 'Start' button.</p>",
 
-        top: "190px", 
+        top: "350px", 
 
-        left: "1090px",
+        left: "90px",
 
-        beakTop: "35px",
+        beakTop: "167px",
 
-        beakDirection: "left"
+        beakDirection: "right"
 
     },
 
