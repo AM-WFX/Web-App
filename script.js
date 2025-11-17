@@ -282,7 +282,7 @@ const tourSteps = [
         top: "340px", 
         left: "1070px",
         beakTop: "171.5px",
-        beakDirection: "left" // ❗ YOUR CHANGE (Reverted to left)
+        beakDirection: "left" // ❗ Back to 'left' as requested
     }
 ];
 
