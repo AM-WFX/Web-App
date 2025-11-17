@@ -470,7 +470,7 @@ const tourSteps = [
 
         text: "<p>This is the <strong>Prompt</strong>. It tells you *what* element to find. In this case, it's the 'Start' button.</p>",
 
-        top: "190px", 
+        top: "200px", 
 
         left: "1090px",
 
@@ -488,7 +488,7 @@ const tourSteps = [
 
         text: "<p>This is the <strong>Target Area</strong>. The HTML elements you need to select are inside this box.</p>",
 
-        top: "255px", 
+        top: "266px", 
 
         left: "1090px",
 
@@ -506,7 +506,7 @@ const tourSteps = [
 
         text: "<p>To find a selector, <strong>right-click</strong> the 'Click me to start!' button and choose <strong>'Inspect'</strong>.</p><p></p>",
 
-        top: "269px", 
+        top: "279px", 
 
         left: "1090px",
 
@@ -524,7 +524,7 @@ const tourSteps = [
 
         text: "<p>The <strong>Developer Console</strong> will open, showing you the HTML. Notice the button has an `id`? That's your answer!</p><p></p>",
 
-        top: "255px", 
+        top: "266px", 
 
         left: "1090px",
 
@@ -542,7 +542,7 @@ const tourSteps = [
 
         text: "<p>Now, type your selector (<code>#start-button</code>) into the <strong>Input Field</strong>.</p>",
 
-        top: "350px", 
+        top: "360px", 
 
         left: "90px",
 
@@ -560,7 +560,7 @@ const tourSteps = [
 
         text: "<p>Finally, click the <strong>Validate</strong> button to check your answer. Your turn!</p>",
 
-        top: "340px", 
+        top: "356px", 
 
         left: "1070px",
 
