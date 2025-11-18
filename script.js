@@ -149,8 +149,8 @@ function startGuidedTour() {
     
     // Phase 2 UI: The Tutorial (Morphs into a challenge container)
     challengeBox.innerHTML = `
-        <div class="challenge-container" style="flex: 0 1 600px; max-width: 100%; min-width: 380px;">
-            <h3 id="challenge-title-0" style="margin:0; text-align: center;">Guided Tour: Learn the UI</h3>
+       <div class="intro-challenge-container">
+            <h3 id="challenge-title-0" style="margin:0; text-align: center;">Guided Tour: Learn the UI</h3>
             <span id="status-0" style="color: grey;">(Tutorial)</span>
             
             <p id="prompt-0">
