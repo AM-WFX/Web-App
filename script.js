@@ -311,7 +311,7 @@ function startSpotlightTour() {
     // --- ADDED FOR STEP 4 IMAGE ---
     const step4Image = document.createElement('img');
     step4Image.id = 'tour-step-4-image';
-    step4Image.src = 'https://googleusercontent.com/image_generation_content/0'; // The image URL
+    step4Image.src = 'https://github.com/AM-WFX/wfx-dojo/issues/5#issue-3639650623'; // The image URL
     step4Image.style.cssText = `
         display: none; 
         position: fixed;
