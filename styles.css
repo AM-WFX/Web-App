@@ -828,3 +828,28 @@ p[id*="prompt-"] {
 #tour-back[style*="visibility: hidden"] { /* Hides it on step 1 */
     visibility: hidden;
 }
+
+/* ---------------------------------------------------- */
+/* --- 💡 NEW: TUTORIAL CHALLENGE 0 CONTAINER FIX 💡 --- */
+/* ---------------------------------------------------- */
+
+.intro-challenge-container {
+    /* Base Appearance (Copied from .challenge-container) */
+    background-color: var(--wf-support-karry); 
+    border-radius: var(--wf-border-radius);
+    padding: 20px;
+    min-width: 380px; 
+    margin-top: 10px; 
+    box-shadow: none;
+    
+    /* Layout Overrides for Centering */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centers inner content (text, prompt) horizontally */
+    gap: 15px; 
+
+    /* These 3 properties ensure the box is centered and is not part of the grid flow */
+    flex: 0 1 600px; /* Resets flex-grow, sets max width */
+    max-width: 600px; /* Limits the size */
+    align-self: center; /* Centers the whole box vertically within its parent */
+}
