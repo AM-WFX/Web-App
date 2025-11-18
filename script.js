@@ -195,7 +195,7 @@ function validateTutorial() {
     const feedbackElement = document.getElementById('feedback-0');
     const userInput = inputField.value.trim();
 
-    if (userInput === '#start-button') {
+    if (userInput === '#start-button' || [id="start-button"]) {
         localStorage.setItem('labIntroCompleted', 'true');
         
         feedbackElement.className = 'validation-feedback success';
@@ -234,7 +234,7 @@ const tourSteps = [
         element: '#prompt-0',
         title: "Step 1: The Prompt",
         text: "<p>This is the <strong>Prompt</strong>. It tells you *what* element to find. In this case, it's the 'Start' button.</p>",
-        top: "200px", 
+        top: "305px", 
         left: "1090px",
         beakTop: "35px",
         beakDirection: "left"
@@ -243,7 +243,7 @@ const tourSteps = [
         element: '#target-area-0',
         title: "Step 2: The Target Area",
         text: "<p>This is the <strong>Target Area</strong>. The HTML elements you need to select are inside this box.</p>",
-        top: "266px", 
+        top: "370px", 
         left: "1090px",
         beakTop: "111.5px",
         beakDirection: "left"
@@ -252,7 +252,7 @@ const tourSteps = [
         element: '#target-area-0',
         title: "Step 3: How to Find the Selector",
         text: "<p>To find a selector, <strong>right-click</strong> the 'Click me to start!' button and choose <strong>'Inspect'</strong>.</p><p></p>",
-        top: "279px", 
+        top: "385px", 
         left: "1090px",
         beakTop: "102px",
         beakDirection: "left"
@@ -261,7 +261,7 @@ const tourSteps = [
         element: '#target-area-0',
         title: "Step 4: Using the Console",
         text: "<p>The <strong>Developer Console</strong> will open, showing you the HTML. Notice the button has an `id`? That's your answer!</p><p></p>",
-        top: "266px", 
+        top: "370px", 
         left: "1090px",
         beakTop: "111.5px",
         beakDirection: "left"
@@ -270,7 +270,7 @@ const tourSteps = [
         element: '#selector-input-0',
         title: "Step 5: The Input Field",
         text: "<p>Now, type your selector (<code>#start-button</code>) into the <strong>Input Field</strong>.</p>",
-        top: "360px", 
+        top: "465px", 
         left: "90px",
         beakTop: "167px",
         beakDirection: "right" // ❗ YOUR CHANGE
@@ -279,7 +279,7 @@ const tourSteps = [
         element: 'button[onclick="validateTutorial()"]',
         title: "Step 6: The Validate Button",
         text: "<p>Finally, click the <strong>Validate</strong> button to check your answer. Your turn!</p>",
-        top: "356px", 
+        top: "463px", 
         left: "1070px",
         beakTop: "171.5px",
         beakDirection: "left" // ❗ Back to 'left' as requested
@@ -316,7 +316,7 @@ function startSpotlightTour() {
         display: none; 
         position: fixed;
         left: 30px;
-        top: 290px;
+        top: 392px;
         width: 350px;
         max-width: 30%;
         border-radius: 10px;
