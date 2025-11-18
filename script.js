@@ -316,7 +316,7 @@ function startSpotlightTour() {
         display: none; 
         position: fixed;
         left: 30px;
-        top: 100px;
+        top: 290px;
         width: 350px;
         max-width: 30%;
         border-radius: 10px;
