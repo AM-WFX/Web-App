@@ -273,7 +273,7 @@ const tourSteps = [
     {
         element: '#selector-input-0',
         title: "Step 5: The Input Field",
-        text: "<p>Now, type your selector (<code>#start-button</code>) into the <strong>Input Field</strong>.</p>",
+        text: "<p>Now, type your selector (<code>[id="start-button"]</code>) into the <strong>Input Field</strong>.</p>",
         beakTop: "167px",
         beakDirection: "right" 
     },
