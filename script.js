@@ -102,12 +102,11 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('resize', function() {
         // Only run if the tour panel is currently active (visible)
         const panel = document.getElementById('tour-panel');
-        // Check for content to ensure it's a tour step. panel.textContent.length > 0 is a proxy for being initialized.
+        // Check for content to ensure it's a tour step
         if (panel && panel.style.display !== 'none' && panel.textContent.length > 0) { 
             showTourStep(currentTourStep); 
         }
     });
-    // -----------------------------------------------------------------
 
 }); // End of DOMContentLoaded
 
@@ -161,6 +160,7 @@ function startGuidedTour() {
     challengeBox.style.cssText = "flex-grow: 1; display: flex; align-items: flex-start; justify-content: center; width: 100%; padding: 30px 0;";
     
     // Phase 2 UI: The Tutorial (Morphs into a challenge container)
+    // Uses 'intro-challenge-container' to avoid grid flex conflict
     challengeBox.innerHTML = `
         <div class="intro-challenge-container">
             <h3 id="challenge-title-0" style="margin:0; text-align: center;">Guided Tour: Learn the UI</h3>
@@ -208,6 +208,7 @@ function validateTutorial() {
     const feedbackElement = document.getElementById('feedback-0');
     const userInput = inputField.value.trim();
 
+    // FIXED: Corrected syntax error in OR condition
     if (userInput === '#start-button' || userInput === '[id="start-button"]') {
         localStorage.setItem('labIntroCompleted', 'true');
         
@@ -239,8 +240,6 @@ function validateTutorial() {
 // -------------------------------------------------
 let currentTourStep = 0;
 
-// Removed hardcoded 'top' and 'left' values. Only 'beakTop' and 'beakDirection' remain 
-// as configuration settings to drive dynamic positioning.
 const tourSteps = [
     {
         element: '#prompt-0',
@@ -273,7 +272,7 @@ const tourSteps = [
     {
         element: '#selector-input-0',
         title: "Step 5: The Input Field",
-        text: "<p>Now, type your selector (<code>[id="start-button"]</code>) into the <strong>Input Field</strong>.</p>",
+        text: "<p>Now, type your selector (<code>#start-button</code>) into the <strong>Input Field</strong>.</p>",
         beakTop: "167px",
         beakDirection: "right" 
     },
@@ -316,16 +315,15 @@ function startSpotlightTour() {
     // --- ADDED FOR STEP 4 IMAGE ---
     const step4Image = document.createElement('img');
     step4Image.id = 'tour-step-4-image';
-    // Using a non-expired placeholder to ensure the code loads, replace this with your hosted image URL
     step4Image.src = 'https://private-user-images.githubusercontent.com/240746604/515901141-938ad3c6-62a0-48aa-b5d6-06a546766c6a.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NjM0OTMzODUsIm5iZiI6MTc2MzQ5MzA4NSwicGF0aCI6Ii8yNDA3NDY2MDQvNTE1OTAxMTQxLTkzOGFkM2M2LTYyYTAtNDhhYS1iNWQ2LTA2YTU0Njc2NmM2YS5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUxMTE4JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MTExOFQxOTExMjVaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0zNzAyOGVjYzFjNWE4MWFkMDY2ZGFiM2ZhMjQzOTljM2NmMDgxMmZmZGVjZTk5MDNhM2FkNmYxNjQ2MWQxOTA1JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.jsVP5aRV4IIqU1i_yOe71aM1PkX9DtuSMakj4UCuhoY'; 
     step4Image.style.cssText = `
         display: none; 
-        position: fixed; // Must be fixed for correct dynamic positioning
+        position: fixed; 
         width: 350px;
         max-width: 30%;
         border-radius: 10px;
         box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-        z-index: 2001; // Below the panel, above the overlay
+        z-index: 2001; 
         border: 2px solid white;
     `;
     document.body.appendChild(step4Image);
@@ -1044,7 +1042,7 @@ function resetChallenge(challengeId) {
     const statusElement = document.getElementById(`status-${challengeId}`);
     const promptElement = document.getElementById(`prompt-${challengeId}`);
     
-    const { html: newHtml, newTargetSelector: newTarget, newPrompt: updatedPrompt } = generateNewChallengeHTML(def);
+    const { html: newHtml, newTargetSelector: newTarget, newPrompt: updatedPrompt } = generateNewChallengeHTML(challengeDef);
     
     state.correctTarget = newTarget;
     state.attempts = 0;
