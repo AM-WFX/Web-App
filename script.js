@@ -96,6 +96,19 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // -----------------------------------------------------------------
+    // 💡 --- NEW: WINDOW RESIZE LISTENER FOR TOOLTIP REPOSITIONING --- 💡
+    // -----------------------------------------------------------------
+    window.addEventListener('resize', function() {
+        // Only run if the tour panel is currently active (visible)
+        const panel = document.getElementById('tour-panel');
+        if (panel && panel.style.display !== 'none') {
+            // Re-run showTourStep to re-calculate and apply new positions 
+            // based on the current viewport size (which changes when DevTools open/resize).
+            showTourStep(currentTourStep); 
+        }
+    });
+
 }); // End of DOMContentLoaded
 
 // -------------------------------------------------
@@ -149,8 +162,8 @@ function startGuidedTour() {
     
     // Phase 2 UI: The Tutorial (Morphs into a challenge container)
     challengeBox.innerHTML = `
-       <div class="intro-challenge-container">
-            <h3 id="challenge-title-0" style="margin:0; text-align: center;">Guided Tour: Learn the UI</h3>
+        <div class="intro-challenge-container">
+            <h3 id="challenge-title-0" style="margin:0; text-align: center;">Guided Tour: Learn the UI</h3>
             <span id="status-0" style="color: grey;">(Tutorial)</span>
             
             <p id="prompt-0">
@@ -311,7 +324,7 @@ function startSpotlightTour() {
     // --- ADDED FOR STEP 4 IMAGE ---
     const step4Image = document.createElement('img');
     step4Image.id = 'tour-step-4-image';
-    step4Image.src = 'https://private-user-images.githubusercontent.com/240746604/515901141-938ad3c6-62a0-48aa-b5d6-06a546766c6a.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NjM0OTMzODUsIm5iZiI6MTc2MzQ5MzA4NSwicGF0aCI6Ii8yNDA3NDY2MDQvNTE1OTAxMTQxLTkzOGFkM2M2LTYyYTAtNDhhYS1iNWQ2LTA2YTU0Njc2NmM2YS5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUxMTE4JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MTExOFQxOTExMjVaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0zNzAyOGVjYzFjNWE4MWFkMDY2ZGFiM2ZhMjQzOTljM2NmMDgxMmZmZGVjZTk5MDNhM2FkNmYxNjQ2MWQxOTA1JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.jsVP5aRV4IIqU1i_yOe71aM1PkX9DtuSMakj4UCuhoY'; // The image URL
+    step4Image.src = 'https://private-user-images.githubusercontent.com/240746604/515901141-938ad3c6-62a0-48aa-b5d6-06a546766c6a.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NjM0OTMzODUsIm5iZiI6MTc2MzQ5MzA4NSwicGF0aCI6Ii8yNDA3NDY2MDQvNTE1OTAxMTQxLTkzOGFkM2M2LTYyYTAtNDhhYS1iNWQ2LTA2YTU0Njc2NmM2YS5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUxMTE4JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MTExOFQxOTExMjVaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0zNzAyOGVjYzFjNWE4MWFkMDY2ZGFiM2ZhMjQzOTljM2NmMDgxMmZmZGVjZTk5MDNhM2FkNmYxNjQ2MWQxOTA1JlgtQQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.jsVP5aRV4IIqU1i_yOe71aM1PkX9DtuSMakj4UCuhoY'; // The image URL
     step4Image.style.cssText = `
         display: none; 
         position: fixed;
@@ -982,7 +995,7 @@ function resetChallenge(challengeId) {
     const statusElement = document.getElementById(`status-${challengeId}`);
     const promptElement = document.getElementById(`prompt-${challengeId}`);
     
-    const { html: newHtml, newTargetSelector: newTarget, newPrompt: updatedPrompt } = generateNewChallengeHTML(challengeDef);
+    const { html: newHtml, newTargetSelector: newTarget, newPrompt: updatedPrompt } = generateNewChallengeHTML(def);
     
     state.correctTarget = newTarget;
     state.attempts = 0;
