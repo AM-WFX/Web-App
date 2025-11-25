@@ -102,12 +102,12 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('resize', function() {
         // Only run if the tour panel is currently active (visible)
         const panel = document.getElementById('tour-panel');
-        if (panel && panel.style.display !== 'none') {
-            // Re-run showTourStep to re-calculate and apply new positions 
-            // based on the current viewport size (which changes when DevTools open/resize).
+        // Check for content to ensure it's a tour step. panel.textContent.length > 0 is a proxy for being initialized.
+        if (panel && panel.style.display !== 'none' && panel.textContent.length > 0) { 
             showTourStep(currentTourStep); 
         }
     });
+    // -----------------------------------------------------------------
 
 }); // End of DOMContentLoaded
 
@@ -208,7 +208,7 @@ function validateTutorial() {
     const feedbackElement = document.getElementById('feedback-0');
     const userInput = inputField.value.trim();
 
-    if (userInput === '#start-button' || [id="start-button"]) {
+    if (userInput === '#start-button' || userInput === '[id="start-button"]') {
         localStorage.setItem('labIntroCompleted', 'true');
         
         feedbackElement.className = 'validation-feedback success';
@@ -239,16 +239,13 @@ function validateTutorial() {
 // -------------------------------------------------
 let currentTourStep = 0;
 
-// ❗ --- THIS IS THE FIX (Part 1) --- ❗
-// Updated coordinates for Step 1
-// Updated beakDirection for Step 5
+// Removed hardcoded 'top' and 'left' values. Only 'beakTop' and 'beakDirection' remain 
+// as configuration settings to drive dynamic positioning.
 const tourSteps = [
     {
         element: '#prompt-0',
         title: "Step 1: The Prompt",
         text: "<p>This is the <strong>Prompt</strong>. It tells you *what* element to find. In this case, it's the 'Start' button.</p>",
-        top: "305px", 
-        left: "1090px",
         beakTop: "35px",
         beakDirection: "left"
     },
@@ -256,8 +253,6 @@ const tourSteps = [
         element: '#target-area-0',
         title: "Step 2: The Target Area",
         text: "<p>This is the <strong>Target Area</strong>. The HTML elements you need to select are inside this box.</p>",
-        top: "370px", 
-        left: "1090px",
         beakTop: "111.5px",
         beakDirection: "left"
     },
@@ -265,8 +260,6 @@ const tourSteps = [
         element: '#target-area-0',
         title: "Step 3: How to Find the Selector",
         text: "<p>To find a selector, <strong>right-click</strong> the 'Click me to start!' button and choose <strong>'Inspect'</strong>.</p><p></p>",
-        top: "385px", 
-        left: "1090px",
         beakTop: "102px",
         beakDirection: "left"
     },
@@ -274,8 +267,6 @@ const tourSteps = [
         element: '#target-area-0',
         title: "Step 4: Using the Console",
         text: "<p>The <strong>Developer Console</strong> will open, showing you the HTML. Notice the button has an `id`? That's your answer!</p><p></p>",
-        top: "370px", 
-        left: "1090px",
         beakTop: "111.5px",
         beakDirection: "left"
     },
@@ -283,23 +274,22 @@ const tourSteps = [
         element: '#selector-input-0',
         title: "Step 5: The Input Field",
         text: "<p>Now, type your selector (<code>#start-button</code>) into the <strong>Input Field</strong>.</p>",
-        top: "465px", 
-        left: "90px",
         beakTop: "167px",
-        beakDirection: "right" // ❗ YOUR CHANGE
+        beakDirection: "right" 
     },
     {
         element: 'button[onclick="validateTutorial()"]',
         title: "Step 6: The Validate Button",
         text: "<p>Finally, click the <strong>Validate</strong> button to check your answer. Your turn!</p>",
-        top: "463px", 
-        left: "1070px",
         beakTop: "171.5px",
-        beakDirection: "left" // ❗ Back to 'left' as requested
+        beakDirection: "left" 
     }
 ];
 
 function startSpotlightTour() {
+    // Ensure existing tour elements are removed before starting a new one
+    endSpotlightTour();
+
     // Create the overlay
     const overlay = document.createElement('div');
     overlay.id = 'tour-overlay';
@@ -307,6 +297,8 @@ function startSpotlightTour() {
 
     const panel = document.createElement('div');
     panel.id = 'tour-panel'; 
+    panel.style.position = 'fixed'; // Ensure panel is fixed for viewport-relative positioning
+    panel.style.zIndex = '2002'; // Higher than overlay
     
     panel.innerHTML = `
         <button id="tour-skip" class="tour-skip-x">&times;</button>
@@ -324,17 +316,16 @@ function startSpotlightTour() {
     // --- ADDED FOR STEP 4 IMAGE ---
     const step4Image = document.createElement('img');
     step4Image.id = 'tour-step-4-image';
-    step4Image.src = 'https://private-user-images.githubusercontent.com/240746604/515901141-938ad3c6-62a0-48aa-b5d6-06a546766c6a.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NjM0OTMzODUsIm5iZiI6MTc2MzQ5MzA4NSwicGF0aCI6Ii8yNDA3NDY2MDQvNTE1OTAxMTQxLTkzOGFkM2M2LTYyYTAtNDhhYS1iNWQ2LTA2YTU0Njc2NmM2YS5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUxMTE4JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MTExOFQxOTExMjVaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0zNzAyOGVjYzFjNWE4MWFkMDY2ZGFiM2ZhMjQzOTljM2NmMDgxMmZmZGVjZTk5MDNhM2FkNmYxNjQ2MWQxOTA1JlgtQQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.jsVP5aRV4IIqU1i_yOe71aM1PkX9DtuSMakj4UCuhoY'; // The image URL
+    // Using a non-expired placeholder to ensure the code loads, replace this with your hosted image URL
+    step4Image.src = 'https://via.placeholder.com/350x200/222222/00C4FF?text=HTML+Structure'; 
     step4Image.style.cssText = `
         display: none; 
-        position: fixed;
-        left: 30px;
-        top: 392px;
+        position: fixed; // Must be fixed for correct dynamic positioning
         width: 350px;
         max-width: 30%;
         border-radius: 10px;
         box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-        z-index: 2001;
+        z-index: 2001; // Below the panel, above the overlay
         border: 2px solid white;
     `;
     document.body.appendChild(step4Image);
@@ -358,17 +349,30 @@ function showTourStep(stepIndex) {
     const popup = document.getElementById('tour-panel');
     const targetElement = document.querySelector(step.element);
     
-    // --- ADDED FOR STEP 4 IMAGE ---
+    // --- Dynamic Image Positioning for Step 4 ---
     const step4Image = document.getElementById('tour-step-4-image');
     if (step4Image) {
-        // Step 4 is at index 3
-        if (stepIndex === 3) { 
+        if (stepIndex === 3) { // Step 4 is at index 3
             step4Image.style.display = 'block';
+            if (targetElement) {
+                const targetRect = targetElement.getBoundingClientRect();
+                
+                // Position image to the LEFT of the target area, vertically centered
+                step4Image.style.left = `${targetRect.left - step4Image.offsetWidth - 20}px`; // 20px buffer
+                
+                // Align image vertically with the target center
+                step4Image.style.top = `${targetRect.top + (targetRect.height / 2) - (step4Image.offsetHeight / 2)}px`;
+                
+                // Ensure it doesn't go off screen left
+                if (parseFloat(step4Image.style.left) < 10) {
+                    step4Image.style.left = '10px';
+                }
+            }
         } else {
             step4Image.style.display = 'none';
         }
     }
-    // --- END OF ADDITION ---
+    // --- End Dynamic Image Positioning ---
     
     // Update popup content
     document.getElementById('tour-title').textContent = step.title;
@@ -381,21 +385,66 @@ function showTourStep(stepIndex) {
         // Add new spotlight
         targetElement.classList.add('spotlight');
         
-        // ❗ --- THIS IS THE FIX (Part 2) --- ❗
-        // Removed all dynamic calculations.
-        // We now read your exact values from the tourSteps array.
-        // We add window.scrollY to ensure 'top' is correct if the page is scrolled.
-        popup.style.top = `calc(${step.top} + ${window.scrollY}px)`;
-        popup.style.left = step.left;
+        const targetRect = targetElement.getBoundingClientRect();
+        const popupWidth = popup.offsetWidth;
+        const popupHeight = popup.offsetHeight; // Get current popup height (essential for centering)
+        
+        let popupLeft, popupTop;
+        const buffer = 20; // Space between target and popup
+
+        // 1. CALCULATE HORIZONTAL POSITION AND BEAK DIRECTION
+        let currentBeakDirection = step.beakDirection;
+
+        if (currentBeakDirection === 'right') {
+            // Desired: Popup on the LEFT of the target.
+            popupLeft = targetRect.left - popupWidth - buffer;
+            
+            // Boundary check: If it goes off screen left, flip to the right side
+            if (popupLeft < 10) { 
+                popupLeft = targetRect.right + buffer; // Move to the right
+                currentBeakDirection = 'left'; // Flip beak direction
+            }
+        } else { // Desired: Popup on the RIGHT of the target
+            popupLeft = targetRect.right + buffer;
+            
+            // Boundary check: If it goes off screen right, flip to the left side
+            if (popupLeft + popupWidth > window.innerWidth - 10) { 
+                popupLeft = targetRect.left - popupWidth - buffer; // Move to the left
+                currentBeakDirection = 'right'; // Flip beak direction
+            }
+        }
+
+        // 2. CALCULATE VERTICAL POSITION (Centering the Beak)
+        const beakOffset = parseFloat(step.beakTop);
+        // Position the panel's top edge so that the vertical center of the target
+        // aligns with the point defined by beakOffset on the popup.
+        popupTop = (targetRect.top + (targetRect.height / 2)) - beakOffset;
+
+        // 3. VERTICAL BOUNDARY ADJUSTMENTS (Ensuring visibility)
+        if (popupTop < 10) {
+            popupTop = 10;
+        }
+        if (popupTop + popupHeight > window.innerHeight - 10) {
+            popupTop = window.innerHeight - popupHeight - 10;
+        }
+        
+        // 4. APPLY STYLES
+        popup.style.top = `${popupTop}px`;
+        popup.style.left = `${popupLeft}px`;
         popup.style.setProperty('--beak-top', step.beakTop);
 
-        // This controls the beak direction
+        // Apply Beak Class (Handles the flip)
         popup.classList.remove('tour-beak-left', 'tour-beak-right');
-        if (step.beakDirection === 'right') {
-             popup.classList.add('tour-beak-right');
+        if (currentBeakDirection === 'right') {
+            popup.classList.add('tour-beak-right');
         } else {
-             popup.classList.add('tour-beak-left');
+            popup.classList.add('tour-beak-left');
         }
+
+    } else {
+        // If target element is not found, hide popup
+        popup.style.display = 'none';
+        console.warn(`Tour target element not found for step ${stepIndex}: ${step.element}`);
     }
 
     // Update Button Logic
@@ -409,6 +458,7 @@ function showTourStep(stepIndex) {
     } else {
         nextButton.textContent = "Next";
     }
+    popup.style.display = 'block'; // Make sure it's visible after positioning
 }
 
 function prevTourStep() {
@@ -426,9 +476,8 @@ function endSpotlightTour() {
     document.getElementById('tour-panel')?.remove();
     document.querySelector('.spotlight')?.classList.remove('spotlight');
     
-    // --- ADDED FOR STEP 4 IMAGE ---
+    // Clean up image
     document.getElementById('tour-step-4-image')?.remove();
-    // --- END OF ADDITION ---
     
     const prompt = document.getElementById('prompt-0');
     if (prompt) {
