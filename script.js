@@ -317,7 +317,7 @@ function startSpotlightTour() {
     const step4Image = document.createElement('img');
     step4Image.id = 'tour-step-4-image';
     // Using a non-expired placeholder to ensure the code loads, replace this with your hosted image URL
-    step4Image.src = 'https://via.placeholder.com/350x200/222222/00C4FF?text=HTML+Structure'; 
+    step4Image.src = 'https://private-user-images.githubusercontent.com/240746604/515901141-938ad3c6-62a0-48aa-b5d6-06a546766c6a.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NjM0OTMzODUsIm5iZiI6MTc2MzQ5MzA4NSwicGF0aCI6Ii8yNDA3NDY2MDQvNTE1OTAxMTQxLTkzOGFkM2M2LTYyYTAtNDhhYS1iNWQ2LTA2YTU0Njc2NmM2YS5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUxMTE4JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MTExOFQxOTExMjVaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0zNzAyOGVjYzFjNWE4MWFkMDY2ZGFiM2ZhMjQzOTljM2NmMDgxMmZmZGVjZTk5MDNhM2FkNmYxNjQ2MWQxOTA1JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.jsVP5aRV4IIqU1i_yOe71aM1PkX9DtuSMakj4UCuhoY'; 
     step4Image.style.cssText = `
         display: none; 
         position: fixed; // Must be fixed for correct dynamic positioning
